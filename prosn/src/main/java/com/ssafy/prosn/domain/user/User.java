@@ -1,5 +1,6 @@
-package com.ssafy.prosn.domain;
+package com.ssafy.prosn.domain.user;
 
+import com.ssafy.prosn.domain.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
