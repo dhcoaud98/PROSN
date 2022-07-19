@@ -3,10 +3,7 @@ package com.ssafy.prosn.domain.user;
 import com.ssafy.prosn.domain.BaseEntity;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * created by seongmin on 2022/07/18
@@ -15,7 +12,7 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-public class User extends BaseEntity {
+public abstract class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +20,10 @@ public class User extends BaseEntity {
 
     private String name;
     private String email;
+
+    @Column(columnDefinition = "Integer default 0")
     private Integer point;
 
-    @Builder
     public User(String name, String email) {
         this.name = name;
         this.email = email;
