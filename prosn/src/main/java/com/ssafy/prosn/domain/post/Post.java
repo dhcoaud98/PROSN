@@ -1,6 +1,7 @@
 package com.ssafy.prosn.domain.post;
 
 import com.ssafy.prosn.domain.BaseEntity;
+import com.ssafy.prosn.domain.comment.Comment;
 import com.ssafy.prosn.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,6 +43,9 @@ public abstract class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post")
     private List<PostTag> postTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
 
     public Post(String title, Integer views, User user) {
         this.title = title;
