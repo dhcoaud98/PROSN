@@ -2,6 +2,7 @@ package com.ssafy.prosn.domain.user;
 
 import com.ssafy.prosn.domain.BaseEntity;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
@@ -10,6 +11,9 @@ import javax.persistence.*;
  * updated by seongmin on 2022/07/19
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
