@@ -31,6 +31,7 @@ public abstract class User extends BaseEntity {
     }
 
     /**
+     * 문제를 풀고 맞았을 경우 포인트를 얻는 메서드
      * @param point : 획득한 포인트
      * @return : 갱신된 포인트
      */
