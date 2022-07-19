@@ -1,10 +1,13 @@
 package com.ssafy.prosn.domain.user;
 
 import com.ssafy.prosn.domain.BaseEntity;
+import com.ssafy.prosn.domain.post.Post;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * created by seongmin on 2022/07/18
@@ -25,6 +28,9 @@ public abstract class User extends BaseEntity {
 
     private String name;
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
 
     @Column(columnDefinition = "Integer default 0")
     private Integer point;
