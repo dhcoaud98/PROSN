@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * created by seongmin on 2022/07/18
+ */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
