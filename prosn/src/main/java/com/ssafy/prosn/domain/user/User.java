@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 /**
  * created by seongmin on 2022/07/18
+ * updated by seongmin on 2022/07/19
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
