@@ -9,6 +9,8 @@ import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
@@ -35,11 +37,8 @@ public abstract class Post extends BaseEntity {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @Column(columnDefinition = "Integer default 0")
-    private Integer numOfLikes;
-
-    @Column(columnDefinition = "Integer default 0")
-    private Integer numOfDislikes;
+    @OneToMany(mappedBy = "post")
+    private List<LikeDislike> likeDislikes = new ArrayList<>();
 
     public Post(String title, Integer views, User user) {
         this.title = title;
