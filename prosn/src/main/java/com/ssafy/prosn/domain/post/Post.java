@@ -11,7 +11,8 @@ import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 
 /**
- * created by seongmin on 2022/07/18
+ * created by seongmin on 2022/07/19
+ * updated by seongmin on 2022/07/19
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -28,6 +29,8 @@ public abstract class Post extends BaseEntity {
 
     private String title;
 
+    private Integer views;
+
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
@@ -38,4 +41,9 @@ public abstract class Post extends BaseEntity {
     @Column(columnDefinition = "Integer default 0")
     private Integer numOfDislikes;
 
+    public Post(String title, Integer views, User user) {
+        this.title = title;
+        this.views = views;
+        this.user = user;
+    }
 }
