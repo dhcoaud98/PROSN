@@ -34,11 +34,14 @@ public abstract class Post extends BaseEntity {
     private Integer views;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "post")
     private List<LikeDislike> likeDislikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostTag> postTags = new ArrayList<>();
 
     public Post(String title, Integer views, User user) {
         this.title = title;
