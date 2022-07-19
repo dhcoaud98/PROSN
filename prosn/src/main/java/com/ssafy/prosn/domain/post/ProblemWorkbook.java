@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 /**
  * created by seongmin on 2022/07/19
+ * updated by seongmin on 2022/07/19
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,11 +19,11 @@ public class ProblemWorkbook extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "PROBLEM_ID")
+    @JoinColumn(name = "problem_id")
     private Problem problem;
 
     @ManyToOne
-    @JoinColumn(name = "WORKBOOK_ID")
+    @JoinColumn(name = "workbook_id")
     private Workbook workbook;
 
     @Builder
