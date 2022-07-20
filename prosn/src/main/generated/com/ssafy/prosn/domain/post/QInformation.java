@@ -25,6 +25,9 @@ public class QInformation extends EntityPathBase<Information> {
     public final QPost _super;
 
     //inherited
+    public final ListPath<com.ssafy.prosn.domain.comment.Comment, com.ssafy.prosn.domain.comment.QComment> comments;
+
+    //inherited
     public final DateTimePath<java.time.LocalDateTime> created;
 
     //inherited
@@ -34,6 +37,9 @@ public class QInformation extends EntityPathBase<Information> {
     public final ListPath<LikeDislike, QLikeDislike> likeDislikes;
 
     public final StringPath mainText = createString("mainText");
+
+    //inherited
+    public final ListPath<PostTag, QPostTag> postTags;
 
     //inherited
     public final StringPath title;
@@ -66,9 +72,11 @@ public class QInformation extends EntityPathBase<Information> {
     public QInformation(Class<? extends Information> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QPost(type, metadata, inits);
+        this.comments = _super.comments;
         this.created = _super.created;
         this.id = _super.id;
         this.likeDislikes = _super.likeDislikes;
+        this.postTags = _super.postTags;
         this.title = _super.title;
         this.updated = _super.updated;
         this.user = _super.user;

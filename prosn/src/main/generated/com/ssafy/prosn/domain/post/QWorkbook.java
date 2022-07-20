@@ -25,6 +25,9 @@ public class QWorkbook extends EntityPathBase<Workbook> {
     public final QPost _super;
 
     //inherited
+    public final ListPath<com.ssafy.prosn.domain.comment.Comment, com.ssafy.prosn.domain.comment.QComment> comments;
+
+    //inherited
     public final DateTimePath<java.time.LocalDateTime> created;
 
     //inherited
@@ -32,6 +35,9 @@ public class QWorkbook extends EntityPathBase<Workbook> {
 
     //inherited
     public final ListPath<LikeDislike, QLikeDislike> likeDislikes;
+
+    //inherited
+    public final ListPath<PostTag, QPostTag> postTags;
 
     public final ListPath<ProblemWorkbook, QProblemWorkbook> problemWorkbooks = this.<ProblemWorkbook, QProblemWorkbook>createList("problemWorkbooks", ProblemWorkbook.class, QProblemWorkbook.class, PathInits.DIRECT2);
 
@@ -66,9 +72,11 @@ public class QWorkbook extends EntityPathBase<Workbook> {
     public QWorkbook(Class<? extends Workbook> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QPost(type, metadata, inits);
+        this.comments = _super.comments;
         this.created = _super.created;
         this.id = _super.id;
         this.likeDislikes = _super.likeDislikes;
+        this.postTags = _super.postTags;
         this.title = _super.title;
         this.updated = _super.updated;
         this.user = _super.user;

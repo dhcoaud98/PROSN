@@ -24,12 +24,16 @@ public class QPost extends EntityPathBase<Post> {
 
     public final com.ssafy.prosn.domain.QBaseEntity _super = new com.ssafy.prosn.domain.QBaseEntity(this);
 
+    public final ListPath<com.ssafy.prosn.domain.comment.Comment, com.ssafy.prosn.domain.comment.QComment> comments = this.<com.ssafy.prosn.domain.comment.Comment, com.ssafy.prosn.domain.comment.QComment>createList("comments", com.ssafy.prosn.domain.comment.Comment.class, com.ssafy.prosn.domain.comment.QComment.class, PathInits.DIRECT2);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> created = _super.created;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final ListPath<LikeDislike, QLikeDislike> likeDislikes = this.<LikeDislike, QLikeDislike>createList("likeDislikes", LikeDislike.class, QLikeDislike.class, PathInits.DIRECT2);
+
+    public final ListPath<PostTag, QPostTag> postTags = this.<PostTag, QPostTag>createList("postTags", PostTag.class, QPostTag.class, PathInits.DIRECT2);
 
     public final StringPath title = createString("title");
 
