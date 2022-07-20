@@ -1,4 +1,4 @@
-# prosn-frontend
+# frontend
 
 ## Project setup
 ```
