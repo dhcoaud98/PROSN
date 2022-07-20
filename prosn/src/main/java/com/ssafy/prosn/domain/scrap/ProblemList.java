@@ -8,9 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * created by seongmin on 2022/07/20
+ * updated by seongmin on 2022/07/20
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +29,9 @@ public class ProblemList extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "problemList")
+    private List<Scrap> scraps = new ArrayList<>();
 
     @Builder
     public ProblemList(String title, User user) {
