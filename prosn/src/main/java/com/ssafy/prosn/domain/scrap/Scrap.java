@@ -28,12 +28,12 @@ public class Scrap extends BaseEntity {
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "problem_list_id")
+    private ProblemList problemList;
 
     @Builder
-    public Scrap(Post post, User user) {
+    public Scrap(Post post, ProblemList problemList) {
         this.post = post;
-        this.user = user;
+        this.problemList = problemList;
     }
 }
