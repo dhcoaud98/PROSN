@@ -9,9 +9,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
+ * updated by seongmin on 2022/07/20
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,6 +34,10 @@ public class Comment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @OneToMany(mappedBy = "comment")
+    private List<Reply> replies = new ArrayList<>();
+
 
     @Builder
     public Comment(String mainText, User user, Post post) {
