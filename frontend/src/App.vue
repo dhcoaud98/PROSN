@@ -1,11 +1,8 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
+    <router-view/>
+    <nav-bar></nav-bar>
+      <!-- <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
           class="shrink mr-2"
@@ -39,11 +36,12 @@
 
     <v-main>
       <router-view/>
-    </v-main>
+    </v-main> -->
   </v-app>
 </template>
 
 <script>
+import NavBar from './components/NavBar.vue'
 
 export default {
   name: 'App',
@@ -51,5 +49,8 @@ export default {
   data: () => ({
     //
   }),
+  components : {
+    NavBar,
+  }
 };
 </script>
