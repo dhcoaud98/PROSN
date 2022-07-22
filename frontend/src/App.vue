@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import NavBar from './components/NavBar.vue'
 
 
 export default {
@@ -14,5 +15,8 @@ export default {
   data: () => ({
     //
   }),
+  components : {
+    NavBar,
+  }
 };
 </script>
