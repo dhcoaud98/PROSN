@@ -1,12 +1,11 @@
 package com.ssafy.prosn.domain.post;
 
+import com.ssafy.prosn.converter.BooleanToYNConverter;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.comment.Comment;
 import com.ssafy.prosn.domain.user.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -15,7 +14,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
- * updated by seongmin on 2022/07/19
+ * updated by seongmin on 2022/07/22
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -31,7 +30,7 @@ public abstract class Post extends BaseEntity {
     private Long id;
 
     private String title;
-
+    @ColumnDefault("0")
     private Integer views;
 
     @ManyToOne
@@ -41,15 +40,26 @@ public abstract class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     private List<LikeDislike> likeDislikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostTag> postTags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    public Post(String title, Integer views, User user) {
+    @Convert(converter = BooleanToYNConverter.class)
+    private boolean isDeleted;
+
+    @ColumnDefault("0")
+    private Integer numOfLikes;
+    @ColumnDefault("0")
+    private Integer numOfDislikes;
+
+    public Post(String title, User user) {
         this.title = title;
-        this.views = views;
         this.user = user;
+    }
+
+    public void remove() {
+        isDeleted = true;
     }
 }
