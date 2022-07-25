@@ -1,7 +1,9 @@
 <template>
   <v-app>
-    <v-navigation-drawer permanent class="mt-5 ml-3 pt-2 pl-2" width="26%">
-      <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px"></v-img>
+    <v-navigation-drawer permanent fixed class="mt-5 ml-3 pt-2 pl-2" width="18%">
+      <router-link to="/">
+        <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px"></v-img>
+      </router-link>
       <v-list-item class="mt-5">
         <v-list-item-content class="left-line-perm">
           <v-list-item-title class="left-line pl-5 py-3 mb-2">스터디</v-list-item-title>
@@ -18,7 +20,9 @@
 
 <script>
 export default {
-
+  methods: {
+    // onClick event 사용: 한번 클릭하면 bold + 보라색, 다시 클릭하면 원상태로 돌아오게
+  }
 }
 </script>
 
@@ -29,7 +33,8 @@ export default {
   .left-line {
     border-left: 5px solid #d9d9d9;
   }
-  :hover.left-line {
+  :hover.left-line{
     border-left: solid 5px #A384FF;
+    font-weight: bold;
   }
 </style>
