@@ -2,6 +2,7 @@ package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.user.LocalUser;
+import com.ssafy.prosn.dto.InformationRequestDto;
 import com.ssafy.prosn.dto.ProblemRequestDto;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
@@ -45,6 +46,7 @@ class PostServiceImplTest {
         tags.add(new Tag("OS", "운영체제"));
         tags.add(new Tag("DB", "데이터베이스"));
         tags.add(new Tag("AL", "알고리즘"));
+        tags.add(new Tag("DS", "자료구조"));
         tagRepository.saveAll(tags);
 
         user.save(LocalUser.builder()
@@ -77,5 +79,26 @@ class PostServiceImplTest {
         //then
         assertThat(postRepository.findById(1L).get().getTitle()).isEqualTo("HTTP에 대해서");
         assertThat(postTagRepository.findAll().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("정보 게시글 작성")
+    void writeInfo() {
+        // given
+        InformationRequestDto infoDto = InformationRequestDto.builder()
+                .title("BFS와 DFS에 대해서")
+                .mainText("넓이 우선 탐색과 깊이 우선 탐색......")
+                .uid(1L)
+                .tags(List.of("AL", "DS"))
+                .build();
+
+        // when
+        Long resultId = postService.writeInformation(infoDto);
+
+        // then
+        assertThat(resultId).isEqualTo(1L);
+        assertThat(postRepository.findById(1L).get().getTitle()).isEqualTo("BFS와 DFS에 대해서");
+        assertThat(postTagRepository.findAll().size()).isEqualTo(2);
+
     }
 }
