@@ -1,5 +1,6 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -62,6 +64,7 @@ class PostServiceImplTest {
     @DisplayName("문제 게시글 작성")
     void writeProblem() {
         // given
+        Long uid = userRepository.findAll().get(0).getId();
         ProblemRequestDto problemDto = ProblemRequestDto.builder()
                 .title("HTTP에 대해서")
                 .mainText("다음 중 HTTP 메소드가 아닌것은?")
@@ -71,14 +74,15 @@ class PostServiceImplTest {
                 .ex4("GET")
                 .answer("UPDATE")
                 .tags(List.of("NW"))
-                .uid(1L)
+                .uid(uid)
                 .build();
 
         // when
-        postService.writeProblem(problemDto);
+        Post post = postService.writeProblem(problemDto);
+
 
         //then
-        assertThat(postRepository.findById(1L).get().getTitle()).isEqualTo("HTTP에 대해서");
+        assertThat(post.getId()).isEqualTo(postRepository.findById(post.getId()).get().getId());
         assertThat(postTagRepository.findAll().size()).isEqualTo(1);
     }
 
@@ -94,12 +98,38 @@ class PostServiceImplTest {
                 .build();
 
         // when
-        Long resultId = postService.writeInformation(infoDto);
+        Post post = postService.writeInformation(infoDto);
 
         // then
-        assertThat(resultId).isEqualTo(2L);
-        assertThat(postRepository.findById(2L).get().getTitle()).isEqualTo("BFS와 DFS에 대해서");
+        assertThat(post.getId()).isEqualTo(postRepository.findById(post.getId()).get().getId());
         assertThat(postTagRepository.findAll().size()).isEqualTo(2);
 
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void delete() {
+        // given
+        Long uid = userRepository.findAll().get(0).getId();
+        ProblemRequestDto problemDto = ProblemRequestDto.builder()
+                .title("HTTP HTTP")
+                .mainText("다음 중 HTTP 메소드가 아닌것은?")
+                .ex1("UPDATE")
+                .ex2("POST")
+                .ex3("OPTION")
+                .ex4("GET")
+                .answer("UPDATE")
+                .tags(List.of("NW"))
+                .uid(uid)
+                .build();
+        postService.writeProblem(problemDto);
+        Long postId = postRepository.findAll().get(0).getId();
+        Optional<Post> post = postRepository.findById(postId);
+
+        // when
+        postService.delete(postId);
+
+        // then
+        assertThat(post.get().isDeleted()).isTrue();
     }
 }
