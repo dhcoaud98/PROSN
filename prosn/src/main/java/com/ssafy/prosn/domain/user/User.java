@@ -2,7 +2,7 @@ package com.ssafy.prosn.domain.user;
 
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.post.Post;
-import com.ssafy.prosn.domain.scrap.ProblemList;
+import com.ssafy.prosn.domain.profile.scrap.ProblemList;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;

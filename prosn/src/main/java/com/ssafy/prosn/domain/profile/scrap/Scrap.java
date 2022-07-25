@@ -1,8 +1,7 @@
-package com.ssafy.prosn.domain.scrap;
+package com.ssafy.prosn.domain.profile.scrap;
 
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.post.Post;
-import com.ssafy.prosn.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

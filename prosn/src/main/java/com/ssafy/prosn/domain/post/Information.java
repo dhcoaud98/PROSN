@@ -19,8 +19,8 @@ public class Information extends Post{
     private String mainText;
 
     @Builder
-    public Information(String title, Integer views, User user, String mainText) {
-        super(title, views, user);
+    public Information(String title, User user, String mainText) {
+        super(title, user);
         this.mainText = mainText;
     }
 }
