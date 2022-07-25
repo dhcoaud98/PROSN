@@ -11,6 +11,7 @@ import com.ssafy.prosn.repository.post.tag.TagRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,26 +82,48 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostDetailResponseDto showProblemDetail(Long id) {
-        Optional<Problem> problem = problemRepository.findById(id);
-        problem.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
-        if (problem.get().isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
+        Optional<Post> post = postRepository.findById(id);
+        post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+        log.info("post type = {}", post.get().getClass());
+        if(post.get() instanceof Problem) {
+            log.info("문제 디테일");
+            Problem problem = (Problem) post.get();
+            if(problem.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
+            return ProblemDetailResponseDto.builder()
+                    .title(problem.getTitle())
+                    .user(new UserResponseDto(problem.getUser().getId(), problem.getUser().getName()))
+                    .id(problem.getId())
+                    .mainText(problem.getMainText())
+                    .answer(problem.getAnswer())
+                    .example1(problem.getExample1())
+                    .example2(problem.getExample2())
+                    .example3(problem.getExample3())
+                    .example4(problem.getExample4())
+                    .comments(problem.getComments())
+                    .numOfLikes(getNumOfLikes(problem))
+                    .numOfDislikes(getNumOfDislikes(problem))
+                    .views(problem.getViews())
+                    .tags(getTags(problem))
+                    .build();
+        } else if(post.get() instanceof Information) {
+            log.info("정보 디테일");
+            Information information = (Information) post.get();
+            if(information.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
 
-        return ProblemDetailResponseDto.builder()
-                .title(problem.get().getTitle())
-                .user(new UserResponseDto(problem.get().getUser().getId(), problem.get().getUser().getName()))
-                .id(problem.get().getId())
-                .mainText(problem.get().getMainText())
-                .answer(problem.get().getAnswer())
-                .example1(problem.get().getExample1())
-                .example2(problem.get().getExample2())
-                .example3(problem.get().getExample3())
-                .example4(problem.get().getExample4())
-                .comments(problem.get().getComments())
-                .numOfLikes(getNumOfLikes(problem.get()))
-                .numOfDislikes(getNumOfDislikes(problem.get()))
-                .views(problem.get().getViews())
-                .tags(getTags(problem.get()))
-                .build();
+            return InformationDetailResponseDto.builder()
+                    .id(information.getId())
+                    .user(new UserResponseDto(information.getUser().getId(), information.getUser().getName()))
+                    .mainText(information.getMainText())
+                    .comments(information.getComments())
+                    .numOfDislikes(getNumOfDislikes(information))
+                    .numOfLikes(getNumOfLikes(information))
+                    .tags(getTags(information))
+                    .views(information.getViews())
+                    .build();
+        } else {
+            log.info("그외(문제집) 디테일");
+            return null;
+        }
     }
 
     @Override
