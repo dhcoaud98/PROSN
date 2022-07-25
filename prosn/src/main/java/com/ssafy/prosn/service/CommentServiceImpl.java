@@ -46,6 +46,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void delete(Long id, Long uid) {
+        Optional<Comment> comment = commentRepository.findById(id);
+        comment.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 댓글입니다."));
+        if(!comment.get().getUser().getId().equals(uid)) throw new IllegalArgumentException("내가 쓴 댓글만 삭제 가능합니다.");
 
+        commentRepository.deleteById(id);
     }
 }
