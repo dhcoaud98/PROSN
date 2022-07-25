@@ -36,6 +36,7 @@ public class PostServiceImpl implements PostService {
     private final LikeDislikeRepository likeDislikeRepository;
 
     @Override
+    @Transactional
     public Post writeProblem(ProblemRequestDto problemDto) {
         Optional<User> user = userRepository.findById(problemDto.getUid());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
@@ -54,6 +55,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public Post writeInformation(InformationRequestDto informationDto) {
         Optional<User> user = userRepository.findById(informationDto.getUid());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
@@ -69,6 +71,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Optional<Post> post = postRepository.findById(id);
         post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
@@ -143,6 +146,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public void likeDislikeClick(Long uid, Long pid, boolean type) {
         Optional<User> user = userRepository.findById(uid);
         Optional<Post> post = postRepository.findById(pid);
