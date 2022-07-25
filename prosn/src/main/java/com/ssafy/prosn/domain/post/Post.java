@@ -40,8 +40,8 @@ public abstract class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     private List<LikeDislike> likeDislikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<PostTag> postTags = new ArrayList<>();
+//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+//    private List<PostTag> postTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
