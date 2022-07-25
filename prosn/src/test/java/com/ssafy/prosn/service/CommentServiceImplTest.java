@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 /**
  * created by seongmin on 2022/07/25
@@ -63,8 +64,25 @@ class CommentServiceImplTest {
                 .mainText("잘봤습니다.")
                 .build();
         Comment write = commentService.write(commentDto);
-        Comment comment = commentRepository.findById(1L).get();
-        Assertions.assertThat(write).isEqualTo(comment);
+        Comment comment = commentRepository.findAll().get(0);
+        assertThat(write).isEqualTo(comment);
     }
 
+    @Test
+    @DisplayName("댓글 삭제")
+    void delete() {
+        User user = userRepository.findAll().get(0);
+        Post post = postRepository.findAll().get(0);
+
+        CommentRequestDto commentDto = CommentRequestDto.builder()
+                .uid(user.getId())
+                .pid(post.getId())
+                .mainText("잘봤습니다.")
+                .build();
+        Comment write = commentService.write(commentDto);
+
+        commentService.delete(write.getId(), user.getId());
+
+        assertThat(commentRepository.findAll().size()).isEqualTo(0);
+    }
 }
