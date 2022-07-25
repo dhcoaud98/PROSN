@@ -13,7 +13,7 @@ public interface PostService {
     Post writeInformation(InformationRequestDto informationDto);
     void delete(Long id);
     PostDetailResponseDto showProblemDetail(Long id);
-
     List<PostAllResponseDto> showAllPost();
+    void likeDislikeClick(Long uid, Long pid, boolean type);
 
 }

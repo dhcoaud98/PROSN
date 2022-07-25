@@ -75,7 +75,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @param problem id
+     * @param id //problem id
      * @return problem detail
      * 삭제된 게시글일 경우 예외던짐. (문제집에서 확인할 때는 안던지도록 처리필요)
      */
@@ -117,6 +117,25 @@ public class PostServiceImpl implements PostService {
                             getNumOfDislikes(post)));
         });
         return result;
+    }
+
+    @Override
+    public void likeDislikeClick(Long uid, Long pid, boolean type) {
+        Optional<User> user = userRepository.findById(uid);
+        Optional<Post> post = postRepository.findById(pid);
+        user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+
+        Optional<LikeDislike> result = likeDislikeRepository.findByPostAndUser(post.get(), user.get());
+        if(result.isPresent()) {
+            if(result.get().isType() == type) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
+                likeDislikeRepository.delete(result.get());
+            } else { // 예전에 누른거랑 반대버튼 누른 경우 체인지 좋<->싫
+                result.get().change();
+            }
+        } else {
+            likeDislikeRepository.save(new LikeDislike(user.get(), post.get(), type));
+        }
     }
 
     private List<Tag> getTags(Post post) {
