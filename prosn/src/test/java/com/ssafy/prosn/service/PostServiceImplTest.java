@@ -2,6 +2,7 @@ package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.user.LocalUser;
+import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.InformationRequestDto;
 import com.ssafy.prosn.dto.ProblemRequestDto;
 import com.ssafy.prosn.repository.post.PostRepository;
@@ -32,7 +33,7 @@ class PostServiceImplTest {
     @Autowired
     private TagRepository tagRepository;
     @Autowired
-    private UserRepository user;
+    private UserRepository userRepository;
 
     @Autowired
     private PostRepository postRepository;
@@ -49,7 +50,7 @@ class PostServiceImplTest {
         tags.add(new Tag("DS", "자료구조"));
         tagRepository.saveAll(tags);
 
-        user.save(LocalUser.builder()
+        userRepository.save(LocalUser.builder()
                 .userId("test")
                 .email("test@gmail.com")
                 .password("qwert1234@Q")
@@ -88,7 +89,7 @@ class PostServiceImplTest {
         InformationRequestDto infoDto = InformationRequestDto.builder()
                 .title("BFS와 DFS에 대해서")
                 .mainText("넓이 우선 탐색과 깊이 우선 탐색......")
-                .uid(1L)
+                .uid(2L)
                 .tags(List.of("AL", "DS"))
                 .build();
 
@@ -96,8 +97,8 @@ class PostServiceImplTest {
         Long resultId = postService.writeInformation(infoDto);
 
         // then
-        assertThat(resultId).isEqualTo(1L);
-        assertThat(postRepository.findById(1L).get().getTitle()).isEqualTo("BFS와 DFS에 대해서");
+        assertThat(resultId).isEqualTo(2L);
+        assertThat(postRepository.findById(2L).get().getTitle()).isEqualTo("BFS와 DFS에 대해서");
         assertThat(postTagRepository.findAll().size()).isEqualTo(2);
 
     }
