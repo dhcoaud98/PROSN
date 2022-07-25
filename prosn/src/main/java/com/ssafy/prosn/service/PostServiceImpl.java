@@ -33,6 +33,7 @@ public class PostServiceImpl implements PostService {
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     private final LikeDislikeRepository likeDislikeRepository;
+
     @Override
     public Post writeProblem(ProblemRequestDto problemDto) {
         Optional<User> user = userRepository.findById(problemDto.getUid());
@@ -74,7 +75,6 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     *
      * @param problem id
      * @return problem detail
      * 삭제된 게시글일 경우 예외던짐. (문제집에서 확인할 때는 안던지도록 처리필요)
@@ -83,7 +83,7 @@ public class PostServiceImpl implements PostService {
     public PostDetailResponseDto showProblemDetail(Long id) {
         Optional<Problem> problem = problemRepository.findById(id);
         problem.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
-        if(problem.get().isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
+        if (problem.get().isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
 
         return ProblemDetailResponseDto.builder()
                 .title(problem.get().getTitle())
@@ -102,6 +102,23 @@ public class PostServiceImpl implements PostService {
                 .tags(getTags(problem.get()))
                 .build();
     }
+
+    @Override
+    public List<PostAllResponseDto> showAllPost() {
+        List<Post> posts = postRepository.findAll();
+        List<PostAllResponseDto> result = new ArrayList<>();
+        posts.forEach(post -> {
+            result.add(new PostAllResponseDto(post.getId(),
+                    new UserResponseDto(post.getUser().getId(),
+                            post.getUser().getName()),
+                            post.getTitle(),
+                            post.getViews(),
+                            getNumOfLikes(post),
+                            getNumOfDislikes(post)));
+        });
+        return result;
+    }
+
     private List<Tag> getTags(Post post) {
         List<PostTag> postTagByPost = postTagRepository.findPostTagByPost(post);
         List<Tag> tags = new ArrayList<>();
@@ -114,6 +131,7 @@ public class PostServiceImpl implements PostService {
     private Long getNumOfLikes(Post post) {
         return likeDislikeRepository.countByPostAndType(post, true);
     }
+
     private Long getNumOfDislikes(Post post) {
         return likeDislikeRepository.countByPostAndType(post, false);
     }
