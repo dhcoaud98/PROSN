@@ -18,6 +18,7 @@ import java.util.List;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Comment extends BaseEntity {
 
     @Id
