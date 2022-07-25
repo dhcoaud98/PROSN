@@ -7,7 +7,7 @@
           <v-col cols="9" class="ma-0 pe-3">
             <!-- 네임룰 추후 설정 필요 -->
             <!-- ID 입력란 -->
-            <v-text-field v-model="id" name label="ID" required></v-text-field>
+            <v-text-field v-model="id" label="ID" required></v-text-field>
             <!-- PASSWORD 입력란 -->
             <!-- <v-text-field v-model="password" label="PASSWORD" required></v-text-field>         -->
             <v-text-field
@@ -45,7 +45,6 @@
     </v-container>
   </div>
 </template>
-
 <script>
   export default {
     // 2022.07.25. 아이디 (남성은)
