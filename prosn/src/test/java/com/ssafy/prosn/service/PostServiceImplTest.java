@@ -155,12 +155,26 @@ class PostServiceImplTest {
                 .uid(uid)
                 .build();
 
-        Post post = postService.writeProblem(problemDto);
-        PostDetailResponseDto postDetailResponseDto = postService.showProblemDetail(post.getId());
+        Post postPro = postService.writeProblem(problemDto);
+        PostDetailResponseDto postDetailResponseDto = postService.showProblemDetail(postPro.getId());
 
-        assertThat(postDetailResponseDto.getId()).isEqualTo(post.getId());
+        assertThat(postDetailResponseDto.getId()).isEqualTo(postPro.getId());
         assertThat(postDetailResponseDto.getTags().size()).isEqualTo(1);
         assertThat(postDetailResponseDto.getNumOfLikes()).isEqualTo(0);
+
+
+        InformationRequestDto infoDto = InformationRequestDto.builder()
+                .title("BFS와 DFS에 대해서")
+                .mainText("넓이 우선 탐색과 깊이 우선 탐색......")
+                .uid(uid)
+                .tags(List.of("AL", "DS"))
+                .build();
+
+        Post postInfo = postService.writeInformation(infoDto);
+        PostDetailResponseDto infoDetailResponseDto = postService.showProblemDetail(postInfo.getId());
+        assertThat(infoDetailResponseDto.getId()).isEqualTo(postInfo.getId());
+        assertThat(infoDetailResponseDto.getTags().size()).isEqualTo(2);
+        assertThat(infoDetailResponseDto.getNumOfLikes()).isEqualTo(0);
     }
 
     @Test
