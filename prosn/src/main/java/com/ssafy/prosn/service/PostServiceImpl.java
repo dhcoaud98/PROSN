@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * created by seongmin on 2022/07/22
+ * created by seongmin on 2022/07/25
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public class PostServiceImpl implements PostService {
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     @Override
-    public Long writeProblem(ProblemRequestDto problemDto) {
+    public Post writeProblem(ProblemRequestDto problemDto) {
         Optional<User> user = userRepository.findById(problemDto.getUid());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Problem problem = Problem.builder()
@@ -44,11 +44,11 @@ public class PostServiceImpl implements PostService {
                 .mainText(problemDto.getMainText())
                 .build();
         savePost(problemDto, problem);
-        return problem.getId();
+        return problem;
     }
 
     @Override
-    public Long writeInformation(InformationRequestDto informationDto) {
+    public Post writeInformation(InformationRequestDto informationDto) {
         Optional<User> user = userRepository.findById(informationDto.getUid());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Information information = Information.builder()
@@ -58,8 +58,15 @@ public class PostServiceImpl implements PostService {
                 .build();
 
         savePost(informationDto, information);
-        return information.getId();
+        return information;
 
+    }
+
+    @Override
+    public void delete(Long id) {
+        Optional<Post> post = postRepository.findById(id);
+        post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+        post.get().remove();
     }
 
     private void savePost(PostRequestDto postDto, Post post) {
