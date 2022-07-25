@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -25,6 +26,8 @@ public class ProblemRequestDto {
     @NotBlank(message = "답은 필수 입력 값입니다.")
     private String answer;
     private String mainText;
+    @NotNull(message = "태그는 1개 이상 선택해야 합니다.")
+
     private List<String> tags;
 
     @Builder

@@ -1,5 +1,6 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.dto.InformationRequestDto;
 import com.ssafy.prosn.dto.ProblemRequestDto;
 
 /**
@@ -7,5 +8,5 @@ import com.ssafy.prosn.dto.ProblemRequestDto;
  */
 public interface PostService {
     Long writeProblem(ProblemRequestDto problemDto);
-    Long writeInformation(ProblemRequestDto problemDto);
+    Long writeInformation(InformationRequestDto informationDto);
 }

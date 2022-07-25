@@ -1,9 +1,11 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.domain.post.Information;
 import com.ssafy.prosn.domain.post.PostTag;
 import com.ssafy.prosn.domain.post.Problem;
 import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.dto.InformationRequestDto;
 import com.ssafy.prosn.dto.ProblemRequestDto;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
@@ -53,7 +55,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Long writeInformation(ProblemRequestDto problemDto) {
-        return null;
+    public Long writeInformation(InformationRequestDto informationDto) {
+        Optional<User> user = userRepository.findById(informationDto.getUid());
+        user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        Information information = Information.builder()
+                .user(user.get())
+                .mainText(informationDto.getMainText())
+                .title(informationDto.getTitle())
+                .build();
+        postRepository.save(information);
+        informationDto.getTags().forEach(code -> {
+            Optional<Tag> tag = tagRepository.findByCode(code);
+            tag.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 태그입니다."));
+            postTagRepository.save(new PostTag(information, tag.get()));
+        });
+        return information.getId();
+
     }
 }
