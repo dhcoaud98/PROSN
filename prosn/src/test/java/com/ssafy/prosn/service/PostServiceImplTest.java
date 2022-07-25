@@ -5,6 +5,7 @@ import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.InformationRequestDto;
+import com.ssafy.prosn.dto.PostDetailResponseDto;
 import com.ssafy.prosn.dto.ProblemRequestDto;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
@@ -131,5 +132,32 @@ class PostServiceImplTest {
 
         // then
         assertThat(post.get().isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("문제 디테일")
+    void showProblemDetail() {
+        Long uid = userRepository.findAll().get(0).getId();
+        ProblemRequestDto problemDto = ProblemRequestDto.builder()
+                .title("HTTP에 대해서")
+                .mainText("다음 중 HTTP 메소드가 아닌것은?")
+                .ex1("UPDATE")
+                .ex2("POST")
+                .ex3("OPTION")
+                .ex4("GET")
+                .answer("UPDATE")
+                .tags(List.of("NW"))
+                .uid(uid)
+                .build();
+
+        Post post = postService.writeProblem(problemDto);
+        PostDetailResponseDto postDetailResponseDto = postService.showProblemDetail(post.getId());
+
+        assertThat(postDetailResponseDto.getId()).isEqualTo(post.getId());
+        assertThat(postDetailResponseDto.getTags().size()).isEqualTo(1);
+        assertThat(postDetailResponseDto.getNumOfLikes()).isEqualTo(0);
+
+
+
     }
 }
