@@ -2,10 +2,10 @@ package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.post.*;
 import com.ssafy.prosn.domain.user.User;
-import com.ssafy.prosn.dto.InformationRequestDto;
-import com.ssafy.prosn.dto.PostRequestDto;
-import com.ssafy.prosn.dto.ProblemRequestDto;
+import com.ssafy.prosn.dto.*;
+import com.ssafy.prosn.repository.post.LikeDislikeRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
+import com.ssafy.prosn.repository.post.ProblemRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
 import com.ssafy.prosn.repository.post.tag.TagRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,9 +28,11 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final ProblemRepository problemRepository;
     private final UserRepository userRepository;
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
+    private final LikeDislikeRepository likeDislikeRepository;
     @Override
     public Post writeProblem(ProblemRequestDto problemDto) {
         Optional<User> user = userRepository.findById(problemDto.getUid());
@@ -67,6 +71,51 @@ public class PostServiceImpl implements PostService {
         Optional<Post> post = postRepository.findById(id);
         post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
         post.get().remove();
+    }
+
+    /**
+     *
+     * @param problem id
+     * @return problem detail
+     * 삭제된 게시글일 경우 예외던짐. (문제집에서 확인할 때는 안던지도록 처리필요)
+     */
+    @Override
+    public PostDetailResponseDto showProblemDetail(Long id) {
+        Optional<Problem> problem = problemRepository.findById(id);
+        problem.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+        if(problem.get().isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
+
+        return ProblemDetailResponseDto.builder()
+                .title(problem.get().getTitle())
+                .user(new UserResponseDto(problem.get().getUser().getId(), problem.get().getUser().getName()))
+                .id(problem.get().getId())
+                .mainText(problem.get().getMainText())
+                .answer(problem.get().getAnswer())
+                .example1(problem.get().getExample1())
+                .example2(problem.get().getExample2())
+                .example3(problem.get().getExample3())
+                .example4(problem.get().getExample4())
+                .comments(problem.get().getComments())
+                .numOfLikes(getNumOfLikes(problem.get()))
+                .numOfDislikes(getNumOfDislikes(problem.get()))
+                .views(problem.get().getViews())
+                .tags(getTags(problem.get()))
+                .build();
+    }
+    private List<Tag> getTags(Post post) {
+        List<PostTag> postTagByPost = postTagRepository.findPostTagByPost(post);
+        List<Tag> tags = new ArrayList<>();
+        postTagByPost.forEach(postTag -> {
+            tags.add(postTag.getTag());
+        });
+        return tags;
+    }
+
+    private Long getNumOfLikes(Post post) {
+        return likeDislikeRepository.countByPostAndType(post, true);
+    }
+    private Long getNumOfDislikes(Post post) {
+        return likeDislikeRepository.countByPostAndType(post, false);
     }
 
     private void savePost(PostRequestDto postDto, Post post) {
