@@ -12,22 +12,14 @@ import java.util.List;
 /**
  * created by seongmin on 2022/07/25
  */
-@RequiredArgsConstructor
 @Getter
 @ToString
-public class InformationRequestDto {
-    private Long uid;
-    @NotBlank(message = "제목은 필수 입력 값입니다.")
-    private String title;
+public class InformationRequestDto extends PostRequestDto {
     private String mainText;
-    @NotNull(message = "태그는 1개 이상 선택해야 합니다.")
-    private List<String> tags;
 
     @Builder
-    public InformationRequestDto(Long uid, String title, String mainText, List<String> tags) {
-        this.uid = uid;
-        this.title = title;
+    public InformationRequestDto(Long uid, String title, List<String> tags, String mainText) {
+        super(uid, title, tags);
         this.mainText = mainText;
-        this.tags = tags;
     }
 }
