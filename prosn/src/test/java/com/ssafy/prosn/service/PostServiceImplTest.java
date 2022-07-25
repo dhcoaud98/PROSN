@@ -1,11 +1,14 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.domain.post.LikeDislike;
 import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.InformationRequestDto;
+import com.ssafy.prosn.dto.PostDetailResponseDto;
 import com.ssafy.prosn.dto.ProblemRequestDto;
+import com.ssafy.prosn.repository.post.LikeDislikeRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
 import com.ssafy.prosn.repository.post.tag.TagRepository;
@@ -41,6 +44,9 @@ class PostServiceImplTest {
     private PostRepository postRepository;
     @Autowired
     private PostTagRepository postTagRepository;
+
+    @Autowired
+    private LikeDislikeRepository likeDislikeRepository;
 
     @BeforeEach
     void before() {
@@ -131,5 +137,65 @@ class PostServiceImplTest {
 
         // then
         assertThat(post.get().isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("문제 디테일")
+    void showProblemDetail() {
+        Long uid = userRepository.findAll().get(0).getId();
+        ProblemRequestDto problemDto = ProblemRequestDto.builder()
+                .title("HTTP에 대해서")
+                .mainText("다음 중 HTTP 메소드가 아닌것은?")
+                .ex1("UPDATE")
+                .ex2("POST")
+                .ex3("OPTION")
+                .ex4("GET")
+                .answer("UPDATE")
+                .tags(List.of("NW"))
+                .uid(uid)
+                .build();
+
+        Post postPro = postService.writeProblem(problemDto);
+        PostDetailResponseDto postDetailResponseDto = postService.showProblemDetail(postPro.getId());
+
+        assertThat(postDetailResponseDto.getId()).isEqualTo(postPro.getId());
+        assertThat(postDetailResponseDto.getTags().size()).isEqualTo(1);
+        assertThat(postDetailResponseDto.getNumOfLikes()).isEqualTo(0);
+
+
+        InformationRequestDto infoDto = InformationRequestDto.builder()
+                .title("BFS와 DFS에 대해서")
+                .mainText("넓이 우선 탐색과 깊이 우선 탐색......")
+                .uid(uid)
+                .tags(List.of("AL", "DS"))
+                .build();
+
+        Post postInfo = postService.writeInformation(infoDto);
+        PostDetailResponseDto infoDetailResponseDto = postService.showProblemDetail(postInfo.getId());
+        assertThat(infoDetailResponseDto.getId()).isEqualTo(postInfo.getId());
+        assertThat(infoDetailResponseDto.getTags().size()).isEqualTo(2);
+        assertThat(infoDetailResponseDto.getNumOfLikes()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("좋아요, 싫어요 버튼 클릭")
+    void likeDislikeClick() {
+        Long uid = userRepository.findAll().get(0).getId();
+        ProblemRequestDto problemDto = ProblemRequestDto.builder()
+                .title("HTTP에 대해서")
+                .mainText("다음 중 HTTP 메소드가 아닌것은?")
+                .ex1("UPDATE")
+                .ex2("POST")
+                .ex3("OPTION")
+                .ex4("GET")
+                .answer("UPDATE")
+                .tags(List.of("NW"))
+                .uid(uid)
+                .build();
+
+        Post post = postService.writeProblem(problemDto);
+        postService.likeDislikeClick(uid, post.getId(), true);
+        LikeDislike like = likeDislikeRepository.findByPostAndUser(post, userRepository.findById(uid).get()).get();
+        assertThat(like.isType()).isTrue();
     }
 }

@@ -11,6 +11,7 @@ import javax.persistence.*;
 
 /**
  * created by seongmin on 2022/07/19
+ * updated by seongmin on 2022/07/25
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,5 +37,9 @@ public class LikeDislike extends BaseEntity {
         this.user = user;
         this.post = post;
         this.type = type;
+    }
+
+    public void change() {
+        this.type = !this.type;
     }
 }
