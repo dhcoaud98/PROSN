@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <v-app>
+    <!-- 2022.07.26 문제 모달 (남성은) -->
     <v-container>
       <v-row justify="space-around">
         <v-card width="500">
           <v-card-text class="d-flex justify-space-between">
-            <a href="">크게보기</a>
-            <a href="">뒤로가기</a>
+            <a href="" class="font-weight-bold text-decoration-none black--text">크게보기</a>
+            <a href="" class="font-weight-bold text-decoration-none black--text">뒤로가기</a>
           </v-card-text>
 
           <!-- 문제 제목 -->
@@ -81,13 +82,13 @@
 
               <hr>
               <!-- 댓글보기 -->
-              <v-btn text>댓글보기</v-btn>
-            </div>
+              <v-btn text class="font-weight-bold mt-2">댓글보기</v-btn>
+            </div>            
           </v-card-text>
         </v-card>
       </v-row>
     </v-container>
-  </div>
+  </v-app>
 </template>
 
 <script>
