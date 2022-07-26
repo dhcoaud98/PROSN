@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer permanent fixed class="mt-5 ml-3 pt-2 pl-2" width="18%">
+    <v-navigation-drawer class="mt-5 ml-3 pt-2 pl-2">
       <router-link to="/">
         <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px"></v-img>
       </router-link>

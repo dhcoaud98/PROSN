@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
-    <v-navigation-drawer absolute permanent sticky right class="mt-5 ml-3 pt-2 pl-2 d-none d-lg-block" width="26%">
+    <v-navigation-drawer right class="mt-5 ml-3 pt-2 pl-2 d-none d-lg-block">
       <v-container>
         <v-row>
           <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
@@ -10,13 +10,13 @@
         </v-row>
       </v-container>
       
-      <v-card class="mx-auto mb-5 mt-5" max-width="80%" height ="50px">
+      <v-card class="mx-auto mb-5 mt-5" height ="50px">
         <Search-bar></Search-bar>
       </v-card>
 
       <!-- 1. 오늘의 인기 문제 -->
       <!-- icon 찾기 -->
-      <v-card class="mx-auto mb-5" max-width="80%" height ="280px" color="#FCE4EC">
+      <v-card class="mx-auto mb-5" height ="280px" color="#FCE4EC">
         <v-card-text>
           <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 인기 문제</p>
           <p class="text-right ma-0 mb-2">{{nowDate}} {{nowTime}} 실시간</p>
@@ -40,7 +40,7 @@
       </v-card>
 
       <!-- 2. 오늘의 유저 -->
-      <v-card class="mx-auto mb-5" max-width="80%" height ="330px" color="#EDE7F6">
+      <v-card class="mx-auto mb-5" height ="330px" color="#EDE7F6">
         <v-card-text>
           <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 유저 랭킹</p>
           <p class="text-right">{{nowDate}} {{nowTime}} 실시간</p>
