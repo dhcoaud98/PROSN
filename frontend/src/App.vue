@@ -1,11 +1,16 @@
 <template>
-  <v-app class="app">
+  <div class="bg-grey">
     <v-container>
       <v-row>
-        <nav-bar></nav-bar>
-        <h1>메인 넣자</h1>
-        <h3>대신 메인은 width 지정해야할 듯ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅊㄴㅇ</h3>
-        <side-bar></side-bar>
+        <v-col cols="3">
+          <nav-bar></nav-bar>
+        </v-col>
+        <v-col cols="6">
+          <main-page-view></main-page-view>
+        </v-col>
+        <v-col cols="3">
+          <side-bar></side-bar>
+        </v-col>
       </v-row>
     </v-container>
     <!-- <div class="nav">
@@ -14,12 +19,13 @@
     <div class="side">
       <side-bar></side-bar>
     </div> -->
-  </v-app>
+  </div>
 </template>
 
 <script>
 import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar.vue'
+import MainPageView from './views/MainPageView.vue'
 
 export default {
   name: 'App',
@@ -31,6 +37,7 @@ export default {
   components : {
     NavBar,
     SideBar,
+    MainPageView,
   }
 };
 </script>
@@ -46,6 +53,14 @@ export default {
 .side{
   float: right;
 } */
-
+/* .container에 최대 최소길이가 묶여있어서 마진이 많이 생겨서 조절해줌 */
+.container {
+  max-width: 1300px;
+  min-width: none;
+  /* border: 1px solid black; */
+}
+.bg-grey {
+  background-color: #f5f5f5;
+}
 
 </style>
