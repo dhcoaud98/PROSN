@@ -1,14 +1,13 @@
 package com.ssafy.prosn.domain.study;
 
 import com.ssafy.prosn.domain.BaseEntity;
+import com.ssafy.prosn.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -18,21 +17,27 @@ import java.time.LocalDate;
 @Getter
 @ToString
 public class StudyGroup extends BaseEntity {
-
+    //title, mainText, secretText, place, expiredDate, maxPerson, currentPerson
     @Id
     @GeneratedValue
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     private String title;
     private String mainText;
     private String secretText;
     private String place;
     private LocalDate expiredDate;
     private int maxPerson;
+
+    @ColumnDefault("0")
     private int currentPerson;
 
     @Builder
-    public StudyGroup(String title, String mainText, String secretText, String place, LocalDate expiredDate, int maxPerson) {
+    public StudyGroup(User user, String title, String mainText, String secretText, String place, LocalDate expiredDate, int maxPerson) {
+        this.user = user;
         this.title = title;
         this.mainText = mainText;
         this.secretText = secretText;
@@ -40,7 +45,6 @@ public class StudyGroup extends BaseEntity {
         this.expiredDate = expiredDate;
         this.maxPerson = maxPerson;
     }
-
     public void update(StudyGroup newData) {
         this.expiredDate = newData.getExpiredDate();
         this.mainText = newData.getMainText();
@@ -49,5 +53,10 @@ public class StudyGroup extends BaseEntity {
         this.secretText = newData.getSecretText();
         this.title = newData.getTitle();
     }
-
+    public void addCurrentPerson() {
+        this.currentPerson++;
+    }
+    public void removeCurrentPerson() {
+        this.currentPerson--;
+    }
 }

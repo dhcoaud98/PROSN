@@ -18,10 +18,10 @@ public class UserStudy extends BaseEntity{
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studyGroupId")
+    @JoinColumn(name = "study_group_id")
     private StudyGroup studyGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 }
