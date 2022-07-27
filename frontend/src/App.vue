@@ -8,6 +8,7 @@
         <!-- sm일 때 위에 로고 뜨고 아래에 네비게이션 바 보이게 -->
         <v-col xl="6" lg="6" md="9" sm="11">
           <main-page-view></main-page-view>
+          <!-- <profile-page-view></profile-page-view> -->
         </v-col>
         <v-col xl="6" lg="3" class="d-none d-lg-block">
           <side-bar></side-bar>
@@ -27,6 +28,7 @@
 import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar.vue'
 import MainPageView from './views/MainPageView.vue'
+// import ProfilePageView from './views/ProfilePageView.vue'
 
 export default {
   name: 'App',
@@ -39,6 +41,7 @@ export default {
     NavBar,
     SideBar,
     MainPageView,
+    // ProfilePageView,
   }
 };
 </script>
