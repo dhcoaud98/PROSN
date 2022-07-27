@@ -1,7 +1,7 @@
 <template>
+  <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
   <v-container fluid class="bg-grey">
-    <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
-    <v-navigation-drawer right class="ma-0 pa-0 d-none d-lg-block">
+    <v-navigation-drawer right class="mt-5 ml-3 d-none d-lg-block">
       <v-row>
         <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
         <v-col col="6" class="d-flex justify-center">setting</v-col>
@@ -10,7 +10,7 @@
 
       <v-row>
         <v-col>
-          <!-- 문제 길이 문제 해결하기!-->
+          <!-- 문제 길이 해결하기!-->
           <!-- <search-bar></search-bar> -->
         </v-col>
       </v-row> 
@@ -66,7 +66,6 @@
           </v-row>
         </v-card-text>
       </v-card>
-
     </v-navigation-drawer>
   </v-container>
 </template>
@@ -104,16 +103,11 @@ export default {
       let hou = String(myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours())  
       let min = String(myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes())  
       let sec = String(myDate.getSeconds() < 10 ? '0' + myDate.getSeconds() : myDate.getSeconds()) 
-
       this.nowDate = mm + '월 ' + dd + '일'
       this.nowTime = hou + ':' + min + ':' + sec 
     }
   }
 }
 </script>
-
 <style>
-.v-navigation-drawer__content{
-  background-color: #f5f5f5;
-}
 </style>

@@ -36,6 +36,7 @@ import NavBar from './components/NavBar.vue'
 import BottomNavBar from './components/BottomNavBar.vue'
 import SideBar from './components/SideBar.vue'
 import MainPageView from './views/MainPageView.vue'
+// import ProfilePageView from './views/ProfilePageView.vue'
 
 
 export default {
@@ -50,6 +51,7 @@ export default {
     BottomNavBar,
     SideBar,
     MainPageView,
+    // ProfilePageView,
   }
 };
 </script>
