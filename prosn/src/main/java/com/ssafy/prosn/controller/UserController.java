@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-    private final JwtUtils jwtUtils;
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody UserJoinRequestDto req) {
