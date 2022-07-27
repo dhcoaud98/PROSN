@@ -1,40 +1,71 @@
 <template>
-  <!-- 네비게이션 바: xs에서는 안보이고 하단바로 이동 -->
-  <v-container fluid class="bg-grey">
-    <v-navigation-drawer class="mt-5 ml-3">
-      <v-row class="mb-5">
-        <v-col>
-          <router-link to="/">
-            <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5"></v-img>
-          </router-link>
-        </v-col>
-      </v-row>
-      <div class="mt-5">
-        <v-row>
-          <v-col class="left-line ml-4">
-            <p class="pl-3">스터디</p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="left-line ml-4">
-            <p class="pl-3">오답노트</p>
-          </v-col>
-        </v-row>
-        <!-- 
-          로그인이 된 경우만 보이도록, created될 때 로그인이 되었는 지 확인해서 로그인이 되었으면 loginDisplay 값을 d-flex로 바꾸기 \
-          - 지금은 로그인 구현 전이니까 편의상 기본값을 d-flex로 해놓음
-          -->
-        <v-row :class="loginDisplay">
-          <v-col class="left-line ml-4">
-            <p class="pl-3">내 프로필</p>
-          </v-col>
-        </v-row>
-      </div>
-    </v-navigation-drawer>
-  </v-container>
+  <v-card 
+      height="400"
+      width="256"
+      class="mx-auto"
+      color="transparent"
+      d-none
+      d-md-flex
+    >
+      <v-navigation-drawer permanent class="mt-2">
+        <v-list-item class="mt-5">
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5"></v-img>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
-  <!-- 하단바: xs에서 보임; fixed-bottom -->
+        <v-list nav>
+          <v-list-item>
 
+            <v-list-item-content>
+              <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5">스터디</v-list-item-title>
+              <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5">오답노트</v-list-item-title>
+              <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5">내 프로필</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </v-card>
+    
+  <!-- <v-app class="bg-grey d-none d-sm-flex">
+    네비게이션 바: xs에서는 안보이고 하단바로 이동
+    <v-container fluid class="bg-grey d-none d-sm-flex">
+      <v-navigation-drawer class="mt-5 ml-3 d-none d-sm-flex">
+        <v-row class="mb-5">
+          <v-col>
+            <router-link to="/">
+              <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5"></v-img>
+            </router-link>
+          </v-col>
+        </v-row>
+        <div class="mt-5">
+          <v-row>
+            <v-col class="left-line ml-4">
+              <p class="pl-3">스터디</p>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="left-line ml-4">
+              <p class="pl-3">오답노트</p>
+            </v-col>
+          </v-row>
+          
+            로그인이 된 경우만 보이도록, created될 때 로그인이 되었는 지 확인해서 로그인이 되었으면 loginDisplay 값을 d-flex로 바꾸기 \
+            - 지금은 로그인 구현 전이니까 편의상 기본값을 d-flex로 해놓음
+
+          <v-row :class="loginDisplay">
+            <v-col class="left-line ml-4">
+              <p class="pl-3">내 프로필</p>
+            </v-col>
+          </v-row>
+        </div>
+      </v-navigation-drawer>
+    </v-container>
+
+    <하단바: xs에서 보임; fixed-bottom 
+  </v-app> -->
 </template>
 
 <script>
@@ -65,6 +96,9 @@ export default {
     max-width: 280px;
   }
   .v-navigation-drawer__content {
+    background-color: #f5f5f5;
+  }
+  .v-navigation-drawer__border {
     background-color: #f5f5f5;
   }
 </style>

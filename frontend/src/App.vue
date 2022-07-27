@@ -1,14 +1,21 @@
 <template>
   <v-app class="bg-grey">
     <v-container>
+      <!-- sm 이하일 때 로고 나오도록 -->
       <v-row>
-        <v-col xl="3" lg="3" md="3" sm="1" class="d-none d-md-flex">
+        <v-col class="d-flex d-sm-none">
+          <v-img src="./assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-1"></v-img>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col xl="3" lg="3" md="3" sm="3" class="d-none d-sm-flex">
           <nav-bar></nav-bar>
         </v-col>
         <!-- sm일 때 위에 로고 뜨고 아래에 네비게이션 바 보이게 -->
-        <v-col xl="6" lg="6" md="9" sm="11">
+        <v-col xl="6" lg="6" md="9" sm="9">
           <main-page-view></main-page-view>
-          <!-- <profile-page-view></profile-page-view> -->
+          <bottom-nav-bar class="d-flex d-sm-none"></bottom-nav-bar>
         </v-col>
         <v-col xl="6" lg="3" class="d-none d-lg-block">
           <side-bar></side-bar>
@@ -26,9 +33,11 @@
 
 <script>
 import NavBar from './components/NavBar.vue'
+import BottomNavBar from './components/BottomNavBar.vue'
 import SideBar from './components/SideBar.vue'
 import MainPageView from './views/MainPageView.vue'
 // import ProfilePageView from './views/ProfilePageView.vue'
+
 
 export default {
   name: 'App',
@@ -39,6 +48,7 @@ export default {
   }),
   components : {
     NavBar,
+    BottomNavBar,
     SideBar,
     MainPageView,
     // ProfilePageView,

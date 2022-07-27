@@ -1,29 +1,22 @@
 <template>
-  <v-app>
-    <!-- 상단 탭: 문제/문제집, 정보 -->
-    <v-container class="mt-2 white mb-5">
-      <v-row class="bottom-line justify-center mt-5 mx-5">
-        <v-col cols="6" class="tab-hover">
-          <p class="text-center mb-0 font-weight-bold text-grey">문제/문제집</p>
-        </v-col>
-        <v-col cols="6" class="tab-hover">
-          <p class="text-center mb-0 font-weight-bold text-grey">정보</p>
-        </v-col>
-      </v-row>
-    </v-container>
+  <!-- 상단 탭: 문제/문제집, 정보 -->
+  <v-container fluid class="mt-2 white">
+    <v-row class="bottom-line justify-center mt-5 mx-5">
+      <v-col  xl="6" lg="6" md="6" sm="6" class="tab-hover">
+        <p class="text-center mb-0 font-weight-bold text-grey">문제/문제집</p>
+      </v-col>
+      <v-col xl="6" lg="6" md="6" sm="6" class="tab-hover">
+        <p class="text-center mb-0 font-weight-bold text-grey">정보</p>
+      </v-col>
+    </v-row>
 
     <!-- 메인 피드 1. -- 문제/문제집 -->
-    <v-container>
       <recent-problem></recent-problem>
-    </v-container>
 
     <!-- 메인 피드 2. -- 정보 -->
-    <v-container>
       <info></info>
-    </v-container>
+  </v-container>
       
-    
-  </v-app>
 </template>
 
 <script>
@@ -55,5 +48,11 @@ export default {
     color: white;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+  }
+  .container {
+    max-width: none;
+  }
+  .w-100 {
+    width: 100%;
   }
 </style>
