@@ -103,14 +103,11 @@ export default {
       let hou = String(myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours())  
       let min = String(myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes())  
       let sec = String(myDate.getSeconds() < 10 ? '0' + myDate.getSeconds() : myDate.getSeconds()) 
-
       this.nowDate = mm + '월 ' + dd + '일'
       this.nowTime = hou + ':' + min + ':' + sec 
     }
   }
 }
 </script>
-
 <style>
-
 </style>
