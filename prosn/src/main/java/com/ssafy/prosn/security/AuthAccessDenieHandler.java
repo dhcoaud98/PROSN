@@ -8,7 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+/**
+ * created by seongmin on 2022/07/27
+ */
 @Component
 public class AuthAccessDenieHandler implements AccessDeniedHandler {
     @Override

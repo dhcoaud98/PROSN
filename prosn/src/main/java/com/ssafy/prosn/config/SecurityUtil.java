@@ -3,6 +3,9 @@ package com.ssafy.prosn.config;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+/**
+ * created by seongmin on 2022/07/27
+ */
 public class SecurityUtil {
     private SecurityUtil() { }
 
