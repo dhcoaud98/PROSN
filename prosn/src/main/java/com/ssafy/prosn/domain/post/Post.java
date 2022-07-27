@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
- * updated by seongmin on 2022/07/22
+ * updated by seongmin on 2022/07/27
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -22,7 +22,6 @@ import java.util.List;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString
 public abstract class Post extends BaseEntity {
 
     @Id

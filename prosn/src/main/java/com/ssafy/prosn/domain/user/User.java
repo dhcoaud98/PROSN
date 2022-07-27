@@ -21,7 +21,6 @@ import java.util.List;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString
 public abstract class User extends BaseEntity {
 
     @Id
@@ -31,10 +30,10 @@ public abstract class User extends BaseEntity {
     private String name;
     private String email;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<ProblemList> problemLists = new ArrayList<>();
 
     @ColumnDefault("0")
