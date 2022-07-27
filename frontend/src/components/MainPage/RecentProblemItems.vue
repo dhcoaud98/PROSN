@@ -1,6 +1,7 @@
 <template>
   <!-- 피드 하나하나 디자인 하고 그 자리에 받아온 데이터 띄우기 -->
   <v-app class="my-3">
+    <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
     <div class="color-FAF0F3 feed-width mx-auto border-a-10">
         <v-container class="px-5">
             <!-- 첫번째 v-row: 프사, 사용자 이름, 사용자 등급, 팔로우 버튼 -->

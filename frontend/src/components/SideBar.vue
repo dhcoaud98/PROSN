@@ -1,18 +1,19 @@
 <template>
-  <v-app>
+  <v-container fluid class="bg-grey">
     <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
-    <v-navigation-drawer right class="mt-5 ml-3 pt-2 pl-2 d-none d-lg-block">
-      <v-container>
-        <v-row>
-          <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
-          <v-col col="6" class="d-flex justify-center">setting</v-col>
-          <v-col col="6" class="d-flex justify-center">login</v-col>
-        </v-row>
-      </v-container>
-      
-      <v-card class="mx-auto mb-5 mt-5" height ="50px">
-        <Search-bar></Search-bar>
-      </v-card>
+    <v-navigation-drawer right class="ma-0 pa-0 d-none d-lg-block">
+      <v-row>
+        <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
+        <v-col col="6" class="d-flex justify-center">setting</v-col>
+        <v-col col="6" class="d-flex justify-center">login</v-col>
+      </v-row>
+
+      <v-row>
+        <v-col>
+          <!-- 문제 길이 문제 해결하기!-->
+          <!-- <search-bar></search-bar> -->
+        </v-col>
+      </v-row> 
 
       <!-- 1. 오늘의 인기 문제 -->
       <!-- icon 찾기 -->
@@ -48,14 +49,14 @@
             <v-col cols="12">
               <v-card color="transparent"  flat="true">
                 <v-list two-line>
-                  <template v-for="(item, index) in items.slice(0, 10)">
+                  <template v-for="item in items.slice(0, 10)">
                     <v-list-item>
                       <v-list-item-avatar>
                         <img :src="item.avatar">
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-list-item-name v-html="item.name"></v-list-item-name>
-                        <v-list-item-total v-html="item.total"></v-list-item-total>
+                        <v-lst-item-name>{{ item.name }}</v-lst-item-name>
+                        <v-list-item-total>{{ item.total }}</v-list-item-total>
                       </v-list-item-content>
                     </v-list-item>
                   </template>
@@ -67,7 +68,7 @@
       </v-card>
 
     </v-navigation-drawer>
-  </v-app>
+  </v-container>
 </template>
 
 <script>
@@ -112,5 +113,7 @@ export default {
 </script>
 
 <style>
-
+.v-navigation-drawer__content{
+  background-color: #f5f5f5;
+}
 </style>
