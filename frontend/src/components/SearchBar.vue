@@ -1,5 +1,4 @@
 <template>
-  <v-container>
     <v-autocomplete
       auto-select-first
       chips
@@ -10,7 +9,6 @@
       small-chips
       solo
     ></v-autocomplete>
-  </v-container>
 </template>
 
 <script>

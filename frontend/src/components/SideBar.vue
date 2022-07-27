@@ -8,10 +8,10 @@
         <v-col col="6" class="d-flex justify-center">login</v-col>
       </v-row>
 
-      <v-row>
+      <v-row class="pa-0 ma-0">
         <v-col>
           <!-- 문제 길이 해결하기!-->
-          <!-- <search-bar></search-bar> -->
+          <search-bar></search-bar>
         </v-col>
       </v-row> 
 
