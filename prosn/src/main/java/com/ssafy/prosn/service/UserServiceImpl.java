@@ -1,10 +1,12 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.config.SecurityUtil;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.TokenDto;
 import com.ssafy.prosn.dto.UserJoinRequestDto;
 import com.ssafy.prosn.dto.UserLoginRequestDto;
+import com.ssafy.prosn.dto.UserResponseDto;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import com.ssafy.prosn.security.JwtUtils;
@@ -15,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +62,13 @@ public class UserServiceImpl implements UserService {
         log.info("로그 authentication.getName = {}", authentication.getName());
 
         return jwtUtils.generateJwtToken(authentication);
+    }
+
+    @Override
+    public UserResponseDto getMyInfoBySecret() {
+        return userRepository.findById(SecurityUtil.getCurrentMemberId())
+                .map(UserResponseDto::of)
+                .orElseThrow(() -> new UsernameNotFoundException("로그인 유저 정보가 없습니다."));
     }
 
     private void validateDuplicate(String userId, String email) {
