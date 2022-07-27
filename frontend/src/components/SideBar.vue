@@ -1,73 +1,70 @@
 <template>
-  <v-app>
-    <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
-    <v-navigation-drawer right class="mt-5 ml-3 pt-2 pl-2 d-none d-lg-block">
-      <v-container>
-        <v-row>
-          <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
-          <v-col col="6" class="d-flex justify-center">setting</v-col>
-          <v-col col="6" class="d-flex justify-center">login</v-col>
-        </v-row>
-      </v-container>
+  <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
+  <v-navigation-drawer right class="mt-5 ml-3 pt-2 pl-2 d-none d-lg-block">
+    <v-container>
+      <v-row>
+        <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
+        <v-col col="6" class="d-flex justify-center">setting</v-col>
+        <v-col col="6" class="d-flex justify-center">login</v-col>
+      </v-row>
+    </v-container>
       
-      <v-card class="mx-auto mb-5 mt-5" height ="50px">
-        <Search-bar></Search-bar>
-      </v-card>
-
-      <!-- 1. 오늘의 인기 문제 -->
-      <!-- icon 찾기 -->
-      <v-card class="mx-auto mb-5" height ="280px" color="#FCE4EC">
-        <v-card-text>
-          <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 인기 문제</p>
-          <p class="text-right ma-0 mb-2">{{nowDate}} {{nowTime}} 실시간</p>
-          <p class="text-h6 mb-0">No.1 [문제 제목]</p>
-          <v-container class="grey lighten-5 mb-4" elevation="3">
-            <v-row>
-              <v-col col="4" class="d-flex justify-center pink darken-2">추천</v-col>
-              <v-col col="4" class="d-flex justify-center pink lighten-2">참여자</v-col>
-              <v-col col="4" class="d-flex justify-center">정답률</v-col>
-            </v-row>
-          </v-container>
-          <p class="text-h6 mb-0">No.2 [문제 제목]</p>
-          <v-container class="grey lighten-5">
-            <v-row>
-              <v-col cols="4" class="d-flex justify-center pink darken-2" color="red">추천</v-col>
-              <v-col cols="4" class="d-flex justify-center pink lighten-2">참여자</v-col>
-              <v-col cols="4" class="d-flex justify-center">정답률</v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-      </v-card>
-
-      <!-- 2. 오늘의 유저 -->
-      <v-card class="mx-auto mb-5" height ="330px" color="#EDE7F6">
-        <v-card-text>
-          <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 유저 랭킹</p>
-          <p class="text-right">{{nowDate}} {{nowTime}} 실시간</p>
+    <v-card class="mx-auto mb-5 mt-5" height ="50px">
+      <Search-bar></Search-bar>
+    </v-card>
+    
+    <!-- 1. 오늘의 인기 문제 -->
+    <!-- icon 찾기 -->
+    <v-card class="mx-auto mb-5" height ="280px" color="#FCE4EC">
+      <v-card-text>
+        <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 인기 문제</p>
+        <p class="text-right ma-0 mb-2">{{nowDate}} {{nowTime}} 실시간</p>
+        <p class="text-h6 mb-0">No.1 [문제 제목]</p>
+        <v-container class="grey lighten-5 mb-4" elevation="3">
           <v-row>
-            <v-col cols="12">
-              <v-card color="transparent"  flat="true">
-                <v-list two-line>
-                  <template v-for="(item, index) in items.slice(0, 10)">
-                    <v-list-item>
-                      <v-list-item-avatar>
-                        <img :src="item.avatar">
-                      </v-list-item-avatar>
-                      <v-list-item-content>
-                        <v-list-item-name v-html="item.name"></v-list-item-name>
-                        <v-list-item-total v-html="item.total"></v-list-item-total>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </template>
-                </v-list>
-              </v-card>
-            </v-col>
+            <v-col col="4" class="d-flex justify-center pink darken-2">추천</v-col>
+            <v-col col="4" class="d-flex justify-center pink lighten-2">참여자</v-col>
+            <v-col col="4" class="d-flex justify-center">정답률</v-col>
           </v-row>
-        </v-card-text>
-      </v-card>
+        </v-container>
+        <p class="text-h6 mb-0">No.2 [문제 제목]</p>
+        <v-container class="grey lighten-5">
+          <v-row>
+            <v-col cols="4" class="d-flex justify-center pink darken-2" color="red">추천</v-col>
+            <v-col cols="4" class="d-flex justify-center pink lighten-2">참여자</v-col>
+            <v-col cols="4" class="d-flex justify-center">정답률</v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
+    </v-card>
 
-    </v-navigation-drawer>
-  </v-app>
+    <!-- 2. 오늘의 유저 -->
+    <v-card class="mx-auto mb-5" height ="330px" color="#EDE7F6">
+      <v-card-text>
+        <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 유저 랭킹</p>
+        <p class="text-right">{{nowDate}} {{nowTime}} 실시간</p>
+        <v-row>
+          <v-col cols="12">
+            <v-card color="transparent"  flat="true">
+              <v-list two-line>
+                <template v-for="(item, index) in items.slice(0, 10)">
+                  <v-list-item>
+                    <v-list-item-avatar>
+                      <img :src="item.avatar">
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-name v-html="item.name"></v-list-item-name>
+                      <v-list-item-total v-html="item.total"></v-list-item-total>
+                    </v-list-item-content>
+                  </v-list-item>
+                </template>
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-navigation-drawer>
 </template>
 
 <script>
@@ -103,14 +100,11 @@ export default {
       let hou = String(myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours())  
       let min = String(myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes())  
       let sec = String(myDate.getSeconds() < 10 ? '0' + myDate.getSeconds() : myDate.getSeconds()) 
-
       this.nowDate = mm + '월 ' + dd + '일'
       this.nowTime = hou + ':' + min + ':' + sec 
     }
   }
 }
 </script>
-
 <style>
-
 </style>
