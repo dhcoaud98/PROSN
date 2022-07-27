@@ -1,5 +1,6 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.dto.TokenDto;
 import com.ssafy.prosn.dto.UserJoinRequestDto;
 import com.ssafy.prosn.dto.UserLoginRequestDto;
 
@@ -9,6 +10,6 @@ import com.ssafy.prosn.dto.UserLoginRequestDto;
  */
 public interface UserService {
     Long join(UserJoinRequestDto joinRequestDto);
-    String login(UserLoginRequestDto loginRequestDto);
+    TokenDto login(UserLoginRequestDto loginRequestDto);
 
 }

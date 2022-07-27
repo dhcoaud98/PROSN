@@ -30,7 +30,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequestDto req) {
-        String token = jwtUtils.generateJwtToken(req.getUserId());
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(userService.login(req));
     }
 }

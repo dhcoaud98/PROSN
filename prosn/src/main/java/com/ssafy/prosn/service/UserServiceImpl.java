@@ -2,6 +2,7 @@ package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.dto.TokenDto;
 import com.ssafy.prosn.dto.UserJoinRequestDto;
 import com.ssafy.prosn.dto.UserLoginRequestDto;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,8 +33,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final LocalUserRepository localUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManagerBuilder managerBuilder;
     private final JwtUtils jwtUtils;
-    private final AuthenticationManager authenticationManager;
 
     @Override
     @Transactional
@@ -50,19 +52,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(UserLoginRequestDto loginRequestDto) {
-        log.info("loginRequestDtoID = {}", loginRequestDto.getUserId());
-        log.info("loginRequestDtoPW = {}", loginRequestDto.getPassword());
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDto.getUserId(), loginRequestDto.getPassword());
-        log.info("로그 usernamePasswordAuthenticationToken = {}", usernamePasswordAuthenticationToken);
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        log.error("에러 = {}" , authentication);
+    public TokenDto login(UserLoginRequestDto loginRequestDto) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = loginRequestDto.toAuthentication();
+        Authentication authentication = managerBuilder.getObject().authenticate(usernamePasswordAuthenticationToken);
         log.info("로그 authentication = {}", authentication);
         log.info("로그 authentication.getName = {}", authentication.getName());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-//        return jwtUtils.generateJwtToken(authentication);
-        return null;
+        return jwtUtils.generateJwtToken(authentication);
     }
 
     private void validateDuplicate(String userId, String email) {
