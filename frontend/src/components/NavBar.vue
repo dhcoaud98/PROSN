@@ -1,5 +1,4 @@
 <template>
-  <v-app class="bg-grey">
     <!-- 네비게이션 바: xs에서는 안보이고 하단바로 이동 -->
     <v-container fluid class="bg-grey">
       <v-navigation-drawer class="mt-5 ml-3 d-none d-sm-flex">
@@ -35,7 +34,6 @@
     </v-container>
 
     <!-- 하단바: xs에서 보임; fixed-bottom -->
-  </v-app>
 </template>
 
 <script>

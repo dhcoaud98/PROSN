@@ -1,14 +1,15 @@
 <template>
-  <div class="bg-grey">
+  <v-app class="bg-grey">
     <v-container>
       <v-row>
-        <v-col cols="3">
+        <v-col xl="3" lg="3" md="3" sm="1" class="d-none d-md-flex">
           <nav-bar></nav-bar>
         </v-col>
-        <v-col cols="6">
+        <!-- sm일 때 위에 로고 뜨고 아래에 네비게이션 바 보이게 -->
+        <v-col xl="6" lg="6" md="9" sm="11">
           <main-page-view></main-page-view>
         </v-col>
-        <v-col cols="3">
+        <v-col xl="6" lg="3" class="d-none d-lg-block">
           <side-bar></side-bar>
         </v-col>
       </v-row>
@@ -19,7 +20,7 @@
     <div class="side">
       <side-bar></side-bar>
     </div> -->
-  </div>
+  </v-app>
 </template>
 
 <script>
