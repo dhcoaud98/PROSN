@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString
 public class LocalUser extends User {
 
     private String userId;
