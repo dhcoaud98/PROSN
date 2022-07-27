@@ -2,6 +2,7 @@ package com.ssafy.prosn.domain.study;
 
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.dto.StudyGroupRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -12,12 +13,12 @@ import java.time.LocalDate;
 
 /**
  * created by yeomyeong on 2022/07/25
+ * updated by yeomyeong on 2022/07/27
  */
 @Entity
 @Getter
 @ToString
 public class StudyGroup extends BaseEntity {
-    //title, mainText, secretText, place, expiredDate, maxPerson, currentPerson
     @Id
     @GeneratedValue
     private Long id;
@@ -45,7 +46,7 @@ public class StudyGroup extends BaseEntity {
         this.expiredDate = expiredDate;
         this.maxPerson = maxPerson;
     }
-    public void update(StudyGroup newData) {
+    public void update(StudyGroupRequestDto newData) {
         this.expiredDate = newData.getExpiredDate();
         this.mainText = newData.getMainText();
         this.place = newData.getPlace();
