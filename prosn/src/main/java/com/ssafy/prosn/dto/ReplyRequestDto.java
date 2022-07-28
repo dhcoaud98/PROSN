@@ -1,5 +1,6 @@
 package com.ssafy.prosn.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @RequiredArgsConstructor
 @Builder
+@AllArgsConstructor
 public class ReplyRequestDto {
     @NotBlank(message = "사용자는 필수 입력값입니다.")
     private Long uid;
