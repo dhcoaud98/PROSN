@@ -1,6 +1,7 @@
 package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.study.StudyGroup;
+import com.ssafy.prosn.domain.study.UserStudy;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.StudyGroupRequestDto;
 import com.ssafy.prosn.repository.study.StudyGroupRepository;
@@ -10,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * created by yeomyeong on 2022/07/26
- * updated by yeomyeong on 2022/07/27
+ * updated by yeomyeong on 2022/07/28
  */
 @Service
 @Transactional(readOnly = true)
@@ -24,6 +26,8 @@ public class StudyServiceImpl implements StudyService {
 
     private final StudyGroupRepository studyGroupRepository;
     private final UserRepository userRepository;
+    private final EntityManager em;
+
     //MyStudy - 가입(cur추가), all 조회, 탈퇴(cur제거)
     //userStudyRepo.save(uid, sgid);
     //userStudyRepo.findById(uid);
@@ -36,7 +40,8 @@ public class StudyServiceImpl implements StudyService {
      */
     @Transactional
     public void create(StudyGroupRequestDto studyGroupDto) {
-        //사용자 유효한지 찾아야 하는 거 아닌감
+        User user = userRepository.findById(studyGroupDto.getUid()).get();
+
         StudyGroup studyGroup = StudyGroup.builder().title(studyGroupDto.getTitle())
                 .mainText(studyGroupDto.getMainText())
                 .maxPerson(studyGroupDto.getMaxPerson())
@@ -45,6 +50,9 @@ public class StudyServiceImpl implements StudyService {
                 .place(studyGroupDto.getPlace())
                 .build();
         studyGroupRepository.save(studyGroup);
+
+        UserStudy userStudy = new UserStudy(user, studyGroup);
+        em.persist(userStudy);
     }
 
     /**

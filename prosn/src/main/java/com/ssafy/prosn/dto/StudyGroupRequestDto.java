@@ -4,26 +4,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.Future;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 /**
  * created by yeomyeong on 2022/07/26
- * updated by yeomyeong on 2022/07/27
+ * updated by yeomyeong on 2022/07/28
  */
 @Getter
 @ToString
 public class StudyGroupRequestDto {
+    @NotNull(message = "id는 필수 입력 값입니다.")
+    private Long uid;
     @NotBlank(message = "제목은 필수 입력 값입니다.")
     private String title;
     @Min(1)
-    @NotBlank(message = "최대인원수는 필수 입력 값입니다.")
+    @NotNull(message = "최대인원수는 필수 입력 값입니다.")
     private int maxPerson;
-    @FutureOrPresent
-    @NotBlank(message = "마감일은 필수 입력 값입니다.")
     private LocalDate expiredDate;
     @NotBlank(message = "장소는 필수 입력 값입니다.")
     private String place;
@@ -33,7 +30,8 @@ public class StudyGroupRequestDto {
     private String secretText;
 
     @Builder
-    public StudyGroupRequestDto(String title, int maxPerson, LocalDate expiredDate, String place, String mainText, String secretText) {
+    public StudyGroupRequestDto(Long uid, String title, int maxPerson, LocalDate expiredDate, String place, String mainText, String secretText) {
+        this.uid = uid;
         this.title = title;
         this.maxPerson = maxPerson;
         this.expiredDate = expiredDate;
