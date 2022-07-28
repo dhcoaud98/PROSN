@@ -34,11 +34,14 @@ public class PostServiceImpl implements PostService {
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     private final LikeDislikeRepository likeDislikeRepository;
+    private final UserService userService;
 
     @Override
     @Transactional
     public Post writeProblem(ProblemRequestDto problemDto) {
-        Optional<User> user = userRepository.findById(problemDto.getUid());
+        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        Optional<User> user = userRepository.findById(userInfo.getId());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Problem problem = Problem.builder()
                 .user(user.get())
@@ -57,7 +60,9 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post writeInformation(InformationRequestDto informationDto) {
-        Optional<User> user = userRepository.findById(informationDto.getUid());
+        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        Optional<User> user = userRepository.findById(userInfo.getId());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Information information = Information.builder()
                 .user(user.get())
@@ -148,7 +153,10 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void likeDislikeClick(LikeDisLikeRequestDto dto) {
-        Optional<User> user = userRepository.findById(dto.getUid());
+        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        Optional<User> user = userRepository.findById(userInfo.getId());
+//        Optional<User> user = userRepository.findById(dto.getUid());
         Optional<Post> post = postRepository.findById(dto.getPid());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
@@ -163,6 +171,23 @@ public class PostServiceImpl implements PostService {
         } else {
             likeDislikeRepository.save(new LikeDislike(user.get(), post.get(), dto.isType()));
         }
+    }
+
+    @Override
+    public List<PostAllResponseDto> searchPost(PostSearchRequestDto dto) {
+        List<PostTag> postTags = postRepository.searchPost(dto.getTitle(), dto.getCode());
+        List<PostAllResponseDto> result = new ArrayList<>();
+        for (PostTag postTag : postTags) {
+            PostAllResponseDto post = new PostAllResponseDto(
+                    postTag.getPost().getId(),
+                    new UserResponseDto(postTag.getPost().getUser().getId(), postTag.getPost().getUser().getName()),
+                    postTag.getPost().getTitle(),
+                    postTag.getPost().getViews(),
+                    postTag.getPost().getNumOfLikes(),
+                    postTag.getPost().getNumOfDislikes());
+            result.add(post);
+        }
+        return result;
     }
 
     private List<Tag> getTags(Post post) {

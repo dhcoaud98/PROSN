@@ -16,5 +16,6 @@ public interface PostService {
     PostDetailResponseDto showProblemDetail(Long id);
     List<PostAllResponseDto> showAllPost();
     void likeDislikeClick(LikeDisLikeRequestDto likeDisLikeDto);
+    List<PostAllResponseDto> searchPost(PostSearchRequestDto searchDto);
 
 }
