@@ -36,7 +36,7 @@ import SocialLogin from '@/components/SocialLogin.vue'
 
 
 export default {
-  name: 'App',
+  name: 'LoginView',
   data: () => ({
     //
   }),
