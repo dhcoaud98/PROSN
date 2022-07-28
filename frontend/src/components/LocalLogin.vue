@@ -33,13 +33,12 @@
 
       <!-- 회원가입/아이디찾기/비밀번호찾기 --> 
       <v-row class="mt-5">
-        <v-col cols="12">
-          <p>아직 계정이 없으신가요?<a href="" class="black--text text-decoration-none">회원가입</a></p>
+        <v-col cols="12" class=" d-flex justify-center pa-0">
+          <p>아직 계정이 없으신가요?<a href="" class="black--text text-decoration-none"> 회원가입</a></p>
         </v-col>
-        <v-col cols="6">
+      
+        <v-col cols="12" class="d-flex justify-space-around pa-0">
           <a href="">아이디 찾기</a>
-        </v-col>
-        <v-col cols="6">
           <a href="">비밀번호 찾기</a>
         </v-col>
       </v-row>

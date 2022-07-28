@@ -1,5 +1,6 @@
 <template>
   <v-app class="bg-grey">
+    <login-view></login-view>
     <v-container>
       <!-- sm 이하일 때 로고 나오도록 -->
       <v-row>
@@ -13,6 +14,10 @@
           <nav-bar></nav-bar>
         </v-col>
         <!-- sm일 때 위에 로고 뜨고 아래에 네비게이션 바 보이게 -->
+        <v-col xl="6" lg="6" md="9" sm="9">
+          <problem></problem>
+        </v-col>
+
         <v-col xl="6" lg="6" md="9" sm="9">
           <!-- <main-page-view></main-page-view> -->
           <bottom-nav-bar class="d-flex d-sm-none"></bottom-nav-bar>
@@ -39,6 +44,8 @@ import BottomNavBar from './components/BottomNavBar.vue'
 import SideBar from './components/SideBar.vue'
 // import MainPageView from './views/MainPageView.vue'
 import ProfilePageView from './views/ProfilePageView.vue'
+import LoginView from './views/LoginView.vue'
+import Problem from './components/Problem/Problem.vue'
 
 
 export default {
@@ -54,6 +61,8 @@ export default {
     SideBar,
     // MainPageView,
     ProfilePageView,
+    LoginView,
+    Problem,
   }
 };
 </script>
