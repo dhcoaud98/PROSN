@@ -2,20 +2,12 @@
   <div>
     <!-- 2022.07.25. 회원 로그인정보 입력란 (남성은) -->
     <v-container class="my-5">
-      <v-form 
-        ref="form" 
-        v-model="valid" 
-        lazy-validation 
-        @submit.prevent="login(credentials)"
-        class="ma-0 pa-0">
+      <v-form ref="form" v-model="valid" lazy-validation @submit="onSubmit()" class="ma-0 pa-0">
         <v-row no-gutters>
           <v-col cols="9" class="ma-0 pe-3">
             <!-- 네임룰 추후 설정 필요 -->
             <!-- ID 입력란 -->
-            <v-text-field 
-              v-model="credentials.userId" 
-              label="ID" 
-              required></v-text-field>
+            <v-text-field v-model="credentials.userId" label="ID" required></v-text-field>
             <!-- PASSWORD 입력란 -->
             <!-- <v-text-field v-model="password" label="PASSWORD" required></v-text-field>         -->
             <v-text-field
@@ -34,12 +26,7 @@
 
           <!-- 로그인 버튼 -->
           <v-col cols="3">
-            <v-btn 
-            type="submit"
-            color="#A384FF" 
-            class="white--text my-0 mx-5 py-5" 
-            height="100%" 
-            width="100%">로그인</v-btn>
+            <v-btn type="submit" color="#A384FF" class="white--text my-0 mx-5 py-5" height="100%" width="100%">로그인</v-btn>
           </v-col>
         </v-row>
       </v-form>
@@ -61,7 +48,40 @@
 </template>
 
 <script>
+//   export default {
+//     // 2022.07.25. 아이디 (남성은)
+//     data: () => ({
+//       valid: true,
+//       id: '',
+//       // nameRules: [
+//       //   v => !!v || 'Name is required',
+//       //   v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+//       // ],
+//     }),
+
+//     // 2022.07.25. 비밀번호 (남성은)
+//     data () {
+//       return {
+//         show: false,
+//         password: '',
+//         rules: {
+//           required: value => !!value || 'Required.',
+//           min: v => v.length >= 8 || 'Min 8 characters',
+//         },
+//       }
+//     },
+
+//     // 2022.07.25. 로그인 버튼 (남성은)
+//     methods: {
+//       validate () {
+//         this.$refs.form.validate()
+//       },
+//     },
+//   }
+
   import { mapActions } from 'vuex'
+  import axios from 'axios'
+import drf from '@/api/drf'
 
   export default {
     // 2022.07.25. 아이디 (남성은)
@@ -69,34 +89,44 @@
       valid: true,
       credentials : {
         userId: '',
-        password: '',
-      }
-      // nameRules: [
-      //   v => !!v || 'Name is required',
-      //   v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-      // ],
+        password: ''
+      },
+      show: false,
+      rules: {
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 8 || 'Min 8 characters',
+      },
     }),
-
-    // 2022.07.25. 비밀번호 (남성은)
-    data () {
-      return {
-        show: false,
-        password: '',
-        rules: {
-          required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || 'Min 8 characters',
-        },
-      }
-    },
 
     // 2022.07.25. 로그인 버튼 (남성은)
     methods: {
       validate () {
         this.$refs.form.validate()
       },
-      ...mapActions(['login'])
+      onSubmit () {
+        event.preventDefault()
+        console.log("onsubmit")
+
+        axios({
+        url: drf.user.login(),
+        method: 'post',
+        data: this.credentials
+      })
+      .then(res => {
+        console.log("axios complete")
+        dispatch('saveToken', res.accessToken)
+      })
+      .catch(err => {
+        commit('SET_AUTH_ERROR', err.response.data)
+      })
+      }
+      
     },
+    computed : {
+      ...mapActions(['login'])
+    }
   }
+
 </script>
 
 <style>
