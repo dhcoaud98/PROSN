@@ -14,7 +14,6 @@ import javax.persistence.*;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 public class Reply extends BaseEntity {
 
     @Id

@@ -8,12 +8,12 @@ import javax.persistence.Entity;
 
 /**
  * created by seongmin on 2022/07/19
+ * updated by seongmin on 2022/07/27
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @Getter
-@ToString
 public class Problem extends Post {
 
     private String example1;
@@ -26,8 +26,8 @@ public class Problem extends Post {
     private String mainText;
 
     @Builder
-    public Problem(String title, Integer views, User user, String example1, String example2, String example3, String example4, String answer, String mainText) {
-        super(title, views, user);
+    public Problem(String title, User user, String example1, String example2, String example3, String example4, String answer, String mainText) {
+        super(title, user);
         this.example1 = example1;
         this.example2 = example2;
         this.example3 = example3;
