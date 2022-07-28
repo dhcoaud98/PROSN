@@ -1,6 +1,8 @@
-package com.ssafy.prosn.domain.post;
+package com.ssafy.prosn.domain.profile.status;
 
+import com.ssafy.prosn.converter.BooleanToYNConverter;
 import com.ssafy.prosn.domain.BaseEntity;
+import com.ssafy.prosn.domain.post.Problem;
 import com.ssafy.prosn.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,13 +12,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * created by seongmin on 2022/07/19
- * updated by seongmin on 2022/07/25
+ * created by seongmin on 2022/07/22
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class LikeDislike extends BaseEntity {
+public class Solving extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,18 +29,15 @@ public class LikeDislike extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private Post post;
+    private Problem problem;
 
-    private boolean type;
+    @Convert(converter = BooleanToYNConverter.class)
+    private boolean isRight;
 
     @Builder
-    public LikeDislike(User user, Post post, boolean type) {
+    public Solving(User user, Problem problem, boolean isRight) {
         this.user = user;
-        this.post = post;
-        this.type = type;
-    }
-
-    public void change() {
-        this.type = !this.type;
+        this.problem = problem;
+        this.isRight = isRight;
     }
 }
