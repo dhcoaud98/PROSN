@@ -5,7 +5,9 @@
       <v-row>
         <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
         <v-col col="6" class="d-flex justify-center">setting</v-col>
-        <v-col col="6" class="d-flex justify-center">login</v-col>
+        <router-link to="/login">
+          <v-col col="6" class="d-flex justify-center">login</v-col>
+        </router-link>
       </v-row>
 
       <v-row class="pa-0 ma-0">

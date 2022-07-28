@@ -59,8 +59,9 @@
     </v-container>
   </div>
 </template>
+
 <script>
-  import { mapActions} from 'vuex'
+  import { mapActions } from 'vuex'
 
   export default {
     // 2022.07.25. 아이디 (남성은)
