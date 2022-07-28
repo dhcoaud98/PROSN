@@ -8,12 +8,12 @@ import javax.persistence.Entity;
 
 /**
  * created by seongmin on 2022/07/19
+ * updated by seongmin on 2022/07/27
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @Getter
-@ToString
 public class Information extends Post{
 
     private String mainText;
