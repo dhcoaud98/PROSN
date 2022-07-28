@@ -2,6 +2,7 @@
   <v-container class="profile">
     <profile-center></profile-center>
   </v-container>
+
 </template>
 
 <script>
