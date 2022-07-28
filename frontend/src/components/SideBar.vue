@@ -9,7 +9,7 @@
       </v-row>
 
       <v-row class="pa-0 ma-0">
-        <v-col>
+        <v-col class="px-0">
           <!-- 문제 길이 해결하기!-->
           <search-bar></search-bar>
         </v-col>
@@ -49,14 +49,14 @@
             <v-col cols="12">
               <v-card color="transparent"  flat="true">
                 <v-list two-line>
-                  <template v-for="item in items.slice(0, 10)">
-                    <v-list-item>
+                  <template v-for="item in items.slice(0, 6)">
+                    <v-list-item height="5px">
                       <v-list-item-avatar>
                         <img :src="item.avatar">
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-lst-item-name>{{ item.name }}</v-lst-item-name>
-                        <v-list-item-total>{{ item.total }}</v-list-item-total>
+                        <v-list-item-title>{{ item.name }}</v-list-item-title>
+                        <v-list-item-subtitle>{{ item.total }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                   </template>
@@ -84,9 +84,9 @@ export default {
       nowDate: '',
       nowTime: '',
       items: [
-        { avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', name: '성은', total: 524 + ' 개' },
-        { avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', name: '채명', total: 538 + ' 개' },
-        { avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', name: '지민', total: 621 + ' 개' },
+        { avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', name: '채명', total: 538  },
+        { avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', name: '지민', total: 621  },
+        { avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', name: '성은', total: 524  },
       ],
     }
   },

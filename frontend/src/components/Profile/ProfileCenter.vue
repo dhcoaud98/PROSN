@@ -2,8 +2,8 @@
   <v-container class="mt-2 white mb-5">
     <v-row class="justify-center mt-10 mx-5">
       <!-- 프로필 사진 -->
-      <v-col cols="3 lg-2" >
-        <v-avatar size="100px" class="d-dlex justify-center">
+      <v-col cols="3 lg-2">
+        <v-avatar size="100px" class="d-flex justify-center">
           <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
         </v-avatar>
         <!-- 채명: 본인에 대한 태그는 최대 4개를 넘지 않도록!-->
@@ -21,10 +21,10 @@
       <!-- 뱃지, 이름 -->
       <v-col cols="9">
         <v-row class="ma-0">
-          <c-col class="rank_box" cols="5">
+          <v-col class="rank_box" cols="5">
             <!-- 채명 : user 정보에서 문제 푼 갯수 받아서 비교 후 뱃지 색상과 뱃지 글자 정하면 됨. -->
-            <span class="rank d-flex justify-center">prosn</span>
-          </c-col>
+            <p class="rank mb-0">Prosn</p>
+          </v-col>
           <v-col cols="5" class="pa-0 pl-4 pt-2">
             <p class="font-weight-bold text-grey">오채명</p>
           </v-col>
@@ -66,11 +66,13 @@ export default {
 
 <style>
 .rank_box{
-  border-radius: 10px;
+  border-radius: 20px;
   border: 1px solid rgb(142, 68, 173);
   background-color: rgb(142, 68, 173);
-  height: 32px;
-  width: 70px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
 }
 .rank {
   font-size: 18px;
@@ -91,7 +93,7 @@ export default {
   margin: 1px;
 }
 .detail{
-  border-radius : 10px;
+  border-radius : 5px;
   border: 1px solid #000000;
   height : 100px;
 }
