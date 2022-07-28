@@ -44,6 +44,7 @@ import SideBar from './components/SideBar.vue'
 import MainPageView from './views/MainPageView.vue'
 import LoginView from './views/LoginView.vue'
 // import ProfilePageView from './views/ProfilePageView.vue'
+import LoginView from './views/LoginView.vue'
 
 
 export default {
@@ -54,10 +55,10 @@ export default {
     //
   }),
   components : {
-    NavBar,
-    BottomNavBar,
-    SideBar,
-    MainPageView,
+    //NavBar,
+    //BottomNavBar,
+    //SideBar,
+    //MainPageView,
     // ProfilePageView,
     LoginView,
   }
