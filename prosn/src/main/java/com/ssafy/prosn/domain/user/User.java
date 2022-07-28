@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/18
- * updated by seongmin on 2022/07/20
+ * updated by seongmin on 2022/07/28
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -39,10 +39,13 @@ public abstract class User extends BaseEntity {
     @ColumnDefault("0")
     private Integer point;
 
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
     public User(String name, String email) {
         this.name = name;
         this.email = email;
         this.point = 0;
+        this.authority = Authority.ROLE_USER;
     }
 
     /**

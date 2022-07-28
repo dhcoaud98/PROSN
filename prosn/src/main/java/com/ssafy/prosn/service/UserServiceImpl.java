@@ -26,6 +26,7 @@ import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/22
+ * updated by seongmin on 2022/07/28
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -44,24 +45,25 @@ public class UserServiceImpl implements UserService {
     public Long join(UserJoinRequestDto joinRequestDto) {
         validateDuplicate(joinRequestDto.getUserId(), joinRequestDto.getEmail());
 
-        Long id = userRepository.save(LocalUser.builder()
+        return userRepository.save(LocalUser.builder()
                 .userId(joinRequestDto.getUserId())
                 .name(joinRequestDto.getName())
                 .email(joinRequestDto.getEmail())
                 .password(passwordEncoder.encode(joinRequestDto.getPassword()))
                 .build()).getId();
-        Optional<User> byId = userRepository.findById(id);
-        return byId.get().getId();
     }
 
     @Override
     public TokenDto login(UserLoginRequestDto loginRequestDto) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = loginRequestDto.toAuthentication();
         Authentication authentication = managerBuilder.getObject().authenticate(usernamePasswordAuthenticationToken);
-        log.info("로그 authentication = {}", authentication);
-        log.info("로그 authentication.getName = {}", authentication.getName());
+        log.info("authentication = {}", authentication);
+        log.info("authentication.getName = {}", authentication.getName());
+        TokenDto tokenDto = jwtUtils.generateJwtToken(authentication);
+        LocalUser loginUser = localUserRepository.findByUserId(loginRequestDto.getUserId()).get();
+        tokenDto.setIdAndName(loginUser.getId(), loginUser.getName());
 
-        return jwtUtils.generateJwtToken(authentication);
+        return tokenDto;
     }
 
     @Override
