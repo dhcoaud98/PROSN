@@ -1,9 +1,6 @@
 package com.ssafy.prosn.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,9 +8,12 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/25
+ * updated by seongmin on 2022/07/28
  */
 @Getter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProblemRequestDto extends PostRequestDto {
     private String ex1;
     private String ex2;

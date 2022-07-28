@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
- * updated by seongmin on 2022/07/27
+ * updated by seongmin on 2022/07/28
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -49,9 +49,9 @@ public abstract class Post extends BaseEntity {
     private boolean isDeleted;
 
     @ColumnDefault("0")
-    private Integer numOfLikes;
+    private Long numOfLikes;
     @ColumnDefault("0")
-    private Integer numOfDislikes;
+    private Long numOfDislikes;
 
     public Post(String title, User user) {
         this.title = title;

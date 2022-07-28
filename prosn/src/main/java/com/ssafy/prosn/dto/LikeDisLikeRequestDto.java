@@ -1,6 +1,7 @@
 package com.ssafy.prosn.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class LikeDisLikeRequestDto {
     @NotNull(message = "사용자는 필수 입력 값입니다.")
     private Long uid;
