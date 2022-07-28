@@ -147,21 +147,21 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void likeDislikeClick(Long uid, Long pid, boolean type) {
-        Optional<User> user = userRepository.findById(uid);
-        Optional<Post> post = postRepository.findById(pid);
+    public void likeDislikeClick(LikeDisLikeRequestDto dto) {
+        Optional<User> user = userRepository.findById(dto.getUid());
+        Optional<Post> post = postRepository.findById(dto.getPid());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
 
         Optional<LikeDislike> result = likeDislikeRepository.findByPostAndUser(post.get(), user.get());
         if(result.isPresent()) {
-            if(result.get().isType() == type) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
+            if(result.get().isType() == dto.isType()) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
                 likeDislikeRepository.delete(result.get());
             } else { // 예전에 누른거랑 반대버튼 누른 경우 체인지 좋<->싫
                 result.get().change();
             }
         } else {
-            likeDislikeRepository.save(new LikeDislike(user.get(), post.get(), type));
+            likeDislikeRepository.save(new LikeDislike(user.get(), post.get(), dto.isType()));
         }
     }
 
