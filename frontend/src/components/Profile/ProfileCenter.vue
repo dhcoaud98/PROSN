@@ -1,47 +1,66 @@
 <template>
   <v-container class="mt-2 white mb-5">
-    <v-row class="justify-center mt-10 mx-5">
-      <!-- 프로필 사진 -->
-      <v-col cols="3 lg-2">
+    <!-- 1. 프로필 상단 -->
+    <v-row class="justify-center mt-10 mx-5 mb-0">
+      <!-- 뱃지, 이름 -->
+      <v-col cols="3" class="rank_box d-flex justify-center py-0">
+        <p class="font-weight-bold text-grey ma-0">Prosn</p>
+      </v-col>
+      <v-col cols="9" class="pa-0 pl-3">
+        <p class="font-weight-bold text-grey ma-0">오채명</p>
+      </v-col>
+
+      <v-col cols="3">
         <v-avatar size="100px" class="d-flex justify-center">
           <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
         </v-avatar>
-        <!-- 채명: 본인에 대한 태그는 최대 4개를 넘지 않도록!-->
-        <!-- lg 사이즈 이하에서는 태그 사라짐 -->
-        <v-col cols="12" class="mt-2 d-none d-lg-block">
-          <v-row>
-            <!-- 카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" -->
-            <span class="category-tag text-center pa-1">#알고리즘</span>
-            <span class="category-tag pa-1">#최고</span>
-            <span class="category-tag pa-1">#CS</span>
-            <span class="category-tag pa-1">#어려워</span>
-          </v-row>
-        </v-col>
       </v-col>
-      <!-- 뱃지, 이름 -->
+
       <v-col cols="9">
-        <v-row class="ma-0">
-          <v-col class="rank_box" cols="5">
-            <!-- 채명 : user 정보에서 문제 푼 갯수 받아서 비교 후 뱃지 색상과 뱃지 글자 정하면 됨. -->
-            <p class="rank mb-0">Prosn</p>
-          </v-col>
-          <v-col cols="5" class="pa-0 pl-4 pt-2">
-            <p class="font-weight-bold text-grey">오채명</p>
-          </v-col>
-          <v-col cols="2" class="pa-0 pl-4 pt-2">
-            <!-- 채명 : 정보랑 문제 생성 라우터로 연결, 플러스 버튼 수정-->
-            <v-icon>+</v-icon>
-          </v-col>            
-        </v-row>
         <v-container class="detail">
           <p class="detail_text ma-0 text-bold">문제 풀이 - 500</p>
           <p class="detail_text ma-0">문제 제출 - 300</p>
           <p class="detail_text">정답률 ----- 68%</p>
         </v-container>
       </v-col>
+      
+      <v-col cols="12">
+          <!-- lg 사이즈 이하에서는 태그 사라짐 -->
+          <!-- 카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" -->
+          <span class="category-tag text-center pa-1">#알고리즘</span>
+          <span class="category-tag pa-1">#최고</span>
+          <span class="category-tag pa-1">#CS</span>
+          <span class="category-tag pa-1">#어려워</span>
+      </v-col>
+    </v-row>
+
+    <!-- 2. 프로필 하단 -->
+    <v-row class="profile_tab d-flex justify-center mt-10 mx-5 mb-0">
+      <v-toolbar dark tabs flat color="#A384FF" class="toolbar" height="45px">
+        <template>
+          <v-tabs v-model="tabs">
+            <v-col>
+              <v-tab class="pa-0" href="#one">문제 풀이 현황</v-tab>
+            </v-col>
+            <v-col>
+              <v-tab class="pa-0" href="#two">스크랩</v-tab>
+            </v-col>
+            <v-col>
+              <v-tab class="pa-0" href="#three">내가 쓴 게시글</v-tab>
+            </v-col>
+            <v-tabs-slider color="#A384FF"></v-tabs-slider>
+          </v-tabs>
+        </template>
+      </v-toolbar>
+      <v-card-text>
+        <v-tabs-items v-model="tabs">
+          <v-tab-item v-for="content in ['one', 'two', 'three']" :key="content" :value="content">
+          </v-tab-item>
+        </v-tabs-items>
+      </v-card-text>
+        {{ activeFab.page }}
     </v-row>
   </v-container>
-  
 </template>
 
 <script>
@@ -57,8 +76,21 @@ export default {
         {rank_name: 'Bronze', rank_color: 'rgb(176, 141, 87)', rank_solve_problem: 50},
         {rank_name: 'Green', rank_color: 'rgb(0, 128, 0)', rank_solve_problem: 10},
         {rank_name: 'Seed', rank_color: 'rgb(0, 207, 87)', rank_solve_problem: 0},
-      ]
+      ],
+      fab: false,
+      hidden: false,
+      tabs: null,
     }
+  },
+  computed: {
+    activeFab () {
+      switch (this.tabs) {
+        case 'one': return { page: 'SolvedProblemList' }
+        case 'two': return { page: 'ScrapPostList' }
+        case 'three': return { page : 'MyPostList' }
+        default: return {}
+      }
+    },
   },
 }
 </script>
@@ -66,13 +98,11 @@ export default {
 
 <style>
 .rank_box{
-  border-radius: 20px;
+  border-radius: 10px;
   border: 1px solid rgb(142, 68, 173);
   background-color: rgb(142, 68, 173);
-  height: 40px;
-  width: 40px;
-  display: flex;
-  justify-content: center;
+  height: 25px;
+  width: 20px;
 }
 .rank {
   font-size: 18px;
