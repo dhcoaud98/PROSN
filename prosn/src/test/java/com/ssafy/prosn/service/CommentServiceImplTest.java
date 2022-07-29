@@ -81,7 +81,8 @@ class CommentServiceImplTest {
                 .build();
         Comment write = commentService.write(commentDto);
 
-        commentService.delete(write.getId(), user.getId());
+        // commentService.delete 에 토큰으로 사용자 정보 가져오는
+//        commentService.delete(write.getId(), user.getId());
 
         assertThat(commentRepository.findAll().size()).isEqualTo(0);
     }
