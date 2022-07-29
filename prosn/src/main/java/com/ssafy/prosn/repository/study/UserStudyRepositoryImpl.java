@@ -1,3 +1,4 @@
+/*
 package com.ssafy.prosn.repository.study;
 
 import com.ssafy.prosn.domain.study.StudyGroup;
@@ -9,26 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+*/
 /**
  * created by yeomyeong on 2022/07/27
- */
+ *//*
+
 @Transactional
 @RequiredArgsConstructor
 public class UserStudyRepositoryImpl implements UserStudyRepositoryCustom {
 
     private final EntityManager em;
-
     @Override
     public void joinStudy(User user, StudyGroup studyGroup) {
         UserStudy userStudy = new UserStudy(user, studyGroup);
         studyGroup.addCurrentPerson();
         em.persist(userStudy);
     }
-
-    //@Override
-    //public void removeStudy(User user, StudyGroup studyGroup) {
-//        UserStudy userStudy = new UserStudy(user, studyGroup);
-//        studyGroup.addCurrentPerson();
-//        em.persist(userStudy);
-    //}
 }
+*/
