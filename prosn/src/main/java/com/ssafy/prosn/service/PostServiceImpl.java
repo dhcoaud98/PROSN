@@ -21,6 +21,7 @@ import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/25
+ * updated by seongmin on 2022/07/29
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -80,7 +81,12 @@ public class PostServiceImpl implements PostService {
     public void delete(Long id) {
         Optional<Post> post = postRepository.findById(id);
         post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
-        post.get().remove();
+
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        if(!post.get().getUser().getId().equals(userInfo.getId()))
+            throw new IllegalArgumentException("내가 쓴 게시글만 삭제 가능합니다.");
+
+        postRepository.deleteById(id);
     }
 
     /**
