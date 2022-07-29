@@ -24,6 +24,7 @@ import RecentProblem from '../components/MainPage/RecentProblem.vue'
 import info from '../components/MainPage/info.vue'
 
 export default {
+  name: 'MainPageView',
   components : {
     RecentProblem,
     info,
