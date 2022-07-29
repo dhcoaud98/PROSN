@@ -6,8 +6,11 @@
       <v-col cols="3" class="rank_box d-flex justify-center py-0">
         <p class="font-weight-bold text-grey ma-0">Prosn</p>
       </v-col>
-      <v-col cols="9" class="pa-0 pl-3">
+      <v-col cols="8" class="pa-0 pl-3">
         <p class="font-weight-bold text-grey ma-0">오채명</p>
+      </v-col>
+      <v-col cols="1" class="pa-0">
+        <v-icon>mdi-plus</v-icon>
       </v-col>
 
       <v-col cols="3">
@@ -31,7 +34,9 @@
           <span class="category-tag pa-1">#최고</span>
           <span class="category-tag pa-1">#CS</span>
           <span class="category-tag pa-1">#어려워</span>
+          <span class="category-tag pa-1">#배고파</span>
       </v-col>
+
     </v-row>
 
     <!-- 2. 프로필 하단 -->
@@ -58,14 +63,20 @@
           </v-tab-item>
         </v-tabs-items>
       </v-card-text>
-        {{ activeFab.page }}
+        <solved-problem-list></solved-problem-list>
+        <!-- {{ activeFab.page }} -->
     </v-row>
   </v-container>
 </template>
 
 <script>
+import SolvedProblemList from "./SolvedProblemList.vue"
+
 export default {
   name: 'ProfileCenter',
+  components: {
+    SolvedProblemList,
+  },
   data () {
     return {
       ranking : [
@@ -114,8 +125,8 @@ export default {
 }
 .category-tag {
   border-radius: 20px;
-  border: 1px solid #a384ff;
-  background-color: #a384ff;
+  border: 1px solid #A384FF;
+  background-color: #A384FF;
   font-size: 5px;
   color: white;
   font-weight: bold;
@@ -124,7 +135,7 @@ export default {
 }
 .detail{
   border-radius : 5px;
-  border: 1px solid #000000;
+  border: 1px dashed #000000;
   height : 100px;
 }
 .detail_text {
