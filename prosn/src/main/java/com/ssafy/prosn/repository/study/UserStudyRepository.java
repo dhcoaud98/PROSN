@@ -9,19 +9,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by yeomyeong on 2022/07/28
+ * updated by yeomyeong on 202//07/31
  */
 public interface UserStudyRepository extends JpaRepository<UserStudy, Long> {
-//    // 사용자별 스터디그룹 목록 (제목, 내용20자) 조회
+    // 사용자별 스터디그룹 목록 (제목, 내용 20자) 조회
     @Query("select new com.ssafy.prosn.dto.UserStudyListResponseDto(s.id, s.title, substring(s.mainText,0,20)) from StudyGroup s join UserStudy u on u.studyGroup = s.id where u.user=:user")
     List<UserStudyListResponseDto> findByUser(@Param("user") User user);
 
-    // 탈퇴하기 위한 스터디그룹 단건 조회
-//    @Query("select u.id from UserStudy u where u.user = user and u.studyGroup = studyGroup")
-//    Long findByUserAndStudyGroup(User user, StudyGroup studyGroup);
     UserStudy findByUserAndStudyGroup(User user, StudyGroup studyGroup);
+
+    List<UserStudy> findByStudyGroup(StudyGroup studyGroup);
 
     boolean existsByUserIdAndStudyGroupId(Long userId, Long studyId);
 }
