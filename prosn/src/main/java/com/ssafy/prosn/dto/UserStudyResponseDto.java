@@ -12,27 +12,19 @@ import java.util.List;
 
 /**
  * created by yeomyeong on 2022/07/28
+ * updated by yeomyeong on 2022/07/31
  */
-@ToString
-public class UserStudyResponseDto {
+@ToString(callSuper = true)
+public class UserStudyResponseDto extends StudyResponseDto {
     //title, currentMem, totalMem, place, members, mainText, secretText
     private Long id;
-    private String title;
-    private int currentPerson;
-    private int maxPerson;
-    private String place;
     private List<String> members;
-    private String mainText;
     private String secretText;
 
     @Builder
-    public UserStudyResponseDto(Long id, String title, int currentPerson, int maxPerson, String place, String mainText, String secretText) {
+    public UserStudyResponseDto(String title, int currentPerson, int maxPerson, String place, String mainText, Long id, String secretText) {
+        super(title, currentPerson, maxPerson, place, mainText);
         this.id = id;
-        this.title = title;
-        this.currentPerson = currentPerson;
-        this.maxPerson = maxPerson;
-        this.place = place;
-        this.mainText = mainText;
         this.secretText = secretText;
     }
 

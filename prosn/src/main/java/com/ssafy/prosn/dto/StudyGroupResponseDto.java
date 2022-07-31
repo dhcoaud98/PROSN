@@ -11,26 +11,15 @@ import java.time.LocalDate;
 
 /**
  * created by yeomyeong on 2022/07/29
+ * updated by yeomyeong on 2022/07/31
  */
-@Getter
-@ToString
-public class StudyGroupResponseDto {
-    private Long uid;
-    private String title;
-    private int currentPerson;
-    private int maxPerson;
+@ToString(callSuper = true)
+public class StudyGroupResponseDto extends StudyResponseDto{
     private LocalDate expiredDate;
-    private String place;
-    private String mainText;
 
     @Builder
-    public StudyGroupResponseDto(Long uid, String title, int currentPerson, int maxPerson, LocalDate expiredDate, String place, String mainText) {
-        this.uid = uid;
-        this.title = title;
-        this.currentPerson = currentPerson;
-        this.maxPerson = maxPerson;
+    public StudyGroupResponseDto(String title, int currentPerson, int maxPerson, String place, String mainText, LocalDate expiredDate) {
+        super(title, currentPerson, maxPerson, place, mainText);
         this.expiredDate = expiredDate;
-        this.place = place;
-        this.mainText = mainText;
     }
 }
