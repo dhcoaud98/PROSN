@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style>
-  .v-application--wrap {
+  /* .v-application--wrap {
   max-width: none;
   }
   .container {
@@ -28,5 +28,5 @@ export default {
   }  
   .tab-hover::before {
     color: #616161;
-  }
+  } */
 </style>
