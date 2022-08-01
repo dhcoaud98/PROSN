@@ -11,7 +11,9 @@
         <v-list-item class="mt-5">
           <v-list-item-content>
             <v-list-item-title>
-              <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5"></v-img>
+              <router-link to="/">
+                <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5"></v-img>
+              </router-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -26,7 +28,9 @@
                   - 클릭하면 vuex로 fetch해서 요소를 바꾸고
                 그래서 app.vue가 created될 때 vuex에서 state를 가져와서 띄운다.
                -->
-              <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5" v-text="item.text" @click='changeComponentName(item.componentName)'></v-list-item-title>
+              <router-link :to="item.urlName" class="text-decoration-none black--text">
+                <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5" v-text="item.text"></v-list-item-title>
+              </router-link>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -83,15 +87,15 @@ export default {
       items: [
         { 
           text: '스터디',
-          componentName: 'studyView'
+          urlName: '/study'
         },
         { 
           text: '오답노트',
-          componentName: 'NoteView'
+          urlName: '/note'
         },
         { 
           text: '내 프로필',
-          componentName: 'ProfilePageView'
+          urlName: '/profile'
         },
 
       ]
@@ -99,9 +103,6 @@ export default {
   },
   methods: {
     // onClick event 사용: 한번 클릭하면 bold + 보라색, 다시 클릭하면 원상태로 돌아오게
-
-    // 네브바 각 요소를 클릭하면 store에서 컴포넌트 이름이 바뀌도록
-    ...mapActions(['changeComponentName']),
 
   },
 }

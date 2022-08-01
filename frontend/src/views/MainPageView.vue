@@ -4,7 +4,7 @@
     <v-row>
 
       <!-- col 1: 메인 피드 부분 -->
-      <v-col cols="8">
+      <v-col cols="12" md="8">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
         <v-row class="bottom-line justify-center mt-5 mx-5">
           <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover">
@@ -26,7 +26,7 @@
       </v-col>
 
       <!-- col 2: 사이드 바 -->
-      <v-col cols="4">
+      <v-col md="4" class="d-md-flex d-md-none grey lighten-4">
         <side-bar></side-bar>
       </v-col>
     </v-row>
