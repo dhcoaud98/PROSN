@@ -1,9 +1,6 @@
 package com.ssafy.prosn.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * created by seongmin on 2022/07/29
@@ -12,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Builder
+@ToString
 public class NoteResponseDto {
     private Long id;
     private String title;

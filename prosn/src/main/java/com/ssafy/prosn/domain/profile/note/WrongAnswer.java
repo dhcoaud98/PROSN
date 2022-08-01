@@ -13,6 +13,7 @@ import javax.persistence.*;
 
 /**
  * created by seongmin on 2022/07/22
+ * updated by seongmin on 2022/08/01
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,6 +46,10 @@ public class WrongAnswer extends BaseEntity {
         this.user = user;
         this.problem = problem;
         this.wrongAnswer = wrong_answer;
+    }
+
+    public void write() {
+        isWrite = true;
     }
 
     public void writeReason(String reason) {
