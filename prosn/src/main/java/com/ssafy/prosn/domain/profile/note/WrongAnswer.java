@@ -63,4 +63,8 @@ public class WrongAnswer extends BaseEntity {
     public void writeMemo(String memo) {
         this.memo = memo;
     }
+
+    public void writeWrongAnswer(String wrongAnswer) {
+        this.wrongAnswer = wrongAnswer;
+    }
 }

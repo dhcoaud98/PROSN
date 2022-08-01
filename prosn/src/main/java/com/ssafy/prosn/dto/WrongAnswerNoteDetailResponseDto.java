@@ -26,6 +26,7 @@ public class WrongAnswerNoteDetailResponseDto {
     private String example3;
     private String example4;
     private String answer;
+    private boolean isDeleted;
 
     private String wrongAnswer;
     private String reason;

@@ -16,4 +16,5 @@ public interface WrongAnswerRepository extends JpaRepository<WrongAnswer, Long> 
     List<WrongAnswer> findByUser(User user);
     void deleteById(Long id);
     boolean existsByUserAndProblem(User user, Problem problem);
+    Optional<WrongAnswer> findByUserAndProblem(User user, Problem problem);
 }
