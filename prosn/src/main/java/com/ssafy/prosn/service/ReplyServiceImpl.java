@@ -16,6 +16,7 @@ import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/28
+ * updated by seongmin on 2022/08/01
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -28,15 +29,14 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     @Transactional
-    public Reply write(ReplyRequestDto replyRequestDto) {
-        Optional<User> user = userRepository.findById(replyRequestDto.getUid());
-        Optional<Comment> comment = commentRepository.findById(replyRequestDto.getCid());
-        user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-        comment.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 댓글입니다."));
+    public Reply write(ReplyRequestDto replyRequestDto, Long uid) {
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        Comment comment = commentRepository.findById(replyRequestDto.getCid())
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 댓글입니다."));
 
         Reply reply = Reply.builder()
-                .user(user.get())
-                .comment(comment.get())
+                .user(user)
+                .comment(comment)
                 .mainText(replyRequestDto.getMainText())
                 .build();
         return replyRepository.save(reply);
@@ -47,7 +47,7 @@ public class ReplyServiceImpl implements ReplyService {
     public void delete(Long id, Long uid) {
         Optional<Reply> reply = replyRepository.findById(id);
         reply.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 답글입니다."));
-        if(!reply.get().getUser().getId().equals(uid)) throw new IllegalArgumentException("내가 쓴 답글만 삭제 가능합니다.");
+        if (!reply.get().getUser().getId().equals(uid)) throw new IllegalArgumentException("내가 쓴 답글만 삭제 가능합니다.");
 
         replyRepository.deleteById(id);
     }
