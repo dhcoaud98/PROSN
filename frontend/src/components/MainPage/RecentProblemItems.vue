@@ -50,17 +50,17 @@
             -->
             <v-row class="justify-end">
                 <v-col cols="1">
-                    <span class="material-icons">
-                        thumb_up_off_alt
+                    <span class="material-icons" @click="changeColor">
+                        thumb_up
                     </span>
                 </v-col>
                 <v-col cols="1">
-                    <span class="material-icons">
+                    <span class="material-icons" @click="changeColor">
                         thumb_down
                     </span>
                 </v-col>
                 <v-col cols="1">
-                    <span class="material-icons">
+                    <span class="material-icons" style="color:black;" @click="changeColor">
                         bookmark_border
                     </span>
                 </v-col>
@@ -72,7 +72,21 @@
 
 <script>
 export default {
-
+    data() {
+        return {
+            btnColor: 'black'
+        }
+    },
+    methods: {
+        changeColor: () => {
+            /* 
+            버튼 클릭하면 색이 바뀌도록
+            thumb up --> thumb up off alt
+            thumb down --> thumb down off alt
+            bookmark border --> bookmark
+            */
+        }
+    }
 }
 </script>
 
