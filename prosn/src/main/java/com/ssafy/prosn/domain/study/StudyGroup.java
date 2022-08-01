@@ -36,6 +36,9 @@ public class StudyGroup extends BaseEntity {
     @ColumnDefault("0")
     private int currentPerson;
 
+    public StudyGroup() {
+    }
+
     @Builder
     public StudyGroup(User user, String title, String mainText, String secretText, String place, LocalDate expiredDate, int maxPerson) {
         this.user = user;

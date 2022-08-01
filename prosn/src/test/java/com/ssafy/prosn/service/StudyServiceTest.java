@@ -11,9 +11,12 @@ import com.ssafy.prosn.dto.UserStudyListResponseDto;
 import com.ssafy.prosn.repository.study.StudyGroupRepository;
 import com.ssafy.prosn.repository.study.UserStudyRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
+import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -71,17 +74,6 @@ class StudyServiceTest {
     }
 
     @Test
-    public void 스터디그룹상세내용조회_가입() throws Exception {
-        StudyGroup findGroup = studyGroupRepository.findById(1L).orElseThrow(()->new IllegalStateException("스터디그룹상세내용조회-studygroup NoSuchElement"));
-        User user = userRepository.findById(2L).orElseThrow(() -> new IllegalStateException("스터디그룹상세내용조회-user NoSuchElement"));
-
-        studyService.joinStudy(user, findGroup);
-        StudyResponseDto studyResponseDto = studyService.showStudyGroup(user.getId(), findGroup.getId());
-
-        System.out.println("studyResponseDto = " + studyResponseDto.toString());
-    }
-
-    @Test
     public void 스터디그룹상세내용조회_노가입() throws Exception {
         //given
         StudyGroup findGroup = studyGroupRepository.findById(1L).orElseThrow(()->new IllegalStateException("스터디그룹상세내용조회-studygroup NoSuchElement"));
@@ -128,41 +120,26 @@ class StudyServiceTest {
         //given
         User user1 = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("스터디가입-user1 NoSuchElement"));
         User user2 = userRepository.findById(2L).orElseThrow(() -> new IllegalArgumentException("스터디가입-user2 NoSuchElement"));
-        User user3 = userRepository.findById(3L).orElseThrow(() -> new IllegalArgumentException("스터디가입-user2 NoSuchElement"));
 
-        StudyGroup studyGroup = studyGroupRepository.findById(1l).orElseThrow(() -> new IllegalArgumentException("스터디가입-studygroup NoSuchElement"));
+        StudyGroup studyGroup = studyGroupRepository.findById(2l).orElseThrow(() -> new IllegalArgumentException("스터디가입-studygroup NoSuchElement"));
 
         //when
         studyService.joinStudy(user1, studyGroup);
         studyService.joinStudy(user2, studyGroup);
-        studyService.joinStudy(user3, studyGroup);
 
         //then
-        Assertions.assertThat(3).isEqualTo(userStudyRepository.findAll().size());
+        Assertions.assertThat(2).isEqualTo(userStudyRepository.findAll().size());
     }
 
     @Test
-    public void 스터디탈퇴() throws Exception {
-        //given
-        //given
-        User user1 = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("스터디가입-user1 NoSuchElement"));
-        User user2 = userRepository.findById(2L).orElseThrow(() -> new IllegalArgumentException("스터디가입-user2 NoSuchElement"));
-        User user3 = userRepository.findById(3L).orElseThrow(() -> new IllegalArgumentException("스터디가입-user2 NoSuchElement"));
+    public void 스터디그룹상세내용조회_가입() throws Exception {
+        StudyGroup findGroup = studyGroupRepository.findById(1L).orElseThrow(()->new IllegalStateException("스터디그룹상세내용조회-studygroup NoSuchElement"));
+        User user = userRepository.findById(2L).orElseThrow(() -> new IllegalStateException("스터디그룹상세내용조회-user NoSuchElement"));
 
-        StudyGroup studyGroup = studyGroupRepository.findById(1l).orElseThrow(() -> new IllegalArgumentException("스터디가입-studygroup NoSuchElement"));
+        studyService.joinStudy(user, findGroup);
+        StudyResponseDto studyResponseDto = studyService.showStudyGroup(user.getId(), findGroup.getId());
 
-        studyService.joinStudy(user1, studyGroup);
-        studyService.joinStudy(user2, studyGroup);
-        studyService.joinStudy(user3, studyGroup);
-
-        //when
-        studyService.removeStudy(user3, studyGroup);
-
-        //then
-        UserStudy findUserStudy = userStudyRepository.findByUserAndStudyGroup(user3, studyGroup);
-        assertThrows(NullPointerException.class, () -> {
-            userStudyRepository.findById(findUserStudy.getId()).get();
-        });
+        System.out.println("studyResponseDto = " + studyResponseDto.toString());
     }
 
     @Test
@@ -171,14 +148,12 @@ class StudyServiceTest {
         //given
         User user1 = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("내스터디목록조회-user1 NoSuchElement"));
         User user2 = userRepository.findById(2L).orElseThrow(() -> new IllegalArgumentException("내스터디목록조회-user2 NoSuchElement"));
-        User user3 = userRepository.findById(3L).orElseThrow(() -> new IllegalArgumentException("내스터디목록조회-user2 NoSuchElement"));
 
         List<StudyGroup> groupList = studyGroupRepository.findAll();
 
         //when
         for (StudyGroup group : groupList) {
             studyService.joinStudy(user1,group);
-            studyService.joinStudy(user3,group);
         }
         List<UserStudyListResponseDto> user1studygroup = userStudyRepository.findByUser(user1);
         List<UserStudyListResponseDto> user2studygroup = userStudyRepository.findByUser(user2);
@@ -188,4 +163,27 @@ class StudyServiceTest {
         Assertions.assertThat(user2studygroup.size()).isEqualTo(0);
 
     }
+    @Test
+    public void 스터디탈퇴() throws Exception {
+        //given
+        //given
+        User user1 = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("스터디탈퇴-user1 NoSuchElement"));
+        User user2 = userRepository.findById(2L).orElseThrow(() -> new IllegalArgumentException("스터디탈퇴-user2 NoSuchElement"));
+
+        StudyGroup studyGroup = studyGroupRepository.findById(1l).orElseThrow(() -> new IllegalArgumentException("스터디탈퇴-studygroup NoSuchElement"));
+
+        studyService.joinStudy(user1, studyGroup);
+        studyService.joinStudy(user2, studyGroup);
+
+        //when
+        studyService.removeStudy(user1, studyGroup);
+
+        //then
+        UserStudy findUserStudy = userStudyRepository.findByUserAndStudyGroup(user1, studyGroup);
+        assertThrows(NullPointerException.class, () -> {
+            userStudyRepository.findById(findUserStudy.getId()).get();
+        });
+    }
+
+
 }
