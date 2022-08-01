@@ -1,11 +1,13 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.domain.post.PostTag;
 import com.ssafy.prosn.domain.post.Problem;
+import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.profile.note.WrongAnswer;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.*;
-import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.post.ProblemRepository;
+import com.ssafy.prosn.repository.post.tag.PostTagRepository;
 import com.ssafy.prosn.repository.profiile.note.WrongAnswerRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/29
+ * updated by seongmin on 2022/08/01
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ public class WrongAnswerServiceImpl implements WrongAnswerService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final ProblemRepository problemRepository;
+    private final PostTagRepository postTagRepository;
 
     // 틀린 문제 저장
     @Override
@@ -102,7 +106,30 @@ public class WrongAnswerServiceImpl implements WrongAnswerService {
     // 오답노트에서 특정 문제 디테일 조회
     @Override
     public WrongAnswerNoteDetailResponseDto getNoteDetail(Long id) {
-        return null;
+        WrongAnswer wrongAnswer = validWrongAnswer(id);
+        List<PostTag> postTagByPost = postTagRepository.findPostTagByPost(wrongAnswer.getProblem());
+        List<Tag> tags = new ArrayList<>();
+        for (PostTag postTag : postTagByPost) {
+            tags.add(postTag.getTag());
+        }
+        return WrongAnswerNoteDetailResponseDto.builder()
+                .id(id)
+                .pid(wrongAnswer.getProblem().getId())
+                .pid(wrongAnswer.getProblem().getId())
+                .title(wrongAnswer.getProblem().getTitle())
+                .tags(tags)
+                .mainText(wrongAnswer.getProblem().getMainText())
+                .example1(wrongAnswer.getProblem().getExample1())
+                .example2(wrongAnswer.getProblem().getExample2())
+                .example3(wrongAnswer.getProblem().getExample3())
+                .example4(wrongAnswer.getProblem().getExample4())
+                .answer(wrongAnswer.getProblem().getAnswer())
+                .wrongAnswer(wrongAnswer.getWrongAnswer())
+                .reason(wrongAnswer.getReason())
+                .studyContent(wrongAnswer.getStudyContent())
+                .memo(wrongAnswer.getMemo())
+                .isWrite(wrongAnswer.isWrite())
+                .build();
     }
 
     private WrongAnswer validWrongAnswer(Long id) {
