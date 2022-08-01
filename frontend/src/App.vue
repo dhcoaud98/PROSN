@@ -12,18 +12,15 @@
         <v-col xl="3" lg="3" md="3" sm="3" class="d-none d-sm-flex">
           <nav-bar></nav-bar>
         </v-col>
-        <!-- sm일 때 위에 로고 뜨고 아래에 네비게이션 바 보이게 -->
-        <v-col xl="6" lg="6" md="9" sm="9" >
-          <!-- <main-page-view></main-page-view> -->
+        <v-col xl="9" lg="9" md="9" sm="9">
+          <!-- url이 변경됨에 따라 계속 바뀌는 위치(0729 임지민) -->
+          <!-- router/index.js에서 정의한 components의 컴포넌트를 띄워줌(0801 임지민) -->
+          <router-view></router-view>
+
+        <!-- sm 이하 일때: 아래 쪽에 네비게이션 바 -->
           <bottom-nav-bar class="d-flex d-sm-none"></bottom-nav-bar>
-          <!-- <profile-page-view></profile-page-view> -->
-          <!-- <login-view></login-view> -->
-          <study-center></study-center>
         </v-col>
         
-        <v-col xl="6" lg="3" class="d-none d-lg-block">
-          <side-bar></side-bar>
-        </v-col>
       </v-row>
     </v-container>
     <!-- <div class="nav">
@@ -40,26 +37,28 @@ import NavBar from './components/NavBar.vue'
 import BottomNavBar from './components/BottomNavBar.vue'
 import SideBar from './components/SideBar.vue'
 import MainPageView from './views/MainPageView.vue'
-import ProfilePageView from './views/ProfilePageView.vue'
-import LoginView from './views/LoginView.vue'
-import StudyCenter from './components/Study/StudyCenter.vue'
+// import { mapGetters, mapState } from 'vuex'
+
 
 export default {
   name: 'App',
 
 
   data: () => ({
-    //
+    // mainPageView: 'MainPageView'
   }),
   components : {
     NavBar,
     BottomNavBar,
     SideBar,
     MainPageView,
-    ProfilePageView,
-    LoginView,
-    StudyCenter
-  }
+  },
+  /* created: {
+    changeRouterView () {
+      // store에서 componentName 가져오기
+      this.componentName 
+    }
+  } */
 };
 </script>
 
