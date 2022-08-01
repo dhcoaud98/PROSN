@@ -13,12 +13,12 @@ import java.util.List;
  */
 public interface WrongAnswerService {
 
-    WrongAnswer save(WrongAnswerRequestDto dto);
+    WrongAnswer save(WrongAnswerRequestDto dto, Long uid);
 
-    void write(WrongNoteRequestDto dto);
+    void write(WrongNoteRequestDto dto, Long uid);
 
-    void delete(Long id);
+    void delete(Long id, Long uid);
 
-    List<NoteResponseDto> getNote();
-    WrongAnswerNoteDetailResponseDto getNoteDetail(Long id);
+    List<NoteResponseDto> getNote(Long uid);
+    WrongAnswerNoteDetailResponseDto getNoteDetail(Long id, Long uid);
 }

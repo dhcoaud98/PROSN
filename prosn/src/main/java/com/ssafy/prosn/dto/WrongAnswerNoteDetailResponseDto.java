@@ -2,10 +2,7 @@ package com.ssafy.prosn.dto;
 
 import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.Tag;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@ToString
 @Builder
 public class WrongAnswerNoteDetailResponseDto {
     private Long id;
