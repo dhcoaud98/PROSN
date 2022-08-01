@@ -4,10 +4,7 @@ import com.ssafy.prosn.domain.study.StudyGroup;
 import com.ssafy.prosn.domain.study.UserStudy;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
-import com.ssafy.prosn.dto.StudyGroupRequestDto;
-import com.ssafy.prosn.dto.StudyGroupResponseDto;
-import com.ssafy.prosn.dto.StudyResponseDto;
-import com.ssafy.prosn.dto.UserStudyListResponseDto;
+import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.study.StudyGroupRepository;
 import com.ssafy.prosn.repository.study.UserStudyRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -31,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * created by yeomyeong on 2022/07/27
+ * updated by yeomyeong on 2022/08/01
  */
 
 @SpringBootTest
@@ -51,26 +49,28 @@ class StudyServiceTest {
     void before() {
         userRepository.save((User) new LocalUser("사용자1", "user@ssafy.com", "user1", "1234"));
         userRepository.save((User) new LocalUser("사용자2", "user@ssafy.com", "user2", "1234"));
+        User user1 = userRepository.findById(1L).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자"));
+        User user2 = userRepository.findById(2L).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자"));
 
-        studyService.create(new StudyGroupRequestDto(new LocalUser("사용자1", "user@ssafy.com", "user1", "1234").getId(),"제목1", 10, LocalDate.now(), "역삼", "내용", "세부내용"));
-        studyService.create(new StudyGroupRequestDto(new LocalUser("사용자1", "user@ssafy.com", "user1", "1234").getId(),"제목2", 10, LocalDate.now(), "역삼", "내용", "세부내용"));
-        studyService.create(new StudyGroupRequestDto(new LocalUser("사용자1", "user@ssafy.com", "user1", "1234").getId(),"제목2", 10, LocalDate.now(), "역삼", "내용", "세부내용"));
+        studyService.create(new StudyGroupRequestDto(10L,"제목1", 10, LocalDate.now(), "역삼", "내용", "세부내용"),user1.getId());
+        studyService.create(new StudyGroupRequestDto(11L,"제목2", 10, LocalDate.now(), "역삼", "내용", "세부내용"),user1.getId());
+        studyService.create(new StudyGroupRequestDto(12L,"제목2", 10, LocalDate.now(), "역삼", "내용", "세부내용"),user2.getId());
     }
     @Test
     void 스터디그룹생성() {
-        StudyGroupRequestDto dto = new StudyGroupRequestDto(100L, "제목", 10, LocalDate.now(), "역삼", "내용", "세부내용");
-        studyService.create(dto);
+        User user1 = userRepository.findById(1L).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자"));
+        StudyGroup studyGroup = studyService.create(new StudyGroupRequestDto(20L,"스터디생성", 5, LocalDate.now(), "역삼역", "내용", "세부내용"), user1.getId());
+
+        Assertions.assertThat(studyGroup.getUser()).isEqualTo(user1);
     }
 
     @Test
     void 스터디그룹목록조회() {
-        List<StudyGroup> studyGroupList = studyGroupRepository.findAll();
+        List<StudyGroupListResponseDto> studyGroupListResponseDto = studyGroupRepository.showStudyGroupList();
 
-        for (StudyGroup studyGroup : studyGroupList) {
-            System.out.println("studyGroup = " + studyGroup.toString());
+        for (StudyGroupListResponseDto groupListResponseDto : studyGroupListResponseDto) {
+            System.out.println("groupListResponseDto == " + groupListResponseDto.toString());
         }
-
-        Assertions.assertThat(studyGroupList.size()).isEqualTo(3);
     }
 
     @Test
@@ -89,10 +89,10 @@ class StudyServiceTest {
     @Test
     void 스터디그룹수정() {
         StudyGroup original = studyGroupRepository.findById(3L).get();
-        StudyGroupRequestDto newOne = new StudyGroupRequestDto(100L, "수정된 제목", original.getMaxPerson(), original.getExpiredDate(), original.getPlace(), original.getMainText(), "수정 잘 됨?????");
+        StudyGroupRequestDto newOne = new StudyGroupRequestDto(20L,"수정된 제목", original.getMaxPerson(), original.getExpiredDate(), original.getPlace(), original.getMainText(), "수정 잘 됨?????");
 
-        // 반환값 필요?
-        original.update(newOne);
+        // update하기 전에 방장이랑 유저랑 같은 지 확인
+        studyService.update(original.getId(), newOne);
 
         Assertions.assertThat(original.getTitle()).isEqualTo(newOne.getTitle());
         Assertions.assertThat(original.getSecretText()).isEqualTo(newOne.getSecretText());
@@ -158,6 +158,9 @@ class StudyServiceTest {
         List<UserStudyListResponseDto> user1studygroup = userStudyRepository.findByUser(user1);
         List<UserStudyListResponseDto> user2studygroup = userStudyRepository.findByUser(user2);
 
+        for (UserStudyListResponseDto userStudyListResponseDto : user1studygroup) {
+            System.out.println("userStudyListResponseDto = " + userStudyListResponseDto.toString());
+        }
         //then
         Assertions.assertThat(user1studygroup.size()).isEqualTo(groupList.size());
         Assertions.assertThat(user2studygroup.size()).isEqualTo(0);
@@ -165,7 +168,6 @@ class StudyServiceTest {
     }
     @Test
     public void 스터디탈퇴() throws Exception {
-        //given
         //given
         User user1 = userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("스터디탈퇴-user1 NoSuchElement"));
         User user2 = userRepository.findById(2L).orElseThrow(() -> new IllegalArgumentException("스터디탈퇴-user2 NoSuchElement"));

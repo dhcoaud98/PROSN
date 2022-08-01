@@ -16,14 +16,14 @@ import java.util.Optional;
 
 /**
  * created by yeomyeong on 2022/07/25
- * updated by yeomyeong on 2022/07/31
+ * updated by yeomyeong on 2022/08/01
  */
 public interface StudyService{
 
     //스터디 생성
-    void create(StudyGroupRequestDto studyGroupdDto);
+    StudyGroup create(StudyGroupRequestDto studyGroupdDto, Long uid);
     //스터디 내용 수정
-    void update(Long studyGroupId, StudyGroupRequestDto newData);
+    StudyGroup update(Long studyGroupId, StudyGroupRequestDto newData);
     //스터디 내용 조회
     StudyResponseDto showStudyGroup(Long userId, Long studyGroupId);
     //스터디 삭제

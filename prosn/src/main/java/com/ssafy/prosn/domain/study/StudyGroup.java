@@ -49,13 +49,15 @@ public class StudyGroup extends BaseEntity {
         this.expiredDate = expiredDate;
         this.maxPerson = maxPerson;
     }
-    public void update(StudyGroupRequestDto newData) {
+    public StudyGroup update(StudyGroupRequestDto newData) {
         this.expiredDate = newData.getExpiredDate();
         this.mainText = newData.getMainText();
         this.place = newData.getPlace();
         this.maxPerson = newData.getMaxPerson();
         this.secretText = newData.getSecretText();
         this.title = newData.getTitle();
+
+        return this;
     }
     public void addCurrentPerson() {
         this.currentPerson++;

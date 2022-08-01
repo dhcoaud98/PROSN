@@ -21,7 +21,7 @@ import java.util.Optional;
 
 /**
  * created by yeomyeong on 2022/07/26
- * updated by yeomyeong on 2022/07/31
+ * updated by yeomyeong on 2022/08/01
  */
 @Service
 @Transactional(readOnly = true)
@@ -30,36 +30,39 @@ public class StudyServiceImpl implements StudyService {
 
     private final StudyGroupRepository studyGroupRepository;
     private final UserStudyRepository userStudyRepository;
+    private final UserRepository userRepository;
     private final EntityManager em;
 
     /**
      * 스터디 생성
      */
     @Transactional
-    public void create(StudyGroupRequestDto studyGroupDto) {
-    // 스터디장 아이디가 유효한지 확인
-    // User user = userRepository.findById(studyGroupDto.getUid()).get();
-
-        StudyGroup studyGroup = StudyGroup.builder().title(studyGroupDto.getTitle())
+    public StudyGroup create(StudyGroupRequestDto studyGroupDto, Long uid) {
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자입니다."));
+        StudyGroup studyGroup = StudyGroup.builder()
+                .title(studyGroupDto.getTitle())
                 .mainText(studyGroupDto.getMainText())
                 .maxPerson(studyGroupDto.getMaxPerson())
                 .secretText(studyGroupDto.getSecretText())
                 .expiredDate(studyGroupDto.getExpiredDate())
                 .place(studyGroupDto.getPlace())
+                .user(user)
                 .build();
-        studyGroupRepository.save(studyGroup);
-    // 스터디장도 스터디가입자
-    // UserStudy userStudy = new UserStudy(user, studyGroup);
-    // em.persist(userStudy);
+
+        StudyGroup save = studyGroupRepository.save(studyGroup);
+        UserStudy userStudy = new UserStudy(user, studyGroup);
+        em.persist(userStudy);
+        return save;
     }
 
     /**
      * 스터디 상세 내용 수정
      */
     @Transactional
-    public void update(Long studyGroupId, StudyGroupRequestDto newData) {
+    public StudyGroup update(Long studyGroupId, StudyGroupRequestDto newData) {
         StudyGroup oldData = studyGroupRepository.findById(studyGroupId).get();
-        oldData.update(newData);
+        StudyGroup updated = oldData.update(newData);
+        return updated;
     }
 
     /**

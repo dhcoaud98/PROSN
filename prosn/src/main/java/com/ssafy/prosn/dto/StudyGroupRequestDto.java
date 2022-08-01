@@ -9,13 +9,13 @@ import java.time.LocalDate;
 
 /**
  * created by yeomyeong on 2022/07/26
- * updated by yeomyeong on 2022/07/28
+ * updated by yeomyeong on 2022/08/01
  */
 @Getter
 @ToString
 public class StudyGroupRequestDto {
     @NotNull(message = "id는 필수 입력 값입니다.")
-    private Long uid;
+    private Long id;
     @NotBlank(message = "제목은 필수 입력 값입니다.")
     private String title;
     @Min(1)
@@ -30,8 +30,8 @@ public class StudyGroupRequestDto {
     private String secretText;
 
     @Builder
-    public StudyGroupRequestDto(Long uid, String title, int maxPerson, LocalDate expiredDate, String place, String mainText, String secretText) {
-        this.uid = uid;
+    public StudyGroupRequestDto(Long id, String title, int maxPerson, LocalDate expiredDate, String place, String mainText, String secretText) {
+        this.id = id;
         this.title = title;
         this.maxPerson = maxPerson;
         this.expiredDate = expiredDate;
