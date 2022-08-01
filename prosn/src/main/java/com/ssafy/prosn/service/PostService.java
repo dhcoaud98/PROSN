@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/25
+ * updated by seongmin on 2022/07/28
  */
 public interface PostService {
     Post writeProblem(ProblemRequestDto problemDto);
@@ -14,6 +15,7 @@ public interface PostService {
     void delete(Long id);
     PostDetailResponseDto showProblemDetail(Long id);
     List<PostAllResponseDto> showAllPost();
-    void likeDislikeClick(Long uid, Long pid, boolean type);
+    void likeDislikeClick(LikeDisLikeRequestDto likeDisLikeDto);
+    List<PostAllResponseDto> searchPost(PostSearchRequestDto searchDto);
 
 }

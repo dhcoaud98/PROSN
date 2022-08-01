@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @RequiredArgsConstructor
 public class CommentRequestDto {
-    @NotBlank(message = "사용자는 필수 입력값입니다.")
+    @NotNull(message = "사용자는 필수 입력값입니다.")
     private Long uid;
-    @NotBlank(message = "게시글은 필수 입력값입니다.")
+    @NotNull(message = "게시글은 필수 입력값입니다.")
     private Long pid;
     @NotBlank(message = "댓글은 필수 입력값입니다.")
     private String mainText;

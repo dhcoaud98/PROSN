@@ -6,6 +6,7 @@ import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.InformationRequestDto;
+import com.ssafy.prosn.dto.LikeDisLikeRequestDto;
 import com.ssafy.prosn.dto.PostDetailResponseDto;
 import com.ssafy.prosn.dto.ProblemRequestDto;
 import com.ssafy.prosn.repository.post.LikeDislikeRepository;
@@ -28,6 +29,7 @@ import static org.assertj.core.api.Assertions.*;
 
 /**
  * created by seongmin on 2022/07/25
+ * updated by seongmin on 2022/07/28
  */
 @SpringBootTest
 @Transactional
@@ -194,7 +196,7 @@ class PostServiceImplTest {
                 .build();
 
         Post post = postService.writeProblem(problemDto);
-        postService.likeDislikeClick(uid, post.getId(), true);
+        postService.likeDislikeClick(new LikeDisLikeRequestDto(uid, post.getId(), true));
         LikeDislike like = likeDislikeRepository.findByPostAndUser(post, userRepository.findById(uid).get()).get();
         assertThat(like.isType()).isTrue();
     }

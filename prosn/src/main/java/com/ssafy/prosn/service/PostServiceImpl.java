@@ -21,6 +21,7 @@ import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/25
+ * updated by seongmin on 2022/07/29
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -34,11 +35,14 @@ public class PostServiceImpl implements PostService {
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     private final LikeDislikeRepository likeDislikeRepository;
+    private final UserService userService;
 
     @Override
     @Transactional
     public Post writeProblem(ProblemRequestDto problemDto) {
-        Optional<User> user = userRepository.findById(problemDto.getUid());
+        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        Optional<User> user = userRepository.findById(userInfo.getId());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Problem problem = Problem.builder()
                 .user(user.get())
@@ -57,7 +61,9 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post writeInformation(InformationRequestDto informationDto) {
-        Optional<User> user = userRepository.findById(informationDto.getUid());
+        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        Optional<User> user = userRepository.findById(userInfo.getId());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Information information = Information.builder()
                 .user(user.get())
@@ -75,7 +81,12 @@ public class PostServiceImpl implements PostService {
     public void delete(Long id) {
         Optional<Post> post = postRepository.findById(id);
         post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
-        post.get().remove();
+
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        if(!post.get().getUser().getId().equals(userInfo.getId()))
+            throw new IllegalArgumentException("내가 쓴 게시글만 삭제 가능합니다.");
+
+        postRepository.deleteById(id);
     }
 
     /**
@@ -147,22 +158,42 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void likeDislikeClick(Long uid, Long pid, boolean type) {
-        Optional<User> user = userRepository.findById(uid);
-        Optional<Post> post = postRepository.findById(pid);
+    public void likeDislikeClick(LikeDisLikeRequestDto dto) {
+        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        Optional<User> user = userRepository.findById(userInfo.getId());
+//        Optional<User> user = userRepository.findById(dto.getUid());
+        Optional<Post> post = postRepository.findById(dto.getPid());
         user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
 
         Optional<LikeDislike> result = likeDislikeRepository.findByPostAndUser(post.get(), user.get());
         if(result.isPresent()) {
-            if(result.get().isType() == type) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
+            if(result.get().isType() == dto.isType()) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
                 likeDislikeRepository.delete(result.get());
             } else { // 예전에 누른거랑 반대버튼 누른 경우 체인지 좋<->싫
                 result.get().change();
             }
         } else {
-            likeDislikeRepository.save(new LikeDislike(user.get(), post.get(), type));
+            likeDislikeRepository.save(new LikeDislike(user.get(), post.get(), dto.isType()));
         }
+    }
+
+    @Override
+    public List<PostAllResponseDto> searchPost(PostSearchRequestDto dto) {
+        List<PostTag> postTags = postRepository.searchPost(dto.getTitle(), dto.getCode());
+        List<PostAllResponseDto> result = new ArrayList<>();
+        for (PostTag postTag : postTags) {
+            PostAllResponseDto post = new PostAllResponseDto(
+                    postTag.getPost().getId(),
+                    new UserResponseDto(postTag.getPost().getUser().getId(), postTag.getPost().getUser().getName()),
+                    postTag.getPost().getTitle(),
+                    postTag.getPost().getViews(),
+                    postTag.getPost().getNumOfLikes(),
+                    postTag.getPost().getNumOfDislikes());
+            result.add(post);
+        }
+        return result;
     }
 
     private List<Tag> getTags(Post post) {
