@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/29
@@ -40,12 +39,14 @@ public class WrongAnswerServiceImpl implements WrongAnswerService {
     public WrongAnswer save(WrongAnswerRequestDto dto, Long uid) {
         User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Problem problem = problemRepository.findById(dto.getPid()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 문제입니다."));
-        // 문제집에서 풀었는데 삭제된 문제라면 어떻게??
+        // 문제집에서 풀었는데 삭제된 문제라면 어떻게?? -> 조회할 때 작성자와 날짜만 안보이게 하기.
 
         // 이미 오답문제에 있는 문제라면? 틀린답만 수정 or 수정x
         boolean check = wrongAnswerRepository.existsByUserAndProblem(user, problem);
         if (check) {
-            throw new IllegalStateException("이미 오답노트에 있는 문제입니다.");
+            WrongAnswer wrongAnswer = wrongAnswerRepository.findByUserAndProblem(user, problem).orElseThrow(() -> new IllegalStateException("유효하지 않은 오답노트입니다."));
+            wrongAnswer.writeWrongAnswer(dto.getWrongAnswer());
+            return wrongAnswer;
         }
 
         WrongAnswer wrongAnswer = WrongAnswer.builder()
@@ -130,6 +131,7 @@ public class WrongAnswerServiceImpl implements WrongAnswerService {
                 .example3(wrongAnswer.getProblem().getExample3())
                 .example4(wrongAnswer.getProblem().getExample4())
                 .answer(wrongAnswer.getProblem().getAnswer())
+                .isDeleted(wrongAnswer.getProblem().isDeleted())
                 .wrongAnswer(wrongAnswer.getWrongAnswer())
                 .reason(wrongAnswer.getReason())
                 .studyContent(wrongAnswer.getStudyContent())
