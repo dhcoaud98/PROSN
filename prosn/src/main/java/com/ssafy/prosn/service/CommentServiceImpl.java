@@ -32,15 +32,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public Comment write(CommentRequestDto commentRequestDto) {
-        Optional<Post> post = postRepository.findById(commentRequestDto.getPid());
-        Optional<User> user = userRepository.findById(commentRequestDto.getUid());
-        post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
-        user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+    public Comment write(CommentRequestDto commentRequestDto, Long uid) {
+        Post post = postRepository.findById(commentRequestDto.getPid()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
 
         Comment comment = Comment.builder()
-                .post(post.get())
-                .user(user.get())
+                .post(post)
+                .user(user)
                 .mainText(commentRequestDto.getMainText())
                 .build();
         return commentRepository.save(comment);
@@ -48,11 +46,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        Optional<Comment> comment = commentRepository.findById(id);
-        comment.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 댓글입니다."));
-        UserResponseDto userInfo = userService.getMyInfoBySecret();
-        if (!comment.get().getUser().getId().equals(userInfo.getId()))
+    public void delete(Long id, Long uid) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 댓글입니다."));
+        if (!comment.getUser().getId().equals(uid))
             throw new IllegalArgumentException("내가 쓴 댓글만 삭제 가능합니다.");
 
         commentRepository.deleteById(id);
