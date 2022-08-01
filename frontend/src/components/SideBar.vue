@@ -50,7 +50,7 @@
               <v-card color="transparent"  flat="true">
                 <v-list two-line>
                   <template v-for="item in items.slice(0, 6)">
-                    <v-list-item height="5px">
+                    <v-list-item height="5px" :key="item.name">
                       <v-list-item-avatar>
                         <img :src="item.avatar">
                       </v-list-item-avatar>

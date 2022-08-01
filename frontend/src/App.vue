@@ -14,7 +14,8 @@
         </v-col>
         <v-col xl="9" lg="9" md="9" sm="9">
           <!-- url이 변경됨에 따라 계속 바뀌는 위치(0729 임지민) -->
-          <router-view :name="componentName"></router-view>
+          <!-- router/index.js에서 정의한 components의 컴포넌트를 띄워줌(0801 임지민) -->
+          <router-view></router-view>
 
         <!-- sm 이하 일때: 아래 쪽에 네비게이션 바 -->
           <bottom-nav-bar class="d-flex d-sm-none"></bottom-nav-bar>
@@ -36,7 +37,7 @@ import NavBar from './components/NavBar.vue'
 import BottomNavBar from './components/BottomNavBar.vue'
 import SideBar from './components/SideBar.vue'
 import MainPageView from './views/MainPageView.vue'
-import { mapGetters, mapState } from 'vuex'
+// import { mapGetters, mapState } from 'vuex'
 
 
 export default {
@@ -44,7 +45,7 @@ export default {
 
 
   data: () => ({
-    componentName: 'MainPageView'
+    // mainPageView: 'MainPageView'
   }),
   components : {
     NavBar,
@@ -52,12 +53,12 @@ export default {
     SideBar,
     MainPageView,
   },
-  created: {
+  /* created: {
     changeRouterView () {
       // store에서 componentName 가져오기
-      this.componentName
+      this.componentName 
     }
-  }
+  } */
 };
 </script>
 
