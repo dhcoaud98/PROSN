@@ -7,7 +7,7 @@
       d-none
       d-md-flex
     >
-      <v-navigation-drawer permanent class="mt-2">
+      <v-navigation-drawer permanent  class="mt-2">
         <v-list-item class="mt-5">
           <v-list-item-content>
             <v-list-item-title>

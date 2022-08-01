@@ -18,7 +18,7 @@ export default {
 
 <style>
 .profile {
-  height: 750px;
+  height: 800px;
   background-color: #ffffff;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-2 white mb-5">
+  <v-container class="mt-2 mb-5">
     <!-- 1. 프로필 상단 -->
     <v-row class="justify-center mt-10 mx-5 mb-0">
       <!-- 뱃지, 이름 -->
@@ -10,7 +10,7 @@
         <p class="font-weight-bold text-grey ma-0">오채명</p>
       </v-col>
       <v-col cols="1" class="pa-0">
-        <v-icon>mdi-plus</v-icon>
+        <v-icon type="button" @click="event()">mdi-plus</v-icon>
       </v-col>
 
       <v-col cols="3">
@@ -57,25 +57,41 @@
           </v-tabs>
         </template>
       </v-toolbar>
-      <v-card-text>
+     
+      <!-- <v-card-text class="d-flex ma-0">
         <v-tabs-items v-model="tabs">
           <v-tab-item v-for="content in ['one', 'two', 'three']" :key="content" :value="content">
           </v-tab-item>
         </v-tabs-items>
-      </v-card-text>
+      </v-card-text> -->
+      
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '1'">
         <solved-problem-list></solved-problem-list>
-        <!-- {{ activeFab.page }} -->
+      </v-container>
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '2'">
+        <scrap-post-list></scrap-post-list>
+      </v-container>
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '3'">
+        <my-post-list></my-post-list>
+      </v-container>
+
     </v-row>
   </v-container>
 </template>
 
 <script>
 import SolvedProblemList from "./SolvedProblemList.vue"
+import ScrapPostList from "./ScrapPostList.vue"
+import MyPostList from "./MyPostList.vue"
+
+
 
 export default {
   name: 'ProfileCenter',
   components: {
     SolvedProblemList,
+    ScrapPostList,
+    MyPostList,
   },
   data () {
     return {
@@ -91,18 +107,24 @@ export default {
       fab: false,
       hidden: false,
       tabs: null,
+      pass: '',
     }
   },
   computed: {
     activeFab () {
       switch (this.tabs) {
-        case 'one': return { page: 'SolvedProblemList' }
-        case 'two': return { page: 'ScrapPostList' }
-        case 'three': return { page : 'MyPostList' }
+        case 'one': return { page: '1' }
+        case 'two': return { page: '2' }
+        case 'three': return { page : '3' }
         default: return {}
       }
     },
   },
+  methods:{
+    event () {
+      alert("문제/정보 작성하기 나와야함.")
+    }
+  }
 }
 </script>
 
