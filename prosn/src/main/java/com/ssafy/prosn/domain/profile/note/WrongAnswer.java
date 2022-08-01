@@ -31,7 +31,7 @@ public class WrongAnswer extends BaseEntity {
     @JoinColumn(name = "post_id")
     private Problem problem;
 
-    private String wrong_answer;
+    private String wrongAnswer;
 
     private String reason;
     private String studyContent;
@@ -44,7 +44,7 @@ public class WrongAnswer extends BaseEntity {
     public WrongAnswer(User user, Problem problem, String wrong_answer) {
         this.user = user;
         this.problem = problem;
-        this.wrong_answer = wrong_answer;
+        this.wrongAnswer = wrong_answer;
     }
 
     public void writeReason(String reason) {

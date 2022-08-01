@@ -3,6 +3,7 @@ package com.ssafy.prosn.dto;
 import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.Tag;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,10 +11,12 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/29
+ * updated by seongmin on 2022/08/01
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class WrongAnswerNoteDetailResponseDto {
     private Long id;
     private Long pid;
@@ -26,7 +29,7 @@ public class WrongAnswerNoteDetailResponseDto {
     private String example4;
     private String answer;
 
-    private String wrong_answer;
+    private String wrongAnswer;
     private String reason;
     private String studyContent;
     private String memo;
