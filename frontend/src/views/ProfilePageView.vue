@@ -1,5 +1,5 @@
 <template>
-  <v-container class="profile">
+  <v-container fluid class="mt-2 white">
     <profile-center></profile-center>
   </v-container>
 
@@ -17,8 +17,16 @@ export default {
 </script>
 
 <style>
-.profile {
-  height: 800px;
-  background-color: #ffffff;
-}
+  .v-application--wrap {
+  max-width: none;
+  }
+  .container {
+    max-width: none;
+  }
+  .w-100 {
+    width: 100%;
+  }  
+  .tab-hover::before {
+    color: #616161;
+  }
 </style>
