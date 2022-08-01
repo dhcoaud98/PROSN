@@ -7,13 +7,13 @@
             <!-- 첫번째 v-row: 프사, 사용자 이름, 사용자 등급, 팔로우 버튼 -->
             <v-row class="align-center">
                 <div class="d-flex col-10">
-                    <v-col cols="2" class="pt-3">
+                    <v-col cols="1" class="pl-0">
                         <span class="material-icons">
                             account_circle
                         </span>
                     </v-col>
-                    <v-col cols="8" class="px-0 align-center">
-                        <span class="font-weight-bold text-caption text-lg-body-2">jimin4661</span>
+                    <v-col class="px-0">
+                        <span class="font-weight-bold">jimin4661</span>
                         <span class="ml-2 tmp-border py-1 font-weight-bold font-12">PROSN</span>
                     </v-col>
                 </div>
@@ -26,27 +26,30 @@
             <!-- 두번째 row: 본문 -->
             <v-row class="white border-a-10">
                 <!-- 카테고리 태그 -->
-                <v-row class="col-12">
-                    <!-- 카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" -->
-                    <v-col cols="2" class="pr-0 text-truncate">
-                        <p class="category-tag text-center pa-1 d-inline-block">#네트워크</p>
-                    </v-col>
-                    <v-col cols="2" class="px-0 text-truncate">
-                        <p class="category-tag pa-1 d-inline-block">#알고리즘</p>
-                    </v-col>
-                    <v-col cols="2" class="px-0 text-truncate">
-                        <p class="category-tag pa-1 d-inline-block">#CS</p>
-                    </v-col>
+                <v-row class="col-12 mt-2 ml-2">
+                    <!-- 0801 임지민
+                        카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" 
+                        나중에 for문으로 돌리기
+                    -->
+                    <span class="category-tag text-center pa-1 d-inline-block mr-1">#네트워크</span>
+                    <span class="category-tag text-center pa-1 d-inline-block mr-1">#알고리즘</span>
+                    <span class="category-tag text-center pa-1 d-inline-block mr-1">#CS</span>
                 </v-row>
-                <!-- 본문 -->
-                <v-col>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio accusantium facere voluptate a ad non quis quos quam, veniam suscipit consectetur reprehenderit aperiam porro dolorem! Consectetur mollitia quasi enim illum.</p>
-                </v-col>
+                <!-- 0801 임지민
+                    본문 
+                    - 1~2줄만 보여주고 나머지는 text-overflow: ellipsis 처리하기
+                -->
+                <v-row class="px-4 mb-4">
+                    <p class="px-4 mb-4 ">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio accusantium facere voluptate a ad non quis quos quam, veniam suscipit consectetur reprehenderit aperiam porro dolorem! Consectetur mollitia quasi enim illum.</p>
+                </v-row>
             </v-row>
 
-            <!-- 세번째 row: 좋아요, 싫어요, 스크랩 -->
-            <v-row>
-                <v-col cols="1" offset="9">
+            <!-- 
+                세번째 row: 좋아요, 싫어요, 스크랩 
+                - 클릭하면 색이 바뀌도록 처리
+            -->
+            <v-row class="justify-end">
+                <v-col cols="1">
                     <span class="material-icons">
                         thumb_up_off_alt
                     </span>
