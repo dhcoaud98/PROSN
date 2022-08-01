@@ -8,19 +8,19 @@ import javax.persistence.Entity;
 
 /**
  * created by seongmin on 2022/07/19
+ * updated by seongmin on 2022/07/27
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
 @Getter
-@ToString
 public class Information extends Post{
 
     private String mainText;
 
     @Builder
-    public Information(String title, Integer views, User user, String mainText) {
-        super(title, views, user);
+    public Information(String title, User user, String mainText) {
+        super(title, user);
         this.mainText = mainText;
     }
 }
