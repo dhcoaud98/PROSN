@@ -32,10 +32,10 @@ public class Solving extends BaseEntity {
     private Problem problem;
 
     @Convert(converter = BooleanToYNConverter.class)
-    private boolean isRight;
+    private String isRight;
 
     @Builder
-    public Solving(User user, Problem problem, boolean isRight) {
+    public Solving(User user, Problem problem, String isRight) {
         this.user = user;
         this.problem = problem;
         this.isRight = isRight;
