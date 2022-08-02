@@ -7,9 +7,9 @@
             <!-- 스크랩 제목, 첫번째 스크랩 제목 --> 
             <v-col cols="10" class="pl-5">
               <v-col cols="12" class="pa-0 mb-1">
-                <h3>네트워크 모음집</h3>
-                </v-col>
-              <v-col cols="12" class="pa-0 pt-1">
+                <h4>네트워크 모음집</h4>
+              </v-col>
+              <v-col cols="12" class="problem_title pa-0 pt-1">
                 하나에 내 하나에 하나에 계절이 어머님...
               </v-col>
             </v-col>
@@ -50,7 +50,10 @@ export default {
   margin: 1px;
 }
 .problem_detail {
-  font-size: 1px;
+  font-size: 2px;
   text-align: right;
+}
+.problem_title {
+  font-size: 2px;
 }
 </style>
