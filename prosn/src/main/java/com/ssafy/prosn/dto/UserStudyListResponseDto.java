@@ -6,8 +6,9 @@ import lombok.ToString;
 
 /**
  * created by yeomyeong on 2022/07/28
+ * updated by yeomyeong on 2022/08/02
  */
-@ToString
+@Getter
 public class UserStudyListResponseDto {
     private Long id;
     private String title;

@@ -2,6 +2,7 @@ package com.ssafy.prosn.dto;
 
 import com.ssafy.prosn.domain.user.User;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.ToString;
 
 import javax.validation.constraints.Min;
@@ -12,8 +13,9 @@ import java.util.List;
 
 /**
  * created by yeomyeong on 2022/07/28
- * updated by yeomyeong on 2022/07/31
+ * updated by yeomyeong on 2022/08/02
  */
+@Getter
 @ToString(callSuper = true)
 public class UserStudyResponseDto extends StudyResponseDto {
     //title, currentMem, totalMem, place, members, mainText, secretText

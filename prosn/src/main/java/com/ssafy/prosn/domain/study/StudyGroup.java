@@ -3,9 +3,7 @@ package com.ssafy.prosn.domain.study;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.StudyGroupRequestDto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -13,14 +11,14 @@ import java.time.LocalDate;
 
 /**
  * created by yeomyeong on 2022/07/25
- * updated by yeomyeong on 2022/07/27
+ * updated by yeomyeong on 2022/08/02
  */
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class StudyGroup extends BaseEntity {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
@@ -35,9 +33,6 @@ public class StudyGroup extends BaseEntity {
 
     @ColumnDefault("0")
     private int currentPerson;
-
-    public StudyGroup() {
-    }
 
     @Builder
     public StudyGroup(User user, String title, String mainText, String secretText, String place, LocalDate expiredDate, int maxPerson) {

@@ -1,12 +1,14 @@
 package com.ssafy.prosn.dto;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.ToString;
 
 /**
  * created by yeomyeong on 2022/08/01
+ * updated by yeomyeong on 2022/08/02
  */
-@ToString
+@Getter
 public class StudyGroupListResponseDto {
     private Long id;
     private String title;

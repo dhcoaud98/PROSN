@@ -11,8 +11,9 @@ import java.time.LocalDate;
 
 /**
  * created by yeomyeong on 2022/07/29
- * updated by yeomyeong on 2022/07/31
+ * updated by yeomyeong on 2022/08/02
  */
+@Getter
 @ToString(callSuper = true)
 public class StudyGroupResponseDto extends StudyResponseDto{
     private LocalDate expiredDate;

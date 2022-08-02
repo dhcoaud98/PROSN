@@ -1,15 +1,17 @@
 package com.ssafy.prosn.dto;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
 
 /**
  * created by yeomyeong on 2022/07/31
+ * updated by yeomyeong on 2022/08/02
  */
 
-@ToString
+@Getter
 public class StudyResponseDto {
     private String title;
     private int currentPerson;

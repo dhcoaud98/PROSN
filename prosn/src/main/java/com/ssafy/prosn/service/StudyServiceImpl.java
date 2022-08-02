@@ -3,10 +3,7 @@ package com.ssafy.prosn.service;
 import com.ssafy.prosn.domain.study.StudyGroup;
 import com.ssafy.prosn.domain.study.UserStudy;
 import com.ssafy.prosn.domain.user.User;
-import com.ssafy.prosn.dto.StudyGroupRequestDto;
-import com.ssafy.prosn.dto.StudyGroupResponseDto;
-import com.ssafy.prosn.dto.StudyResponseDto;
-import com.ssafy.prosn.dto.UserStudyResponseDto;
+import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.study.StudyGroupRepository;
 import com.ssafy.prosn.repository.study.UserStudyRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -21,7 +18,7 @@ import java.util.Optional;
 
 /**
  * created by yeomyeong on 2022/07/26
- * updated by yeomyeong on 2022/08/01
+ * updated by yeomyeong on 2022/08/02
  */
 @Service
 @Transactional(readOnly = true)
@@ -80,8 +77,9 @@ public class StudyServiceImpl implements StudyService {
      * 스터디 가입
      */
     @Transactional
-    public Long joinStudy(User user, StudyGroup studyGroup) {
-        validateDuplicate(user.getId(), studyGroup.getId());
+    public Long joinStudy(Long userId, StudyGroup studyGroup) {
+        validateDuplicate(userId, studyGroup.getId());
+        User user = userRepository.findById(userId).orElseThrow(()-> new IllegalStateException("유효하지 않은 사용자입니다"));
 
         UserStudy userStudy = new UserStudy(user, studyGroup);
         studyGroup.addCurrentPerson();
@@ -93,11 +91,11 @@ public class StudyServiceImpl implements StudyService {
      *  스터디 탈퇴
      */
     @Transactional
-    public void removeStudy(User user, StudyGroup studyGroup) {
-        if(!userStudyRepository.existsByUserIdAndStudyGroupId(user.getId(), studyGroup.getId()))
+    public void removeStudy(Long userId, StudyGroup studyGroup) {
+        if(!userStudyRepository.existsByUserIdAndStudyGroupId(userId, studyGroup.getId()))
             throw new IllegalStateException("가입되지 않은 스터디입니다.");
 
-        UserStudy userStudy = userStudyRepository.findByUserAndStudyGroup(user, studyGroup);
+        UserStudy userStudy = userStudyRepository.findByUserIdAndStudyGroup(userId, studyGroup);
         studyGroup.removeCurrentPerson();
         userStudyRepository.deleteById(userStudy.getId());
     }
