@@ -6,13 +6,11 @@ import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.Problem;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
-import com.ssafy.prosn.dto.CommentRequestDto;
 import com.ssafy.prosn.dto.ReplyRequestDto;
 import com.ssafy.prosn.repository.comment.CommentRepository;
 import com.ssafy.prosn.repository.comment.ReplyRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,14 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * created by seongmin on 2022/07/28
+ * updated by seongmin on 2022/08/01
  */
 @SpringBootTest
 @Transactional
@@ -81,7 +76,8 @@ class ReplyServiceImplTest {
         userRepository.save(user);
         Comment comment = commentRepository.findAll().get(0);
 
-        Reply reply = replyService.write(new ReplyRequestDto(user.getId(), comment.getId(), "인정"));
+        Reply reply = replyService.write(new ReplyRequestDto(comment.getId(), "인정"),user.getId());
+
         Reply resultReply = replyRepository.findById(reply.getId()).get();
         assertThat(reply.getId()).isEqualTo(resultReply.getId());
         assertThat(resultReply.getComment()).isEqualTo(comment);
@@ -93,7 +89,7 @@ class ReplyServiceImplTest {
         User user = userRepository.findAll().get(0);
         Comment comment = commentRepository.findAll().get(0);
 
-        Reply reply = replyService.write(new ReplyRequestDto(user.getId(), comment.getId(), "쉽네요"));
+        Reply reply = replyService.write(new ReplyRequestDto(comment.getId(), "쉽네요"), user.getId());
         assertThat(replyRepository.findAll().size()).isEqualTo(1);
 
         replyService.delete(reply.getId(), user.getId());

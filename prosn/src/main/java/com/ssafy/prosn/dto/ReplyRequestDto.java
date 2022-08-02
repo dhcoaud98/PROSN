@@ -10,15 +10,15 @@ import javax.validation.constraints.NotNull;
 
 /**
  * created by seongmin on 2022/07/28
- * updated by seongmin on 2022/07/28
+ * updated by seongmin on 2022/08/01
  */
 @Getter
 @RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
 public class ReplyRequestDto {
-    @NotNull(message = "사용자는 필수 입력값입니다.")
-    private Long uid;
+//    @NotNull(message = "사용자는 필수 입력값입니다.")
+//    private Long uid;
     @NotNull(message = "댓글은 필수 입력값입니다.")
     private Long cid;
     @NotBlank(message = "답글은 필수 입력값입니다.")
