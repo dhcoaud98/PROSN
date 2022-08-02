@@ -73,4 +73,21 @@ export default {
   .w-100 {
     width: 100%;
   }
+
+  /* 2022.08.02. 커스텀 스크롤바 */
+  /* 필요한 다른 view에서 가져다 쓰면 됨 */
+  ::-webkit-scrollbar {
+      width: 8px;  /* 스크롤바의 너비 */
+  }
+
+  ::-webkit-scrollbar-thumb {
+      height: 30%; /* 스크롤바의 길이 */
+      background: #A384FF; /* 스크롤바의 색상 */
+
+      border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+      background: rgba(172, 35, 252, 0.2);  /*스크롤바 뒷 배경 색상*/
+  }
 </style>
