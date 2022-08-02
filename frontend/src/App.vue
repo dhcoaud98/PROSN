@@ -53,12 +53,6 @@ export default {
     SideBar,
     MainPageView,
   },
-  /* created: {
-    changeRouterView () {
-      // store에서 componentName 가져오기
-      this.componentName 
-    }
-  } */
 };
 </script>
 
