@@ -8,10 +8,10 @@
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
         <v-row class="bottom-line justify-center mt-5 mx-5">
           <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover">
-            <p class="text-center mb-0 font-weight-bold text-grey">문제/문제집</p>
+            <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">문제/문제집</p>
           </v-col>
           <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover">
-            <p class="text-center mb-0 font-weight-bold text-grey">정보</p>
+            <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">정보</p>
           </v-col>
         </v-row>
 

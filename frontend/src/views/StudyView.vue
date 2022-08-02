@@ -1,12 +1,17 @@
 <template>
-  <div>
-    <p>study Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt dignissimos error iusto temporibus quaerat quisquam porro, ex laborum soluta magni possimus ipsam nisi. Eum, minima! Ipsam odio aperiam non expedita!</p>
-  </div>
+  <v-container fluid class="mt-2 white">
+    <study-center></study-center>
+  </v-container>
 </template>
 
 <script>
-export default {
+import StudyCenter from '../components/Study/StudyCenter.vue'
 
+export default {
+  name: 'StudyView',
+  components: {
+    StudyCenter,
+  }
 }
 </script>
 

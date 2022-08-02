@@ -5,7 +5,7 @@
         <v-card class="px-5" color="#FAF0F3">
           <v-row>
             <!-- 문제 대표 이미지 -->
-            <v-col cols="1" class="pb-2 pt-5"><v-icon large color="green darken-2">mdi-domain</v-icon></v-col>
+            <v-col cols="1" class="pb-2 pt-5"><v-icon large color="black darken-2">mdi-domain</v-icon></v-col>
             <!-- 문제 태그, 문제 제목 --> 
             <v-col cols="9" class="pl-5">
               <v-col cols="12" class="pa-0 mb-1">
@@ -53,7 +53,10 @@ export default {
   margin: 1px;
 }
 .problem_detail {
-  font-size: 1px;
+  font-size: 2px;
   text-align: right;
+}
+.problem_title {
+  font-size: 2px;
 }
 </style>
