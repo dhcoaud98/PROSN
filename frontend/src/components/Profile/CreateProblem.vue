@@ -31,7 +31,7 @@
         </v-row>
 
         <!-- 지문 -->
-        <v-row class="mx-2 mt-2">
+        <v-row class="mx-2 my-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">지문</p></v-col>
           <v-col class="col-12 pa-0">
             <v-textarea label="지문을 입력하세요 (최대 150자)" maxlength="150" counter required dense></v-textarea>
