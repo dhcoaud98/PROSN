@@ -1,11 +1,15 @@
 <template>
   <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
   <v-container fluid class="bg-grey">
-    <v-navigation-drawer right class="mt-5 ml-3 d-none d-lg-block">
+    <v-navigation-drawer right class="mt-5 ml-3 d-md-none d-md-flex">
       <v-row>
         <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
         <v-col col="6" class="d-flex justify-center">setting</v-col>
-        <v-col col="6" class="d-flex justify-center">login</v-col>
+        
+        <v-col col="6" class="d-flex justify-center">
+          <router-link to="/login" class="text-decoration-none black--text">login</router-link>
+        </v-col>
+        
       </v-row>
 
       <v-row class="pa-0 ma-0">
@@ -50,7 +54,7 @@
               <v-card color="transparent"  flat="true">
                 <v-list two-line>
                   <template v-for="item in items.slice(0, 6)">
-                    <v-list-item height="5px">
+                    <v-list-item height="5px" :key="item.name">
                       <v-list-item-avatar>
                         <img :src="item.avatar">
                       </v-list-item-avatar>
