@@ -12,7 +12,7 @@
           <v-list-item-content>
             <v-list-item-title>
               <router-link to="/">
-                <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5"></v-img>
+                <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5" id="mainPage"></v-img>
               </router-link>
             </v-list-item-title>
           </v-list-item-content>
@@ -28,8 +28,8 @@
                   - 클릭하면 vuex로 fetch해서 요소를 바꾸고
                 그래서 app.vue가 created될 때 vuex에서 state를 가져와서 띄운다.
                -->
-              <router-link :to="item.urlName" class="text-decoration-none black--text">
-                <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5" v-text="item.text"></v-list-item-title>
+              <router-link :to="`/${item.urlName}`" class="text-decoration-none black--text">
+                <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5" :id="item.urlName">{{ item.text }}</v-list-item-title>
               </router-link>
             </v-list-item-content>
           </v-list-item>
@@ -87,24 +87,39 @@ export default {
       items: [
         { 
           text: '스터디',
-          urlName: '/study'
+          urlName: 'study',
         },
         { 
           text: '오답노트',
-          urlName: '/note'
+          urlName: 'note',
         },
         { 
           text: '내 프로필',
-          urlName: '/profile'
+          urlName: 'profile',
         },
 
       ]
     }
   },
-  methods: {
-    // onClick event 사용: 한번 클릭하면 bold + 보라색, 다시 클릭하면 원상태로 돌아오게
-
+  watch: {
+    // url이 바뀔 때마다 감시해서 nav바 상태 바꿔주기
+    $route(to, from) {
+      //console.log(to) // 도착지
+      //console.log(from) // 출발지
+      if(to.name !== 'mainPage') {
+        // 도착지의 name에 해당하는 태그는 clicked-tab을 넣고
+        const toTag = document.querySelector(`#${to.name}`)
+        toTag.classList.add('clicked-tab')
+      }
+      // 출발지의 name에 해당하는 태그는 clicked-tab을 빼기
+      const fromTag = document.querySelector(`#${from.name}`)
+      fromTag.classList.remove('clicked-tab')
+    }
   },
+  methods: {
+    
+  },
+  
 }
 </script>
 
@@ -116,6 +131,10 @@ export default {
     border-left: 5px solid #d9d9d9;
   }
   :hover.left-line{
+    border-left: solid 5px #A384FF;
+    font-weight: bold;
+  }
+  .clicked-tab {
     border-left: solid 5px #A384FF;
     font-weight: bold;
   }
