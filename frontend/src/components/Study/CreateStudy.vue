@@ -85,7 +85,7 @@
         <v-row class="mx-2 mt -5">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">스터디 소개</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea label="스터디 그룹에 대한 설명을 입력하세요 (최대 250자)" maxlength="250" rows="4" counter required dense></v-textarea>
+            <v-textarea label="스터디 그룹에 대한 설명을 입력하세요 (최대 250자)" maxlength="250" rows="4" no-resize counter required dense></v-textarea>
           </v-col>
         </v-row>
 
@@ -93,7 +93,7 @@
         <v-row class="mx-2 mt-5 mb-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">상세정보</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea label="스터디 그룹원들에게만 공개할 상세정보를 입력하세요 (최대 250자)" maxlength="250" rows="4" counter required dense></v-textarea>
+            <v-textarea label="스터디 그룹원들에게만 공개할 상세정보를 입력하세요 (최대 250자)" maxlength="250" rows="4" no-resize counter required dense></v-textarea>
           </v-col>
         </v-row>
 

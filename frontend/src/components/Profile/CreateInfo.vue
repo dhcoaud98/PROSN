@@ -32,7 +32,7 @@
         <v-row class="mx-2 mt-5 mb-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">지문</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea label="글 내용을 입력하세요" rows="15" counter required dense></v-textarea>
+            <v-textarea label="글 내용을 입력하세요" rows="15" no-resize counter required dense></v-textarea>
           </v-col>
         </v-row>
 
