@@ -103,7 +103,7 @@
         <v-row class="my-2 ">
           <v-col cols="12" class="d-flex justify-end pa-0">
             <!-- router - 1  -->
-            <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5">취소하기</v-btn>
+            <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5" @click="event()">취소하기</v-btn>
             <!-- submit -->
             <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5">출제하기</v-btn>
           </v-col>
@@ -146,10 +146,14 @@ export default {
       }
     }),
   methods: {
-      // 스터디 마감일 선택시에 당일 기준 전날은 선택 못하도록 하는 메서드
-      allowedDates(val) {
-        return val >= new Date().toISOString().substring(0,10)}
+    // 스터디 마감일 선택시에 당일 기준 전날은 선택 못하도록 하는 메서드
+    allowedDates(val) {
+      return val >= new Date().toISOString().substring(0,10)
     },
+    event () {
+    this.$router.push({ path: 'study' })
+    }
+  },
 }
 </script>
 

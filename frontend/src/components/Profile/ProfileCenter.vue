@@ -135,7 +135,7 @@ export default {
     },
     event2 () {
       this.$router.push({ path: 'createinfo' })
-    }
+    },
   }
 }
 </script>

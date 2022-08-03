@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="mt-2 white">
+  <v-container fluid class="mt-2 pa-0 white">
     <profile-center></profile-center>
   </v-container>
 

@@ -37,7 +37,6 @@
             <span class="category-tag pa-1">#어려워</span>
             <span class="category-tag pa-1">#배고파</span>
         </v-col>
-
       </v-row>
 
       <!-- 2. 프로필 하단 -->
@@ -72,7 +71,7 @@
 
       </v-row>
     </v-col>
-  
+    
     <v-col md="4" class="d-md-flex d-md-none grey lighten-4">
       <side-bar></side-bar>
     </v-col>
