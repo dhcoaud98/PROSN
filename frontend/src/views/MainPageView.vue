@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid class="mt-2 white">
+  <v-container fluid>
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row>
 
       <!-- col 1: 메인 피드 부분 -->
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="8" class="mt-2 white">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
         <v-row class="bottom-line justify-center mt-5 mx-5">
           <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover">
