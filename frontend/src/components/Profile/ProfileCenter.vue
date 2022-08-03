@@ -7,11 +7,14 @@
         <v-col cols="3" class="rank_box d-flex justify-center py-0">
           <p class="font-weight-bold text-grey ma-0">Prosn</p>
         </v-col>
-        <v-col cols="8" class="pa-0 pl-3">
+        <v-col cols="7" class="pa-0 pl-3">
           <p class="font-weight-bold text-grey ma-0">오채명</p>
         </v-col>
         <v-col cols="1" class="pa-0">
-          <v-icon type="button" @click="event()">mdi-plus</v-icon>
+          <v-icon type="button" @click="event1()">mdi-plus</v-icon>
+        </v-col>
+        <v-col cols="1" class="pa-0">
+          <v-icon type="button" @click="event2()">mdi-plus</v-icon>
         </v-col>
 
         <v-col cols="3">
@@ -127,8 +130,11 @@ export default {
     },
   },
   methods:{
-    event () {
-      alert("문제/정보 작성하기 나와야함.")
+    event1 () {
+      this.$router.push({ path: 'createproblem' })
+    },
+    event2 () {
+      this.$router.push({ path: 'createinfo' })
     }
   }
 }

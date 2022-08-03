@@ -11,7 +11,7 @@
           <p class="font-weight-bold text-grey ma-0">오채명</p>
         </v-col>
         <v-col cols="1" class="pa-0">
-          <v-icon type="button" @click="event()">mdi-plus</v-icon>
+          <v-icon type="button" @click="event()">mdi-book</v-icon>
         </v-col>
 
         <v-col cols="3">
@@ -83,6 +83,7 @@
 import StudyList from "./StudyList.vue"
 import MyStudyList from "./MyStudyList.vue"
 import SideBar from "@/components/SideBar.vue"
+import router from "@/router"
 
 
 export default {
@@ -120,7 +121,7 @@ export default {
   },
   methods:{
     event () {
-      alert("스터디 구인 공고 모달 나와야 함")
+      router.push({ path: 'createstudy' })
     }
   }
 }
