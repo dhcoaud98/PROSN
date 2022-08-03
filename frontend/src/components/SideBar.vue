@@ -47,14 +47,14 @@
       <!-- 2. 오늘의 유저 -->
       <v-card class="mx-auto mb-5" height ="330px" color="#EDE7F6">
         <v-card-text>
-          <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 유저 랭킹</p>
+          <p class="text-h6 text--primary d-flex justify-center mb-0 color--#f3f3f3">{{nowDate}} 유저 랭킹</p>
           <p class="text-right">{{nowDate}} {{nowTime}} 실시간</p>
           <v-row>
             <v-col cols="12">
               <v-card color="transparent"  flat="true">
                 <v-list two-line>
                   <template v-for="item in items.slice(0, 6)">
-                    <v-list-item height="5px" :key="item.name">
+                    <v-list-item height="5px">
                       <v-list-item-avatar>
                         <img :src="item.avatar">
                       </v-list-item-avatar>
