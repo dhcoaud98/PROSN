@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mx-5 mt-5">
+  <v-container class="mt-5 mx-2 mb-0">
     <!-- row 1. 제목 -->
     <v-row>
       <p class="font-parent-lar">
@@ -15,20 +15,30 @@
       - 그리고 그 텍스트 값을 notelist로 내려줘야 함
     -->
     <v-row class="bottom-border-grey pb-5 mr-2">
-      <v-chip class="mr-2 my-2" outlined @click="selectCategory(whole, '전체')" id="whole" small>#전체</v-chip>
-      <div v-for="category in categories" :key="category.toDB">
-        <v-chip class="mr-2 my-2" outlined :id="category.toDB" @click="selectCategory(category.toDB,category.toUser)" small>
-          #{{category.toUser}}</v-chip>
-      </div>
+      <v-chip-group column mandatory active-class="clicked-chip">
+        <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('전체')" id="whole" small>#전체</v-chip>
+        <div v-for="category in categories" :key="category.toDB">
+          <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toUser)" small>
+            #{{category.toUser}}</v-chip>
+        </div>
+      </v-chip-group>
     </v-row>
 
     <!-- row 3: 선택한 카테고리 -->
-    <v-row class="mt-5 mr-2">
-      <p class="mt-5 ml-2 font-parent-lar font-weight-bold">#{{ selected }}</p>
+    <v-row class="mt-2 mr-0">
+      <v-col class="bottom-border-grey">
+        <p class="font-parent-lar font-weight-bold mb-1">#{{ selected }}</p>
+      </v-col>
     </v-row>
 
     <!-- row4. note list -->
-    <v-row>
+    <v-row class="ml-2">
+      <p class="font-parent-mid-l font-weight-bold bottom-border-grey mt-3">작성 전 문제</p>
+      <note-list></note-list>
+    </v-row>
+    <hr class="my-5 border-grey">
+    <v-row class="ml-2">
+      <p class="font-parent-mid-l font-weight-bold bottom-border-grey">이미 작성한 문제</p>
       <note-list></note-list>
     </v-row>
   </v-container>
@@ -60,12 +70,8 @@ export default {
     }
   },
   methods: {
-    selectCategory(id, categoryName) {
+    selectCategory(categoryName) {
       this.selected = categoryName
-      
-      const targetChip = document.querySelector(`#${id}`)
-      console.log(targetChip)
-      targetChip.setAttribute("color", "#A384FF")
     }
   }
 }
@@ -73,10 +79,20 @@ export default {
 
 <style>
 .clicked-chip {
-  background-color: #a394ff;
-  color: white;
+  background-color: #a394ff !important;
+  color: white !important;
+  border: none;
 }
 .bottom-border-grey {
   border-bottom: 1px solid #d9d9d9;
+}
+.theme--light.v-chip:not(.v-chip--active) {
+  background: white;
+}
+.row {
+  margin: auto;
+}
+.font-parent-mid-l {
+  font-size: 1em;
 }
 </style>
