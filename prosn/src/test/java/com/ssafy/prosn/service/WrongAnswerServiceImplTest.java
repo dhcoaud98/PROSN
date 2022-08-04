@@ -9,7 +9,6 @@ import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.profiile.note.WrongAnswerRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * created by seongmin on 2022/08/01

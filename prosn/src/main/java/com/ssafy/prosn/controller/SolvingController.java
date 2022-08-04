@@ -28,7 +28,7 @@ public class SolvingController {
     /**
      * 유저 아이디에 맞는 문제풀이 현황을 불러오는 메서드
      */
-    @GetMapping("/getSolving")
+    @GetMapping("/{id}")
     @ApiOperation(value = "풀이한 문제 불러오기", notes = "풀이된 문제를 불러온다.")
     public ResponseEntity<?> getAllSolving() {
         UserResponseDto userInfo = userService.getMyInfoBySecret();
