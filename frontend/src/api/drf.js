@@ -6,9 +6,10 @@ const USER = 'user/'
 
 
 export default {
-  user: {
+  accounts: {
     login: () => HOST + USER +'login/',
     join: () => HOST + USER + 'join/',
+
 
   }
 }
