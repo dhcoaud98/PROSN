@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("api/wrongAnswer")
+@RequestMapping("/api/wrongAnswer")
 public class WrongAnswerController {
 
     private final WrongAnswerService wrongAnswerService;

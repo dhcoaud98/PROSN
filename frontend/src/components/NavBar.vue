@@ -11,18 +11,26 @@
         <v-list-item class="mt-5">
           <v-list-item-content>
             <v-list-item-title>
-              <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5"></v-img>
+              <router-link to="/">
+                <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5" id="mainPage"></v-img>
+              </router-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
         <v-list nav>
-          <v-list-item>
+          <v-list-item v-for="(item, i) in items" :key="i">
 
-            <v-list-item-content>
-              <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5">스터디</v-list-item-title>
-              <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5">오답노트</v-list-item-title>
-              <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5">내 프로필</v-list-item-title>
+            <v-list-item-content class="py-0 font-parent-mid">
+              <!-- <네브바만 남기고 오른쪽 영역 갈아끼기> 0729 임지민
+                클릭하면 to 속성 변경-> app.vue에서 해야하는데 컴포넌트 구조가 복잡해서 prop하고 emit하기가 어려울 것 같다.
+                그래서 vuex를 활용해서 특정 요소를 클릭하면 app.vue의 router-view/link의 name/to 속성을 바꾼다.
+                  - 클릭하면 vuex로 fetch해서 요소를 바꾸고
+                그래서 app.vue가 created될 때 vuex에서 state를 가져와서 띄운다.
+               -->
+              <router-link :to="`/${item.urlName}`" class="text-decoration-none black--text">
+                <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5" :id="item.urlName">{{ item.text }}</v-list-item-title>
+              </router-link>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -69,15 +77,49 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
+  name: 'NavBar',
   data () {
     return {
-      loginDisplay: 'd-flex'
+      loginDisplay: 'd-flex',
+      items: [
+        { 
+          text: '스터디',
+          urlName: 'study',
+        },
+        { 
+          text: '오답노트',
+          urlName: 'note',
+        },
+        { 
+          text: '내 프로필',
+          urlName: 'profile',
+        },
+
+      ]
+    }
+  },
+  watch: {
+    // url이 바뀔 때마다 감시해서 nav바 상태 바꿔주기
+    $route(to, from) {
+      //console.log(to) // 도착지
+      //console.log(from) // 출발지
+      if(to.name !== 'mainPage') {
+        // 도착지의 name에 해당하는 태그는 clicked-tab을 넣고
+        const toTag = document.querySelector(`#${to.name}`)
+        toTag.classList.add('clicked-tab')
+      }
+      // 출발지의 name에 해당하는 태그는 clicked-tab을 빼기
+      const fromTag = document.querySelector(`#${from.name}`)
+      fromTag.classList.remove('clicked-tab')
     }
   },
   methods: {
-    // onClick event 사용: 한번 클릭하면 bold + 보라색, 다시 클릭하면 원상태로 돌아오게
-  }
+    
+  },
+  
 }
 </script>
 
@@ -92,6 +134,10 @@ export default {
     border-left: solid 5px #A384FF;
     font-weight: bold;
   }
+  .clicked-tab {
+    border-left: solid 5px #A384FF;
+    font-weight: bold;
+  }
   .v-application--wrap {
     max-width: 280px;
   }
@@ -100,5 +146,18 @@ export default {
   }
   .v-navigation-drawer__border {
     background-color: #f5f5f5;
+  }
+
+  /* 네브바 box shadow, 선 없애기 */
+  .v-sheet.v-card:not(.v-sheet--outlined) {
+    box-shadow: none;
+  }
+  .theme--light.v-navigation-drawer:not(.v-navigation-drawer--floating) .v-navigation-drawer__border {
+    background-color: transparent;
+  }
+
+  /* 각 탭 아래에 생기는 마진 없애기 */
+  .v-list--nav .v-list-item:not(:last-child):not(:only-child), .v-list--rounded .v-list-item:not(:last-child):not(:only-child) {
+    margin-bottom: 0;
   }
 </style>

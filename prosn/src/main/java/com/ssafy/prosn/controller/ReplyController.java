@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("api/reply")
+@RequestMapping("/api/reply")
 public class ReplyController {
 
     private final ReplyService replyService;

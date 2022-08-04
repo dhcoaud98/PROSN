@@ -4,6 +4,9 @@ spring:
     url: jdbc:mysql://localhost:3306/prosn?serverTimezone=UTC&characterEncoding=UTF-8
     username: prosn
     password: prosn705@#
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
 
 
   mail:

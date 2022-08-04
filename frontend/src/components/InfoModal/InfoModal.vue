@@ -1,17 +1,21 @@
 <template>
   <!-- 2022.07.26 정보 모달 (남성은) -->
-  <v-container>
-    <v-row justify="space-around">
-      <v-card width="500">
+  <!-- 2022.08.04 댓글보기 버튼 활성화 (남성은) -->
+  <v-container class="rounded-lg">
+    <v-row class="d-flex justify-center">
+      <!-- 정보부분 (항상 떠있음) -->
+      <v-col cols="6" width="600" class="pa-0 info-modal-white">            
         <v-card-text class="d-flex justify-space-between">
           <a href="" class="font-weight-bold text-decoration-none black--text">크게보기</a>
           <a href="" class="font-weight-bold text-decoration-none black--text">뒤로가기</a>
         </v-card-text>
+
         <!-- 정보 제목 -->
-        <!-- {{ problem.pk }}. {{ problem.MAIN_TEXT}} -->
+        <!-- {{ info.pk }}. {{ info.MAIN_TEXT}} -->
         <v-card-title class="font-weight-bold black--text">
-          <h2>158. 정보 표현의 기본 장치</h2> 
+          <h2>158. 정보 표현의 기본 장치에 대하여</h2> 
         </v-card-title>
+
         <!-- 정보 본문 -->
         <v-card-text>
           <!-- 카테고리 라벨 -->
@@ -20,6 +24,7 @@
             <v-chip small color="#A384FF" class="white--text">http</v-chip>
           </div>
         </v-card-text>
+
         <!-- 내용 error: 스크롤 안생김-->
         <v-card-text class="font-weight-bold mb-2">
             <v-container>
@@ -60,23 +65,64 @@
             </v-container>
             <hr>
             <!-- 댓글보기 -->
-            <v-btn text class="font-weight-bold mt-2">댓글보기</v-btn>           
+            <v-btn @click="showReplies" id="show-replies-btn" class="font-weight-bold mt-2" text>댓글보기</v-btn>
+            <v-btn @click="noShowReplies" id="no-show-replies-btn" class="d-none font-weight-bold mt-2" text>댓글접기</v-btn>
         </v-card-text>
-      </v-card>
+      </v-col>
+
+      <!-- 평소에는 안보이는 세로선 -->
+      <v-divider id="show-divider" class="my-5 d-none" vertical></v-divider>
+
+      <!-- 평소에는 안보이는 댓글창 -->
+      <v-col cols="6" width="600" id="show-replies" class="pa-0 d-none">
+        <info-modal-reply></info-modal-reply>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-  export default {
-    name: "InfoModal",
-    data () {
-      return {
-      }
+import InfoModalReply from './InfoModalReply.vue'
+
+export default {
+  name: "InfoModal",
+  components: {
+    InfoModalReply,
+  },
+  data () {
+    return {
     }
+  },
+  methods: {
+    showReplies: function (event) {
+      const showRepliesBtn = document.querySelector("#show-replies-btn")
+      const noShowRepliesBtn = document.querySelector("#no-show-replies-btn")
+      const showDivider = document.querySelector("#show-divider")
+      const showReplies = document.querySelector("#show-replies")
+
+      showRepliesBtn.setAttribute("class", "d-none")
+      noShowRepliesBtn.setAttribute("class", "font-weight-bold mt-2 v-btn v-btn--text theme--light v-size--default")
+      showDivider.setAttribute("class", "my-5 v-divider v-divider--vertical theme--light")
+      showReplies.setAttribute("class", "pa-0 col col-6 info-modal-white")
+    },
+    // 2022.08.03. 댓글접기 버튼 누를 때
+    noShowReplies: function (event) {
+      const showRepliesBtn = document.querySelector("#show-replies-btn")
+      const noShowRepliesBtn = document.querySelector("#no-show-replies-btn")
+      const showDivider = document.querySelector("#show-divider")
+      const showReplies = document.querySelector("#show-replies")
+
+      showRepliesBtn.setAttribute("class", "font-weight-bold mt-2 v-btn v-btn--text theme--light v-size--default")
+      noShowRepliesBtn.setAttribute("class", "d-none")
+      showDivider.setAttribute("class", "d-none")
+      showReplies.setAttribute("class", "d-none")    
+    },
   }
+}
 </script>
 
 <style>
-
+.info-modal-white {
+  background-color: white;
+}
 </style>
