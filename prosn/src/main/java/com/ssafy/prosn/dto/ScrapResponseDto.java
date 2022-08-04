@@ -11,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class PostListFolderResponseDto {
-    // PostList 폴더 아이디
-    private Long id;
-    // 폴더 이름
+public class ScrapResponseDto {
+    private Long pid;
     private String title;
 }

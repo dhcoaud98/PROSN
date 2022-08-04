@@ -34,7 +34,6 @@ public class PostListServiceImpl implements PostListService {
             result.add(new PostListFolderResponseDto(postList.getId(), postList.getTitle()));
         }
 
-
         return result;
     }
 }
