@@ -2,7 +2,7 @@ package com.ssafy.prosn.domain.user;
 
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.post.Post;
-import com.ssafy.prosn.domain.profile.scrap.ProblemList;
+import com.ssafy.prosn.domain.profile.scrap.PostList;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/18
- * updated by seongmin on 2022/07/28
+ * updated by seongmin on 2022/08/04
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -34,7 +34,7 @@ public abstract class User extends BaseEntity {
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<ProblemList> problemLists = new ArrayList<>();
+    private List<PostList> postLists = new ArrayList<>();
 
     @ColumnDefault("0")
     private Integer point;
