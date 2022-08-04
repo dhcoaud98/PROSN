@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation v-model="value" class="sticky-bottom align-center justify-space-around">
+  <v-bottom-navigation v-model="icons.value" class="sticky-bottom align-center justify-space-around">
     <div v-for="icon in icons" :key="icon.text">
       <router-link :to="icon.urlName">
         <button type="button" :value="icon.value" class="col-3 pa-0 transparent">
