@@ -59,11 +59,10 @@ class CommentServiceImplTest {
         User user = userRepository.findAll().get(0);
         Post post = postRepository.findAll().get(0);
         CommentRequestDto commentDto = CommentRequestDto.builder()
-                .uid(user.getId())
                 .pid(post.getId())
                 .mainText("잘봤습니다.")
                 .build();
-        Comment write = commentService.write(commentDto);
+        Comment write = commentService.write(commentDto, user.getId());
         Comment comment = commentRepository.findAll().get(0);
         assertThat(write).isEqualTo(comment);
     }
@@ -75,12 +74,12 @@ class CommentServiceImplTest {
         Post post = postRepository.findAll().get(0);
 
         CommentRequestDto commentDto = CommentRequestDto.builder()
-                .uid(user.getId())
                 .pid(post.getId())
                 .mainText("잘봤습니다.")
                 .build();
-        Comment write = commentService.write(commentDto);
+        Comment write = commentService.write(commentDto, user.getId());
 
+        // commentService.delete 에 토큰으로 사용자 정보 가져오는
         commentService.delete(write.getId(), user.getId());
 
         assertThat(commentRepository.findAll().size()).isEqualTo(0);
