@@ -11,5 +11,4 @@ import java.util.List;
  */
 public interface SolvingRepository extends JpaRepository<Solving, Long> {
     List<Solving> findSolvingByUserId(Long userId);
-    save
 }

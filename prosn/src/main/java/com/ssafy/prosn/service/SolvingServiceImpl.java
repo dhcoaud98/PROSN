@@ -1,6 +1,7 @@
 package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.post.PostTag;
+import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.profile.status.Solving;
 import com.ssafy.prosn.dto.SolvingResponseDto;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
@@ -23,7 +24,7 @@ import java.util.List;
 @Service
 public class SolvingServiceImpl implements SolvingService{
     private final SolvingRepository solvingRepository;
-//    private final PostTagRepository postTagRepository;
+    private final PostTagRepository postTagRepository;
 
     @Override
     public List<SolvingResponseDto> showAllSolving(Long userId) {
@@ -31,8 +32,15 @@ public class SolvingServiceImpl implements SolvingService{
         List<SolvingResponseDto> result = new ArrayList<>();
 
         for (Solving solving : solvings) {
+            List<PostTag> postTagByPost = postTagRepository.findPostTagByPost(solving.getProblem());
+            List<Tag> tags = new ArrayList<>();
+            for (PostTag postTag : postTagByPost) {
+                tags.add(postTag.getTag());
+            }
+
             result.add(SolvingResponseDto.builder()
                     .postId(solving.getId())
+                    .tagCode(tags)
                     .title(solving.getProblem().getTitle())
                     .isRight(solving.isRight())
                     .build());

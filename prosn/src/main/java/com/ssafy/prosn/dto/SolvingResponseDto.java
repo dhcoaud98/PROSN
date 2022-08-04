@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 public class SolvingResponseDto {
     private Long postId;
-//    private List<Tag> tags;
+    private List<Tag> tagCode;
     private String title;
     private boolean isRight;
 }
