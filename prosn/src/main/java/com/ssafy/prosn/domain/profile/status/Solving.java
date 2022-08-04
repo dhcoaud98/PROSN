@@ -5,17 +5,17 @@ import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.post.Problem;
 import com.ssafy.prosn.domain.user.User;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 /**
  * created by seongmin on 2022/07/22
+ * updated by yura on 2022/08/04
  */
+@Data
 @Entity
+@RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Solving extends BaseEntity {
@@ -37,10 +37,10 @@ public class Solving extends BaseEntity {
 
     @Convert(converter = BooleanToYNConverter.class)
     @ApiModelProperty(example = "풀이 여부")
-    private String isRight;
+    private boolean isRight;
 
     @Builder
-    public Solving(User user, Problem problem, String isRight) {
+    public Solving(User user, Problem problem, boolean isRight) {
         this.user = user;
         this.problem = problem;
         this.isRight = isRight;
