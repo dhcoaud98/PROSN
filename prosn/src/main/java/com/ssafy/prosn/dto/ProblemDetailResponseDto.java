@@ -1,6 +1,7 @@
 package com.ssafy.prosn.dto;
 
 import com.ssafy.prosn.domain.comment.Comment;
+import com.ssafy.prosn.domain.post.PostType;
 import com.ssafy.prosn.domain.post.Tag;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +23,8 @@ public class ProblemDetailResponseDto extends PostDetailResponseDto {
     private String answer;
 
     @Builder
-    public ProblemDetailResponseDto(Long id, String title, Long numOfLikes, Long numOfDislikes, List<Comment> comments, Integer views, UserResponseDto user, List<Tag> tags, String mainText, String example1, String example2, String example3, String example4, String answer) {
-        super(id, title, numOfLikes, numOfDislikes, comments, views, user, tags);
+    public ProblemDetailResponseDto(Long id, String title, Long numOfLikes, Long numOfDislikes, List<Comment> comments, Integer views, UserResponseDto user, List<Tag> tags, String mainText, String example1, String example2, String example3, String example4, String answer, PostType type) {
+        super(id, title, numOfLikes, numOfDislikes, comments, views, user, tags, type);
         this.mainText = mainText;
         this.example1 = example1;
         this.example2 = example2;
