@@ -10,5 +10,6 @@ import java.util.List;
  * created by yura on 2022/08/01
  */
 public interface SolvingRepository extends JpaRepository<Solving, Long> {
-    List<SolvingResponseDto> findSolvingByUser(Long userId);
+    List<Solving> findSolvingByUserId(Long userId);
+    save
 }
