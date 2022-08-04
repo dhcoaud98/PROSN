@@ -13,9 +13,8 @@ import javax.persistence.*;
  * created by seongmin on 2022/07/22
  * updated by yura on 2022/08/04
  */
-@Data
 @Entity
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Solving extends BaseEntity {
