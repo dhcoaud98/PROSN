@@ -1,9 +1,10 @@
 <template>
   <!-- 2022.07.26 문제 모달 (남성은) -->
+  <!-- 2022.08.03 댓글보기 버튼 활성화 (남성은) -->
     <v-container class="rounded-lg">
       <v-row class="d-flex justify-center">
         <!-- 문제부분 (항상 떠있음) -->
-        <v-col cols="6" width="600" class="pa-0">              
+        <v-col cols="6" width="600" class="pa-0 info-modal-white">              
           <v-card-text class="d-flex justify-space-between">
             <a href="" class="font-weight-bold text-decoration-none black--text">크게보기</a>
             <a href="" class="font-weight-bold text-decoration-none black--text">뒤로가기</a>
@@ -114,7 +115,7 @@ export default {
       showRepliesBtn.setAttribute("class", "d-none")
       noShowRepliesBtn.setAttribute("class", "font-weight-bold mt-2 v-btn v-btn--text theme--light v-size--default")
       showDivider.setAttribute("class", "my-5 v-divider v-divider--vertical theme--light")
-      showReplies.setAttribute("class", "pa-0 col col-6")
+      showReplies.setAttribute("class", "pa-0 col col-6 info-modal-white")
     },
     // 2022.08.03. 댓글접기 버튼 누를 때
     noShowReplies: function (event) {
@@ -133,5 +134,7 @@ export default {
 </script>
 
 <style>
-
+.info-modal-white {
+  background-color: white;
+}
 </style>
