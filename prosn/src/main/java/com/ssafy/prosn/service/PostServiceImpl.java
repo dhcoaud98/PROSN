@@ -21,6 +21,7 @@ import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/25
+ * updated by seongmin on 2022/08/01
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -29,7 +30,6 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final ProblemRepository problemRepository;
     private final UserRepository userRepository;
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
@@ -37,11 +37,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Post writeProblem(ProblemRequestDto problemDto) {
-        Optional<User> user = userRepository.findById(problemDto.getUid());
-        user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+    public Post writeProblem(ProblemRequestDto problemDto, Long uid) {
+        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Problem problem = Problem.builder()
-                .user(user.get())
+                .user(user)
                 .title(problemDto.getTitle())
                 .answer(problemDto.getAnswer())
                 .example1(problemDto.getEx1())
@@ -56,11 +56,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Post writeInformation(InformationRequestDto informationDto) {
-        Optional<User> user = userRepository.findById(informationDto.getUid());
-        user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+    public Post writeInformation(InformationRequestDto informationDto, Long uid) {
+        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Information information = Information.builder()
-                .user(user.get())
+                .user(user)
                 .mainText(informationDto.getMainText())
                 .title(informationDto.getTitle())
                 .build();
@@ -72,10 +72,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        Optional<Post> post = postRepository.findById(id);
-        post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
-        post.get().remove();
+    public void delete(Long id, Long uid) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+        if(!post.getUser().getId().equals(uid))
+            throw new IllegalArgumentException("내가 쓴 게시글만 삭제 가능합니다.");
+
+        post.remove();
     }
 
     /**
@@ -85,12 +87,11 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostDetailResponseDto showProblemDetail(Long id) {
-        Optional<Post> post = postRepository.findById(id);
-        post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
-        log.info("post type = {}", post.get().getClass());
-        if(post.get() instanceof Problem) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+        log.info("post type = {}", post.getClass());
+        if(post instanceof Problem) {
             log.info("문제 디테일");
-            Problem problem = (Problem) post.get();
+            Problem problem = (Problem) post;
             if(problem.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
             return ProblemDetailResponseDto.builder()
                     .title(problem.getTitle())
@@ -108,9 +109,9 @@ public class PostServiceImpl implements PostService {
                     .views(problem.getViews())
                     .tags(getTags(problem))
                     .build();
-        } else if(post.get() instanceof Information) {
+        } else if(post instanceof Information) {
             log.info("정보 디테일");
-            Information information = (Information) post.get();
+            Information information = (Information) post;
             if(information.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
 
             return InformationDetailResponseDto.builder()
@@ -147,22 +148,37 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void likeDislikeClick(Long uid, Long pid, boolean type) {
-        Optional<User> user = userRepository.findById(uid);
-        Optional<Post> post = postRepository.findById(pid);
-        user.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-        post.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+    public void likeDislikeClick(LikeDisLikeRequestDto dto, Long uid) {
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        Post post = postRepository.findById(dto.getPid()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
 
-        Optional<LikeDislike> result = likeDislikeRepository.findByPostAndUser(post.get(), user.get());
+        Optional<LikeDislike> result = likeDislikeRepository.findByPostAndUser(post, user);
         if(result.isPresent()) {
-            if(result.get().isType() == type) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
+            if(result.get().isType() == dto.isType()) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
                 likeDislikeRepository.delete(result.get());
             } else { // 예전에 누른거랑 반대버튼 누른 경우 체인지 좋<->싫
                 result.get().change();
             }
         } else {
-            likeDislikeRepository.save(new LikeDislike(user.get(), post.get(), type));
+            likeDislikeRepository.save(new LikeDislike(user, post, dto.isType()));
         }
+    }
+
+    @Override
+    public List<PostAllResponseDto> searchPost(PostSearchRequestDto dto) {
+        List<PostTag> postTags = postRepository.searchPost(dto.getTitle(), dto.getCode());
+        List<PostAllResponseDto> result = new ArrayList<>();
+        for (PostTag postTag : postTags) {
+            PostAllResponseDto post = new PostAllResponseDto(
+                    postTag.getPost().getId(),
+                    new UserResponseDto(postTag.getPost().getUser().getId(), postTag.getPost().getUser().getName()),
+                    postTag.getPost().getTitle(),
+                    postTag.getPost().getViews(),
+                    postTag.getPost().getNumOfLikes(),
+                    postTag.getPost().getNumOfDislikes());
+            result.add(post);
+        }
+        return result;
     }
 
     private List<Tag> getTags(Post post) {
