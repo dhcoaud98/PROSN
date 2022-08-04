@@ -1,17 +1,17 @@
 <template>
   <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
   <v-container fluid class="bg-grey">
-    <v-navigation-drawer right class="mt-5 ml-3 d-md-none d-md-flex">
+    <v-navigation-drawer right class="mt-1 ml-3 d-md-none d-md-flex">
       <v-row>
         <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
         <v-col col="6" class="d-flex justify-center">{{ userName }}</v-col>
         
         <v-col col="6" class="d-flex justify-center">
-          <li v-if="!isLoggedIn">
-            <router-link to="/login" class="text-decoration-none black--text">login</router-link>
+          <li style="list-style: none;" v-if="!isLoggedIn">
+            <router-link to="/login" class="text-decoration-none black--text"><v-btn rounded class="pink white--text">login</v-btn></router-link>
           </li>
-          <li v-if="isLoggedIn">
-            <v-btn class="text-decoration-none black--text " @click="logout">logout</v-btn>
+          <li style="list-style: none;" v-if="isLoggedIn">
+            <v-btn rounded class="text-decoration-none black--text pink white--text" @click="logout">logout</v-btn>
           </li>
         </v-col>
         

@@ -4,7 +4,7 @@
     <v-row>
 
       <!-- col 1: 메인 피드 부분 -->
-      <v-col class="mt-2 white">
+      <v-col cols="12" md="8" class="mt-2 white">
         <study-center></study-center> 
       </v-col>
     
