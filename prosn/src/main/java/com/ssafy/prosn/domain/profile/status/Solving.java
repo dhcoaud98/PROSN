@@ -4,34 +4,39 @@ import com.ssafy.prosn.converter.BooleanToYNConverter;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.post.Problem;
 import com.ssafy.prosn.domain.user.User;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 import javax.persistence.*;
 
 /**
  * created by seongmin on 2022/07/22
+ * updated by yura on 2022/08/04
  */
+@Data
 @Entity
+@RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Solving extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(example = "문제 id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @ApiModelProperty(example = "사용자 id")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
+    @ApiModelProperty(example = "게시글 id")
     private Problem problem;
 
     @Convert(converter = BooleanToYNConverter.class)
+    @ApiModelProperty(example = "풀이 여부")
     private boolean isRight;
 
     @Builder
