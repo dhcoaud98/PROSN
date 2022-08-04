@@ -10,6 +10,5 @@ import java.util.List;
  * created by yura on 2022/08/01
  */
 public interface SolvingService {
-    Solving saveSolving(SolvingRequestDto solvingRequestDto);
-    List<SolvingResponseDto> showAllSolving();
+    List<SolvingResponseDto> showAllSolving(Long userId);
 }
