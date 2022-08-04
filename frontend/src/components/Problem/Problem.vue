@@ -63,16 +63,27 @@
           </v-row>
         </v-form>
       </v-container>
-      <hr>
+    </v-row>
+
+    <v-divider color="#A384FF" class="mt-3"></v-divider>
+      
+    <v-row>
       <!-- 댓글보기 -->
-      <v-btn text class="font-weight-bold mt-2">댓글보기</v-btn>
-    </v-row>            
+      <v-col cols="12" class="pa-0">
+        <problem-reply></problem-reply>
+      </v-col>           
+    </v-row>  
   </v-container>
 </template>
 
 <script>
-export default {
+import ProblemReply from '@/components/ProblemModal/ProblemReply.vue'
 
+export default {
+  name: 'Problem',
+  components: {
+    ProblemReply,
+  }
 }
 </script>
 
