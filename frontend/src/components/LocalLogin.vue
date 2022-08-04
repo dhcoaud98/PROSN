@@ -2,7 +2,7 @@
   <div>
     <!-- 2022.07.25. 회원 로그인정보 입력란 (남성은) -->
     <v-container class="my-5">
-      <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login(credentials)" class="ma-0 pa-0">
+      <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login" class="ma-0 pa-0">
         <v-row no-gutters>
           <v-col cols="9" class="ma-0 pe-3">
             <!-- 네임룰 추후 설정 필요 -->
@@ -26,7 +26,7 @@
 
           <!-- 로그인 버튼 -->
           <v-col cols="3">
-            <v-btn type="submit" color="#A384FF" class="white--text my-0 mx-5 py-5" height="100%" width="100%">로그인</v-btn>
+            <v-btn type="submit" color="#A384FF" class="white--text my-0 mx-5 py-5" height="100%" width="100%" >로그인</v-btn>
           </v-col>
         </v-row>
       </v-form>
@@ -34,7 +34,7 @@
       <!-- 회원가입/아이디찾기/비밀번호찾기 --> 
       <v-row class="mt-5">
         <v-col cols="12" class=" d-flex justify-center pa-0">
-          <p>아직 계정이 없으신가요?<a href="" class="black--text text-decoration-none"> 회원가입</a></p>
+          <p>아직 계정이 없으신가요?<router-link to="/signup" class="black--text text-decoration-none"> 회원가입</router-link></p>
         </v-col>
       
         <v-col cols="12" class="d-flex justify-space-around pa-0">
@@ -78,7 +78,10 @@
 //     },
 //   }
 
-  import { mapActions } from 'vuex'
+import axios from 'axios'
+import drf from '@/api/drf'
+import {mapState, mapActions } from 'vuex'
+  const accountStore = "accountStore"
 
   export default {
     // 2022.07.25. 아이디 (남성은)
@@ -100,7 +103,36 @@
       validate () {
         this.$refs.form.validate()
       },
-      ...mapActions(['login'])
+      // ...mapActions(['login'])
+      login() {
+        // axios.post(drf.accounts.login())
+        // .then(({res}) => {
+        //   console.log(res)
+        // })
+        axios({
+                url: drf.accounts.login(),
+                method: 'post',
+                data: this.credentials
+            })
+            .then(res => {
+                console.log("res = ",res);
+                console.log("accessToken = ",res.data.accessToken);
+                let grantType = res.data.grantType.replace(res.data.grantType.charAt(0), res.data.grantType.charAt(0).toUpperCase());
+                console.log("grantType:", grantType);
+                this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken)
+                this.$store.dispatch('saveName', res.data.name)
+                this.$router.push({ path: '/'})
+                // const token = res.data.key
+                // dispatch('saveToken', token)
+                // dispatch('fetchCurrentUser')
+            
+            })
+            .catch(err =>{
+                console.log("에러")
+                console.log(err)
+            })
+      },
+
     },
   }
 
@@ -108,4 +140,4 @@
 
 <style>
 
-</style>d
+</style>

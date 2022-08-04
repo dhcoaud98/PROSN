@@ -27,16 +27,24 @@
 
       <!-- 문제보기: 이것도 랜덤으로 for문 돌리기/ 체크박스로 라디오 묶는거....ㅠ-->
       <v-row>
-        <v-form>
+        <v-col>
           <v-row>
-            <v-radio-group column class="ms-5" v-model="active">
-              <v-radio label="보기1" color="info" value="보기1"></v-radio>
-              <v-radio label="보기2" color="info" value="보기2" off-icon="$radioOn"></v-radio>
-              <v-radio label="보기3" color="info" value="보기3"></v-radio>
-              <v-radio label="보기4" color="info" value="보기4"></v-radio>
-            </v-radio-group>
+            <input type="radio" value="보기1" id="check1" name="bogey">
+            <label for="check1" class="ml-2 font-parent-mid-l">보기 1</label>
           </v-row>
-        </v-form>
+          <v-row>
+            <input type="radio" value="보기2" id="check2" name="bogey">
+            <label for="check2" class="ml-2 font-parent-mid-l">보기 2</label>
+          </v-row>
+          <v-row>
+            <input type="radio" value="보기3" id="check3" name="bogey">
+            <label for="check3" class="ml-2 font-parent-mid-l">보기 3</label>
+          </v-row>
+          <v-row>
+            <input type="radio" value="보기4" id="check4" name="bogey">
+            <label for="check4" class="ml-2 font-parent-mid-l">보기 4</label>
+          </v-row>
+        </v-col>
       </v-row>
       
       <v-row>
@@ -103,17 +111,28 @@
 export default {
   data(){
     return {
-      myAnswer: '',
-      realAnswer: '',
     }
+  },
+  props: {
+    problem: Object,
   },
   methods :{
     selectMyAnswer() {
       // 클릭하면 내 정답에 해당되는 걸 위에 선지에서 표시
+      // script에 props로 값이 넘어오니까 this.어쩌구로 받아오기
       // v-model로 스크립트와 템플릿 연결하기
+      const myAnswer = this.problem.myAnswer
+      const targetMyAnswer = document.querySelector(`#check${myAnswer}`)
+      console.log('targetMyAnswer=', targetMyAnswer)
+      targetMyAnswer.checked=true
+      targetMyAnswer.setAttribute("style", "accent-color: red;")
     },
     selectRealAnswer() {
-
+      const realAnswer = this.problem.realAnswer
+      const targetRealAnswer = document.querySelector(`#check${realAnswer}`)
+      console.log('targetRealAnswer=', targetRealAnswer)
+      targetRealAnswer.checked=true
+      targetRealAnswer.setAttribute("style", "accent-color: green;")
     },
   }
 }
@@ -128,4 +147,5 @@ export default {
 .v-menu__content {
   box-shadow: none;
 }
+
 </style>
