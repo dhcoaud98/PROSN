@@ -1,94 +1,92 @@
 <template>
-  <v-row>
-    <v-col cols="12" md="8">
-    <!-- 1. 프로필 상단 -->
-      <v-row class="justify-center mt-10 mx-5 mb-0">
-        <!-- 뱃지, 이름 -->
-        <v-col cols="3" class="rank_box d-flex justify-center py-0">
-          <p class="font-weight-bold text-grey ma-0">Prosn</p>
-        </v-col>
-        <v-col cols="8" class="pa-0 pl-3">
-          <p class="font-weight-bold text-grey ma-0">오채명</p>
-        </v-col>
-        <v-col cols="1" class="pa-0">
-          <v-icon type="button" @click="event()">mdi-plus</v-icon>
-        </v-col>
-
-        <v-col cols="3">
-          <v-avatar size="100px" class="d-flex justify-center">
-            <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
-          </v-avatar>
-        </v-col>
-
-        <v-col cols="9">
-          <v-container class="detail">
-            <p class="detail_text ma-0 text-bold">문제 풀이 - 500</p>
-            <p class="detail_text ma-0">문제 제출 - 300</p>
-            <p class="detail_text">정답률 ----- 68%</p>
-          </v-container>
-        </v-col>
-        
-        <v-col cols="12">
-            <!-- lg 사이즈 이하에서는 태그 사라짐 -->
-            <!-- 카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" -->
-            <span class="category-tag text-center pa-1">#알고리즘</span>
-            <span class="category-tag pa-1">#최고</span>
-            <span class="category-tag pa-1">#CS</span>
-            <span class="category-tag pa-1">#어려워</span>
-            <span class="category-tag pa-1">#배고파</span>
-        </v-col>
-
-      </v-row>
-
-      <!-- 2. 프로필 하단 -->
-      <v-row class="profile_tab d-flex justify-center mt-10 mx-5 mb-0">
-        <v-toolbar dark tabs flat color="#A384FF" class="toolbar" height="45px">
-          <template>
-            <v-tabs v-model="tabs">
-              <v-col>
-                <v-tab class="pa-0" href="#one">문제 풀이 현황</v-tab>
-              </v-col>
-              <v-col>
-                <v-tab class="pa-0" href="#two">스크랩</v-tab>
-              </v-col>
-              <v-col>
-                <v-tab class="pa-0" href="#three">내가 쓴 게시글</v-tab>
-              </v-col>
-              <v-tabs-slider color="#A384FF"></v-tabs-slider>
-            </v-tabs>
-          </template>
-        </v-toolbar>
-      
-        <!-- <v-card-text class="d-flex ma-0">
-          <v-tabs-items v-model="tabs">
-            <v-tab-item v-for="content in ['one', 'two', 'three']" :key="content" :value="content">
-            </v-tab-item>
-          </v-tabs-items>
-        </v-card-text> -->
-        
-        <v-container class="ma-0 pa-0" v-if="activeFab.page === '1'">
-          <solved-problem-list></solved-problem-list>
-        </v-container>
-        <v-container class="ma-0 pa-0" v-if="activeFab.page === '2'">
-          <scrap-post-list></scrap-post-list>
-        </v-container>
-        <v-container class="ma-0 pa-0" v-if="activeFab.page === '3'">
-          <my-post-list></my-post-list>
-        </v-container>
-      </v-row>
-    </v-col>
+  <v-container class="mt-5 mx-2 mb-0">
+    <v-row>
+      <!-- 1. 프로필 상단 -->
+        <v-row class="justify-center mt-10 mx-5 mb-0">
+          <!-- 뱃지, 이름 -->
+          <v-col cols="3" class="rank_box d-flex justify-center py-0">
+            <p class="font-weight-bold text-grey ma-0">Prosn</p>
+          </v-col>
+          <v-col cols="7" class="pa-0 pl-3">
+            <p class="font-weight-bold text-grey ma-0">오채명</p>
+          </v-col>
+          <v-col cols="1" class="pa-0">
+            <v-icon type="button" @click="event1()">mdi-plus</v-icon>
+          </v-col>
+          <v-col cols="1" class="pa-0">
+            <v-icon type="button" @click="event2()">mdi-plus</v-icon>
+          </v-col>
   
-    <v-col md="4" class="d-md-flex d-md-none grey lighten-4">
-      <side-bar></side-bar>
-    </v-col>
-  </v-row>
+          <v-col cols="3">
+            <v-avatar size="100px" class="d-flex justify-center">
+              <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
+            </v-avatar>
+          </v-col>
+  
+          <v-col cols="9">
+            <v-container class="detail">
+              <p class="detail_text ma-0 text-bold">문제 풀이 - 500</p>
+              <p class="detail_text ma-0">문제 제출 - 300</p>
+              <p class="detail_text">정답률 ----- 68%</p>
+            </v-container>
+          </v-col>
+          
+          <v-col cols="12">
+              <!-- lg 사이즈 이하에서는 태그 사라짐 -->
+              <!-- 카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" -->
+              <span class="category-tag text-center pa-1">#알고리즘</span>
+              <span class="category-tag pa-1">#최고</span>
+              <span class="category-tag pa-1">#CS</span>
+              <span class="category-tag pa-1">#어려워</span>
+              <span class="category-tag pa-1">#배고파</span>
+          </v-col>
+  
+        </v-row>
+  
+        <!-- 2. 프로필 하단 -->
+        <v-row class="profile_tab d-flex justify-center mt-10 mx-5 mb-0">
+          <v-toolbar dark tabs flat color="#ffffff" class="toolbar" height="45px">
+            <template>
+              <v-tabs v-model="tabs">
+                <v-col>
+                  <v-tab class="tab--text pa-0" href="#one">문제 풀이 현황</v-tab>
+                </v-col>
+                <v-col>
+                  <v-tab class="tab--text pa-0" href="#two">스크랩</v-tab>
+                </v-col>
+                <v-col>
+                  <v-tab class="tab--text pa-0" href="#three">내가 쓴 게시글</v-tab>
+                </v-col>
+                <v-tabs-slider color="#A384FF"></v-tabs-slider>
+              </v-tabs>
+            </template>
+          </v-toolbar>
+        
+          <!-- <v-card-text class="d-flex ma-0">
+            <v-tabs-items v-model="tabs">
+              <v-tab-item v-for="content in ['one', 'two', 'three']" :key="content" :value="content">
+              </v-tab-item>
+            </v-tabs-items>
+          </v-card-text> -->
+          
+          <v-container class="ma-0 pa-0" v-if="activeFab.page === '1'">
+            <solved-problem-list></solved-problem-list>
+          </v-container>
+          <v-container class="ma-0 pa-0" v-if="activeFab.page === '2'">
+            <scrap-post-list></scrap-post-list>
+          </v-container>
+          <v-container class="ma-0 pa-0" v-if="activeFab.page === '3'">
+            <my-post-list></my-post-list>
+          </v-container>
+        </v-row>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import SolvedProblemList from "./SolvedProblemList.vue"
 import ScrapPostList from "./ScrapPostList.vue"
 import MyPostList from "./MyPostList.vue"
-import SideBar from "@/components/SideBar.vue"
 
 
 export default {
@@ -97,7 +95,6 @@ export default {
     SolvedProblemList,
     ScrapPostList,
     MyPostList,
-    SideBar,
   },
   data () {
     return {
@@ -127,8 +124,11 @@ export default {
     },
   },
   methods:{
-    event () {
-      alert("문제/정보 작성하기 나와야함.")
+    event1 () {
+      this.$router.push({ path: 'createproblem' })
+    },
+    event2 () {
+      this.$router.push({ path: 'createinfo' })
     }
   }
 }
@@ -169,6 +169,9 @@ export default {
 .detail_text {
   font-size: 16px;
   font-weight: 500;
+}
+.tab--text {
+  color: #000000 !important;
 }
 </style>
 

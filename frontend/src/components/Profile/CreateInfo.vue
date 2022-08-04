@@ -1,6 +1,6 @@
 <template>
   <!-- 2022.08.02 정보글 작성 (남성은) -->
-  <v-container fluid class="mt-2 rounded-lg create-something" >
+  <v-container fluid class="mt-5 rounded-lg create-something" >
     <!-- 정보게시하기 -->
     <v-row>
       <v-col cols="12" class="ma-3">
@@ -16,8 +16,7 @@
         <v-row class="mx-2 mt-5">
           <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">카테고리</p></v-col>
           <v-col class="col-12 pa-0">
-            <!-- 이거 다시 따져볼 필요성이 있음 -->
-            <v-autocomplete :items="categoriesItems" label="주제를 선택하세요 (복수선택 가능)" required dense chips small-chips multiple></v-autocomplete>          
+            <v-autocomplete :items="categories" item-text="toUser" item-value="toDB" label="주제를 선택하세요 (복수선택 가능)" required dense chips small-chips multiple></v-autocomplete>          
           </v-col>
         </v-row>
 
@@ -33,7 +32,7 @@
         <v-row class="mx-2 mt-5 mb-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">지문</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea label="글 내용을 입력하세요" rows="15" counter required dense></v-textarea>
+            <v-textarea label="글 내용을 입력하세요" rows="15" no-resize counter required dense></v-textarea>
           </v-col>
         </v-row>
 
@@ -43,7 +42,7 @@
         <v-row class="my-2 ">
           <v-col cols="12" class="d-flex justify-end pa-0">
             <!-- router - 1  -->
-            <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5">취소하기</v-btn>
+            <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5" @click="cancel()">취소하기</v-btn>
             <!-- submit -->
             <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5">게시하기</v-btn>
           </v-col>
@@ -56,11 +55,28 @@
 export default {
   name: 'CreateProblem',
   data: () => ({
-      categoriesItems: ['네트워크', '운영체제', '자료구조', '데이터베이스', '알고리즘', '객체지향', '프로그래밍 언어', '컴퓨터구조', '기술동향', '보안', '기타'],
-      categories: ['NW', 'OS', 'DS', 'DB', 'AL', 'OOP', 'PL', 'CS', 'TC', 'SC', 'ETC'],
+      // 카테고리 데이터
+      categories: [
+        {toDB:"NW", toUser: "네트워크"},
+        {toDB:"OS", toUser: "운영체제"},
+        {toDB:"DS", toUser: "자료구조"},
+        {toDB:"DB", toUser: "데이터베이스"},
+        {toDB:"AL", toUser: "알고리즘"},
+        {toDB:"OOP", toUser: "객체지향"},
+        {toDB:"PL", toUser: "프로그래밍 언어"},
+        {toDB:"CS", toUser: "컴퓨터 구조"},
+        {toDB:"TC", toUser: "기술동향"},
+        {toDB:"SC", toUser: "보안"},
+        {toDB:"ETC", toUser: "기타"},
+      ],
       credentials: {
       }
     }),
+  methods: {
+    cancel () {
+      this.$router.push({ path: 'profile' })
+    }
+  }
 }
 </script>
 

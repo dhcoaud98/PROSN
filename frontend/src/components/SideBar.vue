@@ -26,7 +26,7 @@
           <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 인기 문제</p>
           <p class="text-right ma-0 mb-2">{{nowDate}} {{nowTime}} 실시간</p>
           <p class="text-h6 mb-0">No.1 [문제 제목]</p>
-          <v-container class="grey lighten-5 mb-4" elevation="3">
+          <v-container class="grey lighten-5 mb-4 pa-0" elevation="3">
             <v-row>
               <v-col col="4" class="d-flex justify-center pink darken-2">추천</v-col>
               <v-col col="4" class="d-flex justify-center pink lighten-2">참여자</v-col>
@@ -34,7 +34,7 @@
             </v-row>
           </v-container>
           <p class="text-h6 mb-0">No.2 [문제 제목]</p>
-          <v-container class="grey lighten-5">
+          <v-container class="grey lighten-5 pa-0">
             <v-row>
               <v-col cols="4" class="d-flex justify-center pink darken-2" color="red">추천</v-col>
               <v-col cols="4" class="d-flex justify-center pink lighten-2">참여자</v-col>
@@ -47,14 +47,14 @@
       <!-- 2. 오늘의 유저 -->
       <v-card class="mx-auto mb-5" height ="330px" color="#EDE7F6">
         <v-card-text>
-          <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 유저 랭킹</p>
+          <p class="text-h6 text--primary d-flex justify-center mb-0 color--#f3f3f3">{{nowDate}} 유저 랭킹</p>
           <p class="text-right">{{nowDate}} {{nowTime}} 실시간</p>
           <v-row>
             <v-col cols="12">
               <v-card color="transparent"  flat="true">
                 <v-list two-line>
                   <template v-for="item in items.slice(0, 6)">
-                    <v-list-item height="5px" :key="item.name">
+                    <v-list-item height="5px">
                       <v-list-item-avatar>
                         <img :src="item.avatar">
                       </v-list-item-avatar>

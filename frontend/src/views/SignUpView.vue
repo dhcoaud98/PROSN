@@ -139,6 +139,7 @@
 
 <script>
 export default {
+    name: 'SignUpView',
     data: () => ({
         valid: true,
         id: '',

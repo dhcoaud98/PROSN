@@ -12,7 +12,7 @@
         <v-col xl="3" lg="3" md="3" sm="3" class="d-none d-sm-flex">
           <nav-bar></nav-bar>
         </v-col>
-        <v-col xl="9" lg="9" md="9" sm="9">
+        <v-col xl="9" lg="9" md="9" sm="9" >
           <!-- url이 변경됨에 따라 계속 바뀌는 위치(0729 임지민) -->
           <!-- router/index.js에서 정의한 components의 컴포넌트를 띄워줌(0801 임지민) -->
           <router-view></router-view>
@@ -53,12 +53,6 @@ export default {
     SideBar,
     MainPageView,
   },
-  /* created: {
-    changeRouterView () {
-      // store에서 componentName 가져오기
-      this.componentName 
-    }
-  } */
 };
 </script>
 

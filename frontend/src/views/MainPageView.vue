@@ -1,17 +1,17 @@
 <template>
-  <v-container fluid class="mt-2 white">
+  <v-container fluid>
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row>
 
       <!-- col 1: 메인 피드 부분 -->
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="8" class="mt-2 white">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
         <v-row class="bottom-line justify-center mt-5 mx-5">
           <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover">
-            <p class="text-center mb-0 font-weight-bold text-grey">문제/문제집</p>
+            <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">문제/문제집</p>
           </v-col>
           <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover">
-            <p class="text-center mb-0 font-weight-bold text-grey">정보</p>
+            <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">정보</p>
           </v-col>
         </v-row>
 
@@ -72,5 +72,22 @@ export default {
   }
   .w-100 {
     width: 100%;
+  }
+
+  /* 2022.08.02. 커스텀 스크롤바 */
+  /* 필요한 다른 view에서 가져다 쓰면 됨 */
+  ::-webkit-scrollbar {
+      width: 8px;  /* 스크롤바의 너비 */
+  }
+
+  ::-webkit-scrollbar-thumb {
+      height: 30%; /* 스크롤바의 길이 */
+      background: #A384FF; /* 스크롤바의 색상 */
+
+      border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+      background: rgba(172, 35, 252, 0.2);  /*스크롤바 뒷 배경 색상*/
   }
 </style>
