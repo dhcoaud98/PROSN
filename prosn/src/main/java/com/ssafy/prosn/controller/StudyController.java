@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/study")
+@RequestMapping("/api/study")
 public class StudyController {
 
     private final UserService userService;

@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("api/solving")
+@RequestMapping("/api/solving")
 public class SolvingController {
 
     private final SolvingService solvingService;
@@ -39,6 +39,7 @@ public class SolvingController {
     @GetMapping("/getSolving")
     @ApiOperation(value = "풀이한 문제 불러오기", notes = "풀이된 문제를 불러온다.")
     public ResponseEntity<?> getAllSolving() {
+
         List<SolvingResponseDto> result = solvingService.showAllSolving();
         return ResponseEntity.ok(result);
     }
