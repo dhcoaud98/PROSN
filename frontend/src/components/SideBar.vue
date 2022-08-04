@@ -4,10 +4,15 @@
     <v-navigation-drawer right class="mt-5 ml-3 d-md-none d-md-flex">
       <v-row>
         <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
-        <v-col col="6" class="d-flex justify-center">setting</v-col>
+        <v-col col="6" class="d-flex justify-center">{{ userName }}</v-col>
         
         <v-col col="6" class="d-flex justify-center">
-          <router-link to="/login" class="text-decoration-none black--text">login</router-link>
+          <li v-if="!isLoggedIn">
+            <router-link to="/login" class="text-decoration-none black--text">login</router-link>
+          </li>
+          <li v-if="isLoggedIn">
+            <v-btn class="text-decoration-none black--text " @click="logout">logout</v-btn>
+          </li>
         </v-col>
         
       </v-row>
@@ -26,7 +31,7 @@
           <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 인기 문제</p>
           <p class="text-right ma-0 mb-2">{{nowDate}} {{nowTime}} 실시간</p>
           <p class="text-h6 mb-0">No.1 [문제 제목]</p>
-          <v-container class="grey lighten-5 mb-4" elevation="3">
+          <v-container class="grey lighten-5 mb-4 pa-0" elevation="3">
             <v-row>
               <v-col col="4" class="d-flex justify-center pink darken-2">추천</v-col>
               <v-col col="4" class="d-flex justify-center pink lighten-2">참여자</v-col>
@@ -34,7 +39,7 @@
             </v-row>
           </v-container>
           <p class="text-h6 mb-0">No.2 [문제 제목]</p>
-          <v-container class="grey lighten-5">
+          <v-container class="grey lighten-5 pa-0">
             <v-row>
               <v-col cols="4" class="d-flex justify-center pink darken-2" color="red">추천</v-col>
               <v-col cols="4" class="d-flex justify-center pink lighten-2">참여자</v-col>
@@ -76,12 +81,13 @@
 
 <script>
 import SearchBar from './SearchBar.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: "SideBar",
   components : {
     SearchBar,
-  },  
+  }, 
   data () {
     return {
       timer: null,
@@ -94,10 +100,16 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapGetters(['userName','isLoggedIn',]),
+  },
   mounted () {
     this.timer = setInterval(() => {
+      console.log("이름 = ", this.userName);
+      console.log("로그인 확인 : ", this.isLoggedIn)
     this.setNowTimes()
-    },1000)
+    },20000000)
+
   },
   methods: {
     setNowTimes() {
@@ -109,6 +121,13 @@ export default {
       let sec = String(myDate.getSeconds() < 10 ? '0' + myDate.getSeconds() : myDate.getSeconds()) 
       this.nowDate = mm + '월 ' + dd + '일'
       this.nowTime = hou + ':' + min + ':' + sec 
+    },
+    logout () {
+      console.log("logout click");
+      this.$store.dispatch('removeToken', "")
+      
+      this.$store.dispatch('removeName', "")
+      sessionStorage.setItem('accessToken', "")
     }
   }
 }

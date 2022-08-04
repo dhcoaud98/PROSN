@@ -2,8 +2,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/prosn?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: root
+    username: prosn
+    password: prosn705@#
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect

@@ -54,7 +54,7 @@ public class SecureConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+                .antMatchers("/api/**","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

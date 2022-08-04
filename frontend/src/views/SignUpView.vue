@@ -14,7 +14,7 @@
             <v-form
                 ref="form"
                 class="col-6 mx-auto"
-                @submit.prevent
+                @submit.prevent="submitSignUp"
             >
             <!-- 각 text field 내부 속성들은 추후에 수정하기 -->
 
@@ -22,10 +22,10 @@
                 <v-row class="offset-3 col-12 justify-center align-center pa-0">
                     <v-col class="col-7 pa-0">
                         <v-text-field
-                        v-model="id"
+                        v-model="credentials.userId"
                         :rules="idRules"
                         :counter="12"
-                        name="id"
+                        name="userId"
                         label="아이디"
                         required
                         ></v-text-field>
@@ -49,7 +49,7 @@
                 <v-row class="col-12 pa-0 offset-3">
                     <v-col class="col-9 pa-0">
                     <v-text-field
-                        v-model="password"
+                        v-model="credentials.password"
                         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="[rules.required, rules.min]"    
                         :type="show1 ? 'text' : 'password'"
@@ -66,7 +66,7 @@
                 <v-row class="col-12 pa-0 offset-3">
                     <v-col class="col-9 pa-0">
                     <v-text-field
-                        v-model="passwordCheck"
+                        v-model="credentials.passwordCheck"
                         :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="[rules.required, checkPassword]"    
                         :type="show2 ? 'text' : 'password'"
@@ -82,11 +82,11 @@
                 <v-row class="offset-3 col-12 pa-0">
                     <v-col class="col-9 pa-0">
                         <v-text-field
-                        v-model="name"
+                        v-model="credentials.name"
                         :rules="nameRules"
                         :counter="8"
                         label="사용자 이름"
-                        name="uname"
+                        name="name"
                         required
                         ></v-text-field>
                     </v-col>
@@ -95,7 +95,7 @@
                 <v-row class="mb-2 col-12 pa-0 offset-3">
                     <v-col class="col-9 pa-0">
                         <v-text-field
-                        v-model="email"
+                        v-model="credentials.email"
                         label="이메일"
                         name="email"
                         :rules="emailRules"
@@ -109,7 +109,7 @@
                     <!-- 아래에 submitSignup 메서드를 정의; axios로 db에 사용자 정보를 저장하기 -->
                     <v-btn
                     :disabled="!valid"
-                    @click="validate(); submitSignUp()"     
+                    @click="validate();"     
                     type="submit"
                     color="#A384FF"
                     class="mr-4 white--text font-weight-bold"
@@ -138,10 +138,20 @@
 </template>
 
 <script>
+// import { mapActions } from 'vuex'
+import axios from 'axios'
+import drf from '@/api/drf'
+
 export default {
     name: 'SignUpView',
     data: () => ({
         valid: true,
+        credentials : {
+            userId: '',
+            name: '',
+            password: '',
+            email: '',
+        },
         id: '',
         idRules: [
             v => !!v || '아이디는 필수 입력값입니다.',
@@ -168,6 +178,8 @@ export default {
     }),
 
     methods: {
+        // ...mapActions(['accounts/signUp']),
+
         reset () {
             this.$refs.form.reset()
         },
@@ -187,6 +199,24 @@ export default {
         submitSignUp () {
             // console.log('submit') --- ok
             // submit했을 때 axios로 db에 사용자 정보를 저장해주면 된다.
+            console.log("클릭")
+            console.log("credentials = ", this.credentials)
+            axios({
+                url: drf.accounts.join(),
+                method: 'post',
+                data: this.credentials
+            })
+            .then(res => {
+                console.log("res = ",res);
+                const token = res.data.key
+                // dispatch('saveToken', token)
+                // dispatch('fetchCurrentUser')
+            
+            })
+            .catch(err =>{
+                console.log("에러")
+                console.log(err)
+            })
         }
 
     },
