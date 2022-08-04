@@ -56,12 +56,16 @@
           <p class="text-right">{{nowDate}} {{nowTime}} 실시간</p>
           <v-row>
             <v-col cols="12">
-              <v-card color="transparent"  flat="true">
+              <!-- 2022.08.04. flat Invalid type error 수정 -->
+              <v-card color="transparent" flat>
                 <v-list two-line>
-                  <template v-for="item in items.slice(0, 6)">
-                    <v-list-item height="5px">
+                  <template>
+                  <!-- 2022.08.04. template에서 v-bind:key 쓰지 못하는 문제 해결 -->
+                  <!-- <template v-for=item in items.slice(0.6)> -->
+                    <v-list-item v-for="(item,index) in items.slice(0.6)" :key="index" height="5px">
+                    <!-- <v-list-item height="5px"> -->
                       <v-list-item-avatar>
-                        <img :src="item.avatar">
+                        <img :src= "item.avatar">
                       </v-list-item-avatar>
                       <v-list-item-content>
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
@@ -105,10 +109,10 @@ export default {
   },
   mounted () {
     this.timer = setInterval(() => {
-      console.log("이름 = ", this.userName);
-      console.log("로그인 확인 : ", this.isLoggedIn)
+      //console.log("이름 = ", this.userName);
+      //console.log("로그인 확인 : ", this.isLoggedIn)
     this.setNowTimes()
-    },20000000)
+    },1000)
 
   },
   methods: {
@@ -132,5 +136,6 @@ export default {
   }
 }
 </script>
+
 <style>
 </style>
