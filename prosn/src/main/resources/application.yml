@@ -5,6 +5,20 @@ spring:
     username: prosn
     password: prosn705@#
 
+
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: prosnteam
+    password: prosn705@#
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:

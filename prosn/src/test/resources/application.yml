@@ -5,6 +5,19 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: prosnteam
+    password: prosn705@#
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+
   jpa:
     hibernate:
       ddl-auto: create

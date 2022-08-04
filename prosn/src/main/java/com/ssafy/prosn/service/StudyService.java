@@ -13,7 +13,7 @@ import java.util.Optional;
 
 /**
  * created by yeomyeong on 2022/07/25
- * updated by yeomyeong on 2022/08/02
+ * updated by yeomyeong on 2022/08/04
  */
 public interface StudyService{
 
@@ -24,6 +24,7 @@ public interface StudyService{
     //스터디 내용 조회
     StudyResponseDto showStudyGroup(Long userId, Long studyGroupId);
     //스터디 삭제
+    @Transactional
     void deleteStudy(StudyGroup studyGroup);
     //스터디 가입
     Long joinStudy(Long userId, StudyGroup studyGroup);

@@ -9,12 +9,12 @@ import java.time.LocalDate;
 
 /**
  * created by yeomyeong on 2022/07/26
- * updated by yeomyeong on 2022/08/01
+ * updated by yeomyeong on 2022/08/04
  */
 @Getter
 @ToString
 public class StudyGroupRequestDto {
-    @NotNull(message = "id는 필수 입력 값입니다.")
+//    @NotNull(message = "id는 필수 입력 값입니다.")
     private Long id;
     @NotBlank(message = "제목은 필수 입력 값입니다.")
     private String title;
