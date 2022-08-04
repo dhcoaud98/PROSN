@@ -4,10 +4,15 @@
     <v-navigation-drawer right class="mt-5 ml-3 d-md-none d-md-flex">
       <v-row>
         <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
-        <v-col col="6" class="d-flex justify-center">setting</v-col>
+        <v-col col="6" class="d-flex justify-center">{{ userName }}</v-col>
         
         <v-col col="6" class="d-flex justify-center">
-          <router-link to="/login" class="text-decoration-none black--text">login</router-link>
+          <li v-if="!isLoggedIn">
+            <router-link to="/login" class="text-decoration-none black--text">login</router-link>
+          </li>
+          <li v-if="isLoggedIn">
+            <v-btn class="text-decoration-none black--text " @click="logout">logout</v-btn>
+          </li>
         </v-col>
         
       </v-row>
@@ -76,12 +81,13 @@
 
 <script>
 import SearchBar from './SearchBar.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: "SideBar",
   components : {
     SearchBar,
-  },  
+  }, 
   data () {
     return {
       timer: null,
@@ -94,10 +100,16 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapGetters(['userName','isLoggedIn',]),
+  },
   mounted () {
     this.timer = setInterval(() => {
+      console.log("이름 = ", this.userName);
+      console.log("로그인 확인 : ", this.isLoggedIn)
     this.setNowTimes()
-    },1000)
+    },20000000)
+
   },
   methods: {
     setNowTimes() {
@@ -109,6 +121,13 @@ export default {
       let sec = String(myDate.getSeconds() < 10 ? '0' + myDate.getSeconds() : myDate.getSeconds()) 
       this.nowDate = mm + '월 ' + dd + '일'
       this.nowTime = hou + ':' + min + ':' + sec 
+    },
+    logout () {
+      console.log("logout click");
+      this.$store.dispatch('removeToken', "")
+      
+      this.$store.dispatch('removeName', "")
+      sessionStorage.setItem('accessToken', "")
     }
   }
 }
