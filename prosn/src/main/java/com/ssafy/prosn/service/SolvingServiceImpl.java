@@ -19,6 +19,7 @@ import java.util.Optional;
 
 /**
  * created by yura on 2022/08/01
+ * updated by yura on 2022/08/04
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ public class SolvingServiceImpl implements SolvingService{
         Optional<User> user = userRepository.findById(userInfo.getId());
         Solving solving = Solving.builder()
                 .user(user.get())
-                .isRight(solvingRequestDto.getIsRight())
+                .isRight(solvingRequestDto.isRight())
                 .build();
         return solvingRepository.save(solving);
     }
