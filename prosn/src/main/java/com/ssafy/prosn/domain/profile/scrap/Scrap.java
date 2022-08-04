@@ -28,7 +28,7 @@ public class Scrap extends BaseEntity {
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name = "problem_list_id")
+    @JoinColumn(name = "post_list_id")
     private PostList postList;
 
     @Builder
