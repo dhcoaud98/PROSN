@@ -5,7 +5,7 @@
       - note center에서 어떤 것이 선택됐는 지 toDB 받아와서 그것에 맞게 쿼리 보내기
       - 상세페이지로 이동
     -->
-    <router-link to="" class="text-decoration-none">
+    <router-link to="/createnote" class="text-decoration-none">
       <note-list-items></note-list-items>
     </router-link>
 

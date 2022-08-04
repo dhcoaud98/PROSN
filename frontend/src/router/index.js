@@ -9,6 +9,7 @@ import ProfilePageView from '@/views/ProfilePageView.vue'
 import CreateStudy from '@/components/Study/CreateStudy.vue'
 import CreateProblem from '@/components/Profile/CreateProblem.vue'
 import CreateInfo from '@/components/Profile/CreateInfo.vue'
+import CreateNote from '@/components/Note/CreateNote.vue'
 
 Vue.use(VueRouter)
 
@@ -58,7 +59,12 @@ const routes = [
     path: '/createinfo',
     name: 'createinfo',
     component: CreateInfo
-  }
+  },
+  {
+    path: '/createNote',
+    name: 'createNote',
+    component: CreateNote
+  },
 ]
 
 const router = new VueRouter({
