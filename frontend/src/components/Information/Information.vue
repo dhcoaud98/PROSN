@@ -3,7 +3,7 @@
   <v-container>
     <v-row class="d-flex justify-space-between">
       <h2>158. 정보 표현의 기본 장치</h2> 
-      <a href="" class="font-weight-bold text-decoration-none black--text">뒤로가기</a>
+      <v-btn @click="goBack()" text class="font-weight-bold">뒤로가기</v-btn>
     </v-row>
 
     <v-row>
@@ -50,7 +50,7 @@
     <v-divider color="#A384FF" class="mt-3"></v-divider>
       
     <v-row>
-      <!-- 댓글보기 -->
+      <!-- 댓글 -->
       <v-col cols="12" class="pa-0">
         <info-modal-reply></info-modal-reply>
       </v-col>           
@@ -65,7 +65,13 @@ export default {
   name: 'Information',
   components: {
     InfoModalReply,
-  }
+  },
+  methods: {
+    // 2022.08.04. 라우터 경로 연결
+    goBack () {
+      this.$router.go(-1)
+    }
+  },
 }
 </script>
 

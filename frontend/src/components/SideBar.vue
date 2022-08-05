@@ -1,17 +1,17 @@
 <template>
   <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
   <v-container fluid class="bg-grey">
-    <v-navigation-drawer right class="mt-5 ml-3 d-md-none d-md-flex">
+    <v-navigation-drawer right class="mt-1 ml-3 d-md-none d-md-flex">
       <v-row>
         <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
         <v-col col="6" class="d-flex justify-center">{{ userName }}</v-col>
         
         <v-col col="6" class="d-flex justify-center">
-          <li v-if="!isLoggedIn">
-            <router-link to="/login" class="text-decoration-none black--text">login</router-link>
+          <li style="list-style: none;" v-if="!isLoggedIn">
+            <router-link to="/login" class="text-decoration-none black--text"><v-btn rounded class="pink white--text">login</v-btn></router-link>
           </li>
-          <li v-if="isLoggedIn">
-            <v-btn class="text-decoration-none black--text " @click="logout">logout</v-btn>
+          <li style="list-style: none;" v-if="isLoggedIn">
+            <v-btn rounded class="text-decoration-none black--text pink white--text" @click="logout">logout</v-btn>
           </li>
         </v-col>
         
@@ -56,12 +56,16 @@
           <p class="text-right">{{nowDate}} {{nowTime}} 실시간</p>
           <v-row>
             <v-col cols="12">
-              <v-card color="transparent"  flat="true">
+              <!-- 2022.08.04. flat Invalid type error 수정 -->
+              <v-card color="transparent" flat>
                 <v-list two-line>
-                  <template v-for="item in items.slice(0, 6)">
-                    <v-list-item height="5px">
+                  <template>
+                  <!-- 2022.08.04. template에서 v-bind:key 쓰지 못하는 문제 해결 -->
+                  <!-- <template v-for=item in items.slice(0.6)> -->
+                    <v-list-item v-for="(item,index) in items.slice(0.6)" :key="index" height="5px">
+                    <!-- <v-list-item height="5px"> -->
                       <v-list-item-avatar>
-                        <img :src="item.avatar">
+                        <img :src= "item.avatar">
                       </v-list-item-avatar>
                       <v-list-item-content>
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
@@ -105,10 +109,10 @@ export default {
   },
   mounted () {
     this.timer = setInterval(() => {
-      console.log("이름 = ", this.userName);
-      console.log("로그인 확인 : ", this.isLoggedIn)
+      //console.log("이름 = ", this.userName);
+      //console.log("로그인 확인 : ", this.isLoggedIn)
     this.setNowTimes()
-    },20000000)
+    },1000)
 
   },
   methods: {
@@ -132,5 +136,6 @@ export default {
   }
 }
 </script>
+
 <style>
 </style>

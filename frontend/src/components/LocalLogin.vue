@@ -117,7 +117,9 @@ import {mapState, mapActions } from 'vuex'
             .then(res => {
                 console.log("res = ",res);
                 console.log("accessToken = ",res.data.accessToken);
-                this.$store.dispatch('saveToken', res.data.accessToken)
+                let grantType = res.data.grantType.replace(res.data.grantType.charAt(0), res.data.grantType.charAt(0).toUpperCase());
+                console.log("grantType:", grantType);
+                this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken)
                 this.$store.dispatch('saveName', res.data.name)
                 this.$router.push({ path: '/'})
                 // const token = res.data.key

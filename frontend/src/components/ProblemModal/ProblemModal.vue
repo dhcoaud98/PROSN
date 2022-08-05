@@ -6,8 +6,8 @@
         <!-- 문제부분 (항상 떠있음) -->
         <v-col cols="6" width="600" class="pa-0 info-modal-white">              
           <v-card-text class="d-flex justify-space-between">
-            <a href="" class="font-weight-bold text-decoration-none black--text">크게보기</a>
-            <a href="" class="font-weight-bold text-decoration-none black--text">뒤로가기</a>
+            <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
+            <v-btn @click="goBack()" text class="font-weight-bold">뒤로가기</v-btn>
           </v-card-text>
   
           <!-- 문제 제목 -->
@@ -129,6 +129,13 @@ export default {
       showDivider.setAttribute("class", "d-none")
       showReplies.setAttribute("class", "d-none")    
     },
+    // 2022.08.04. 라우터 경로 연결
+    event () {
+      this.$router.push({ path: 'problem' })
+    },
+    goBack () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>

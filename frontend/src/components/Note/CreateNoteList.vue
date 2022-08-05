@@ -39,7 +39,7 @@
               <v-card-text>
                 <!-- hello world: ok -->
                 <!-- create-note-list-items도 정상적으로 작동함 -->
-                <create-note-list-items></create-note-list-items>
+                <create-note-list-items :problem="problems"></create-note-list-items>
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -60,6 +60,10 @@ export default {
   data() {
     return {
       tab: null,
+      problems: {
+        myAnswer: 2,
+        realAnswer: 4,
+      }
     }
   }
 }

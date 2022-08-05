@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="d-flex justify-space-between">
       <h2>158. 정보 표현의 기본 장치</h2> 
-      <a href="" class="font-weight-bold text-decoration-none black--text">뒤로가기</a>
+      <v-btn @click="goBack()" text class="font-weight-bold">뒤로가기</v-btn>
     </v-row>
 
     <v-row>
@@ -25,7 +25,7 @@
 
     <v-row>
       <v-container>
-        <!-- 문제보기: 이것도 랜덤으로 for문 돌리기/ 체크박스로 라디오 묶는거....ㅠ-->
+        <!-- 문제보기: 이것도 랜덤으로 for문 돌리기 -->
         <v-form>
           <v-row>
             <v-radio-group column class="ms-5">
@@ -81,8 +81,15 @@ import ProblemReply from '@/components/ProblemModal/ProblemReply.vue'
 
 export default {
   name: 'Problem',
+  
   components: {
     ProblemReply,
+  },
+  methods: {
+    // 2022.08.04. 라우터 경로 연결
+    goBack () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>
