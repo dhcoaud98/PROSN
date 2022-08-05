@@ -11,12 +11,12 @@
     <v-divider class="mx-5" color="#A384FF"></v-divider>
 
     <!-- INFO글 정보 작성란 -->
-      <v-form class="px-5">
+      <v-form class="px-5" ref="form" @submit.prevent="createInformation">
         <!-- 카테고리 -->
         <v-row class="mx-2 mt-5">
           <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">카테고리</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-autocomplete :items="categories" item-text="toUser" item-value="toDB" label="주제를 선택하세요 (복수선택 가능)" required dense chips small-chips multiple></v-autocomplete>          
+            <v-autocomplete v-model="credentials.tags" :items="categories" item-text="toUser" item-value="toDB" label="주제를 선택하세요 (복수선택 가능)" required dense chips small-chips multiple></v-autocomplete>          
           </v-col>
         </v-row>
 
@@ -24,7 +24,7 @@
         <v-row class="mx-2 mt-5">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">제목</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-text-field label="글 제목을 입력하세요 (최대 20자)" maxlength="20" counter required dense></v-text-field>
+            <v-text-field v-model="credentials.title" label="글 제목을 입력하세요 (최대 20자)" maxlength="20" counter required dense></v-text-field>
           </v-col>
         </v-row>
 
@@ -32,7 +32,7 @@
         <v-row class="mx-2 mt-5 mb-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">지문</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea label="글 내용을 입력하세요" rows="15" no-resize counter required dense></v-textarea>
+            <v-textarea v-model="credentials.mainText" label="글 내용을 입력하세요" rows="15" no-resize counter required dense></v-textarea>
           </v-col>
         </v-row>
 
@@ -52,8 +52,12 @@
 </template>
 
 <script>
+import axios from 'axios';
+import drf from '@/api/drf';
+import { mapGetters } from 'vuex';
+
 export default {
-  name: 'CreateProblem',
+  name: 'CreateInfo',
   data: () => ({
       // 카테고리 데이터
       categories: [
@@ -70,13 +74,38 @@ export default {
         {toDB:"ETC", toUser: "기타"},
       ],
       credentials: {
+        title: '',
+        tags: [],
+        mainText: '',
       }
     }),
   methods: {
     cancel () {
       this.$router.push({ path: 'profile' })
-    }
-  }
+    },
+    createInformation() {
+      // console.log('토큰 = ', this.accessToken)
+      axios({
+        url: `${drf.api}post/information`,
+        method: 'post',
+        headers: {
+          Authorization: this.accessToken,
+        },
+        data: this.credentials,
+      })
+      .then((res) => {
+        // console.log('res = ', res)
+        this.$router.push({ path: 'profile' })
+      })
+      .catch((err) => {
+        console.log('에러')
+        console.log(err)
+      })
+    },
+  },
+  computed: {
+    ...mapGetters(['accessToken']),
+  },
 }
 </script>
 
