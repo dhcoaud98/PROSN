@@ -3,7 +3,7 @@ package com.ssafy.prosn.domain.profile.status;
 import com.ssafy.prosn.converter.BooleanToYNConverter;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.post.Problem;
-import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.domain.user.Member;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
@@ -27,7 +27,7 @@ public class Solving extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @ApiModelProperty(example = "사용자 id")
-    private User user;
+    private Member user;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -39,7 +39,7 @@ public class Solving extends BaseEntity {
     private boolean isRight;
 
     @Builder
-    public Solving(User user, Problem problem, boolean isRight) {
+    public Solving(Member user, Problem problem, boolean isRight) {
         this.user = user;
         this.problem = problem;
         this.isRight = isRight;

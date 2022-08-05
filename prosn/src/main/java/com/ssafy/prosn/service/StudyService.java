@@ -1,7 +1,7 @@
 package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.study.StudyGroup;
-import com.ssafy.prosn.domain.user.User;
+
 import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.study.StudyGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;

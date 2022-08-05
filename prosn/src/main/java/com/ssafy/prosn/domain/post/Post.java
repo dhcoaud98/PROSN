@@ -3,7 +3,7 @@ package com.ssafy.prosn.domain.post;
 import com.ssafy.prosn.converter.BooleanToYNConverter;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.comment.Comment;
-import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.domain.user.Member;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -34,7 +34,7 @@ public abstract class Post extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member user;
 
     @OneToMany(mappedBy = "post")
     private List<LikeDislike> likeDislikes = new ArrayList<>();
@@ -55,7 +55,7 @@ public abstract class Post extends BaseEntity {
 
 //    private String dtype;
 
-    public Post(String title, User user) {
+    public Post(String title, Member user) {
         this.title = title;
         this.user = user;
     }

@@ -2,7 +2,7 @@ package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.study.StudyGroup;
 import com.ssafy.prosn.domain.study.UserStudy;
-import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.domain.user.Member;
 import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.study.StudyGroupRepository;
 import com.ssafy.prosn.repository.study.UserStudyRepository;
@@ -35,7 +35,7 @@ public class StudyServiceImpl implements StudyService {
      */
     @Transactional
     public StudyGroup create(StudyGroupRequestDto studyGroupDto, Long uid) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자입니다."));
+        Member user = userRepository.findById(uid).orElseThrow(() -> new IllegalStateException("유효하지 않은 사용자입니다."));
         StudyGroup studyGroup = StudyGroup.builder()
                 .title(studyGroupDto.getTitle())
                 .mainText(studyGroupDto.getMainText())
@@ -79,7 +79,7 @@ public class StudyServiceImpl implements StudyService {
     @Transactional
     public Long joinStudy(Long userId, StudyGroup studyGroup) {
         validateDuplicate(userId, studyGroup.getId());
-        User user = userRepository.findById(userId).orElseThrow(()-> new IllegalStateException("유효하지 않은 사용자입니다"));
+        Member user = userRepository.findById(userId).orElseThrow(()-> new IllegalStateException("유효하지 않은 사용자입니다"));
 
         UserStudy userStudy = new UserStudy(user, studyGroup);
         studyGroup.addCurrentPerson();

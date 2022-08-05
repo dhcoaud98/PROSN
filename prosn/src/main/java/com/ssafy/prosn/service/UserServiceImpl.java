@@ -3,7 +3,6 @@ package com.ssafy.prosn.service;
 import com.ssafy.prosn.config.SecurityUtil;
 import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.user.LocalUser;
-import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.TokenDto;
 import com.ssafy.prosn.dto.UserJoinRequestDto;
 import com.ssafy.prosn.dto.UserLoginRequestDto;

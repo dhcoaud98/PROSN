@@ -1,7 +1,7 @@
 package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.profile.scrap.PostList;
-import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.domain.user.Member;
 import com.ssafy.prosn.dto.PostListFolderResponseDto;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -27,7 +27,7 @@ public class PostListServiceImpl implements PostListService {
 
     @Override
     public List<PostListFolderResponseDto> getMyPostListFolder(Long uid) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        Member user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         List<PostList> postLists = postListRepository.findByUser(user);
         List<PostListFolderResponseDto> result = new ArrayList<>();
         for (PostList postList : postLists) {

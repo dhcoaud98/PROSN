@@ -2,7 +2,6 @@ package com.ssafy.prosn.dto;
 
 import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.user.LocalUser;
-import com.ssafy.prosn.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

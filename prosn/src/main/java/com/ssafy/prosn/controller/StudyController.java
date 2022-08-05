@@ -1,21 +1,25 @@
 package com.ssafy.prosn.controller;
 
 import com.ssafy.prosn.domain.study.StudyGroup;
-import com.ssafy.prosn.domain.user.User;
+
 import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.study.StudyGroupRepository;
 import com.ssafy.prosn.repository.study.UserStudyRepository;
 import com.ssafy.prosn.service.StudyService;
 import com.ssafy.prosn.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+
 /**
  * created by yeomyeong on 2022/08/01
- * updated by yeomyeong on 2022/08/04
+ * updated by yeomyeong on 2022/08/05
  */
 
 @RestController
@@ -38,8 +42,9 @@ public class StudyController {
 
     //목록 조회
     @GetMapping
-    public ResponseEntity<?> studyGroupList() {
-        return ResponseEntity.ok(studyGroupRepository.showStudyGroupList());
+    public ResponseEntity<?> studyGroupList(@PageableDefault(size = 5) Pageable pageable) {
+        Page<StudyGroupListResponseDto> page = studyGroupRepository.showStudyGroupList(pageable);
+        return ResponseEntity.ok(page);
     }
 
     //상세내용
@@ -73,9 +78,9 @@ public class StudyController {
     //내스터디
     //목록 조회
     @GetMapping("/me")
-    public ResponseEntity<?> myStudyGroupList() {
+    public ResponseEntity<?> myStudyGroupList(@PageableDefault(size = 5) Pageable pageable) {
         UserResponseDto user = userService.getMyInfoBySecret();
-        return ResponseEntity.ok(userStudyRepository.findByUserId(user.getId()));
+        return ResponseEntity.ok(userStudyRepository.findByUserId(user.getId(), pageable));
     }
 
     //가입

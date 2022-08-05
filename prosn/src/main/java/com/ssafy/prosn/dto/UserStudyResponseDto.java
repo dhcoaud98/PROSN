@@ -1,6 +1,5 @@
 package com.ssafy.prosn.dto;
 
-import com.ssafy.prosn.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
