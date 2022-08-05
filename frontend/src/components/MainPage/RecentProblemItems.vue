@@ -1,6 +1,6 @@
 <template>
   <!-- 피드 하나하나 디자인 하고 그 자리에 받아온 데이터 띄우기 -->
-  <v-app class="my-3 pa-5">
+  <div class="my-3 pa-5 w-100">
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
     <div class="color-FAF0F3 mx-auto border-a-10">
         <v-container class="px-5">
@@ -38,7 +38,9 @@
                     - 1~2줄만 보여주고 나머지는 text-overflow: ellipsis 처리하기
                 -->
                 <v-row class="px-4 mb-4">
-                    <p class="px-4 mb-4 ">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio accusantium facere voluptate a ad non quis quos quam, veniam suscipit consectetur reprehenderit aperiam porro dolorem! Consectetur mollitia quasi enim illum.</p>
+                    <p class="px-4 mb-4 ">
+                        여기는 문제 칸입니다.
+                    </p>
                 </v-row>
             </v-row>
 
@@ -59,7 +61,7 @@
             </v-row>
         </v-container>
     </div>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -151,5 +153,8 @@ export default {
 }
 :hover.material-icons {
     cursor: pointer;
+}
+.w-100 {
+    width: 100%;
 }
 </style>

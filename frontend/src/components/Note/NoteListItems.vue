@@ -2,7 +2,7 @@
   <!-- studylistitems 복붙 0803 임지민 -->
 
   <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
-    <v-div class="color-FAF0F3 mx-auto border-a-10">
+    <v-row class="color-FAF0F3 mx-auto border-a-10">
       <v-col cols="12">
         <v-card class="px-5" color="#FAF0F3">
           <v-row class="align-center">
@@ -27,7 +27,7 @@
           </v-row>
         </v-card>
       </v-col>
-    </v-div>
+    </v-row>
 </template>
 
 <script>
