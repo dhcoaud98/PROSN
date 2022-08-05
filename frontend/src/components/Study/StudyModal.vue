@@ -7,13 +7,32 @@
         </v-container>
       </v-container>
     </v-container>
-
   </v-container>
 </template>  
 
 <script>
 export default {
   name: 'StudyModal',
+  data() {
+    return {
+      modal: false,
+    }
+  },
+  methods: {
+    openModal() {
+      this.modal = true
+      console.log(openModal)
+    },
+    closeModal() {
+      this.modal = false
+      console.log(closeModal)
+    },
+    doSend() {
+        alert("스터디 신청이 완료되었습니다.")
+        this.message = ''
+        this.closeModal()
+    }
+  }
 }
 
 </script>

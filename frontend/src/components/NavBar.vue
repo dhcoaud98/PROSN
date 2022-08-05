@@ -12,7 +12,7 @@
           <v-list-item-content>
             <v-list-item-title>
               <router-link to="/">
-                <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5" id="mainPage"></v-img>
+                <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5" id="mainPage" @click="searchCleard()"></v-img>
               </router-link>
             </v-list-item-title>
           </v-list-item-content>
@@ -117,7 +117,9 @@ export default {
     }
   },
   methods: {
-    
+    searchCleard: function(event) {
+            this.$store.dispatch('problem/searchKeyword', "")
+    },
   },
   
 }
