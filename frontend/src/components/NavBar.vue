@@ -29,7 +29,7 @@
                 그래서 app.vue가 created될 때 vuex에서 state를 가져와서 띄운다.
                -->
               <router-link :to="`/${item.urlName}`" class="text-decoration-none black--text">
-                <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5" :id="item.urlName">{{ item.text }}</v-list-item-title>
+                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="item.urlName">{{ item.text }}</v-list-item-title>
               </router-link>
             </v-list-item-content>
           </v-list-item>

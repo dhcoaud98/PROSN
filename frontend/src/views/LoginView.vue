@@ -7,7 +7,7 @@
         - 로고에 홈화면 연결   
       -->
   <v-container class="d-flex align-center grey lighten-4">
-    <v-row>
+    <v-row id="login-page">
       <!-- 로고랑 서비스 설명 -->
       <v-col class="d-flex flex-column justify-center col-md-6 col-12">
         <router-link to="/">
@@ -56,12 +56,11 @@ export default {
 };
 </script>
 
-  <style>
-  html {
-    color: #f9f9f9;
-  }
-
-  img {
-    width: 70%
-  }
+<style>
+html {
+  background-color: #f9f9f9;
+}
+img {
+  width: 70%
+}
 </style>

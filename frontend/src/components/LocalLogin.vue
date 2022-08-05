@@ -14,7 +14,7 @@
             <!-- ID 입력란 -->
             <v-text-field v-model="credentials.userId" label="ID" required></v-text-field>
             <!-- PASSWORD 입력란 -->
-            <!-- <v-text-field v-model="password" label="PASSWORD" required></v-text-field>         -->
+            <!-- <v-text-field v-model="password" label="PASSWORD" required></v-text-field> -->
             <v-text-field
             v-model="credentials.password"
             :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
