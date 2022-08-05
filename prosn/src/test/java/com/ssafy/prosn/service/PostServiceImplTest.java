@@ -72,7 +72,6 @@ class PostServiceImplTest {
                 .ex4("GET")
                 .answer("UPDATE")
                 .tags(List.of("NW"))
-                .uid(uid)
                 .build();
 
         // when
@@ -91,7 +90,6 @@ class PostServiceImplTest {
         InformationRequestDto infoDto = InformationRequestDto.builder()
                 .title("BFS와 DFS에 대해서")
                 .mainText("넓이 우선 탐색과 깊이 우선 탐색......")
-                .uid(2L)
                 .tags(List.of("AL", "DS"))
                 .build();
         User user = userRepository.findAll().get(0);
@@ -119,7 +117,6 @@ class PostServiceImplTest {
                 .ex4("GET")
                 .answer("UPDATE")
                 .tags(List.of("NW"))
-                .uid(uid)
                 .build();
         postService.writeProblem(problemDto, uid);
         Long postId = postRepository.findAll().get(0).getId();
@@ -145,7 +142,6 @@ class PostServiceImplTest {
                 .ex4("GET")
                 .answer("UPDATE")
                 .tags(List.of("NW"))
-                .uid(uid)
                 .build();
 
         Post postPro = postService.writeProblem(problemDto, uid);
@@ -159,7 +155,6 @@ class PostServiceImplTest {
         InformationRequestDto infoDto = InformationRequestDto.builder()
                 .title("BFS와 DFS에 대해서")
                 .mainText("넓이 우선 탐색과 깊이 우선 탐색......")
-                .uid(uid)
                 .tags(List.of("AL", "DS"))
                 .build();
 
@@ -183,7 +178,6 @@ class PostServiceImplTest {
                 .ex4("GET")
                 .answer("UPDATE")
                 .tags(List.of("NW"))
-                .uid(uid)
                 .build();
 
         Post post = postService.writeProblem(problemDto, uid);
