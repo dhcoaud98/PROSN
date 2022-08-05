@@ -49,6 +49,6 @@ public class SolvingRepositoryTest {
 
         problemRepository.save(problem);
 
-        List<Solving> solving = solvingRepository.save(new Solving(user, problem, true));
+        solvingRepository.save(new Solving(user, problem, true));
     }
 }
