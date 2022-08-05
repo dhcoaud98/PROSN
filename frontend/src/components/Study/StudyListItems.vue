@@ -1,6 +1,6 @@
 <template>
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
-    <v-div class="color-FAF0F3 feed-width mx-auto border-a-10">
+    <v-row class="color-FAF0F3 feed-width mx-auto border-a-10">
       <v-col cols="12">
         <v-card class="px-5" color="#FAF0F3">
           <v-row>
@@ -41,28 +41,28 @@
               <v-divider class="info-divider mt-2"></v-divider>
             </v-col>
             <v-col cols="12">
-                <v-container class="study-detail-info">
-                  <p>
-                    [소개] 
-                    8월 19일 있는 넥슨 기술 면접 스터디원을 모집합니다.
-                  </p>
-                  <p>
-                    [규칙]
-                    시간 약속을 잘 지킵니다.
-                    주어진 과제는 반드시 해야합니다.
-                    성실하게 임해주셨으면 좋겠습니다.
-                  </p>
-                  <p>
-                    [기타]
-                    강남역 10번 출구 OO카페에서 매주 1시 ~ 4시까지 진행될 예정입니다.
-                    카페 사용료에 대한 금액은 개인이 준비해주시면 됩니다.
-                  </p>
-                  <p style="color:red;"> 
-                    [상세]
-                    카카오톡 오픈 채팅방 이름 : 8/19 넥슨 기술 면접 스터디원
-                    카카오톡 오픈 채팅방 비번 : *5454
-                  </p>
-                </v-container>
+              <v-container class="study-detail-info">
+                <p>
+                  [소개] 
+                  8월 19일 있는 넥슨 기술 면접 스터디원을 모집합니다.
+                </p>
+                <p>
+                  [규칙]
+                  시간 약속을 잘 지킵니다.
+                  주어진 과제는 반드시 해야합니다.
+                  성실하게 임해주셨으면 좋겠습니다.
+                </p>
+                <p>
+                  [기타]
+                  강남역 10번 출구 OO카페에서 매주 1시 ~ 4시까지 진행될 예정입니다.
+                  카페 사용료에 대한 금액은 개인이 준비해주시면 됩니다.
+                </p>
+                <p style="color:red;"> 
+                  [상세]
+                  카카오톡 오픈 채팅방 이름 : 8/19 넥슨 기술 면접 스터디원
+                  카카오톡 오픈 채팅방 비번 : *5454
+                </p>
+              </v-container>
               
             </v-col>
 
@@ -76,7 +76,7 @@
         </v-container>
 
       </study-modal>
-    </v-div>
+    </v-row>
 </template>
 
 <script>

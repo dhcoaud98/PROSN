@@ -131,7 +131,7 @@ export default {
     },
     // 2022.08.04. 라우터 경로 연결
     event () {
-      this.$router.push({ path: 'information' })
+      this.$router.push({ path: 'problem' })
     },
     goBack () {
       this.$router.go(-1)

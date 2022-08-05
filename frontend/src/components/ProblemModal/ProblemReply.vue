@@ -32,7 +32,6 @@
 
     </v-container>
   </v-card-text>
-
 </template>
 
 <script>
