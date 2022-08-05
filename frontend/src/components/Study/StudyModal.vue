@@ -1,14 +1,14 @@
 <template>
-  <v-transition class="modal" appear>
-    <v-div class="modal modal-overlay" @click.self="$emit('close')">
-      <v-div class="modal-window">
-        <v-div class="modal-content">
+  <v-container class="modal" appear>
+    <v-container class="modal modal-overlay" @click.self="$emit('close')">
+      <v-container class="modal-window">
+        <v-container class="modal-content">
           <slot/>
-        </v-div>
-      </v-div>
-    </v-div>
+        </v-container>
+      </v-container>
+    </v-container>
 
-  </v-transition>
+  </v-container>
 </template>  
 
 <script>
@@ -43,7 +43,7 @@ export default {
 
   &-content {
     padding: 10px 20px;
-    width: 650px;
+    width: 100%;
     height: 100%
   }
 
