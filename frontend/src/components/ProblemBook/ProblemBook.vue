@@ -7,13 +7,13 @@
         <v-col>
           <v-row class="align-center">
             <v-col cols="3" class="pa-0">
-              <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#네트워크</span>
-              <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#알고리즘</span>
+              <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#컴퓨터구조</span>
+              <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#CS</span>
             </v-col>
             <v-col class="pa-0">
-              <span class="font-parent-mid-l font-weight-bold mr-3">HTTP 포트</span>
+              <span class="font-parent-mid-l font-weight-bold mr-3">하드 디스크</span>
               <span>(
-                <span class="red--text font-weight-bold">5</span>/<span class="font-weight-bold">10</span>
+                <span class="red--text font-weight-bold">5</span>/<span class="font-weight-bold">20</span>
               )</span>
             </v-col>
           </v-row>
@@ -23,16 +23,17 @@
 
     <!-- 문제 부분 -->
     <v-row class="mt-0">
-      <create-note-list></create-note-list>
+      <problem-book-list></problem-book-list>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import CreateNoteList from '@/components/Note/CreateNoteList.vue'
+import ProblemBookList from '@/components/ProblemBook/ProblemBookList.vue'
+
 export default {
   components: {
-    CreateNoteList,
+    ProblemBookList,
   }
 }
 </script>

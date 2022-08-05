@@ -7,10 +7,10 @@
       <v-col cols="12" md="8" class="mt-2 white">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
         <v-row class="bottom-line justify-center mt-5 mx-5">
-          <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover">
+          <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover clicked-main-tab" @click="changeToProblemFeed" id="problemTab">
             <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">문제/문제집</p>
           </v-col>
-          <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover">
+          <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover" @click="changeToInfoFeed" id="infoTab">
             <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">정보</p>
           </v-col>
         </v-row>
@@ -18,10 +18,12 @@
         <!-- row 1-2: 피드 컨텐츠 부분 -->
         <v-row>
           <!-- 메인 피드 1. -- 문제/문제집 -->
-          <recent-problem></recent-problem>
-
-          <!-- 메인 피드 2. -- 정보 -->
-            <info></info>
+          <v-col>
+            <recent-problem id="problemFeed" :class="`${problemFeedClass}`"></recent-problem>
+      
+            <!-- 메인 피드 2. -- 정보 -->
+            <info id="infoFeed" :class="`${infoFeedClass}`"></info>
+          </v-col>
         </v-row>
       </v-col>
 
@@ -38,13 +40,54 @@
 import RecentProblem from '../components/MainPage/RecentProblem.vue'
 import info from '../components/MainPage/info.vue'
 import SideBar from '@/components/SideBar.vue'
+// import problem from '@/store/modules/problem'
 
 export default {
   name: 'MainPageView',
+  data(){
+    return {
+      feedFlag: 0,
+      problemFeedClass: 'd-flex',
+      infoFeedClass: 'd-none',
+    }
+  },
   components : {
     RecentProblem,
     info,
     SideBar,
+  },
+  computed : {
+  },
+  methods : {
+    changeToProblemFeed() {
+      this.feedFlag = 0
+      // console.log(this.feedFlag)
+       // 2. 해당 탭에 불 들어오게
+        const problemTab = document.querySelector('#problemTab')
+        const infoTab = document.querySelector('#infoTab')
+        problemTab.classList.add("clicked-main-tab")
+        // console.log(problemTab.classList)
+        if(infoTab.classList.length > 6){
+          infoTab.classList.remove("clicked-main-tab")
+        }
+        this.problemFeedClass ='d-flex'
+        this.infoFeedClass = 'd-none'
+    },
+    changeToInfoFeed() {
+      this.feedFlag = 1
+      // console.log(this.feedFlag)
+
+      const problemTab = document.querySelector('#problemTab')
+      const infoTab = document.querySelector('#infoTab')
+      infoTab.classList.add("clicked-main-tab")
+        // console.log(infoTab.classList)
+        if(problemTab.classList.length > 6){
+          // console.log('hi')
+          problemTab.classList.remove("clicked-main-tab")
+        }
+        this.problemFeedClass ='d-none'
+        this.infoFeedClass = 'd-flex'
+    },
   }
 }
 </script>
@@ -61,11 +104,14 @@ export default {
   .tab-hover::before {
     color: #616161;
   }
-  :hover.tab-hover {
+  :hover.tab-hover,
+  .clicked-main-tab
+   {
     background: #a384ff;
     color: white;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    cursor: pointer;
   }
   .container {
     max-width: none;
@@ -73,6 +119,7 @@ export default {
   .w-100 {
     width: 100%;
   }
+  
 
   /* 2022.08.02. 커스텀 스크롤바 */
   /* 필요한 다른 view에서 가져다 쓰면 됨 */

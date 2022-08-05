@@ -9,10 +9,10 @@
       </v-row>
 
       <v-row>
-        <v-col xl="3" lg="3" md="3" sm="3" class="d-none d-sm-flex">
-          <nav-bar></nav-bar>
+        <v-col cols="2" class="d-none d-sm-flex">
+          <nav-bar :class="navDisplay" id="navBarTag"></nav-bar>
         </v-col>
-        <v-col xl="9" lg="9" md="9" sm="9" >
+        <v-col cols="10">
           <!-- url이 변경됨에 따라 계속 바뀌는 위치(0729 임지민) -->
           <!-- router/index.js에서 정의한 components의 컴포넌트를 띄워줌(0801 임지민) -->
           <router-view></router-view>
@@ -43,15 +43,32 @@ import MainPageView from './views/MainPageView.vue'
 export default {
   name: 'App',
 
-
-  data: () => ({
-    // mainPageView: 'MainPageView'
-  }),
+  data () {
+    return {
+      navDisplay: 'd-flex'
+    }
+  },
   components : {
     NavBar,
     BottomNavBar,
     SideBar,
     MainPageView,
+  },
+  watch: {
+    // url이 바뀔 때마다 감시해서 nav바 상태 바꿔주기
+    $route(to, from) {
+      //console.log(to) // 도착지
+      //console.log(from) // 출발지
+      if(to.name === 'login') {
+        // 도착지의 name에 해당하는 태그는 clicked-tab을 넣고
+        const navBarTag = document.querySelector('#navBarTag')
+        navBarTag
+        
+      }
+      // 출발지의 name에 해당하는 태그는 clicked-tab을 빼기
+      const fromTag = document.querySelector(`#${from.name}`)
+      fromTag.classList.remove('clicked-tab')
+    }
   },
 };
 </script>

@@ -9,14 +9,16 @@
       <note-list-items></note-list-items>
     </router-link>
 
-    <v-div class="text-center">
-      <v-pagination
-        v-model="page"
-        :length="5"
-        color="#A384FF"
-        class="mt-3"
-      ></v-pagination>
-    </v-div>
+    <v-row class="text-center justfy-center">
+      <v-col>
+        <v-pagination
+          v-model="page"
+          :length="5"
+          color="#A384FF"
+          class="mt-3"
+        ></v-pagination>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
