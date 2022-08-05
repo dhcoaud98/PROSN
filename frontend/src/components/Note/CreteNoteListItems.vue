@@ -1,12 +1,15 @@
 <template>
   <!-- 문제 하나하나 받아오기 -->
+  <!-- 화면 크기가 xs 이하일 때는 문제와 노트 작성 칸이 세로로 배치되게 수정하기 0805 임지민 -->
 
   <v-row class="mt-3">
     <!-- col 1: 상위의 createnotelist에서 받아온 문제 출력 -->
     <v-col cols="6" class="pr-5">
       <!-- 문제 보러가기 버튼: 문제 번호 받아와서 연결 -->
       <v-row class="mt-3 mb-5">
-        <v-chip x-small outlined color="#a384ff">문제보러가기</v-chip>
+        <router-link to="/problem" class="text-decoration-none ">
+          <v-chip small outlined color="#a384ff">문제 다시 풀기</v-chip>
+        </router-link>
       </v-row>
 
       <!-- 문제 제목 -->
@@ -81,26 +84,26 @@
         <v-row class="mx-2 my-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold font-parent-mid-l mb-0">틀린 이유</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea maxlength="150" no-resize counter required dense></v-textarea>
+            <v-textarea maxlength="150" no-resize counter required dense rows="3" class="font-parent-mid"></v-textarea>
           </v-col>
         </v-row>
         <!-- 추가로 공부할 것 -->
         <v-row class="mx-2 my-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold font-parent-mid-l mb-0">추가로 공부할 것</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea maxlength="150" no-resize counter required dense></v-textarea>
+            <v-textarea maxlength="150" no-resize counter required dense rows="3" class="font-parent-mid"></v-textarea>
           </v-col>
         </v-row>
         <!-- 메모 -->
         <v-row class="mx-2 my-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold font-parent-mid-l mb-0">메모</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea maxlength="150" no-resize counter required dense></v-textarea>
+            <v-textarea maxlength="150" no-resize counter required dense rows="3" class="font-parent-mid"></v-textarea>
           </v-col>
         </v-row>
         <!-- 저장히기 -->
         <v-row class="justify-end mt-5">
-          <v-btn outlined rounded>저장하기</v-btn>
+          <v-btn outlined rounded small @submit.prevent="submitNote">저장하기</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -108,6 +111,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data(){
     return {
@@ -134,18 +139,36 @@ export default {
       targetRealAnswer.checked=true
       targetRealAnswer.setAttribute("style", "accent-color: green;")
     },
-  }
+    submitNote() {
+      axios({
+          url: drf.note.wronganswer(),
+          method: 'post',
+          data: this.credentials
+      })
+      .then(res => {
+          console.log("res = ",res);
+          const token = res.data.key
+          // dispatch('saveToken', token)
+          // dispatch('fetchCurrentUser')
+      
+      })
+      .catch(err =>{
+          console.log("에러")
+          console.log(err)
+        })
+    }
+  },
 }
 </script>
 
 <style>
-.left-border-grey {
-  border-left: 1px solid #d9d9d9;
-}
+  .left-border-grey {
+    border-left: 1px solid #d9d9d9;
+  }
 
-/* 내가 고른 답, 정답이 나오는 드롭다운의 box shadow 없애기 */
-.v-menu__content {
-  box-shadow: none;
-}
+  /* 내가 고른 답, 정답이 나오는 드롭다운의 box shadow 없애기 */
+  .v-menu__content {
+    box-shadow: none;
+  }
 
 </style>

@@ -12,6 +12,7 @@ import CreateInfo from '@/components/Profile/CreateInfo.vue'
 import CreateNote from '@/components/Note/CreateNote.vue'
 import Information from '@/components/Information/Information.vue'
 import Problem from '@/components/Problem/Problem.vue'
+import ProblemBook from '@/components/ProblemBook/ProblemBook.vue'
 
 Vue.use(VueRouter)
 
@@ -63,8 +64,8 @@ const routes = [
     component: CreateInfo
   },
   {
-    path: '/createNote',
-    name: 'createNote',
+    path: '/createnote',
+    name: 'createnote',
     component: CreateNote
   },
   {
@@ -73,10 +74,16 @@ const routes = [
     component: Problem
   },
   {
+    path: '/problembook',
+    name: 'problembook',
+    component: ProblemBook
+  },
+  {
     path: '/information',
     name: 'information',
     component: Information
   },
+  
 ]
 
 const router = new VueRouter({

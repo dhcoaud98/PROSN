@@ -9,7 +9,8 @@ export default {
   accounts: {
     login: () => HOST + USER +'login/',
     join: () => HOST + USER + 'join/',
-
-
-  }
+  },
+  note: {
+    wronganswer: () => HOST + USER + 'wronganswer/'
+  },
 }
