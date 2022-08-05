@@ -12,12 +12,12 @@
     <v-divider class="mx-5" color="#A384FF"></v-divider>
 
     <!-- 문제정보 작성란 -->
-      <v-form class="px-5">
+      <v-form ref="form" @submit.prevent="createProblem" class="px-5">
         <!-- 카테고리 -->
         <v-row class="mx-2 mt-5">
           <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">카테고리</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-autocomplete :items="categories" item-text="toUser" item-value="toDB" label="주제를 선택하세요 (복수선택 가능)" required dense chips small-chips multiple></v-autocomplete>          
+            <v-autocomplete v-model="credentials.tags" :items="categories" item-text="toUser" item-value="toDB" label="주제를 선택하세요 (복수선택 가능)" required dense chips small-chips multiple></v-autocomplete>          
           </v-col>
         </v-row>
 
@@ -25,7 +25,7 @@
         <v-row class="mx-2 mt-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">문제이름</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-text-field label="문제 이름을 입력하세요 (최대 20자)" maxlength="20" counter required dense></v-text-field>
+            <v-text-field v-model="credentials.title" label="문제 이름을 입력하세요 (최대 20자)" maxlength="20" counter required dense></v-text-field>
           </v-col>
         </v-row>
 
@@ -33,7 +33,7 @@
         <v-row class="mx-2 my-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">지문</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea label="지문을 입력하세요 (최대 150자)" maxlength="150" no-resize counter required dense></v-textarea>
+            <v-textarea v-model="credentials.mainText" label="지문을 입력하세요 (최대 150자)" maxlength="150" no-resize counter required dense></v-textarea>
           </v-col>
         </v-row>
 
@@ -42,28 +42,28 @@
         <v-row class="mx-2 mt-4">
           <v-col class="col-12 col-md-3 col-lg-2 pa-0"><p class="font-weight-bold mb-0">보기1 (정답)</p></v-col>
           <v-col class="col-12 col-md-9 col-lg-10 pa-0">
-            <v-text-field label="정답이 되는 첫 번째 보기를 입력하세요" required dense></v-text-field>
+            <v-text-field v-model="credentials.ex1" label="정답이 되는 첫 번째 보기를 입력하세요" required dense></v-text-field>
           </v-col>
         </v-row>
         <!-- 오답보기1 -->
         <v-row class="mx-2 mt-2">
           <v-col class="col-12 col-md-3 col-lg-2 pa-0"><p class="font-weight-bold mb-0">보기2</p></v-col>
           <v-col class="col-12 col-md-9 col-lg-10 pa-0">
-            <v-text-field label="두 번째 보기를 입력하세요" required dense></v-text-field>
+            <v-text-field v-model="credentials.ex2" label="두 번째 보기를 입력하세요" required dense></v-text-field>
           </v-col>
         </v-row>
         <!-- 오답보기2 -->
         <v-row class="mx-2 mt-2">
           <v-col class="col-12 col-md-3 col-lg-2 pa-0"><p class="font-weight-bold mb-0">보기3</p></v-col>
           <v-col class="col-12 col-md-9 col-lg-10 pa-0">
-            <v-text-field label="세 번째 보기를 입력하세요" required dense></v-text-field>
+            <v-text-field v-model="credentials.ex3" label="세 번째 보기를 입력하세요" required dense></v-text-field>
           </v-col>
         </v-row>
         <!-- 오답보기3 -->
         <v-row class="mx-2 mt-2 mb-5">
           <v-col class="col-12 col-md-3 col-lg-2 pa-0"><p class="font-weight-bold mb-0">보기4</p></v-col>
           <v-col class="col-12 col-md-9 col-lg-10 pa-0">
-            <v-text-field label="네 번째 보기를 입력하세요" required dense></v-text-field>
+            <v-text-field v-model="credentials.ex4" label="네 번째 보기를 입력하세요" required dense></v-text-field>
           </v-col>
         </v-row>          
         
@@ -84,7 +84,9 @@
 </template>
 
 <script>
-import router from '@/router'
+import axios from 'axios';
+import drf from '@/api/drf';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'CreateProblem',
@@ -104,13 +106,43 @@ export default {
         {toDB:"ETC", toUser: "기타"},
       ],
       credentials: {
+        title: '',
+        tags: [],
+        answer: '',
+        mainText: '',
+        ex1: '',        
+        ex2: '',
+        ex3: '',
+        ex4: '',
       }
     }),
   methods: {
     cancel () {
       this.$router.push({ path: 'profile' })
-    }
-  }
+    },
+    createProblem() {
+			// console.log('토큰 = ', this.accessToken);
+			this.credentials.answer = this.credentials.ex1;
+			axios({
+				url: `${drf.api}post/problem`,
+				method: 'post',
+				headers: {
+					Authorization: this.accessToken,
+				},
+				data: this.credentials,
+			})
+				.then((res) => {
+					console.log('res = ', res);
+				})
+				.catch((err) => {
+					console.log('에러');
+					console.log(err);
+				});
+		},
+  },
+  computed: {
+    ...mapGetters(['accessToken']),
+  },
 }
 </script>
 
