@@ -51,7 +51,7 @@ import SideBar from '@/components/SideBar.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import RecentProblem from '@/components/MainPage/RecentProblem.vue'
 import Info from '@/components/MainPage/info.vue'
-import { mapGetters } from 'vuex';
+// import { mapGetters } from 'vuex';
 
 export default {
   name: 'SearchResultView',
