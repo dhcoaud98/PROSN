@@ -1,8 +1,7 @@
 <template>
   <v-container fluid>
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
-    <v-row>
-
+    <v-row v-if="!isSearched">
       <!-- col 1: 메인 피드 부분 -->
       <v-col cols="12" md="8" class="mt-2 white">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
@@ -32,6 +31,12 @@
         <side-bar></side-bar>
       </v-col>
     </v-row>
+
+    <!-- row 2: 메인 피드와 sidebar 모두를 감싸는 줄 (검색 결과가 있을 경우 검색 페이지) -->
+    <v-row v-if="isSearched">
+      <search-result-view></search-result-view>
+    </v-row> 
+  
   </v-container>
       
 </template>
@@ -41,6 +46,7 @@ import RecentProblem from '../components/MainPage/RecentProblem.vue'
 import info from '../components/MainPage/info.vue'
 import SideBar from '@/components/SideBar.vue'
 // import problem from '@/store/modules/problem'
+import SearchResultView from '@/views/SearchResultView.vue'
 
 export default {
   name: 'MainPageView',
@@ -55,8 +61,12 @@ export default {
     RecentProblem,
     info,
     SideBar,
+    SearchResultView,
   },
   computed : {
+    isSearched() {
+      return this.$store.getters['problem/isSearched']
+    }
   },
   methods : {
     changeToProblemFeed() {

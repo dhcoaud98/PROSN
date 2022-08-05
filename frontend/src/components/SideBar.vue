@@ -18,8 +18,7 @@
       </v-row>
 
       <v-row class="pa-0 ma-0">
-        <v-col class="px-0">
-          <!-- 문제 길이 해결하기!-->
+        <v-col class="px-0 pb-0">
           <search-bar></search-bar>
         </v-col>
       </v-row> 
@@ -81,7 +80,10 @@
       </v-card>
     </v-navigation-drawer>
   </v-container>
+
 </template>
+
+
 
 <script>
 import SearchBar from './SearchBar.vue';
@@ -97,6 +99,7 @@ export default {
       timer: null,
       nowDate: '',
       nowTime: '',
+      // inputData: null,
       items: [
         { avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', name: '채명', total: 538  },
         { avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', name: '지민', total: 621  },
@@ -106,6 +109,9 @@ export default {
   },
   computed: {
     ...mapGetters(['userName','isLoggedIn',]),
+    isSearched() {
+      return this.$store.getters['problem/isSearched']
+    }
   },
   mounted () {
     this.timer = setInterval(() => {
@@ -129,10 +135,13 @@ export default {
     logout () {
       console.log("logout click");
       this.$store.dispatch('removeToken', "")
-      
       this.$store.dispatch('removeName', "")
       sessionStorage.setItem('accessToken', "")
-    }
+    },
+    // onInputChange: function(inputData) {
+    //   // console.log(inputData)
+    //   this.inputData = inputData
+    // }
   }
 }
 </script>
