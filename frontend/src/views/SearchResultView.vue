@@ -5,12 +5,14 @@
         
         <!-- row 1-1: 검색 결과에 대해 데이터를 받아옴.(채명) -->
         <v-row>
-          <search-bar v-model="inputChange">
+          <search-bar>
           </search-bar>
           <h1 class="result ml-5" style="color:#A384FF">
             {{ inputChange }}
           </h1> 
-          <span class="pt-5">에 대한 결과 입니다.</span>
+          <v-col>
+            <span class="pt-5">에 대한 결과 입니다.</span>
+          </v-col>
 
         </v-row>
         <v-divider></v-divider>
