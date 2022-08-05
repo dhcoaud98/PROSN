@@ -108,6 +108,7 @@ public class PostServiceImpl implements PostService {
                     .numOfDislikes(getNumOfDislikes(problem))
                     .views(problem.getViews())
                     .tags(getTags(problem))
+                    .type(PostType.PROBLEM)
                     .build();
         } else if(post instanceof Information) {
             log.info("정보 디테일");
@@ -123,6 +124,7 @@ public class PostServiceImpl implements PostService {
                     .numOfLikes(getNumOfLikes(information))
                     .tags(getTags(information))
                     .views(information.getViews())
+                    .type(PostType.INFORMATION)
                     .build();
         } else {
             log.info("그외(문제집) 디테일");

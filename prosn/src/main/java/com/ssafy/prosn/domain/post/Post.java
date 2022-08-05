@@ -53,6 +53,8 @@ public abstract class Post extends BaseEntity {
     @ColumnDefault("0")
     private Long numOfDislikes;
 
+//    private String dtype;
+
     public Post(String title, User user) {
         this.title = title;
         this.user = user;

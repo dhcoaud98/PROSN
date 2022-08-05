@@ -1,12 +1,14 @@
 package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.config.SecurityUtil;
+import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.TokenDto;
 import com.ssafy.prosn.dto.UserJoinRequestDto;
 import com.ssafy.prosn.dto.UserLoginRequestDto;
 import com.ssafy.prosn.dto.UserResponseDto;
+import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import com.ssafy.prosn.security.JwtUtils;
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/22
- * updated by seongmin on 2022/07/28
+ * updated by seongmin on 2022/08/04
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -39,18 +41,26 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder managerBuilder;
     private final JwtUtils jwtUtils;
+    private final PostListRepository postListRepository;
 
     @Override
     @Transactional
     public Long join(UserJoinRequestDto joinRequestDto) {
         validateDuplicate(joinRequestDto.getUserId(), joinRequestDto.getEmail());
 
-        return userRepository.save(LocalUser.builder()
+        LocalUser user = userRepository.save(LocalUser.builder()
                 .userId(joinRequestDto.getUserId())
                 .name(joinRequestDto.getName())
                 .email(joinRequestDto.getEmail())
                 .password(passwordEncoder.encode(joinRequestDto.getPassword()))
-                .build()).getId();
+                .build());
+        
+        // 회원가입 시 스크랩 기본 폴더 생성
+        postListRepository.save(PostList.builder()
+                .user(user)
+                .title("기본 폴더")
+                .build());
+        return user.getId();
     }
 
     @Override
