@@ -3,13 +3,13 @@
     <!-- v-for 사용하기 -->
     <study-list-items></study-list-items>
     <br>  
-    <v-div class="text-center ">
+    <v-row class="d-flex justify-center text-center ">
       <v-pagination
         v-model="page"
         :length="5"
         color="#A384FF"
       ></v-pagination>
-    </v-div>
+    </v-row>
   </v-container>
 </template>
 
