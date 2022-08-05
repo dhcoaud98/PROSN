@@ -60,7 +60,6 @@ class WrongAnswerServiceImplTest {
                 .ex4("GET")
                 .answer("UPDATE")
                 .tags(List.of("NW"))
-                .uid(user.getId())
                 .build();
 
         Post post = postService.writeProblem(problemDto, user.getId());
@@ -146,7 +145,6 @@ class WrongAnswerServiceImplTest {
                 .ex4("이건가")
                 .answer("요거")
                 .tags(List.of("ETC"))
-                .uid(user2.getId())
                 .build();
 
         postService.writeProblem(problemDto, user.getId());
