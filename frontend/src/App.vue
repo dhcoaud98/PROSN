@@ -9,10 +9,11 @@
       </v-row>
 
       <v-row>
-        <v-col cols="2" class="d-none d-sm-flex">
-          <nav-bar :class="navDisplay" id="navBarTag"></nav-bar>
+        <v-col cols="2" :class="`${navDisplayCol}`">
+          <nav-bar id="navBarTag" :class="navDisplay"></nav-bar>
         </v-col>
-        <v-col cols="10">
+        <v-col>
+
           <!-- url이 변경됨에 따라 계속 바뀌는 위치(0729 임지민) -->
           <!-- router/index.js에서 정의한 components의 컴포넌트를 띄워줌(0801 임지민) -->
           <router-view></router-view>
@@ -45,7 +46,8 @@ export default {
 
   data () {
     return {
-      navDisplay: 'd-flex'
+      navDisplay: 'd-flex',
+      navDisplayCol: 'd-none d-sm-flex',
     }
   },
   components : {
@@ -55,22 +57,41 @@ export default {
     MainPageView,
   },
   watch: {
-    // url이 바뀔 때마다 감시해서 nav바 상태 바꿔주기
-    $route(to, from) {
-      //console.log(to) // 도착지
-      //console.log(from) // 출발지
-      if(to.name === 'login') {
-        // 도착지의 name에 해당하는 태그는 clicked-tab을 넣고
-        const navBarTag = document.querySelector('#navBarTag')
-        navBarTag
-        
+    /* 0805 임지민
+      login, signup일 때는 navbar 안띄움
+      아래 created까지 써줘야 새로 고침하면 navbar가 생기는 현상이 사라짐
+    */
+    $route(to) {
+      // console.log(to) // 도착지 login
+      // console.log(from) // 출발지 signUp
+      // .v-application .d-sm-flex
+      // const hiddenClass = document.querySelector('.v-application')
+      if(to.name === 'login' || to.name === 'signUp') {
+        this.navDisplay = 'd-none'
+        this.navDisplayCol = 'd-none'
+
+      } else {
+        this.navDisplay = 'd-flex'
+        this.navDisplayCol = 'd-none d-sm-flex'
       }
-      // 출발지의 name에 해당하는 태그는 clicked-tab을 빼기
-      const fromTag = document.querySelector(`#${from.name}`)
-      fromTag.classList.remove('clicked-tab')
+      
+      // 안보일 때는 router-view의 cols를 12로 하기
     }
-  },
-};
+
+    }, 
+    created() {
+      // console.log(window.location.href);
+        let currentUrl = window.location.href
+        if (currentUrl.endsWith('login') || currentUrl.endsWith('signup')) {
+          this.navDisplay = 'd-none'
+          this.navDisplayCol = 'd-none'
+        } else {
+          this.navDisplay = 'd-flex'
+          this.navDisplayCol = 'd-none d-sm-flex'
+        }
+    
+    }
+  } 
 </script>
 
 <style scoped>
