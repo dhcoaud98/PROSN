@@ -10,7 +10,7 @@
             <v-col width="600" class="pa-0 info-modal-white">              
               <v-card-text class="d-flex justify-space-between">
                 <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
-                <v-btn @click="goBack()" text class="font-weight-bold">뒤로가기</v-btn>
+                <v-btn @click="closeModal" text class="font-weight-bold">뒤로가기</v-btn>
               </v-card-text>
       
               <!-- 문제 제목 -->
@@ -157,7 +157,7 @@ export default {
             this.scrapText = "bookmark_border"
        }
     },
-    
+
     // 2022.08.03. 댓글보기 버튼 누를 때
     showReplies: function (event) {
       const showRepliesBtn = document.querySelector("#show-replies-btn")
@@ -186,9 +186,13 @@ export default {
     event () {
       this.$router.push({ path: 'problem' })
     },
-    goBack () {
-      this.$router.go(-1)
+    colseModal () {
+      this.$parent.closeModal()
+      console.log('closeModal')
     }
+    // goBack () {
+    //   this.$router.go(-1)
+    // }
   }
 }
 </script>
