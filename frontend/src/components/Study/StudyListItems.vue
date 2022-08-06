@@ -23,7 +23,7 @@
       </v-col>
 
       <!-- 08.04 모달 (오채명) -->
-      <study-modal @click="closeModal" v-if="this.modal">
+      <study-modal @close="closeModal" v-if="this.modal">
                 <v-container class="study-content">
             <v-row>
               <!-- 제목 -->
