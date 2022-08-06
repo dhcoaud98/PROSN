@@ -7,12 +7,13 @@
         <v-container class="rounded-lg modal-content">
           <v-row class="d-flex justify-center">
             <!-- 문제부분 (항상 떠있음) -->
-            <v-col width="600" class="pa-0 info-modal-white">              
-              <v-card-text class="d-flex justify-space-between">
+            <v-col width="600" class="pa-0 info-modal-white">
+              <!-- <slot name="btns">
+              </slot>               -->
+              <v-card-text slot="btns" class="d-flex justify-space-between">
                 <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
-                <v-btn @click="closeModal" text class="font-weight-bold">뒤로가기</v-btn>
-              </v-card-text>
-      
+                <v-btn @click="$emit('close')" text class="font-weight-bold">뒤로가기</v-btn>
+            </v-card-text>       
               <!-- 문제 제목 -->
               <!-- {{ problem.pk }}. {{ problem.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold black--text">
@@ -186,10 +187,6 @@ export default {
     event () {
       this.$router.push({ path: 'problem' })
     },
-    colseModal () {
-      this.$parent.closeModal()
-      console.log('closeModal')
-    }
     // goBack () {
     //   this.$router.go(-1)
     // }
