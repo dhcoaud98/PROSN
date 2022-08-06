@@ -1,6 +1,6 @@
 <template>
   <!-- 피드 하나하나 디자인 하고 그 자리에 받아온 데이터 띄우기 -->
-  <div class="my-3 pa-5 w-100">
+  <div class="my-3 pa-5 w-100" @click="openModal">
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
     <div class="color-FAF0F3 mx-auto border-a-10">
         <v-container class="px-5">
@@ -60,17 +60,25 @@
                     </span>
             </v-row>
         </v-container>
+
+        <problem-modal @click="closeModal" v-if="this.modal"></problem-modal>
     </div>
   </div>
 </template>
 
 <script>
+import ProblemModal from '@/components/ProblemModal/ProblemModal.vue'
+
 export default {
+    components: {
+        ProblemModal,
+    },
     data() {
         return {
             upText: 'thumb_up_off_alt',
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
+            modal: false,
         }
     },
     methods: {
@@ -114,6 +122,14 @@ export default {
            } else {
                 this.scrapText = "bookmark_border"
            }
+        },
+        openModal() {
+            this.modal = true
+            console.log(openModal)
+        },
+        closeModal() {
+            this.modal = false
+            console.log('closeModal')
         },
     }
 }
