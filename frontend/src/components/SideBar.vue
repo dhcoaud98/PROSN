@@ -4,17 +4,23 @@
     <v-navigation-drawer right class="mt-1 ml-3 d-md-none d-md-flex" width="100%">
       <v-row>
         <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
-        <v-col col="6" class="d-flex justify-center">{{ userName }}</v-col>
-        
         <v-col col="6" class="d-flex justify-center">
           <li style="list-style: none;" v-if="!isLoggedIn">
-            <router-link to="/login" class="text-decoration-none black--text"><v-btn rounded class="pink white--text">login</v-btn></router-link>
+            <router-link to="/signup" class="text-decoration-none black--text"><v-btn rounded-sm color="#a384ff" style="width: 120%;" text>signup</v-btn></router-link>
           </li>
           <li style="list-style: none;" v-if="isLoggedIn">
-            <v-btn rounded class="text-decoration-none black--text pink white--text" @click="logout">logout</v-btn>
+            {{ userName }}
           </li>
         </v-col>
         
+        <v-col col="6" class="d-flex justify-center">
+          <li style="list-style: none;" v-if="!isLoggedIn">
+            <router-link to="/login" class="text-decoration-none black--text"><v-btn rounded-sm style="width: 120%;" color="#a384ff" text>login</v-btn></router-link>
+          </li>
+          <li style="list-style: none;" v-if="isLoggedIn">
+            <v-btn rounded-sm class="text-decoration-none black--text" style="width: 120%;" color="#a384ff" @click="logout" text>logout</v-btn>
+          </li>
+        </v-col>
       </v-row>
 
       <v-row class="pa-0 ma-0">
@@ -147,4 +153,7 @@ export default {
 </script>
 
 <style>
+.btn {
+  color: aqua;
+}
 </style>
