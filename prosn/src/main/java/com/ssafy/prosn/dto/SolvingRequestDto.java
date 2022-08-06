@@ -4,15 +4,13 @@ import lombok.*;
 
 /**
  * created by yura on 2022/08/01
- * updated by yura on 2022/08/04
+ * updated by seongmin on 2022/08/06
  */
 @Getter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class SolvingRequestDto {
-    private Long id;
-    private Long userId;
-    private Long postId;
-    private boolean isRight;
+    private Long pid;
+    private boolean right; // IsRight 로 하면 매핑 안됨.
 }
