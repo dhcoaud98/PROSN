@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by yura on 2022/08/01
@@ -62,14 +63,24 @@ public class SolvingServiceImpl implements SolvingService {
     public void problemSolving(Long uid, SolvingRequestDto dto) {
         User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Problem problem = problemRepository.findById(dto.getPid()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 문제입니다."));
-        Solving solving = Solving.builder()
-                .user(user)
-                .problem(problem)
-                .isRight(dto.isRight())
-                .build();
-        solvingRepository.save(solving);
-        if (dto.isRight()) {
-            user.earnPoints(POINT);
+        Optional<Solving> checkSolving = solvingRepository.findByUserAndProblem(user, problem);
+        if (checkSolving.isPresent()) {
+            if (!checkSolving.get().isRight() && dto.isRight()) { // 다시풀어서 맞음
+                checkSolving.get().correctAnswer();
+                user.earnPoints(POINT);
+            }
+        } else {
+            Solving solving = Solving.builder()
+                    .user(user)
+                    .problem(problem)
+                    .isRight(dto.isRight())
+                    .build();
+            solvingRepository.save(solving);
+            if (dto.isRight()) {
+                user.earnPoints(POINT);
+            }
         }
+
+
     }
 }
