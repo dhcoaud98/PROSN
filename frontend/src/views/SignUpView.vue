@@ -114,15 +114,17 @@
                             <!-- 회원가입 버튼: 유효성 검사 + submit -->
                             <v-row class="mt-5 mb-1 justify-center pa-0">
                                 <!-- 아래에 submitSignup 메서드를 정의; axios로 db에 사용자 정보를 저장하기 -->
-                                <v-btn
-                                :disabled="!valid"
-                                @click="validate();"     
-                                type="submit"
-                                color="#A384FF"
-                                class="mt-3 mr-4 white--text font-weight-bold"
-                                >
-                                회원가입
-                                </v-btn>
+                                <router-link to="/">
+                                  <v-btn
+                                    :disabled="!valid"
+                                    @click="validate();"     
+                                    type="submit"
+                                    color="#A384FF"
+                                    class="mt-3 mr-4 white--text font-weight-bold"
+                                    >
+                                    회원가입
+                                    </v-btn>
+                                </router-link>
                             <!-- 취소: 뒤로 가기 -->
                                 <v-btn
                                 color="#A384FF"

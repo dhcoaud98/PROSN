@@ -8,8 +8,9 @@
           <li style="list-style: none;" v-if="!isLoggedIn">
             <router-link to="/signup" class="text-decoration-none black--text"><v-btn rounded-sm color="#a384ff" style="width: 120%;" text>signup</v-btn></router-link>
           </li>
+          <!-- 08.07 오채명 : 후에 유저 이름을 클릭하면 유저의 프로필로 넘어갈 수 있도록 함. -->
           <li style="list-style: none;" v-if="isLoggedIn">
-            {{ userName }}
+            <router-link to="/profile" class="text-decoration-none black--text"><v-btn rounded-sm color="#a384ff" style="width: 120%;" text>{{ userName }}</v-btn></router-link>
           </li>
         </v-col>
         
@@ -18,7 +19,7 @@
             <router-link to="/login" class="text-decoration-none black--text"><v-btn rounded-sm style="width: 120%;" color="#a384ff" text>login</v-btn></router-link>
           </li>
           <li style="list-style: none;" v-if="isLoggedIn">
-            <v-btn rounded-sm class="text-decoration-none black--text" style="width: 120%;" color="#a384ff" @click="logout" text>logout</v-btn>
+            <v-btn rounded-sm class="text-decoration-none" style="width: 120%;" color="#a384ff" @click="logout" text>logout</v-btn>
           </li>
         </v-col>
       </v-row>
@@ -144,10 +145,27 @@ export default {
       this.$store.dispatch('removeName', "")
       sessionStorage.setItem('accessToken', "")
     },
-    // onInputChange: function(inputData) {
-    //   // console.log(inputData)
-    //   this.inputData = inputData
-    // }
+    // 유저 정보 모두 가져와서 문제 많이 푼 횟수로 3개 가져오기
+    // sidebarPopularUser() {
+    //     axios({
+    //             url: drf.accounts.login(),
+    //             method: 'post',
+    //             data: this.credentials
+    //         })
+    //         .then(res => {
+    //             console.log("res = ",res);
+    //             console.log("accessToken = ",res.data.accessToken);
+    //             let grantType = res.data.grantType.replace(res.data.grantType.charAt(0), res.data.grantType.charAt(0).toUpperCase());
+    //             console.log("grantType:", grantType);
+    //             this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken)
+    //             this.$store.dispatch('saveName', res.data.name)
+    //             this.$router.push({ path: '/'})
+    //         })
+    //         .catch(err =>{
+    //             console.log("에러")
+    //             console.log(err)
+    //         })
+    //   },
   }
 }
 </script>
