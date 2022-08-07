@@ -3,6 +3,7 @@ package com.ssafy.prosn.service;
 import com.ssafy.prosn.domain.post.*;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.*;
+import com.ssafy.prosn.repository.post.InformationRepository;
 import com.ssafy.prosn.repository.post.LikeDislikeRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.post.ProblemRepository;
@@ -11,6 +12,8 @@ import com.ssafy.prosn.repository.post.tag.TagRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +37,8 @@ public class PostServiceImpl implements PostService {
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     private final LikeDislikeRepository likeDislikeRepository;
+    private final ProblemRepository problemRepository;
+    private final InformationRepository informationRepository;
 
     @Override
     @Transactional
@@ -74,7 +79,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void delete(Long id, Long uid) {
         Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
-        if(!post.getUser().getId().equals(uid))
+        if (!post.getUser().getId().equals(uid))
             throw new IllegalArgumentException("내가 쓴 게시글만 삭제 가능합니다.");
 
         post.remove();
@@ -89,10 +94,10 @@ public class PostServiceImpl implements PostService {
     public PostDetailResponseDto showProblemDetail(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
         log.info("post type = {}", post.getClass());
-        if(post instanceof Problem) {
+        if (post instanceof Problem) {
             log.info("문제 디테일");
             Problem problem = (Problem) post;
-            if(problem.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
+            if (problem.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
             return ProblemDetailResponseDto.builder()
                     .title(problem.getTitle())
                     .user(new UserResponseDto(problem.getUser().getId(), problem.getUser().getName()))
@@ -110,10 +115,10 @@ public class PostServiceImpl implements PostService {
                     .tags(getTags(problem))
                     .type(PostType.PROBLEM)
                     .build();
-        } else if(post instanceof Information) {
+        } else if (post instanceof Information) {
             log.info("정보 디테일");
             Information information = (Information) post;
-            if(information.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
+            if (information.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
 
             return InformationDetailResponseDto.builder()
                     .id(information.getId())
@@ -133,18 +138,37 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostAllResponseDto> showAllPost() {
-        List<Post> posts = postRepository.findAll();
-        List<PostAllResponseDto> result = new ArrayList<>();
-        posts.forEach(post -> {
-            result.add(new PostAllResponseDto(post.getId(),
-                    new UserResponseDto(post.getUser().getId(),
-                            post.getUser().getName()),
-                            post.getTitle(),
-                            post.getViews(),
-                            getNumOfLikes(post),
-                            getNumOfDislikes(post)));
-        });
+    public PostResponseDto showAllPost(Pageable pageable) {
+//        List<Post> posts = postRepository.findAll();
+//        List<PostAllResponseDto> result = new ArrayList<>();
+//        posts.forEach(post -> {
+//            result.add(new PostAllResponseDto(post.getId(),
+//                    new UserResponseDto(post.getUser().getId(),
+//                            post.getUser().getName()),
+//                    post.getTitle(),
+//                    post.getViews(),
+//                    getNumOfLikes(post),
+//                    getNumOfDislikes(post)));
+//        });
+        Page<Post> posts = postRepository.findByIsDeleted(false, pageable);
+        PostResponseDto result = new PostResponseDto();
+        result.addPost(posts.getContent(), posts.getTotalPages(), posts.getTotalElements());
+        return result;
+    }
+
+    @Override
+    public PostResponseDto showAllProblem(Pageable pageable) {
+        Page<Problem> problems = problemRepository.findByIsDeleted(false, pageable);
+        PostResponseDto result = new PostResponseDto();
+        result.addPost(problems.getContent(), problems.getTotalPages(), problems.getTotalElements());
+        return result;
+    }
+
+    @Override
+    public PostResponseDto showAllInformation(Pageable pageable) {
+        Page<Information> information = informationRepository.findByIsDeleted(false, pageable);
+        PostResponseDto result = new PostResponseDto();
+        result.addPost(information.getContent(), information.getTotalPages(), information.getTotalElements());
         return result;
     }
 
@@ -155,8 +179,8 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(dto.getPid()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
 
         Optional<LikeDislike> result = likeDislikeRepository.findByPostAndUser(post, user);
-        if(result.isPresent()) {
-            if(result.get().isType() == dto.isType()) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
+        if (result.isPresent()) {
+            if (result.get().isType() == dto.isType()) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
                 likeDislikeRepository.delete(result.get());
             } else { // 예전에 누른거랑 반대버튼 누른 경우 체인지 좋<->싫
                 result.get().change();

@@ -6,16 +6,20 @@ import com.ssafy.prosn.service.PostService;
 import com.ssafy.prosn.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.*;
+
 /**
  * created by seongmin on 2022/07/28
- * updated by seongmin on 2022/08/01
+ * updated by seongmin on 2022/08/07
  */
 @RestController
 @RequiredArgsConstructor
@@ -39,10 +43,24 @@ public class PostController {
 
     // 페이징 처리 추가하기
     @GetMapping
-    public ResponseEntity<?> getAllPost() {
+    public ResponseEntity<?> getAllPost(Pageable pageable) {
         log.info("전체조회");
-        List<PostAllResponseDto> result = postService.showAllPost();
-        return ResponseEntity.ok(result);
+        PostResponseDto result = postService.showAllPost(pageable);
+        return ResponseEntity.status(OK).body(result);
+    }
+
+    @GetMapping("/problem")
+    public ResponseEntity<?> getAllProblem(Pageable pageable) {
+        log.info("문제 전체 조회");
+        PostResponseDto result = postService.showAllProblem(pageable);
+        return ResponseEntity.status(OK).body(result);
+    }
+
+    @GetMapping("/information")
+    public ResponseEntity<?> getAllInformation(Pageable pageable) {
+        log.info("정보 전체 조회");
+        PostResponseDto result = postService.showAllInformation(pageable);
+        return ResponseEntity.status(OK).body(result);
     }
 
     @GetMapping("/{id}")
