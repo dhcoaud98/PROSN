@@ -1,24 +1,28 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.study.StudyGroup;
+import com.ssafy.prosn.domain.study.StudyTag;
 import com.ssafy.prosn.domain.study.UserStudy;
 import com.ssafy.prosn.domain.user.Member;
 import com.ssafy.prosn.dto.*;
+import com.ssafy.prosn.repository.post.tag.TagRepository;
 import com.ssafy.prosn.repository.study.StudyGroupRepository;
+import com.ssafy.prosn.repository.study.StudyTagRepository;
 import com.ssafy.prosn.repository.study.UserStudyRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * created by yeomyeong on 2022/07/26
- * updated by yeomyeong on 2022/08/02
+ * updated by yeomyeong on 2022/08/07
  */
 @Service
 @Transactional(readOnly = true)
@@ -29,6 +33,8 @@ public class StudyServiceImpl implements StudyService {
     private final UserStudyRepository userStudyRepository;
     private final UserRepository userRepository;
     private final EntityManager em;
+    private final StudyTagRepository studyTagRepository;
+    private final TagRepository tagRepository;
 
     /**
      * 스터디 생성
@@ -49,6 +55,8 @@ public class StudyServiceImpl implements StudyService {
         StudyGroup save = studyGroupRepository.save(studyGroup);
         UserStudy userStudy = new UserStudy(user, studyGroup);
         em.persist(userStudy);
+
+        saveTag(studyGroupDto, save);
         return save;
     }
 
@@ -59,6 +67,7 @@ public class StudyServiceImpl implements StudyService {
     public StudyGroup update(Long studyGroupId, StudyGroupRequestDto newData) {
         StudyGroup oldData = studyGroupRepository.findById(studyGroupId).get();
         StudyGroup updated = oldData.update(newData);
+        saveTag(newData, updated);
         return updated;
     }
 
@@ -67,8 +76,12 @@ public class StudyServiceImpl implements StudyService {
      */
     public void deleteStudy(StudyGroup studyGroup) {
         List<UserStudy> userStudyList = userStudyRepository.findByStudyGroup(studyGroup);
+        List<StudyTag> postTagByStudy = studyTagRepository.findPostTagByStudy(studyGroup);
         for (UserStudy userStudy : userStudyList) {
             userStudyRepository.delete(userStudy);
+        }
+        for (StudyTag studyTag : postTagByStudy) {
+            studyTagRepository.delete(studyTag);
         }
         studyGroupRepository.delete(studyGroup);
     }
@@ -116,6 +129,7 @@ public class StudyServiceImpl implements StudyService {
                     .place(findGroup.getPlace())
                     .mainText(findGroup.getMainText())
                     .secretText(findGroup.getSecretText())
+                    .tags(getTags(findGroup))
                     .build();
 
             List<String> members = studyGroupRepository.findMembers(findGroup);
@@ -130,6 +144,7 @@ public class StudyServiceImpl implements StudyService {
                     .title(findGroup.getTitle())
                     .currentPerson(findGroup.getCurrentPerson())
                     .place(findGroup.getPlace())
+                    .tags(getTags(findGroup))
                     .build();
             return res;
         }
@@ -141,4 +156,23 @@ public class StudyServiceImpl implements StudyService {
         }
     }
 
+    private void saveTag(StudyGroupRequestDto studyGroupDto, StudyGroup study) {
+        List<StudyTag> postTagByStudy = studyTagRepository.findPostTagByStudy(study);
+        if(postTagByStudy.size() != 0) {
+            studyTagRepository.deleteByStudyId(study.getId());
+        }
+        studyGroupDto.getTags().forEach(code -> {
+            Optional<Tag> tag = tagRepository.findByCode(code);
+            tag.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 태그입니다."));
+            studyTagRepository.save(new StudyTag(study, tag.get()));
+        });
+    }
+    private List<Tag> getTags(StudyGroup study) {
+        List<StudyTag> postTagByStudy = studyTagRepository.findPostTagByStudy(study);
+        List<Tag> tags = new ArrayList<>();
+        postTagByStudy.forEach(postTag -> {
+            tags.add(postTag.getTag());
+        });
+        return tags;
+    }
 }

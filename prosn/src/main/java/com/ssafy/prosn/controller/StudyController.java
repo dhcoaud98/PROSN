@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 /**
  * created by yeomyeong on 2022/08/01
- * updated by yeomyeong on 2022/08/05
+ * updated by yeomyeong on 2022/08/07
  */
 
 @RestController
@@ -55,7 +55,7 @@ public class StudyController {
     }
 
     //수정
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<?> updateStudy(@RequestBody @Valid StudyGroupRequestDto dto) {
         StudyGroup studyGroup = studyGroupRepository.findById(dto.getId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
         if (!studyGroup.getUser().getId().equals(userService.getMyInfoBySecret().getId())) {
