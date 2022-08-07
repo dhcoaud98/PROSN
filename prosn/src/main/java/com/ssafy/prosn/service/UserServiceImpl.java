@@ -3,32 +3,24 @@ package com.ssafy.prosn.service;
 import com.ssafy.prosn.config.SecurityUtil;
 import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.user.LocalUser;
-import com.ssafy.prosn.domain.user.User;
-import com.ssafy.prosn.dto.TokenDto;
-import com.ssafy.prosn.dto.UserJoinRequestDto;
-import com.ssafy.prosn.dto.UserLoginRequestDto;
-import com.ssafy.prosn.dto.UserResponseDto;
+import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import com.ssafy.prosn.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 /**
  * created by seongmin on 2022/07/22
- * updated by seongmin on 2022/08/04
+ * updated by yeomyeong on 2022/08/07 (resetPwd)
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -42,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManagerBuilder managerBuilder;
     private final JwtUtils jwtUtils;
     private final PostListRepository postListRepository;
+    private final MailService mailService;
 
     @Override
     @Transactional
@@ -54,7 +47,7 @@ public class UserServiceImpl implements UserService {
                 .email(joinRequestDto.getEmail())
                 .password(passwordEncoder.encode(joinRequestDto.getPassword()))
                 .build());
-        
+
         // 회원가입 시 스크랩 기본 폴더 생성
         postListRepository.save(PostList.builder()
                 .user(user)
@@ -91,4 +84,11 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("이미 있는 이메일입니다.");
         }
     }
+
+    @Transactional
+    public LocalUser resetPwd(LocalUser user) {
+        String encodedResetPassword = mailService.sendMail(user.getEmail());
+        return user.updatePassword(encodedResetPassword);
+    }
+
 }
