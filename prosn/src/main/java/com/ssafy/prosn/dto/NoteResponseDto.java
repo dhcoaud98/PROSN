@@ -15,8 +15,7 @@ import java.util.List;
 @Builder
 @ToString
 public class NoteResponseDto {
-
-    private List<Content> content;
+    private List<Content> content = new ArrayList<>();
     private int totalPages;
     private Long totalElements;
 
@@ -46,6 +45,38 @@ public class NoteResponseDto {
             this.id = id;
             this.title = title;
             this.isWrite = isWrite;
+            this.tags = tags;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public boolean isWrite() {
+            return isWrite;
+        }
+
+        public void setWrite(boolean write) {
+            isWrite = write;
+        }
+
+        public List<String> getTags() {
+            return tags;
+        }
+
+        public void setTags(List<String> tags) {
             this.tags = tags;
         }
     }
