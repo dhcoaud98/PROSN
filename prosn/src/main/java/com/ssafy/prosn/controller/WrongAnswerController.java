@@ -1,15 +1,14 @@
 package com.ssafy.prosn.controller;
 
 import com.ssafy.prosn.domain.profile.note.WrongAnswer;
-import com.ssafy.prosn.dto.NoteResponseDto;
-import com.ssafy.prosn.dto.WrongAnswerNoteDetailResponseDto;
-import com.ssafy.prosn.dto.WrongAnswerRequestDto;
-import com.ssafy.prosn.dto.WrongNoteRequestDto;
+import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.service.UserService;
 import com.ssafy.prosn.service.WrongAnswerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +17,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/08/01
+ * updated by seongmin on 2022/08/07
  */
 @RestController
 @RequiredArgsConstructor
@@ -47,10 +47,17 @@ public class WrongAnswerController {
         return ResponseEntity.ok(HttpEntity.EMPTY);
     }
 
-    @GetMapping
-    public ResponseEntity<?> getNote() {
-        List<NoteResponseDto> note = wrongAnswerService.getNote(userService.getMyInfoBySecret().getId());
-        return ResponseEntity.ok(note);
+    // 오답노트 전체 조회
+    @GetMapping("/all")
+    public ResponseEntity<?> getNote(@RequestParam Pageable pageable, boolean isWrite) {
+        NoteResponseDto result = wrongAnswerService.getNote(userService.getMyInfoBySecret().getId(), pageable, isWrite);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/tag")
+    public ResponseEntity<?> getNoteByTag(@RequestParam Pageable pageable, boolean isWrite, String tag) {
+        NoteResponseDto result = wrongAnswerService.getNoteByTag(userService.getMyInfoBySecret().getId(), pageable, isWrite, tag);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/{id}")

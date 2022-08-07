@@ -205,7 +205,9 @@ public class PostServiceImpl implements PostService {
         postDto.getTags().forEach(code -> {
             Optional<Tag> tag = tagRepository.findByCode(code);
             tag.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 태그입니다."));
-            postTagRepository.save(new PostTag(post, tag.get()));
+            post.addPostTag(new PostTag(post, tag.get()));
+
+//            postTagRepository.save(new PostTag(post, tag.get()));
         });
     }
 }

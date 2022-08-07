@@ -3,11 +3,13 @@ package com.ssafy.prosn.domain.post;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 /**
  * created by seongmin on 2022/07/19
+ * updated by seongmin on 2022/08/07
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,7 +20,7 @@ public class PostTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
@@ -29,5 +31,13 @@ public class PostTag {
     public PostTag(Post post, Tag tag) {
         this.post = post;
         this.tag = tag;
+    }
+
+    public void setPost(Post post) {
+        if(this.post != null) {
+            this.post.getPostTags().remove(this);
+        }
+        this.post = post;
+        post.getPostTags().add(this);
     }
 }
