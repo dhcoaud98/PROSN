@@ -11,27 +11,27 @@
             <p class="font-weight-bold text-grey ma-0">오채명</p>
           </v-col>
           <v-col cols="1" class="pa-0">
-            <v-icon type="button" @click="event1()">mdi-plus</v-icon>
+            <span class="material-icons" type="button" @click="event1()" style="color:#A384FF">quiz</span>
           </v-col>
           <v-col cols="1" class="pa-0">
-            <v-icon type="button" @click="event2()">mdi-plus</v-icon>
+            <span class="material-icons" type="button" @click="event2()" style="color:#A384FF">info</span>
           </v-col>
   
           <v-col cols="3">
-            <v-avatar size="100px" class="d-flex justify-center">
+            <v-avatar size="100px" class="d-flex justify-center ml-3">
               <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
             </v-avatar>
           </v-col>
   
           <v-col cols="9">
-            <v-container class="detail">
-              <p class="detail_text ma-0 text-bold">문제 풀이 - 500</p>
-              <p class="detail_text ma-0">문제 제출 - 300</p>
-              <p class="detail_text">정답률 ----- 68%</p>
+            <v-container class="">
+              <p class="detail_text ma-0">문제 풀이 500문제</p>
+              <p class="detail_text ma-0">문제 제출 300문제</p>
+              <p class="detail_text ma-0">정답률 68%</p>
             </v-container>
           </v-col>
           
-          <v-col cols="12">
+          <v-col cols="12" class="pl-0">
               <!-- lg 사이즈 이하에서는 태그 사라짐 -->
               <!-- 카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" -->
               <span class="category-tag text-center pa-1">#알고리즘</span>
