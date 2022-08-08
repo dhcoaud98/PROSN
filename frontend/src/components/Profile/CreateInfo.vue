@@ -83,7 +83,7 @@ export default {
     cancel () {
       this.$router.push({ path: 'profile' })
     },
-    createInformation() {
+    createInformation () {
       // console.log(drf.api)
       // console.log('토큰 = ', this.accessToken)
       axios({
