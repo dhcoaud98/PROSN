@@ -131,7 +131,7 @@ import {mapState, mapActions } from 'vuex'
                 this.$router.push({ path: '/'})
                 // const token = res.data.key
                 // dispatch('saveToken', token)
-                // dispatch('fetchCurrentUser')
+                // dispaxtch('fetchCurrentUser')
             
             })
             .catch(err =>{

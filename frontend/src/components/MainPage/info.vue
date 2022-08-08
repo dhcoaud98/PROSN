@@ -9,6 +9,7 @@
 import axios from 'axios'
 import drf from '@/api/drf'
 import infoItems from '@/components/MainPage/infoItems.vue'
+import { onUpdated } from 'vue'
 
 export default {
     data() {
@@ -21,12 +22,20 @@ export default {
     },
     created() {
       // 정보 전체 최신 순으로 가져오기
+      const params = {
+        page: 0,
+        size: 3,
+        // sort: onUpdated, 'desc'
+      }
        axios({
         url: drf.postFeed.information(),
         method: 'get',
         headers: {
 					Authorization: this.accessToken,
 				},
+        params: params
+
+        // /page=0&size=3&sort=updated,desc
         })
         .then(res => {
           // 잘 넘어오는 지 확인하기!! 0807 임지민
