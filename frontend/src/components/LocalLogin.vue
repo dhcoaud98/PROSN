@@ -112,6 +112,7 @@ import {mapState, mapActions } from 'vuex'
       },
       // ...mapActions(['login'])
       login() {
+
         // axios.post(drf.accounts.login())
         // .then(({res}) => {
         //   console.log(res)
