@@ -127,7 +127,7 @@ export default {
 			// console.log('토큰 = ', this.accessToken);
 			this.credentials.answer = this.credentials.ex1;
 			axios({
-				url: `${drf.api}post/problem`,
+				url: drf.postFeed.problem(),
 				method: 'post',
 				headers: {
 					Authorization: this.accessToken,
