@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/07/28
+ * updated by seongmin on 2022/08/05
  */
 @Getter
 @ToString
@@ -24,8 +24,8 @@ public class ProblemRequestDto extends PostRequestDto {
     private String mainText;
 
     @Builder
-    public ProblemRequestDto(Long uid, String title, List<String> tags, String ex1, String ex2, String ex3, String ex4, String answer, String mainText) {
-        super(uid, title, tags);
+    public ProblemRequestDto(String title, List<String> tags, String ex1, String ex2, String ex3, String ex4, String answer, String mainText) {
+        super(title, tags);
         this.ex1 = ex1;
         this.ex2 = ex2;
         this.ex3 = ex3;
