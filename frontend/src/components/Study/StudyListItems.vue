@@ -5,9 +5,9 @@
         <v-card class="px-5" color="#FAF0F3">
           <v-row>
             <!-- 문제 대표 이미지 -->
-            <v-col cols="1" class="pb-2 pt-5"><v-icon large color="black darken-2">mdi-group</v-icon></v-col>
+            <!-- <v-col cols="1" class="pb-2 pt-5"><v-icon large color="black darken-2">mdi-group</v-icon></v-col> -->
             <!-- 문제 태그, 문제 제목 --> 
-            <v-col cols="9" class="pl-5">
+            <v-col cols="10">
               <v-col cols="12" class="pa-0 mb-1">
                 <h4>8/19 넥슨 기술 면접 스터디원 구함</h4>
               </v-col>
@@ -23,58 +23,60 @@
       </v-col>
 
       <!-- 08.04 모달 (오채명) -->
-      <study-modal @cloce="closeModal" v-if="modal">
-        <v-container class="study-content">
-          <v-row>
-            <!-- 제목 -->
-            <v-col cols="12">
-              <v-icon class="mb-3 ml-2">mdi-group</v-icon>
-              <span class="ml-4" style="font-size:X-large;color:#512DA8;">8/19 넥슨 기술 면접 구합니다.</span>
-            </v-col>
-            
-            <!-- 중간 정보 -->
-            <v-col cols="12">
-              <v-divider class="info-divider mb-2"></v-divider>
-              <p class="ma-0 px-2" style="color:#512DA8">현재원/총원 : 2/5명</p>
-              <p class="ma-0 px-2">마감일 : 2022년 08월 05일 까지</p>
-              <p class="ma-0 px-2">온/오프 : 오프라인 매주 일요일 1시 강남역</p>
-              <v-divider class="info-divider mt-2"></v-divider>
-            </v-col>
-            <v-col cols="12">
-              <v-container class="study-detail-info">
-                <p>
-                  [소개] 
-                  8월 19일 있는 넥슨 기술 면접 스터디원을 모집합니다.
-                </p>
-                <p>
-                  [규칙]
-                  시간 약속을 잘 지킵니다.
-                  주어진 과제는 반드시 해야합니다.
-                  성실하게 임해주셨으면 좋겠습니다.
-                </p>
-                <p>
-                  [기타]
-                  강남역 10번 출구 OO카페에서 매주 1시 ~ 4시까지 진행될 예정입니다.
-                  카페 사용료에 대한 금액은 개인이 준비해주시면 됩니다.
-                </p>
-                <p style="color:red;"> 
-                  [상세]
-                  카카오톡 오픈 채팅방 이름 : 8/19 넥슨 기술 면접 스터디원
-                  카카오톡 오픈 채팅방 비번 : *5454
-                </p>
-              </v-container>
+      <study-modal @close="closeModal" v-if="this.modal">
+                <v-container class="study-content">
+            <v-row>
+              <!-- 제목 -->
+              <v-col cols="12">
+                <v-icon class="mb-3 ml-2">mdi-group</v-icon>
+                <span class="ml-4" style="font-size:X-large;color:#512DA8;">8/19 넥슨 기술 면접 구합니다.</span>
+              </v-col>
               
-            </v-col>
+              <!-- 중간 정보 -->
+              <v-col cols="12">
+                <v-divider class="info-divider mb-2"></v-divider>
+                <p class="ma-0 px-2" style="color:#512DA8">현재원/총원 : 2/5명</p>
+                <p class="ma-0 px-2">마감일 : 2022년 08월 05일 까지</p>
+                <p class="ma-0 px-2">온/오프 : 오프라인 매주 일요일 1시 강남역</p>
+                <v-divider class="info-divider mt-2"></v-divider>
+              </v-col>
+              <v-col cols="12">
+                <v-container class="study-detail-info">
+                  <v-row>
 
-            <!-- 버튼 -->
-            <v-col cols="12">
-              <button class="button" @click="doSend">스터디 신청하기</button>
-              <button class="button" @click="closeModal">창 닫기</button>
-            </v-col>
-          </v-row>
-          
-        </v-container>
+                    <p>
+                      [소개] 
+                      8월 19일 있는 넥슨 기술 면접 스터디원을 모집합니다.
+                    </p>
+                    <p>
+                      [규칙]
+                      시간 약속을 잘 지킵니다.
+                      주어진 과제는 반드시 해야합니다.
+                      성실하게 임해주셨으면 좋겠습니다.
+                    </p>
+                    <p>
+                      [기타]
+                      강남역 10번 출구 OO카페에서 매주 1시 ~ 4시까지 진행될 예정입니다.
+                      카페 사용료에 대한 금액은 개인이 준비해주시면 됩니다.
+                    </p>
+                    <p style="color:red;"> 
+                      [상세]
+                      카카오톡 오픈 채팅방 이름 : 8/19 넥슨 기술 면접 스터디원
+                      카카오톡 오픈 채팅방 비번 : *5454
+                    </p>
+                  </v-row>
+                </v-container>
+                
+              </v-col>
 
+              <!-- 버튼 -->
+              <v-col cols="12">
+                <button class="button" @click="doSend">스터디 신청하기</button>
+                <button class="button" @click="closeModal">창 닫기</button>
+              </v-col>
+            </v-row>
+            
+          </v-container>
       </study-modal>
     </v-row>
 </template>
@@ -95,9 +97,11 @@ export default {
   methods: {
     openModal() {
       this.modal = true
+      console.log(openModal)
     },
     closeModal() {
       this.modal = false
+      console.log('closeModal')
     },
     doSend() {
         alert("스터디 신청이 완료되었습니다.")
@@ -154,6 +158,6 @@ export default {
 }
 .study-detail-info {
   background-color: #EDE7F6;
-  height:300px;
+  height: 100%;
 }
 </style>

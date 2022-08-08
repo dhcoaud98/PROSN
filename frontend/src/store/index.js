@@ -5,7 +5,7 @@ import accounts from '@/store/modules/accounts.js'
 import createPersistedState from "vuex-persistedstate";
 // import info from './modules/info.js'
 // import note from './modules/note.js'
-// import problem from './modules/problem.js'
+import problem from './modules/problem.js'
 // import search from './modules/search.js'
 // import study from './modules/study.js'
 
@@ -20,7 +20,7 @@ export default new Vuex.Store({
     accounts,
     // info,
     // note,
-    // problem,
+    problem,
     // search,
     // study
   },

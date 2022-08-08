@@ -3,7 +3,8 @@
   <div class="my-3 pa-5 w-100">
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
     <div class="color-FAF0F3 mx-auto border-a-10">
-        <v-container class="px-5">
+        <!-- 카드 클릭시 모달 오픈 -->
+        <v-container class="px-5" @click="openModal">
             <!-- 첫번째 v-row: 프사, 사용자 이름, 사용자 등급, 팔로우 버튼 -->
             <v-row class="align-center justify-space-between">
                 <div class="d-flex align-center mx-2 my-4">
@@ -60,17 +61,31 @@
                     </span>
             </v-row>
         </v-container>
+
+        <problem-modal @close="closeModal" v-if="modal">
+            <!-- ProblemModal.vue의 슬롯에 해당하는 부분 -->
+            <!-- <v-card-text slot="btns" class="d-flex justify-space-between">
+                <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
+                <v-btn @click="closeModal" text class="font-weight-bold">뒤로가기</v-btn>
+            </v-card-text>         -->
+        </problem-modal>
     </div>
   </div>
 </template>
 
 <script>
+import ProblemModal from '@/components/ProblemModal/ProblemModal.vue'
+
 export default {
+    components: {
+        ProblemModal,
+    },
     data() {
         return {
             upText: 'thumb_up_off_alt',
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
+            modal: false,
         }
     },
     methods: {
@@ -115,6 +130,17 @@ export default {
                 this.scrapText = "bookmark_border"
            }
         },
+        openModal() {
+            this.modal = true
+            console.log('openModal')
+        },
+        closeModal() {
+            this.modal = false
+            console.log('closeModal')
+        },
+        // event () {
+        //   this.$router.push({ path: 'problem' })
+        // },
     }
 }
 </script>

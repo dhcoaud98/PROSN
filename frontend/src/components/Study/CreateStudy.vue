@@ -32,7 +32,7 @@
         <v-row class="mx-2 mt-5">
           <v-col class="col-12 col-md-6 ma-0 pa-0">
             <!-- 스터디 최대인원 -->
-            <v-container>
+            <v-container class="ps-0 pe-0 pe-md-3">
               <v-row>
                 <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">최대인원</p></v-col>
                 <v-col class="col-12 pa-0">
@@ -44,7 +44,7 @@
 
           <v-col class="col-12 col-md-6 ma-0 pa-0">
             <!-- 스터디 모집 마감일 -->
-            <v-container>
+            <v-container class="ps-0 pe-0">
               <v-row>
                 <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">모집 마감일</p></v-col>
                 <v-col class="col-12 pa-0">
