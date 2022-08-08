@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import drf from '@/api/drf'
 import infoItems from '@/components/MainPage/infoItems.vue'
 
 export default {
