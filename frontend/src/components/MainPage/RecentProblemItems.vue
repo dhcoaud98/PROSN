@@ -62,13 +62,7 @@
             </v-row>
         </v-container>
 
-        <problem-modal @close="closeModal" v-if="modal">
-            <!-- ProblemModal.vue의 슬롯에 해당하는 부분 -->
-            <!-- <v-card-text slot="btns" class="d-flex justify-space-between">
-                <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
-                <v-btn @click="closeModal" text class="font-weight-bold">뒤로가기</v-btn>
-            </v-card-text>         -->
-        </problem-modal>
+        <problem-modal @close="closeModal" v-if="modal"></problem-modal>
     </div>
   </div>
 </template>

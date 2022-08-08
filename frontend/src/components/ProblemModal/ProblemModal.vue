@@ -3,8 +3,8 @@
   <!-- 2022.08.03 댓글보기 버튼 활성화 (남성은) -->
   <v-container class="modal" appear>
     <v-container class="modal modal-overlay" @click.self="$emit('close')">
-      <v-container class="modal-window">
-        <v-container class="rounded-lg modal-content">
+      <v-container class="modal-window pa-0">
+        <v-container class="rounded-lg modal-content pa-0">
           <v-row class="d-flex justify-center">
             <!-- 문제부분 (항상 떠있음) -->
             <v-col width="600" class="pa-0 problem-modal-white">
@@ -31,7 +31,7 @@
               </v-card-text>
 
               <!-- 문제 -->
-              <v-card-text class="font-weight-bold mb-2">
+              <v-card-text class="font-weight-bold">
                 <h2 class="black--text">
                 다음 설명에 맞는 장치로 적절한 것은 무엇인가요?
                 </h2>
@@ -56,14 +56,13 @@
                     <!-- 저작권 / 버튼 -->
                     <v-row class="d-flex justify-space-between">
                       <!-- 출제자 정보 -->
-                      <v-col>
-                        <div>출제자 | </div>
-                        
+                      <v-col class="col-12 col-lg-8">
+                        <div>출제자 | </div>            
                         <div>출제일 | </div>
                       </v-col>
   
                       <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-                      <v-col class="px-0">
+                      <v-col class="d-flex justify-end col-12 col-lg-4">
                         <!-- 좋아요 버튼 -->
                         <v-btn class="ms-2" icon color="blue lighten-2" @click="changeLikeStatus" id="upIcon">
                           <v-icon>{{upText}}</v-icon>
@@ -83,7 +82,7 @@
                   </v-form>
                 </v-container>
 
-                <hr>
+                <v-divider></v-divider>
 
                 <!-- 댓글보기 -->
                 <v-btn @click="showReplies" id="show-replies-btn" class="font-weight-bold mt-2" text>댓글보기</v-btn>
@@ -199,7 +198,7 @@ export default {
 
 <style>
 .problem-modal-white {
-  background-color: white;
+  background-color: #EDE7F6;
 }
 </style>
 
@@ -219,7 +218,7 @@ export default {
   }
 
   &-window {
-    background: #F3F1F5;
+    background: whitesmoke;
     border-radius: 4px;
     overflow: hidden;
     width: auto;

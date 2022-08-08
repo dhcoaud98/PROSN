@@ -3,11 +3,11 @@
   <!-- 2022.08.04 댓글보기 버튼 활성화 (남성은) -->
   <v-container class="modal" appear>
     <v-container class="modal modal-overlay" @click.self="$emit('close')">
-      <v-container class="modal-window">
-        <v-container class="rounded-lg modal-content">
+      <v-container class="modal-window pa-0">
+        <v-container class="rounded-lg modal-content pa-0">
           <v-row class="d-flex justify-center">
             <!-- 정보부분 (항상 떠있음) -->
-            <v-col width="600" class="pa-0 info-modal-white">            
+            <v-col max-width="600" class="pa-0 info-modal-white">            
               <v-card-text class="d-flex justify-space-between">
                 <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
                 <v-btn @click="$emit('close')" text class="font-weight-bold">뒤로가기</v-btn>
@@ -29,44 +29,45 @@
               </v-card-text>
 
               <!-- 내용 error: 스크롤 안생김-->
-              <v-card-text class="font-weight-bold mb-2">
+              <v-card-text class="font-weight-bold">
                   <v-container>
-                      <v-row>
-                        <v-card outlined class="mx-3 mb-2 pa-3" max-height="400px" width="100%">
-                          <v-virtual-scroll height="300">
-                          <v-div>
-                            아<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>dk
-                          
-                          </v-div>
-                          </v-virtual-scroll>
-                        </v-card>
-                      </v-row>
-                      <!-- 저작권 / 버튼 -->
-                      <v-row class="d-flex justify-space-between">
-                        <!-- 출제자 정보 -->
-                        <v-col cols="8">
-                          <div>출제자 | </div>
-                          
-                          <div>출제일 | </div>
-                        </v-col>
-                        <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-                        <v-col cols="4">
-                          <!-- 좋아요 버튼 -->
-                          <v-btn class="ms-2" icon color="blue lighten-2" @click="changeLikeStatus" id="upIcon">
-                            <v-icon>{{upText}}</v-icon>
-                          </v-btn>
-                          <!-- 싫어요 버튼 -->
-                          <v-btn class="ms-2" icon color="red lighten-2" @click="changeHateStatus" id="downIcon">
-                            <v-icon>{{downText}}</v-icon>
-                          </v-btn>
-                          <!-- 스크랩 버튼 -->
-                          <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
-                            <v-icon>{{scrapText}}</v-icon>
-                          </v-btn>                    
-                        </v-col>
-                      </v-row>
+                    <v-row>
+                      <v-card outlined class="mx-3 mb-2 pa-3 overflow-y-auto" max-height="500px" width="100%">
+                        <!-- <v-virtual-scroll height="300"> -->
+                        <v-card-text>
+                          <div>
+                            아<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>제발좀 되라 좀 제발
+                          </div>                
+                        </v-card-text>
+                      </v-card>
+                    </v-row>
+                    <!-- 저작권 / 버튼 -->
+                    <v-row class="d-flex justify-space-between">
+                      <!-- 출제자 정보 -->
+                      <v-col class="col-12 col-md-8">
+                        <div>출제자 | </div>              
+                        <div>출제일 | </div>
+                      </v-col>
+                      <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
+                      <v-col class="d-flex justify-end col-12 col-md-4">
+                        <!-- 좋아요 버튼 -->
+                        <v-btn class="ms-2" icon color="blue lighten-2" @click="changeLikeStatus" id="upIcon">
+                          <v-icon>{{upText}}</v-icon>
+                        </v-btn>
+                        <!-- 싫어요 버튼 -->
+                        <v-btn class="ms-2" icon color="red lighten-2" @click="changeHateStatus" id="downIcon">
+                          <v-icon>{{downText}}</v-icon>
+                        </v-btn>
+                        <!-- 스크랩 버튼 -->
+                        <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
+                          <v-icon>{{scrapText}}</v-icon>
+                        </v-btn>                    
+                      </v-col>
+                    </v-row>
                   </v-container>
-                  <hr>
+                  
+                  <v-divider></v-divider>
+
                   <!-- 댓글보기 -->
                   <v-btn @click="showReplies" id="show-replies-btn" class="font-weight-bold mt-2" text>댓글보기</v-btn>
                   <v-btn @click="noShowReplies" id="no-show-replies-btn" class="d-none font-weight-bold mt-2" text>댓글접기</v-btn>
@@ -170,6 +171,9 @@ export default {
     event () {
       this.$router.push({ path: 'information' })
     },
+    onScroll () {
+        this.scrollInvoked++
+      },
     // goBack () {
     //   this.$router.go(-1)
     // }
@@ -179,7 +183,7 @@ export default {
 
 <style>
 .info-modal-white {
-  background-color: white;
+  background-color: #EDE7F6;
 }
 </style>
 
@@ -199,10 +203,11 @@ export default {
   }
 
   &-window {
-    background: #F3F1F5;
+    background: white;
     border-radius: 4px;
     overflow: hidden;
     width: auto;
+    max-height:100%
   }
 
   &-content {
