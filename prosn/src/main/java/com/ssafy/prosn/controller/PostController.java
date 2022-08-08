@@ -9,19 +9,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by seongmin on 2022/07/28
- * updated by seongmin on 2022/08/07
+ * updated by seongmin on 2022/08/08
  */
 @RestController
 @RequiredArgsConstructor
