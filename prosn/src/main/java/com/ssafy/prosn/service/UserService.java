@@ -15,5 +15,6 @@ public interface UserService {
     UserResponseDto getMyInfoBySecret();
     LocalUser resetPwd(LocalUser user);
     List<UserRankingResponseDto> ranking();
-    void duplicateUserId(String uid);
+    void duplicateUserId(String userId);
+    UserInfoDto getUserInfo(Long uid);
 }

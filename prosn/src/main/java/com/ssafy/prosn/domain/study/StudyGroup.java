@@ -1,5 +1,6 @@
 package com.ssafy.prosn.domain.study;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.StudyGroupRequestDto;
@@ -16,11 +17,11 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class StudyGroup extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;

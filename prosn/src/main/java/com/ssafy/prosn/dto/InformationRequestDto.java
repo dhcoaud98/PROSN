@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class InformationRequestDto extends PostRequestDto {
     private String mainText;
-//
+    //
     @Builder
     public InformationRequestDto(String title, List<String> tags, String mainText) {
         super(title, tags);

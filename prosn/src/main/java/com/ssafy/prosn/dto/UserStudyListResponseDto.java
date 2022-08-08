@@ -6,7 +6,7 @@ import lombok.ToString;
 
 /**
  * created by yeomyeong on 2022/07/28
- * updated by yeomyeong on 2022/08/02
+ * updated by yeomyeong on 2022/08/05
  */
 @Getter
 public class UserStudyListResponseDto {
@@ -18,6 +18,9 @@ public class UserStudyListResponseDto {
     public UserStudyListResponseDto(Long id, String title, String mainText) {
         this.id = id;
         this.title = title;
-        this.mainText = mainText;
+        if (mainText.length() > 20)
+            this.mainText = mainText.substring(0, 20);
+        else
+            this.mainText = mainText;
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.prosn.repository.user;
 
+import com.ssafy.prosn.domain.user.Friend;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -25,6 +28,8 @@ class UserRepositoryTest {
     private UserRepository userRepository;
     @Autowired
     private LocalUserRepository localUserRepository;
+    @Autowired
+    private FriendRepository friendRepository;
 
     @BeforeEach
     void before() {
@@ -142,5 +147,17 @@ class UserRepositoryTest {
         List<User> top5ByPointDesc = userRepository.findTop5ByOrderByPointDesc();
         assertThat(top5ByPointDesc.size()).isEqualTo(5);
         assertThat(top5ByPointDesc.get(0).getPoint()).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("팔로잉 팔로워")
+    void friend() {
+        List<User> users = userRepository.findAll();
+        User me = users.get(0);
+        for (int i = 1; i < users.size(); i++) {
+            friendRepository.save(new Friend(me, users.get(i)));
+        }
+        Page<Friend> result = friendRepository.findByFollower(me, PageRequest.of(0, 3));
+        assertThat(result.getTotalElements()).isEqualTo(2);
     }
 }
