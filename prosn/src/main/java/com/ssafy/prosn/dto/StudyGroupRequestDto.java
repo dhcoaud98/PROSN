@@ -1,8 +1,6 @@
 package com.ssafy.prosn.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -12,7 +10,6 @@ import java.time.LocalDate;
  * updated by yeomyeong on 2022/08/01
  */
 @Getter
-@ToString
 public class StudyGroupRequestDto {
     @NotNull(message = "id는 필수 입력 값입니다.")
     private Long id;
