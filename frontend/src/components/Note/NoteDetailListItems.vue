@@ -1,10 +1,11 @@
 <template>
+  <!-- 작성 완료된 문제 요소 하나하나 0807 임지민  -->
   <!-- 문제 하나하나 받아오기 -->
   <!-- 화면 크기가 xs 이하일 때는 문제와 노트 작성 칸이 세로로 배치되게 수정하기 0805 임지민 -->
 
   <v-row class="mt-3">
     <!-- col 1: 상위의 createnotelist에서 받아온 문제 출력 -->
-    <v-col cols="6" class="pr-5">
+    <v-col sm="6" cols="12" class="pr-5">
       <!-- 문제 보러가기 버튼: 문제 번호 받아와서 연결 -->
       <v-row class="mt-3 mb-5">
         <router-link to="/problem" class="text-decoration-none ">
@@ -78,7 +79,7 @@
     </v-col>
 
     <!-- col 2: 오답노트 양식 -->
-    <v-col cols="6" class="pl-3 left-border-grey">
+    <v-col sm="6" cols="12" class="pl-3 left-border-grey">
       <v-form class="pl-3">
         <!-- 틀린 이유 -->
         <v-row class="mx-2 my-2">
@@ -89,7 +90,7 @@
             no-resize counter required dense 
             rows="3" 
             class="font-parent-mid"
-            v-model="credentials.reason"></v-textarea>
+            v-model="credentials.reason"> {{ credentials.reason }}</v-textarea>
           </v-col>
         </v-row>
         <!-- 추가로 공부할 것 -->
@@ -100,7 +101,7 @@
             no-resize counter required dense 
             rows="3" 
             class="font-parent-mid"
-            v-model="credentials.studyContent"></v-textarea>
+            v-model="credentials.studyContent"> {{ credentials.studyContent }} /v-textarea>
           </v-col>
         </v-row>
         <!-- 메모 -->
@@ -111,12 +112,12 @@
             no-resize counter required dense 
             rows="3" 
             class="font-parent-mid"
-            v-model="credentials.memo"></v-textarea>
+            v-model="credentials.memo">  {{ credentials.memo }} </v-textarea>
           </v-col>
         </v-row>
-        <!-- 저장히기 -->
+        <!-- 수정하기 -->
         <v-row class="justify-end mt-5">
-          <v-btn outlined rounded small @submit.prevent="submitNote">저장하기</v-btn>
+          <v-btn outlined rounded small @submit.prevent="edittNote">수정하기</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -157,15 +158,20 @@ export default {
       targetRealAnswer.checked=true
       targetRealAnswer.setAttribute("style", "accent-color: green;")
     },
-    submitNote() {
+    editNote() {
       axios({
           url: drf.note.wronganswer(),
-          method: 'post',
+          method: 'patch',
           data: this.credentials
       })
       .then(res => {
           console.log("res = ",res);
           const token = res.data.key
+          token 
+          // data에 저장해서 띄우기
+          this.credentials.reason = res.data.reason
+          this.credentials.studyContent = res.data.studyContent
+          this.credentials.memo = res.data.memo
           // dispatch('saveToken', token)
           // dispatch('fetchCurrentUser')
       
@@ -176,6 +182,31 @@ export default {
         })
     }
   },
+  created : {
+    getNote() {
+      axios({
+          url: drf.note.wronganswer(),
+          method: 'get',
+          data: this.credentials
+      })
+      .then(res => {
+          console.log("res = ",res);
+          const token = res.data.key
+          token 
+          // data에 저장해서 띄우기
+          this.credentials.reason = res.data.reason
+          this.credentials.studyContent = res.data.studyContent
+          this.credentials.memo = res.data.memo
+          // dispatch('saveToken', token)
+          // dispatch('fetchCurrentUser')
+      
+      })
+      .catch(err =>{
+          console.log("에러")
+          console.log(err)
+        })
+    }
+  }
 }
 </script>
 

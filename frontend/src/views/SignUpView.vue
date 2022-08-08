@@ -215,8 +215,8 @@ export default {
         submitSignUp () {
             // console.log('submit') --- ok
             // submit했을 때 axios로 db에 사용자 정보를 저장해주면 된다.
-            console.log("클릭")
-            console.log("credentials = ", this.credentials)
+            // console.log("클릭")
+            // console.log("credentials = ", this.credentials)
             axios({
                 url: drf.accounts.join(),
                 method: 'post',

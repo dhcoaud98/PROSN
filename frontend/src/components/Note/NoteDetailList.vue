@@ -1,5 +1,5 @@
 <template>
-  <!-- 전체적인 틀 -->
+  <!-- 작성 완료된 오답노트 0807 임지민 -->
   <v-container fluid class="white">
     <!-- 문제 정보 -->
     <v-row class="align-center mx-5 mt-5 color-FAF0F3 border-a-10 px-4">
@@ -23,17 +23,19 @@
 
     <!-- 문제 부분 -->
     <v-row class="mt-0">
-      <create-note-list></create-note-list>
+      <note-list></note-list>
     </v-row>
   </v-container>
 </template>
 
+
 <script>
-import CreateNoteList from '@/components/Note/CreateNoteList.vue'
+import NoteList from '@/components/Note/NoteList.vue'
+
 export default {
   components: {
-    CreateNoteList,
-  }
+    NoteList
+  },
 }
 </script>
 

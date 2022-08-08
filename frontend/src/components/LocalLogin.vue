@@ -39,13 +39,14 @@
       <!-- 회원가입/아이디찾기/비밀번호찾기 --> 
       <v-row class="mt-5">
         <v-col cols="12" class=" d-flex justify-center pa-0">
-          <p>아직 계정이 없으신가요?<router-link to="/signup" class="hover-login ml-3 font-weight-bold">회원가입</router-link></p>
+          <p>아직 계정이 없으신가요?<router-link to="/signup" class="hover-login ml-3 font-weight-bold black--text">회원가입</router-link></p>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" class="d-flex justify-space-around pa-0">
-          <a href="">아이디 찾기</a>
-          <a href="">비밀번호 찾기</a>
+          <a href="" class="black--text">아이디 찾기</a>
+          <p>|</p>
+          <a href="" class="black--text">비밀번호 찾기</a>
         </v-col>
       </v-row>
     </v-container>
