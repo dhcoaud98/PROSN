@@ -8,6 +8,7 @@ import com.ssafy.prosn.domain.profile.status.Solving;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.SolvingRequestDto;
 import com.ssafy.prosn.dto.SolvingResponseDto;
+import com.ssafy.prosn.exception.BadRequestException;
 import com.ssafy.prosn.repository.post.ProblemRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
 import com.ssafy.prosn.repository.profiile.status.SolvingRepository;
@@ -23,7 +24,7 @@ import java.util.Optional;
 
 /**
  * created by yura on 2022/08/01
- * updated by yura on 2022/08/04
+ * updated by yura on 2022/08/08
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -61,8 +62,8 @@ public class SolvingServiceImpl implements SolvingService {
     @Override
     @Transactional
     public void problemSolving(Long uid, SolvingRequestDto dto) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-        Problem problem = problemRepository.findById(dto.getPid()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 문제입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
+        Problem problem = problemRepository.findById(dto.getPid()).orElseThrow(() -> new BadRequestException("유효하지 않은 문제입니다."));
         Optional<Solving> checkSolving = solvingRepository.findByUserAndProblem(user, problem);
         if (checkSolving.isPresent()) {
             if (!checkSolving.get().isRight() && dto.isRight()) { // 다시풀어서 맞음
