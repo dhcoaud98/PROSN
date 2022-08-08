@@ -4,7 +4,7 @@
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
     <div class="color-FAF0F3 mx-auto border-a-10">
         <!-- 카드 클릭시 모달 오픈 -->
-        <v-container class="px-5" @click="openModal">
+        <v-container class="px-5" >
             <!-- 첫번째 v-row: 프사, 사용자 이름, 사용자 등급, 팔로우 버튼 -->
             <v-row class="align-center justify-space-between">
                 <div class="d-flex align-center mx-2 my-4">
@@ -23,7 +23,7 @@
             </v-row>
 
             <!-- 두번째 row: 본문 -->
-            <v-row class="white border-a-10 mb-4">
+            <v-row @click="openModal" class="white border-a-10 mb-4">
                 <!-- 카테고리 태그 -->
                 <v-row class="col-12 mt-2 ml-2">
                     <!-- 0801 임지민
@@ -62,13 +62,7 @@
             </v-row>
         </v-container>
 
-        <problem-modal @close="closeModal" v-if="modal">
-            <!-- ProblemModal.vue의 슬롯에 해당하는 부분 -->
-            <!-- <v-card-text slot="btns" class="d-flex justify-space-between">
-                <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
-                <v-btn @click="closeModal" text class="font-weight-bold">뒤로가기</v-btn>
-            </v-card-text>         -->
-        </problem-modal>
+        <problem-modal @close="closeModal" v-if="modal"></problem-modal>
     </div>
   </div>
 </template>
