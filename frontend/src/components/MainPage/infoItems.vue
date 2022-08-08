@@ -33,9 +33,10 @@
                         <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#{{tag}}</span>
                     </div>
                 </v-row>
-                <!-- 0801 임지민
-                    본문 
-                    - 1~2줄만 보여주고 나머지는 text-overflow: ellipsis 처리하기
+
+                <!-- 
+                    세번째 row: 좋아요, 싫어요, 스크랩 
+                    - 클릭하면 색이 바뀌도록 처리
                 -->
                 <v-row class="px-4 mb-4">
                     <p class="px-4 mb-4 ">
@@ -80,8 +81,8 @@ export default {
             modal: false,
         }
     },
-    components: {
-        InfoModal,
+    props: {
+      info: Object,
     },
     methods: {
         changeLikeStatus() {

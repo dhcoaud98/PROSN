@@ -120,9 +120,6 @@ export default {
     cancel () {
       this.$router.push({ path: 'profile' })
     },
-    submit () {
-      this.$router.push({ path: 'profile' })
-    },
     createProblem() {
 			// console.log('토큰 = ', this.accessToken);
 			this.credentials.answer = this.credentials.ex1;
@@ -136,6 +133,7 @@ export default {
 			})
 				.then((res) => {
 					console.log('res = ', res);
+          this.$router.push({ path: 'profile' })
 				})
 				.catch((err) => {
 					console.log('에러');

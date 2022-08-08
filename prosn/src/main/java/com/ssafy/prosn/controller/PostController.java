@@ -4,18 +4,24 @@ import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.service.PostService;
 import com.ssafy.prosn.service.UserService;
+import com.ssafy.prosn.service.WorkbookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by seongmin on 2022/07/28
- * updated by seongmin on 2022/08/01
+ * updated by seongmin on 2022/08/07
  */
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +30,7 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final UserService userService;
+    private final WorkbookService workbookService;
 
     @PostMapping("/problem")
     public ResponseEntity<?> writeProblem(@RequestBody @Valid ProblemRequestDto req) {
@@ -39,10 +46,24 @@ public class PostController {
 
     // 페이징 처리 추가하기
     @GetMapping
-    public ResponseEntity<?> getAllPost() {
+    public ResponseEntity<?> getAllPost(Pageable pageable) {
         log.info("전체조회");
-        List<PostAllResponseDto> result = postService.showAllPost();
-        return ResponseEntity.ok(result);
+        PostResponseDto result = postService.showAllPost(pageable);
+        return ResponseEntity.status(OK).body(result);
+    }
+
+    @GetMapping("/problem")
+    public ResponseEntity<?> getAllProblem(Pageable pageable) {
+        log.info("문제 전체 조회");
+        PostResponseDto result = postService.showAllProblem(pageable);
+        return ResponseEntity.status(OK).body(result);
+    }
+
+    @GetMapping("/information")
+    public ResponseEntity<?> getAllInformation(Pageable pageable) {
+        log.info("정보 전체 조회");
+        PostResponseDto result = postService.showAllInformation(pageable);
+        return ResponseEntity.status(OK).body(result);
     }
 
     @GetMapping("/{id}")
@@ -72,5 +93,28 @@ public class PostController {
         return ResponseEntity.ok(
                 postService.searchPost(new PostSearchRequestDto(title, code))
         );
+    }
+
+    @PostMapping("/workbook")
+    public ResponseEntity<?> writeWorkbook(@RequestBody Map<String, String> req) {
+        workbookService.save(Long.parseLong(req.get("pid")),
+                userService.getMyInfoBySecret().getId(),
+                req.get("title"));
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @PatchMapping("/workbook")
+    public ResponseEntity<?> updateWorkbook(@RequestBody Map<String, String> req) {
+        workbookService.update(userService.getMyInfoBySecret().getId(),
+                Long.parseLong(req.get("wid")),
+                req.get("title"));
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @GetMapping("/workbook")
+    public ResponseEntity<?> getAllWorkbook(Pageable pageable) {
+        log.info("문제집 조회");
+        PostResponseDto result = workbookService.showAllWorkbook(pageable);
+        return ResponseEntity.status(OK).body(result);
     }
 }

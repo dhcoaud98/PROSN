@@ -1,6 +1,6 @@
 <template>
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
-    <v-div class="color-FAF0F3 feed-width mx-auto border-a-10">
+    <v-card class="color-FAF0F3 feed-width mx-auto border-a-10">
       <!-- 문제/문제집 -->
       <v-col cols="12">
         <h3>문제/문제집</h3>
@@ -26,13 +26,13 @@
           </v-row>
         </v-card>
       </v-col>
-      <v-div class="text-center ">
+      <v-container class="text-center ">
         <v-pagination
           v-model="page1"
           :length="5"
           color="#A384FF"
         ></v-pagination>
-      </v-div>
+      </v-container>
       <br>
       <v-divider color="#FAF0F3"></v-divider>
       <br>
@@ -61,14 +61,14 @@
           </v-row>
         </v-card>
       </v-col>
-      <v-div class="text-center">
+      <v-container class="text-center">
         <v-pagination
           v-model="page2"
           :length="5"
           color="#A384FF"
         ></v-pagination>
-      </v-div>
-    </v-div>
+      </v-container>
+    </v-card>
 
 </template>
 

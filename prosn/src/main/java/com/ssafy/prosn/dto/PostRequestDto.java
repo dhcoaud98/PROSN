@@ -8,15 +8,15 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/07/28
+ * updated by seongmin on 2022/08/05
  */
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class PostRequestDto {
-    @NotNull(message = "사용자는 필수 입력 값입니다.")
-    private Long uid;
+//    @NotNull(message = "사용자는 필수 입력 값입니다.")
+//    private Long uid;
     @NotBlank(message = "제목은 필수 입력 값입니다.")
     private String title;
 

@@ -27,7 +27,7 @@ export default {
   },
   postFeed : {
     problem: () => HOST + POSTFEED + 'problem/',
-    information: () => HOST + POSTFEED + 'info/'
+    information: () => HOST + POSTFEED + 'information/'
   },
   wrongAnswer : {
     wrongAnswer: () => HOST + WRONGANSWER,

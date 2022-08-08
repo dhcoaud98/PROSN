@@ -1,0 +1,79 @@
+package com.ssafy.prosn.controller;
+
+import com.ssafy.prosn.domain.profile.scrap.Scrap;
+import com.ssafy.prosn.dto.UserResponseDto;
+import com.ssafy.prosn.service.PostListService;
+import com.ssafy.prosn.service.ScrapService;
+import com.ssafy.prosn.service.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Map;
+
+import static org.springframework.http.HttpStatus.*;
+
+/**
+ * created by seongmin on 2022/08/05
+ */
+@RestController
+@RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/api/scrap")
+public class ScrapController {
+
+    private final UserService userService;
+    private final ScrapService scrapService;
+    private final PostListService postListService;
+
+    @PostMapping("/folder")
+    public ResponseEntity<?> makeFolder(@RequestBody Map<String, String> req) {
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        postListService.make(userInfo.getId(), req.get("title"));
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/folder/{id}")
+    public ResponseEntity<?> deleteFolder(@PathVariable(value = "id") Long id) {
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        postListService.delete(userInfo.getId(), id);
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @GetMapping("/folder/{id}") // user id
+    public ResponseEntity<?> getFolderList(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.status(OK).body(postListService.getPostListFolder(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> scrap(@RequestBody ScrapRequest req) {
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        scrapService.save(req.pid, req.lid, userInfo.getId());
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @GetMapping("/{id}") // folder(postList) id
+    public ResponseEntity<?> getScrapList(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.status(OK).body(scrapService.getScrapList(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteScrap(@PathVariable(value = "id") Long id) {
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        scrapService.delete(userInfo.getId(), id);
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    private static class ScrapRequest {
+        @NotNull(message = "스크랩 하려는 게시글은 필수 값입니다.")
+        Long pid;
+        @NotNull(message = "스크랩 하려는 폴더는 필수 값입니다.")
+        Long lid;
+    }
+
+
+}

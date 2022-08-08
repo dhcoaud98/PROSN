@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * created by seongmin on 2022/07/27
  */
@@ -29,7 +31,7 @@ public class UserController {
         // return ResponseEntity.ok(memberService.getMyInfoBySecurity());
     }
     @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody UserJoinRequestDto req) {
+    public ResponseEntity<?> join(@RequestBody @Valid UserJoinRequestDto req) {
         userService.join(req);
 
         return ResponseEntity.ok("회원가입에 성공하였습니다.");
