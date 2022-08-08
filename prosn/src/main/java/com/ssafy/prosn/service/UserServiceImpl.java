@@ -5,6 +5,7 @@ import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.*;
+import com.ssafy.prosn.exception.DuplicateException;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -92,10 +93,10 @@ public class UserServiceImpl implements UserService {
 
     private void validateDuplicate(String userId, String email) {
         if (localUserRepository.existsByUserId(userId)) {
-            throw new IllegalStateException("이미 있는 아이디입니다.");
+            throw new DuplicateException("이미 있는 아이디입니다.");
         }
         if (localUserRepository.existsByEmail(email)) {
-            throw new IllegalStateException("이미 있는 이메일입니다.");
+            throw new DuplicateException("이미 있는 이메일입니다.");
         }
     }
 
