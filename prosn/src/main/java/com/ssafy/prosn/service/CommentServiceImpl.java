@@ -4,7 +4,6 @@ import com.ssafy.prosn.domain.comment.Comment;
 import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.CommentRequestDto;
-import com.ssafy.prosn.dto.UserResponseDto;
 import com.ssafy.prosn.repository.comment.CommentRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -12,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/25

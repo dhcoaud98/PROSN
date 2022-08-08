@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/08/05
  */
 @Getter
 @ToString
@@ -18,8 +17,8 @@ public class InformationRequestDto extends PostRequestDto {
     private String mainText;
 //
     @Builder
-    public InformationRequestDto(String title, List<String> tags, String mainText) {
-        super(title, tags);
+    public InformationRequestDto(Long uid, String title, List<String> tags, String mainText) {
+        super(uid, title, tags);
         this.mainText = mainText;
     }
 }

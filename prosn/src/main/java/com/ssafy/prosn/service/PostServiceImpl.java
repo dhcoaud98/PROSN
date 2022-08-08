@@ -5,13 +5,11 @@ import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.post.LikeDislikeRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
-import com.ssafy.prosn.repository.post.ProblemRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
 import com.ssafy.prosn.repository.post.tag.TagRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
