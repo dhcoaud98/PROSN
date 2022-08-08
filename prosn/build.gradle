@@ -24,6 +24,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail'
 
 	//swagger 설정
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
