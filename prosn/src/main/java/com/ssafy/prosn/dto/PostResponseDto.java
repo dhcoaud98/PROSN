@@ -3,11 +3,13 @@ package com.ssafy.prosn.dto;
 import com.ssafy.prosn.domain.post.Post;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * created by seongmin on 2022/08/07
+ * updated by seongmin on 2022/08/08
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,7 +29,9 @@ public class PostResponseDto {
                     post.getTitle(),
                     post.getViews(),
                     post.getNumOfLikes(),
-                    post.getNumOfDislikes()
+                    post.getNumOfDislikes(),
+                    post.getCreated(),
+                    post.getUpdated()
             ));
         }
         this.totalPages = totalPages;
@@ -41,14 +45,18 @@ public class PostResponseDto {
         private Integer views;
         private Long numOfLikes;
         private Long numOfDislikes;
+        private LocalDateTime created;
+        private LocalDateTime updated;
 
-        public Content(Long id, UserResponseDto writer, String title, Integer views, Long numOfLikes, Long numOfDislikes) {
+        public Content(Long id, UserResponseDto writer, String title, Integer views, Long numOfLikes, Long numOfDislikes, LocalDateTime created, LocalDateTime updated) {
             this.id = id;
             this.writer = writer;
             this.title = title;
             this.views = views;
             this.numOfLikes = numOfLikes;
             this.numOfDislikes = numOfDislikes;
+            this.created = created;
+            this.updated = updated;
         }
 
         public Long getId() {
@@ -97,6 +105,22 @@ public class PostResponseDto {
 
         public void setNumOfDislikes(Long numOfDislikes) {
             this.numOfDislikes = numOfDislikes;
+        }
+
+        public LocalDateTime getCreated() {
+            return created;
+        }
+
+        public void setCreated(LocalDateTime created) {
+            this.created = created;
+        }
+
+        public LocalDateTime getUpdated() {
+            return updated;
+        }
+
+        public void setUpdated(LocalDateTime updated) {
+            this.updated = updated;
         }
     }
 }
