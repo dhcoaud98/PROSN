@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
- * updated by seongmin on 2022/08/07
+ * updated by seongmin on 2022/08/08
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -61,6 +61,10 @@ public abstract class Post extends BaseEntity {
 
     public void remove() {
         isDeleted = true;
+    }
+
+    public void renameTitle(String title) {
+        this.title = title;
     }
 
     public void addPostTag(PostTag postTag) {
