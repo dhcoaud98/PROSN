@@ -222,15 +222,19 @@ export default {
                 data: this.credentials
             })
             .then(res => {
-                console.log("res = ",res);
-                const token = res.data.key
+                // console.log("res = ",res);
+                // 회원가입이 완료되면 바로 로그인을 시켜주기 위함
+                let grantType = res.data.grantType.replace(res.data.grantType.charAt(0), res.data.grantType.charAt(0).toUpperCase());
+                console.log("grantType:", grantType);
+                this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken)
+                this.$store.dispatch('saveName', res.data.name)
+                
+                // 회원가입이 완료되면 메인 페이지로 이동
                 this.$router.push({ path: '/'})
-                // dispatch('saveToken', token)
-                // dispatch('fetchCurrentUser')
             
             })
             .catch(err =>{
-                console.log("에러")
+                // console.log("에러")
                 console.log(err)
             })
         }

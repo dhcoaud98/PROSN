@@ -34,12 +34,12 @@
     <!-- row4. note list -->
     <v-row class="ml-2">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mt-3">작성 전 문제</p>
-      <note-list></note-list>
+      <note-list :beforeProbs="beforeProbs"></note-list>
     </v-row>
     <hr class="my-5 border-grey">
     <v-row class="ml-2">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey">이미 작성한 문제</p>
-      <note-list></note-list>
+      <note-list :afterProbs="afterProbs"></note-list>
     </v-row>
   </v-container>
 </template>
@@ -67,13 +67,32 @@ export default {
         {toDB:"SC", toUser: "보안"},
         {toDB:"ETC", toUser: "기타"},
       ],
+      beforeProbs : {},
+      afterProbs: {},
     }
   },
   methods: {
     selectCategory(categoryName) {
       this.selected = categoryName
     }
-  }
+  },
+  created() {
+    axios({
+      url: drf.note.wronganswer(),
+      method: 'get',
+      headers: {
+      Authorization: this.accessToken,
+      },
+    })
+    .then(res => {
+      // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+      this.beforeProbs = res.data
+      this.afterProbs = res.data
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  },
 }
 </script>
 

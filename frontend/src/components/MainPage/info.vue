@@ -37,6 +37,9 @@ export default {
     methods: {
       
     },
+    props: {
+      mainInfos: Array,
+    },
     created() {
       // for (i in this.totalinfo) {
         // 정보 전체 최신 순으로 가져오기

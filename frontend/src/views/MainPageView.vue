@@ -1,15 +1,15 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pt-0 mt-0">
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row v-if="!isSearched">
       <!-- col 1: 메인 피드 부분 -->
-      <v-col cols="12" md="8" class="mt-2 white">
+      <v-col cols="12" lg="8" class="mt-2 white pt-0 mt-0">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
         <v-row class="bottom-line justify-center mt-5 mx-5">
-          <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover clicked-main-tab" @click="changeToProblemFeed" id="problemTab">
+          <v-col cols="6" xl="4" class="tab-hover clicked-main-tab border-white" @click="changeToProblemFeed" id="problemTab">
             <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">문제/문제집</p>
           </v-col>
-          <v-col xl="4" lg="6" md="6" sm="6" class="tab-hover" @click="changeToInfoFeed" id="infoTab">
+          <v-col cols="6" xl="4" class="tab-hover border-white" @click="changeToInfoFeed" id="infoTab">
             <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">정보</p>
           </v-col>
         </v-row>
@@ -18,16 +18,16 @@
         <v-row>
           <!-- 메인 피드 1. -- 문제/문제집 -->
           <v-col>
-            <recent-problem id="problemFeed" :class="`${problemFeedClass}`"></recent-problem>
+            <recent-problem id="problemFeed" :class="`${problemFeedClass}`" :mainProbs="mainProbs"></recent-problem>
       
             <!-- 메인 피드 2. -- 정보 -->
-            <info id="infoFeed" :class="`${infoFeedClass}`"></info>
+            <info id="infoFeed" :class="`${infoFeedClass}`" :mainInfos="mainInfos"></info>
           </v-col>
         </v-row>
       </v-col>
 
       <!-- col 2: 사이드 바 -->
-      <v-col md="4" class="d-md-flex d-md-none grey lighten-4">
+      <v-col md="4" class="d-md-flex d-none grey lighten-4">
         <side-bar></side-bar>
       </v-col>
     </v-row>
@@ -55,6 +55,8 @@ export default {
       feedFlag: 0,
       problemFeedClass: 'd-flex',
       infoFeedClass: 'd-none',
+      mainInfos : [],
+      mainProbs: [],
     }
   },
   components : {
@@ -77,7 +79,7 @@ export default {
         const infoTab = document.querySelector('#infoTab')
         problemTab.classList.add("clicked-main-tab")
         // console.log(problemTab.classList)
-        if(infoTab.classList.length > 6){
+        if(infoTab.classList.length >= 5){
           infoTab.classList.remove("clicked-main-tab")
         }
         this.problemFeedClass ='d-flex'
@@ -91,12 +93,38 @@ export default {
       const infoTab = document.querySelector('#infoTab')
       infoTab.classList.add("clicked-main-tab")
         // console.log(infoTab.classList)
-        if(problemTab.classList.length > 6){
+        if(problemTab.classList.length >= 5){
           // console.log('hi')
           problemTab.classList.remove("clicked-main-tab")
         }
         this.problemFeedClass ='d-none'
         this.infoFeedClass = 'd-flex'
+    },
+  },
+  created: {
+    getInfos () {
+      axios({
+        url: drf.post.information(),
+        method: 'get',
+      })
+      .then(res => {
+        this.mainInfos = res.data.content
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    },
+    getProbs () {
+      axios({
+        url: drf.post.problem(),
+        method: 'get',
+      })
+      .then(res => {
+        this.mainProbs = res.data.content
+      })
+      .catch(err => {
+        console.log(err);
+      })
     },
   }
 }
@@ -122,6 +150,9 @@ export default {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     cursor: pointer;
+  }
+  .border-white {
+    border: 1px solid white;
   }
   .container {
     max-width: none;

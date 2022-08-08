@@ -20,7 +20,7 @@ export default {
   },
   api: HOST,
   study : {
-    STUDY
+    study: () => HOST + STUDY
   },
   comment : {
     COMMENT
