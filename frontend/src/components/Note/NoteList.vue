@@ -5,7 +5,10 @@
       - note center에서 어떤 것이 선택됐는 지 toDB 받아와서 그것에 맞게 쿼리 보내기
       - 상세페이지로 이동
     -->
-    <router-link to="/createnote" class="text-decoration-none">
+    <!-- 
+      to="/note/{id}" : 후에 통신해서 id 받아서 넘기기
+     -->
+    <router-link to="/note" class="text-decoration-none">
       <note-list-items></note-list-items>
     </router-link>
 
