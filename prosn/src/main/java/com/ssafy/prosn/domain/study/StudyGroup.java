@@ -1,7 +1,7 @@
 package com.ssafy.prosn.domain.study;
 
 import com.ssafy.prosn.domain.BaseEntity;
-import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.domain.user.Member;
 import com.ssafy.prosn.dto.StudyGroupRequestDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -23,7 +23,7 @@ public class StudyGroup extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member user;
     private String title;
     private String mainText;
     private String secretText;
@@ -35,7 +35,7 @@ public class StudyGroup extends BaseEntity {
     private int currentPerson;
 
     @Builder
-    public StudyGroup(User user, String title, String mainText, String secretText, String place, LocalDate expiredDate, int maxPerson) {
+    public StudyGroup(Member user, String title, String mainText, String secretText, String place, LocalDate expiredDate, int maxPerson) {
         this.user = user;
         this.title = title;
         this.mainText = mainText;

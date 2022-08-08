@@ -3,7 +3,7 @@ package com.ssafy.prosn.domain.profile.note;
 import com.ssafy.prosn.converter.BooleanToYNConverter;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.post.Problem;
-import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.domain.user.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class WrongAnswer extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member user;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -42,7 +42,7 @@ public class WrongAnswer extends BaseEntity {
     private boolean isWrite;
 
     @Builder
-    public WrongAnswer(User user, Problem problem, String wrong_answer) {
+    public WrongAnswer(Member user, Problem problem, String wrong_answer) {
         this.user = user;
         this.problem = problem;
         this.wrongAnswer = wrong_answer;
