@@ -1,67 +1,73 @@
 <template>
   <!-- 피드 하나하나 디자인 하고 그 자리에 받아온 데이터 띄우기 -->
-  <div class="my-3 pa-5 w-100">
-    <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
-    <div class="color-FAF0F3 mx-auto border-a-10">
-        <v-container class="px-5">
-            <!-- 첫번째 v-row: 프사, 사용자 이름, 사용자 등급, 팔로우 버튼 -->
-            <v-row class="align-center justify-space-between">
-                <div class="d-flex align-center mx-2 my-4">
-                    <!-- profile 뒤에 개인 username 붙이기 0802 임지민 -->
-                    <router-link to="/profile">
-                        <span class="material-icons mr-2 font-parent-lar text-decoration-none black--text pt-2">
-                            account_circle
+    <v-container class="pa-0">
+        <div class="my-3 pa-5 w-100">
+            <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
+            <div class="color-FAF0F3 mx-auto border-a-10">
+                <v-row>
+                    <v-col cols="12">
+                    <!-- 첫번째 v-row: 프사, 사용자 이름, 사용자 등급, 팔로우 버튼 -->
+
+                        <v-row class="align-center justify-space-between">
+                            <div class="d-flex align-center mx-2 my-4">
+                                <!-- profile 뒤에 개인 username 붙이기 0802 임지민 -->
+                                <router-link to="/profile">
+                                    <span class="material-icons mr-2 font-parent-lar text-decoration-none black--text pt-2">
+                                        account_circle
+                                    </span>
+                                </router-link>
+                                <span class="font-weight-bold font-parent-mid">{{ info.writer.name}}</span>
+                                <span class="ml-2 tmp-border py-1 font-weight-bold font-parent-sml">PROSN</span>
+                            </div>
+                            
+                            <!-- 크기가 작아지면 버튼 크기도 작아지게; 부모 크기 상속받도록? -->
+                            <button type="button" class="pa-2 border-a-10 color-D9D9D9 font-weight-bold font-parent-mid">팔로우</button>
+                        </v-row>
+            
+                        <!-- 두번째 row: 본문 -->
+                        <v-row class="white border-a-10 mb-4">
+                            <!-- 카테고리 태그 -->
+                            <v-row class="col-12 mt-2 ml-2">
+                                <!-- 0801 임지민
+                                    카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" 
+                                    나중에 for문으로 돌리기
+                                -->
+                                <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#네트워크</span>
+                                <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#알고리즘</span>
+                                <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#CS</span>
+                            </v-row>
+                            <!-- 0801 임지민
+                                본문 
+                                - 1~2줄만 보여주고 나머지는 text-overflow: ellipsis 처리하기
+                            -->
+                            <v-row class="px-4 mb-4">
+                                <p class="px-4 mb-4 ">
+                                    {{ info.title }}
+                                </p>
+                            </v-row>
+                        </v-row>
+                    </v-col>
+                    <v-row class="justify-end mb-3">
+                        <span class="material-icons mr-4" @click="changeLikeStatus" id="upIcon">
+                            {{upText}}
                         </span>
-                    </router-link>
-                    <span class="font-weight-bold font-parent-mid">jimin4661</span>
-                    <span class="ml-2 tmp-border py-1 font-weight-bold font-parent-sml">PROSN</span>
-                </div>
-                
-                <!-- 크기가 작아지면 버튼 크기도 작아지게; 부모 크기 상속받도록? -->
-                <button type="button" class="pa-2 border-a-10 color-D9D9D9 font-weight-bold font-parent-mid">팔로우</button>
-            </v-row>
-
-            <!-- 두번째 row: 본문 -->
-            <v-row class="white border-a-10 mb-4">
-                <!-- 카테고리 태그 -->
-                <v-row class="col-12 mt-2 ml-2">
-                    <!-- 0801 임지민
-                        카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" 
-                        나중에 for문으로 돌리기
-                    -->
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#네트워크</span>
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#알고리즘</span>
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#CS</span>
+                        <span class="material-icons mr-4" @click="changeHateStatus" id="downIcon">
+                            {{downText}}
+                        </span>
+                        <span class="material-icons mr-4" @click="changeScrapStatus" id="scrapIcon">
+                            {{scrapText}}
+                        </span>
+                    </v-row>
                 </v-row>
-                <!-- 0801 임지민
-                    본문 
-                    - 1~2줄만 보여주고 나머지는 text-overflow: ellipsis 처리하기
+
+                <!-- 
+                    세번째 row: 좋아요, 싫어요, 스크랩 
+                    - 클릭하면 색이 바뀌도록 처리
                 -->
-                <v-row class="px-4 mb-4">
-                    <p class="px-4 mb-4 ">
-                        정보정보정보
-                    </p>
-                </v-row>
-            </v-row>
 
-            <!-- 
-                세번째 row: 좋아요, 싫어요, 스크랩 
-                - 클릭하면 색이 바뀌도록 처리
-            -->
-            <v-row class="justify-end mb-3">
-                    <span class="material-icons mr-4" @click="changeLikeStatus" id="upIcon">
-                        {{upText}}
-                    </span>
-                    <span class="material-icons mr-4" @click="changeHateStatus" id="downIcon">
-                        {{downText}}
-                    </span>
-                    <span class="material-icons mr-4" @click="changeScrapStatus" id="scrapIcon">
-                        {{scrapText}}
-                    </span>
-            </v-row>
-        </v-container>
-    </div>
-  </div>
+            </div>
+        </div>
+    </v-container>
 </template>
 
 <script>
@@ -72,6 +78,9 @@ export default {
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
         }
+    },
+    props: {
+      info: Object,
     },
     methods: {
         changeLikeStatus() {
