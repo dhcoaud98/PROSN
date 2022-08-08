@@ -49,10 +49,11 @@
       </v-row>
     </v-container>
   </v-card>
-
 </template>  
 
 <script>
+import ScarpList from '@/components/Scrap/ScrapList.vue'
+
 export default {
   name: 'Scrap',
 
@@ -60,6 +61,7 @@ export default {
     //
   }),
   components : {
+    ScrapList,
   },
 }
 </script>
