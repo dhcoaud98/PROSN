@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 
 /**
  * created by seongmin on 2022/07/19
+ * updated by yeomyeong on 2022/08/07 (updatePassword)
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,5 +21,10 @@ public class LocalUser extends User {
         super(name, email);
         this.userId = userId;
         this.password = password;
+    }
+
+    public LocalUser updatePassword(String password) {
+        this.password = password;
+        return this;
     }
 }

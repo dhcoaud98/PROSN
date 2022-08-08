@@ -7,6 +7,17 @@ spring:
   mvc:
     path match:
       matching-strategy: ant_path_matcher
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: prosnteam
+    password: prosn705@#
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
