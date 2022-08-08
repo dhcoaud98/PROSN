@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.Map;
+
 import static org.springframework.http.HttpStatus.*;
 
 /**
@@ -70,5 +72,11 @@ public class UserController {
     @GetMapping("/ranking")
     public ResponseEntity<?> getRanking() {
         return ResponseEntity.status(OK).body(userService.ranking());
+    }
+
+    @PostMapping("/id/check")
+    public ResponseEntity<?> idDuplicateCheck(@RequestBody Map<String,String> req) {
+        userService.duplicateUserId(req.get("uid"));
+        return ResponseEntity.status(NO_CONTENT).build();
     }
 }
