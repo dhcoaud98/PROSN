@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <p>info</p> -->
-    <info-items></info-items>
+    <info-items v-for="mainInfo in mainInfos" :key="mainInfo.id"></info-items>
   </div>
 </template>
 
@@ -18,6 +18,9 @@ export default {
     },
     components: {
         infoItems,
+    },
+    props: {
+      mainInfos: Array,
     },
     created() {
       // 정보 전체 최신 순으로 가져오기

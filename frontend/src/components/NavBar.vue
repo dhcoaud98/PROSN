@@ -4,8 +4,6 @@
       width="256"
       class="mx-auto"
       color="transparent"
-      d-none
-      d-md-flex
     >
       <v-navigation-drawer permanent class="mt-2">
         <v-list-item class="mt-5">

@@ -2,7 +2,7 @@
   <div>
     <!-- <p>recent</p> -->
     <!-- 여기서 최신 피드들을 받아서 v-for로 recent problem items로 내려주기 -->
-    <recent-problem-items></recent-problem-items>
+    <recent-problem-items v-for="mainProb in mainProbs" :key="mainProb.id"></recent-problem-items>
   </div>
 </template>
 
@@ -12,6 +12,9 @@ import RecentProblemItems from '../MainPage/RecentProblemItems.vue'
 export default {
     components : {
         RecentProblemItems,
+    },
+    props: {
+      mainProbs: Array,
     }
 }
 </script>

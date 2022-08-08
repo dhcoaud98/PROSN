@@ -23,20 +23,17 @@
 
     <!-- 문제 부분 -->
     <v-row class="mt-0">
-      <note-detail-list></note-detail-list>
+      <create-note-list></create-note-list>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import NoteDetailList from '@/components/Note/NoteDetailList.vue'
+import CreateNoteList from '@/components/Note/CreateNoteList.vue'
 
 export default {
   components: {
-    NoteDetailList,
-  },
-  props: {
-    
+    CreateNoteList,
   },
   methods : {
     

@@ -1,45 +1,18 @@
 <template>
   <v-bottom-navigation v-model="icons.value" class="sticky-bottom align-center justify-space-around">
     <div v-for="icon in icons" :key="icon.text">
-      <router-link :to="icon.urlName">
-        <button type="button" :value="icon.value" class="col-3 pa-0 transparent">
-            <span class="material-icons font-30 text-decoration-none black--text">
-                {{ icon.text }}
-            </span>
-        </button>
-      </router-link>
+      <!-- url이 같은 상태에서는 상단으로 이동하고, 다른 상태에서는 지정된 url로 이동하기 (0808 임지민 완료)-->
+      <div @click="checkUrl(icon.urlName)">
+          <button type="button" :value="icon.value" class="col-3 pa-0 transparent">
+              <span class="material-icons font-30 text-decoration-none black--text">
+                  {{ icon.text }}
+              </span>
+          </button>
+      </div>
     </div>
-
-    <!-- 홈 
-    <v-btn value="recent" class="col-3 pa-0 transparent">
-        <span class="material-icons font-30">
-            home
-        </span>
-    </v-btn> 
-
-    스터디
-    <v-btn value="favorites" class="col-3 pa-0 transparent">
-      <span class="material-icons font-30" >
-        groups
-    </span>
-    </v-btn>
-
-    <v-btn value="nearby" class="col-3 pa-0 transparent">
-      <span class="material-icons font-30">
-        sticky_note_2
-    </span>
-
-    </v-btn>
-
-    내 프로필
-    <v-btn value="nearby" class="col-3 pa-0 transparent">
-      <span class="material-icons font-30">
-            person
-        </span>
-    </v-btn> -->
   </v-bottom-navigation>
 </template>
-
+""
 <script>
 export default {
   data() {
@@ -65,7 +38,22 @@ export default {
           text: 'person',
           urlName: '/profile'
         },
-      ]
+      ],
+
+    }
+  },
+  methods : {
+    checkUrl(urlName) {
+      if (window.location.href.endsWith(urlName)) {
+        // console.log(true)
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        })
+      } else {
+        this.$router.push({ path: urlName})
+      }
     }
   }
 }
