@@ -83,11 +83,11 @@ export default {
     cancel () {
       this.$router.push({ path: 'profile' })
     },
-
     createInformation() {
+      // console.log(drf.api)
       // console.log('토큰 = ', this.accessToken)
       axios({
-        url: `${drf.api}post/information`,
+        url: drf.postFeed.information(),
         method: 'post',
         headers: {
           Authorization: this.accessToken,
@@ -95,7 +95,7 @@ export default {
         data: this.credentials,
       })
       .then((res) => {
-        // console.log('res = ', res)
+        console.log('res = ', res)
         this.$router.push({ path: 'profile' })
       })
       .catch((err) => {

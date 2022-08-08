@@ -31,7 +31,7 @@
 
           <!-- 로그인 버튼 -->
           <v-col cols="3">
-            <v-btn type="submit" color="#A384FF" class="white--text my-0 mx-5 py-5" height="100%" width="100%" @click="event()">로그인</v-btn>
+            <v-btn type="submit" color="#A384FF" class="white--text my-0 mx-5 py-5" height="100%" width="100%">로그인</v-btn>
           </v-col>
         </v-row>
       </v-form>
