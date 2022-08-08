@@ -8,10 +8,12 @@ import com.ssafy.prosn.dto.UserResponseDto;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import com.ssafy.prosn.security.JwtUtils;
+import com.ssafy.prosn.service.FriendService;
 import com.ssafy.prosn.service.MailService;
 import com.ssafy.prosn.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,7 @@ import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by seongmin on 2022/07/27
- * updated by yeomyeong on 2022/08/07 (line 51~)
+ * updated by seongmin on 2022/08/08
  */
 @RestController
 @RequiredArgsConstructor
@@ -35,6 +37,7 @@ public class UserController {
 
     private final UserService userService;
     private final LocalUserRepository localUserRepository;
+    private final FriendService friendService;
 
     @GetMapping("/me")
     public ResponseEntity<?> getMyInfo() {
@@ -43,6 +46,7 @@ public class UserController {
         return ResponseEntity.ok((myInfoBySecurity));
         // return ResponseEntity.ok(memberService.getMyInfoBySecurity());
     }
+
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody UserJoinRequestDto req) {
         userService.join(req);
@@ -60,7 +64,7 @@ public class UserController {
         LocalUser resetUser = localUserRepository.findByUserId(reqDto.getUserId())
                 .orElseThrow(() -> new IllegalStateException("등록된 회원 정보가 없습니다."));
 
-        if(!reqDto.getEmail().equals(localUserRepository.findEmailByUserId(resetUser.getUserId())))
+        if (!reqDto.getEmail().equals(localUserRepository.findEmailByUserId(resetUser.getUserId())))
             throw new IllegalStateException("등록된 회원 정보가 없습니다.");
 
         userService.resetPwd(resetUser);
@@ -75,8 +79,24 @@ public class UserController {
     }
 
     @PostMapping("/id/check")
-    public ResponseEntity<?> idDuplicateCheck(@RequestBody Map<String,String> req) {
+    public ResponseEntity<?> idDuplicateCheck(@RequestBody Map<String, String> req) {
         userService.duplicateUserId(req.get("uid"));
         return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @GetMapping("/following/{id}")
+    public ResponseEntity<?> following(@PathVariable(value = "id") Long id) { // 팔로잉 할 사람의 id
+        friendService.following(userService.getMyInfoBySecret().getId(), id);
+        return ResponseEntity.status(OK).build();
+    }
+
+    @GetMapping("/following")
+    public ResponseEntity<?> followingList(Pageable pageable) {
+        return ResponseEntity.status(OK).body(friendService.getMyFollowing(userService.getMyInfoBySecret().getId(), pageable));
+    }
+
+    @GetMapping("/follower")
+    public ResponseEntity<?> followerList(Pageable pageable) {
+        return ResponseEntity.status(OK).body(friendService.getMyFollower(userService.getMyInfoBySecret().getId(), pageable));
     }
 }

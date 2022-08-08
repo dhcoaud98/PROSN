@@ -1,9 +1,7 @@
 package com.ssafy.prosn.domain.user;
 
 import com.ssafy.prosn.domain.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -20,11 +18,16 @@ public class Friend extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "follower_id")
     private User follower;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "following_id")
     private User following;
 
+    @Builder
+    public Friend(User follower, User following) {
+        this.follower = follower;
+        this.following = following;
+    }
 }
