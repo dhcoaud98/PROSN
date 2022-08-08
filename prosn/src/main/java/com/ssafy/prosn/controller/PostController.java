@@ -4,6 +4,7 @@ import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.service.PostService;
 import com.ssafy.prosn.service.UserService;
+import com.ssafy.prosn.service.WorkbookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -28,6 +30,7 @@ import static org.springframework.http.HttpStatus.*;
 public class PostController {
     private final PostService postService;
     private final UserService userService;
+    private final WorkbookService workbookService;
 
     @PostMapping("/problem")
     public ResponseEntity<?> writeProblem(@RequestBody @Valid ProblemRequestDto req) {
@@ -90,5 +93,28 @@ public class PostController {
         return ResponseEntity.ok(
                 postService.searchPost(new PostSearchRequestDto(title, code))
         );
+    }
+
+    @PostMapping("/workbook")
+    public ResponseEntity<?> writeWorkbook(@RequestBody Map<String, String> req) {
+        workbookService.save(Long.parseLong(req.get("pid")),
+                userService.getMyInfoBySecret().getId(),
+                req.get("title"));
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @PatchMapping("/workbook")
+    public ResponseEntity<?> updateWorkbook(@RequestBody Map<String, String> req) {
+        workbookService.update(userService.getMyInfoBySecret().getId(),
+                Long.parseLong(req.get("wid")),
+                req.get("title"));
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @GetMapping("/workbook")
+    public ResponseEntity<?> getAllWorkbook(Pageable pageable) {
+        log.info("문제집 조회");
+        PostResponseDto result = workbookService.showAllWorkbook(pageable);
+        return ResponseEntity.status(OK).body(result);
     }
 }
