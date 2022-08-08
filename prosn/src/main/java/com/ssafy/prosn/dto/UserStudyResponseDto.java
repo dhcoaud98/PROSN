@@ -1,6 +1,6 @@
 package com.ssafy.prosn.dto;
 
-import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.domain.post.Tag;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * created by yeomyeong on 2022/07/28
- * updated by yeomyeong on 2022/08/02
+ * updated by yeomyeong on 2022/08/07
  */
 @Getter
 @ToString(callSuper = true)
@@ -24,8 +24,8 @@ public class UserStudyResponseDto extends StudyResponseDto {
     private String secretText;
 
     @Builder
-    public UserStudyResponseDto(String title, int currentPerson, int maxPerson, String place, String mainText, Long id, String secretText) {
-        super(title, currentPerson, maxPerson, place, mainText);
+    public UserStudyResponseDto(String title, int currentPerson, int maxPerson, String place, String mainText, Long id, String secretText, List<Tag> tags) {
+        super(title, currentPerson, maxPerson, place, mainText, tags);
         this.id = id;
         this.secretText = secretText;
     }

@@ -8,7 +8,6 @@ import com.ssafy.prosn.exception.NotAccessUserException;
 import com.ssafy.prosn.repository.post.InformationRepository;
 import com.ssafy.prosn.repository.post.LikeDislikeRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
-import com.ssafy.prosn.repository.post.ProblemRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
 import com.ssafy.prosn.repository.post.tag.TagRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
