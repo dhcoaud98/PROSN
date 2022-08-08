@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * created by seongmin on 2022/07/27
  * updated by yeomyeong on 2022/08/07 (line 51~)
@@ -44,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginRequestDto req) {
+    public ResponseEntity<?> login(@RequestBody @Valid UserLoginRequestDto req) {
         return ResponseEntity.ok(userService.login(req));
     }
 
