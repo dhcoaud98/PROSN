@@ -44,7 +44,7 @@
             <!-- router - 1  -->
             <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5" @click="cancel()">취소하기</v-btn>
             <!-- submit -->
-            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5" @click="submit()">게시하기</v-btn>
+            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5">게시하기</v-btn>
           </v-col>
         </v-row>
       </v-form>

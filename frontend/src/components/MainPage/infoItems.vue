@@ -22,7 +22,7 @@
             </v-row>
 
             <!-- 두번째 row: 본문 -->
-            <v-row class="white border-a-10 mb-4">
+            <v-row @click="openModal" class="white border-a-10 mb-4">
                 <!-- 카테고리 태그 -->
                 <v-row class="col-12 mt-2 ml-2">
                     <!-- 0801 임지민
@@ -62,18 +62,26 @@
                     </span>
             </v-row>
         </v-container>
+
+        <info-modal @close="closeModal" v-if="modal"></info-modal>
     </div>
   </div>
 </template>
 
 <script>
+import InfoModal from '@/components/InfoModal/InfoModal.vue'
+
 export default {
     data() {
         return {
             upText: 'thumb_up_off_alt',
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
+            modal: false,
         }
+    },
+    components: {
+        InfoModal,
     },
     methods: {
         changeLikeStatus() {
@@ -116,6 +124,14 @@ export default {
            } else {
                 this.scrapText = "bookmark_border"
            }
+        },
+        openModal() {
+            this.modal = true
+            console.log('openModal')
+        },
+        closeModal() {
+            this.modal = false
+            console.log('closeModal')
         },
     }
 }

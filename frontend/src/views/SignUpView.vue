@@ -114,7 +114,7 @@
                             <!-- 회원가입 버튼: 유효성 검사 + submit -->
                             <v-row class="mt-5 mb-1 justify-center pa-0">
                                 <!-- 아래에 submitSignup 메서드를 정의; axios로 db에 사용자 정보를 저장하기 -->
-                                <router-link to="/">
+    
                                   <v-btn
                                     :disabled="!valid"
                                     @click="validate();"     
@@ -124,7 +124,7 @@
                                     >
                                     회원가입
                                     </v-btn>
-                                </router-link>
+
                             <!-- 취소: 뒤로 가기 -->
                                 <v-btn
                                 color="#A384FF"
@@ -213,6 +213,7 @@ export default {
             this.$refs.form.validate()
         },
         submitSignUp () {
+            console.log('axios = ', axios)
             // console.log('submit') --- ok
             // submit했을 때 axios로 db에 사용자 정보를 저장해주면 된다.
             // console.log("클릭")

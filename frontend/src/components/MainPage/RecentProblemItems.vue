@@ -23,7 +23,7 @@
             </v-row>
 
             <!-- 두번째 row: 본문 -->
-            <v-row class="white border-a-10 mb-4">
+            <v-row @click="openModal" class="white border-a-10 mb-4">
                 <!-- 카테고리 태그 -->
                 <v-row class="col-12 mt-2 ml-2">
                     <!-- 0801 임지민
@@ -63,13 +63,7 @@
             </v-row>
         </v-container>
 
-        <problem-modal @close="closeModal" v-if="modal">
-            <!-- ProblemModal.vue의 슬롯에 해당하는 부분 -->
-            <!-- <v-card-text slot="btns" class="d-flex justify-space-between">
-                <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
-                <v-btn @click="closeModal" text class="font-weight-bold">뒤로가기</v-btn>
-            </v-card-text>         -->
-        </problem-modal>
+        <problem-modal @close="closeModal" v-if="modal"></problem-modal>
     </div>
   </div>
 </template>
