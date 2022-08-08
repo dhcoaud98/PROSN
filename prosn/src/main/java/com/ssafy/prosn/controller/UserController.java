@@ -11,6 +11,7 @@ import com.ssafy.prosn.security.JwtUtils;
 import com.ssafy.prosn.service.FriendService;
 import com.ssafy.prosn.service.MailService;
 import com.ssafy.prosn.service.UserService;
+import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -98,5 +99,10 @@ public class UserController {
     @GetMapping("/follower")
     public ResponseEntity<?> followerList(Pageable pageable) {
         return ResponseEntity.status(OK).body(friendService.getMyFollower(userService.getMyInfoBySecret().getId(), pageable));
+    }
+
+    @GetMapping("/info/{id}")
+    public ResponseEntity<?> getUserInfo(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.status(OK).body(userService.getUserInfo(id));
     }
 }

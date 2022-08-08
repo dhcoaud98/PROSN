@@ -5,8 +5,10 @@ import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.*;
+import com.ssafy.prosn.exception.BadRequestException;
 import com.ssafy.prosn.exception.DuplicateException;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
+import com.ssafy.prosn.repository.user.FriendRepository;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import com.ssafy.prosn.security.JwtUtils;
@@ -40,7 +42,7 @@ public class UserServiceImpl implements UserService {
     private final JwtUtils jwtUtils;
     private final PostListRepository postListRepository;
     private final MailService mailService;
-
+    private final FriendRepository friendRepository;
     @Override
     @Transactional
     public Long join(UserJoinRequestDto joinRequestDto) {
@@ -92,10 +94,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void duplicateUserId(String uid) {
-        if (localUserRepository.existsByUserId(uid)) {
+    public void duplicateUserId(String userId) {
+        if (localUserRepository.existsByUserId(userId)) {
             throw new DuplicateException("이미 있는 아이디입니다.");
         }
+    }
+
+    @Override
+    public UserInfoDto getUserInfo(Long uid) {
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
+        long followingCount = friendRepository.countByFollower(user);
+        long followerCount = friendRepository.countByFollowing(user);
+        log.info("user.getPosts.size = {}", user.getPosts().size());
+        return UserInfoDto.of(user, followerCount, followingCount, user.getPosts());
     }
 
     private void validateDuplicate(String userId, String email) {
