@@ -12,11 +12,14 @@ import com.ssafy.prosn.service.MailService;
 import com.ssafy.prosn.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by seongmin on 2022/07/27
@@ -63,4 +66,9 @@ public class UserController {
     }
 
     //비번 변경하는 것도 만들어야 할 것 같음
+
+    @GetMapping("/ranking")
+    public ResponseEntity<?> getRanking() {
+        return ResponseEntity.status(OK).body(userService.ranking());
+    }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.prosn.domain;
 
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,9 +12,11 @@ import java.time.LocalDateTime;
 
 /**
  * created by seongmin on 2022/07/18
+ * updated by seongmin on 2022/08/08
  */
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
+@Getter
 public class BaseEntity {
 
     @CreatedDate
