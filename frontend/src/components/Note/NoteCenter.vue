@@ -34,12 +34,12 @@
     <!-- row4. note list -->
     <v-row class="ml-2">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mt-3">작성 전 문제</p>
-      <note-list @beforeProbs="beforeProbs"></note-list>
+      <note-list :beforeProbs="beforeProbs"></note-list>
     </v-row>
     <hr class="my-5 border-grey">
     <v-row class="ml-2">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey">이미 작성한 문제</p>
-      <note-list @afterProbs="afterProbs"></note-list>
+      <note-list :afterProbs="afterProbs"></note-list>
     </v-row>
   </v-container>
 </template>

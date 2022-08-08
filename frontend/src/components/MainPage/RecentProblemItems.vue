@@ -14,7 +14,7 @@
                             account_circle
                         </span>
                     </router-link>
-                    <span class="font-weight-bold font-parent-mid">jimin4661</span>
+                    <span class="font-weight-bold font-parent-mid">{{mainProb.writer.name}}</span>
                     <span class="ml-2 tmp-border py-1 font-weight-bold font-parent-sml">PROSN</span>
                 </div>
                 
@@ -30,9 +30,10 @@
                         카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" 
                         나중에 for문으로 돌리기
                     -->
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#네트워크</span>
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#알고리즘</span>
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#CS</span>
+                    <div v-for="tag in mainProb.tag" :key="tag">
+                        <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#{{tag}}</span>
+                    </div>
+                    
                 </v-row>
                 <!-- 0801 임지민
                     본문 
@@ -40,7 +41,7 @@
                 -->
                 <v-row class="px-4 mb-4">
                     <p class="px-4 mb-4 ">
-                        여기는 문제 칸입니다.
+                        {{mainProb.mainText}}
                     </p>
                 </v-row>
             </v-row>
@@ -77,9 +78,6 @@
 import ProblemModal from '@/components/ProblemModal/ProblemModal.vue'
 
 export default {
-    components: {
-        ProblemModal,
-    },
     data() {
         return {
             upText: 'thumb_up_off_alt',
@@ -87,6 +85,12 @@ export default {
             scrapText: 'bookmark_border',
             modal: false,
         }
+    },
+    components: {
+        ProblemModal,
+    },
+    props: {
+        mainProb: Object,
     },
     methods: {
         changeLikeStatus() {

@@ -117,7 +117,8 @@
         </v-row>
         <!-- 수정하기 -->
         <v-row class="justify-end mt-5">
-          <v-btn outlined rounded small @submit.prevent="edittNote">수정하기</v-btn>
+          <v-btn outlined rounded small class="mr-3" @submit.prevent="editNote">수정하기</v-btn>
+          <v-btn outlined rounded small @submit.prevent="deleteNote">삭제하기</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -166,8 +167,6 @@ export default {
       })
       .then(res => {
           console.log("res = ",res);
-          const token = res.data.key
-          token 
           // data에 저장해서 띄우기
           this.credentials.reason = res.data.reason
           this.credentials.studyContent = res.data.studyContent
@@ -180,6 +179,22 @@ export default {
           console.log("에러")
           console.log(err)
         })
+    },
+    deleteNote() {
+      const userDecision = alert('정말로 삭제하시겠습니까?')
+      if (userDecision === true) {
+        axios({
+            url: drf.note.wronganswer(),
+            method: 'delete',
+        })
+        .then(res => {
+            console.log("res.data = ",res.data);
+        })
+        .catch(err =>{
+            console.log("에러")
+            console.log(err)
+            })
+      }
     }
   },
   created : {

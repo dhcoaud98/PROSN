@@ -13,7 +13,7 @@
                             account_circle
                         </span>
                     </router-link>
-                    <span class="font-weight-bold font-parent-mid">jimin4661</span>
+                    <span class="font-weight-bold font-parent-mid">{{mainInfo.writer.name}}</span>
                     <span class="ml-2 tmp-border py-1 font-weight-bold font-parent-sml">PROSN</span>
                 </div>
                 
@@ -29,9 +29,9 @@
                         카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" 
                         나중에 for문으로 돌리기
                     -->
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#네트워크</span>
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#알고리즘</span>
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#CS</span>
+                    <div v-for="tag in mainInfo.tags" :key="tag">
+                        <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#{{tag}}</span>
+                    </div>
                 </v-row>
                 <!-- 0801 임지민
                     본문 
@@ -39,7 +39,7 @@
                 -->
                 <v-row class="px-4 mb-4">
                     <p class="px-4 mb-4 ">
-                        정보정보정보
+                        {{mainInfo.mainText}}
                     </p>
                 </v-row>
             </v-row>
@@ -51,9 +51,11 @@
             <v-row class="justify-end mb-3">
                     <span class="material-icons mr-4" @click="changeLikeStatus" id="upIcon">
                         {{upText}}
+                        {{ mainInfo.numOfLikes}}
                     </span>
                     <span class="material-icons mr-4" @click="changeHateStatus" id="downIcon">
                         {{downText}}
+                        {{ mainInfo.numOfDislikes}}
                     </span>
                     <span class="material-icons mr-4" @click="changeScrapStatus" id="scrapIcon">
                         {{scrapText}}

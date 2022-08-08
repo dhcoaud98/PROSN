@@ -18,10 +18,10 @@
         <v-row>
           <!-- 메인 피드 1. -- 문제/문제집 -->
           <v-col>
-            <recent-problem id="problemFeed" :class="`${problemFeedClass}`"></recent-problem>
+            <recent-problem id="problemFeed" :class="`${problemFeedClass}`" :mainProbs="mainProbs"></recent-problem>
       
             <!-- 메인 피드 2. -- 정보 -->
-            <info id="infoFeed" :class="`${infoFeedClass}`"></info>
+            <info id="infoFeed" :class="`${infoFeedClass}`" :mainInfos="mainInfos"></info>
           </v-col>
         </v-row>
       </v-col>
@@ -55,6 +55,8 @@ export default {
       feedFlag: 0,
       problemFeedClass: 'd-flex',
       infoFeedClass: 'd-none',
+      mainInfos : [],
+      mainProbs: [],
     }
   },
   components : {
@@ -97,6 +99,32 @@ export default {
         }
         this.problemFeedClass ='d-none'
         this.infoFeedClass = 'd-flex'
+    },
+  },
+  created: {
+    getInfos () {
+      axios({
+        url: drf.post.information(),
+        method: 'get',
+      })
+      .then(res => {
+        this.mainInfos = res.data.content
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    },
+    getProbs () {
+      axios({
+        url: drf.post.problem(),
+        method: 'get',
+      })
+      .then(res => {
+        this.mainProbs = res.data.content
+      })
+      .catch(err => {
+        console.log(err);
+      })
     },
   }
 }
