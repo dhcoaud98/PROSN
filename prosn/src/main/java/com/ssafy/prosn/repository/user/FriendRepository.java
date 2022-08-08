@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface FriendRepository extends JpaRepository<Friend, Long> {
     Page<Friend> findByFollower(User user, Pageable pageable); // 팔로잉 조회
-
     Page<Friend> findByFollowing(User user, Pageable pageable); // 팔로워 조회
+
+    long countByFollower(User user);
+    long countByFollowing(User user);
 }
