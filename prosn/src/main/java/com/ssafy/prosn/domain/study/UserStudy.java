@@ -1,8 +1,7 @@
 package com.ssafy.prosn.domain.study;
 
 import com.ssafy.prosn.domain.BaseEntity;
-import com.ssafy.prosn.domain.user.Member;
-import com.ssafy.prosn.dto.UserResponseDto;
+import com.ssafy.prosn.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,10 +26,10 @@ public class UserStudy extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Member user;
+    private User user;
 
     @Builder
-    public UserStudy(Member user, StudyGroup studyGroup) {
+    public UserStudy(User user, StudyGroup studyGroup) {
         this.user = user;
         this.studyGroup = studyGroup;
     }

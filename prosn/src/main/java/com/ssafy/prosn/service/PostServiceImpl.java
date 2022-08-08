@@ -1,17 +1,15 @@
 package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.post.*;
-import com.ssafy.prosn.domain.user.Member;
+import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.post.LikeDislikeRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
-import com.ssafy.prosn.repository.post.ProblemRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
 import com.ssafy.prosn.repository.post.tag.TagRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +37,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public Post writeProblem(ProblemRequestDto problemDto, Long uid) {
         // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
-        Member user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Problem problem = Problem.builder()
                 .user(user)
                 .title(problemDto.getTitle())
@@ -58,7 +56,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public Post writeInformation(InformationRequestDto informationDto, Long uid) {
         // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
-        Member user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Information information = Information.builder()
                 .user(user)
                 .mainText(informationDto.getMainText())
@@ -151,7 +149,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void likeDislikeClick(LikeDisLikeRequestDto dto, Long uid) {
-        Member user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Post post = postRepository.findById(dto.getPid()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
 
         Optional<LikeDislike> result = likeDislikeRepository.findByPostAndUser(post, user);

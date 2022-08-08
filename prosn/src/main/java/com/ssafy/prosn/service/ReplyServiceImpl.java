@@ -2,7 +2,7 @@ package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.comment.Comment;
 import com.ssafy.prosn.domain.comment.Reply;
-import com.ssafy.prosn.domain.user.Member;
+import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.ReplyRequestDto;
 import com.ssafy.prosn.repository.comment.CommentRepository;
 import com.ssafy.prosn.repository.comment.ReplyRepository;
@@ -30,7 +30,7 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     @Transactional
     public Reply write(ReplyRequestDto replyRequestDto, Long uid) {
-        Member user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
         Comment comment = commentRepository.findById(replyRequestDto.getCid())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 댓글입니다."));
 

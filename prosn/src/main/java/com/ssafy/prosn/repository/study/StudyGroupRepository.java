@@ -15,7 +15,7 @@ import java.util.List;
  * updated by yeomyeong on 2022/08/05
  */
 public interface StudyGroupRepository extends JpaRepository<StudyGroup, Long> {
-    @Query("select u.name from UserStudy us join Member u on us.user = u.id where us.studyGroup = :studyGroup")
+    @Query("select u.name from UserStudy us join User u on us.user = u.id where us.studyGroup = :studyGroup")
     List<String> findMembers(@Param("studyGroup") StudyGroup studyGroup);
 
     @Query("select new com.ssafy.prosn.dto.StudyGroupListResponseDto(s.id, s.title, s.currentPerson, s.maxPerson) from StudyGroup s")

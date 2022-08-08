@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class LocalUser extends Member {
+public class LocalUser extends User {
 
     private String userId;
     private String password;

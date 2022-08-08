@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class SocialUser extends Member {
+public class SocialUser extends User {
 
     private String oauthId;
     private String platform;

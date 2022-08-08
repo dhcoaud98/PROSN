@@ -21,7 +21,8 @@ import java.util.List;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public abstract class Member extends BaseEntity {
+@Table(name = "users")
+public abstract class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +42,7 @@ public abstract class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
-    public Member(String name, String email) {
+    public User(String name, String email) {
         this.name = name;
         this.email = email;
         this.point = 0;

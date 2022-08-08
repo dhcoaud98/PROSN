@@ -1,7 +1,7 @@
 package com.ssafy.prosn.domain.post;
 
 import com.ssafy.prosn.domain.BaseEntity;
-import com.ssafy.prosn.domain.user.Member;
+import com.ssafy.prosn.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class LikeDislike extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Member user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -33,7 +33,7 @@ public class LikeDislike extends BaseEntity {
     private boolean type;
 
     @Builder
-    public LikeDislike(Member user, Post post, boolean type) {
+    public LikeDislike(User user, Post post, boolean type) {
         this.user = user;
         this.post = post;
         this.type = type;

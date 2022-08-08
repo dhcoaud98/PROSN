@@ -1,7 +1,7 @@
 package com.ssafy.prosn.domain.profile.scrap;
 
 import com.ssafy.prosn.domain.BaseEntity;
-import com.ssafy.prosn.domain.user.Member;
+import com.ssafy.prosn.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,13 +28,13 @@ public class PostList extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Member user;
+    private User user;
 
     @OneToMany(mappedBy = "postList")
     private List<Scrap> scraps = new ArrayList<>();
 
     @Builder
-    public PostList(String title, Member user) {
+    public PostList(String title, User user) {
         this.title = title;
         this.user = user;
     }

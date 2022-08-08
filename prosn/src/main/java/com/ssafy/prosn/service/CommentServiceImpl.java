@@ -2,9 +2,8 @@ package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.comment.Comment;
 import com.ssafy.prosn.domain.post.Post;
-import com.ssafy.prosn.domain.user.Member;
+import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.CommentRequestDto;
-import com.ssafy.prosn.dto.UserResponseDto;
 import com.ssafy.prosn.repository.comment.CommentRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -12,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/25
@@ -34,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public Comment write(CommentRequestDto commentRequestDto, Long uid) {
         Post post = postRepository.findById(commentRequestDto.getPid()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
-        Member user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
 
         Comment comment = Comment.builder()
                 .post(post)
