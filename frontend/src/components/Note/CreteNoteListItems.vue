@@ -160,12 +160,15 @@ export default {
     submitNote() {
       axios({
           url: drf.note.wronganswer(),
-          method: 'post',
+          method: 'patch',
+          headers: {
+          Authorization: this.accessToken,
+          },
           data: this.credentials
       })
       .then(res => {
           console.log("res = ",res);
-          const token = res.data.key
+          // const token = res.data.key
           // dispatch('saveToken', token)
           // dispatch('fetchCurrentUser')
       

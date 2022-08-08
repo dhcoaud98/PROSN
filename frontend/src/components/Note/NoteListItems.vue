@@ -32,7 +32,12 @@
 
 <script>
 export default {
-
+  data() {
+    return {
+      beforeProbs: Object,
+      afterProbs: Object,
+    }
+  }
 }
 </script>
 
