@@ -75,7 +75,7 @@
             <!-- router - 1  -->
             <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5" @click="cancel()">취소하기</v-btn>
             <!-- submit -->
-            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5" @click="submit()">출제하기</v-btn>
+            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5">출제하기</v-btn>
           </v-col>
         </v-row>
 
@@ -120,9 +120,6 @@ export default {
     cancel () {
       this.$router.push({ path: 'profile' })
     },
-    submit () {
-      this.$router.push({ path: 'profile' })
-    },
     createProblem() {
 			// console.log('토큰 = ', this.accessToken);
 			this.credentials.answer = this.credentials.ex1;
@@ -136,6 +133,7 @@ export default {
 			})
 				.then((res) => {
 					console.log('res = ', res);
+          this.$router.push({ path: 'profile' })
 				})
 				.catch((err) => {
 					console.log('에러');
