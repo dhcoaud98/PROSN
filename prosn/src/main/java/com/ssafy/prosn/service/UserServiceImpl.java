@@ -3,10 +3,9 @@ package com.ssafy.prosn.service;
 import com.ssafy.prosn.config.SecurityUtil;
 import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.user.LocalUser;
-import com.ssafy.prosn.dto.TokenDto;
-import com.ssafy.prosn.dto.UserJoinRequestDto;
-import com.ssafy.prosn.dto.UserLoginRequestDto;
-import com.ssafy.prosn.dto.UserResponseDto;
+import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.dto.*;
+import com.ssafy.prosn.exception.DuplicateException;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -21,9 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * created by seongmin on 2022/07/22
- * updated by yeomyeong on 2022/08/07 (resetPwd)
+ * updated by seongmin on 2022/08/08
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -79,12 +81,29 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("로그인 유저 정보가 없습니다."));
     }
 
+    @Override
+    public List<UserRankingResponseDto> ranking() {
+        List<User> ranking = userRepository.findTop5ByOrderByPointDesc();
+        List<UserRankingResponseDto> result = new ArrayList<>();
+        for (User user : ranking) {
+            result.add(UserRankingResponseDto.of(user));
+        }
+        return result;
+    }
+
+    @Override
+    public void duplicateUserId(String uid) {
+        if (localUserRepository.existsByUserId(uid)) {
+            throw new DuplicateException("이미 있는 아이디입니다.");
+        }
+    }
+
     private void validateDuplicate(String userId, String email) {
         if (localUserRepository.existsByUserId(userId)) {
-            throw new IllegalStateException("이미 있는 아이디입니다.");
+            throw new DuplicateException("이미 있는 아이디입니다.");
         }
         if (localUserRepository.existsByEmail(email)) {
-            throw new IllegalStateException("이미 있는 이메일입니다.");
+            throw new DuplicateException("이미 있는 이메일입니다.");
         }
     }
 
@@ -93,5 +112,7 @@ public class UserServiceImpl implements UserService {
         String encodedResetPassword = mailService.sendMail(user.getEmail());
         return user.updatePassword(encodedResetPassword);
     }
+
+
 
 }

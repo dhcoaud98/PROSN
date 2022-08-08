@@ -108,4 +108,39 @@ class UserRepositoryTest {
         boolean result2 = localUserRepository.existsByEmail(joinUser2.getEmail());
         assertThat(result2).isFalse();
     }
+
+    @Test
+    @DisplayName("랭킹 top 5")
+    void ranking() {
+        User user1 = LocalUser.builder()
+                .userId("test4")
+                .email("test4@gmail.com")
+                .password("qwert1234@")
+                .name("테스터4")
+                .build();
+        user1.earnPoints(100);
+        userRepository.save(user1);
+
+        User user2 = LocalUser.builder()
+                .userId("test5")
+                .email("test5@gmail.com")
+                .password("qwert1234@")
+                .name("테스터5")
+                .build();
+        user2.earnPoints(100);
+        userRepository.save(user2);
+
+        User user3 = LocalUser.builder()
+                .userId("test6")
+                .email("test6@gmail.com")
+                .password("qwert1234@")
+                .name("테스터6")
+                .build();
+        user3.earnPoints(40);
+        userRepository.save(user3);
+
+        List<User> top5ByPointDesc = userRepository.findTop5ByOrderByPointDesc();
+        assertThat(top5ByPointDesc.size()).isEqualTo(5);
+        assertThat(top5ByPointDesc.get(0).getPoint()).isEqualTo(100);
+    }
 }

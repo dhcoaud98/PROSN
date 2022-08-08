@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
- * updated by seongmin on 2022/07/28
+ * updated by seongmin on 2022/08/08
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -39,10 +39,10 @@ public abstract class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     private List<LikeDislike> likeDislikes = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-//    private List<PostTag> postTags = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostTag> postTags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
     @Convert(converter = BooleanToYNConverter.class)
@@ -53,7 +53,6 @@ public abstract class Post extends BaseEntity {
     @ColumnDefault("0")
     private Long numOfDislikes;
 
-//    private String dtype;
 
     public Post(String title, User user) {
         this.title = title;
@@ -62,5 +61,16 @@ public abstract class Post extends BaseEntity {
 
     public void remove() {
         isDeleted = true;
+    }
+
+    public void renameTitle(String title) {
+        this.title = title;
+    }
+
+    public void addPostTag(PostTag postTag) {
+        postTags.add(postTag);
+        if (postTag.getPost() != this) {
+            postTag.setPost(this);
+        }
     }
 }

@@ -9,18 +9,17 @@ import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.profiile.note.WrongAnswerRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * created by seongmin on 2022/08/01
@@ -158,10 +157,10 @@ class WrongAnswerServiceImplTest {
         wrongAnswerService.write(new WrongNoteRequestDto(wrongAnswer1.getId(), "헷갈렸다", "OPTION도 HTTP 메서드이다.", "이제 안틀린다."), user.getId());
         wrongAnswerService.write(new WrongNoteRequestDto(wrongAnswer2.getId(), "zzz", "잘찍자", "다음엔 운 좋겠지"), user.getId());
 
-        List<NoteResponseDto> note = wrongAnswerService.getNote(user.getId());
+        NoteResponseDto note = wrongAnswerService.getNote(user.getId(), PageRequest.of(0,3), false);
 
         // then
-        assertThat(note.size()).isEqualTo(2);
+        assertThat(note.getContent().size()).isEqualTo(2);
     }
 
     @Test

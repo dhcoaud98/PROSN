@@ -12,9 +12,16 @@ import com.ssafy.prosn.service.MailService;
 import com.ssafy.prosn.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+import java.util.Map;
+
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by seongmin on 2022/07/27
@@ -44,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginRequestDto req) {
+    public ResponseEntity<?> login(@RequestBody @Valid UserLoginRequestDto req) {
         return ResponseEntity.ok(userService.login(req));
     }
 
@@ -61,4 +68,15 @@ public class UserController {
     }
 
     //비번 변경하는 것도 만들어야 할 것 같음
+
+    @GetMapping("/ranking")
+    public ResponseEntity<?> getRanking() {
+        return ResponseEntity.status(OK).body(userService.ranking());
+    }
+
+    @PostMapping("/id/check")
+    public ResponseEntity<?> idDuplicateCheck(@RequestBody Map<String,String> req) {
+        userService.duplicateUserId(req.get("uid"));
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
@@ -19,6 +20,7 @@ import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by seongmin on 2022/08/05
+ * updated by seongmin on 2022/08/08
  */
 @RestController
 @RequiredArgsConstructor
@@ -50,9 +52,10 @@ public class ScrapController {
     }
 
     @PostMapping
-    public ResponseEntity<?> scrap(@RequestBody ScrapRequest req) {
+    public ResponseEntity<?> scraps(@RequestBody Map<String,String> req) {
+        log.info("pid = {}", req.get("pid"));
         UserResponseDto userInfo = userService.getMyInfoBySecret();
-        scrapService.save(req.pid, req.lid, userInfo.getId());
+        scrapService.save(Long.parseLong(req.get("pid")), Long.parseLong(req.get("lid")), userInfo.getId());
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
@@ -68,12 +71,28 @@ public class ScrapController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    private static class ScrapRequest {
-        @NotNull(message = "스크랩 하려는 게시글은 필수 값입니다.")
-        Long pid;
-        @NotNull(message = "스크랩 하려는 폴더는 필수 값입니다.")
-        Long lid;
-    }
+//    private static class ScrapRequest {
+//        @NotNull(message = "스크랩 하려는 게시글은 필수 값입니다.")
+//        Long pid;
+//        @NotNull(message = "스크랩 하려는 폴더는 필수 값입니다.")
+//        Long lid;
+//
+//        public ScrapRequest(Long pid, Long lid) {
+//            this.pid = pid;
+//            this.lid = lid;
+//        }
+//
+//        public ScrapRequest() {
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return "ScrapRequest{" +
+//                    "pid=" + pid +
+//                    ", lid=" + lid +
+//                    '}';
+//        }
+//    }
 
 
 }

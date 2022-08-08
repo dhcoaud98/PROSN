@@ -38,6 +38,10 @@ public class Solving extends BaseEntity {
     @ApiModelProperty(example = "풀이 여부")
     private boolean isRight;
 
+    public void correctAnswer() {
+        this.isRight = true;
+    }
+
     @Builder
     public Solving(User user, Problem problem, boolean isRight) {
         this.user = user;
