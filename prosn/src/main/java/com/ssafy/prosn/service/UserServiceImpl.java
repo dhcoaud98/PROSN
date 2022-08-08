@@ -91,6 +91,13 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    public void duplicateUserId(String uid) {
+        if (localUserRepository.existsByUserId(uid)) {
+            throw new DuplicateException("이미 있는 아이디입니다.");
+        }
+    }
+
     private void validateDuplicate(String userId, String email) {
         if (localUserRepository.existsByUserId(userId)) {
             throw new DuplicateException("이미 있는 아이디입니다.");
