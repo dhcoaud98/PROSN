@@ -1,10 +1,7 @@
 package com.ssafy.prosn.controller;
 
 import com.ssafy.prosn.domain.user.LocalUser;
-import com.ssafy.prosn.dto.UserJoinRequestDto;
-import com.ssafy.prosn.dto.UserLoginRequestDto;
-import com.ssafy.prosn.dto.UserResetPasswordRequestDto;
-import com.ssafy.prosn.dto.UserResponseDto;
+import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import com.ssafy.prosn.security.JwtUtils;
@@ -28,7 +25,7 @@ import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by seongmin on 2022/07/27
- * updated by seongmin on 2022/08/08
+ * updated by seongmin on 2022/08/09
  */
 @RestController
 @RequiredArgsConstructor
@@ -104,5 +101,13 @@ public class UserController {
     @GetMapping("/info/{id}")
     public ResponseEntity<?> getUserInfo(@PathVariable(value = "id") Long id) {
         return ResponseEntity.status(OK).body(userService.getUserInfo(id));
+    }
+
+    @GetMapping("/post/{id}")
+    public ResponseEntity<?> getUserPost(@PathVariable(value = "id") Long id, Pageable pageable) {
+        PostDto userPost = userService.getUserPost(id, pageable);
+        log.info("결과 = {}",userPost);
+        log.info("결과 = {}",userPost.getContent().get(0));
+        return ResponseEntity.status(OK).body(userPost);
     }
 }
