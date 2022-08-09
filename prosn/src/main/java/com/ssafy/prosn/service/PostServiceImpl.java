@@ -109,8 +109,8 @@ public class PostServiceImpl implements PostService {
                     .example3(problem.getExample3())
                     .example4(problem.getExample4())
                     .comments(problem.getComments())
-                    .numOfLikes(getNumOfLikes(problem))
-                    .numOfDislikes(getNumOfDislikes(problem))
+                    .numOfLikes(problem.getNumOfLikes())
+                    .numOfDislikes(problem.getNumOfDislikes())
                     .views(problem.getViews())
                     .tags(getTags(problem))
                     .type(PostType.PROBLEM)
@@ -125,8 +125,8 @@ public class PostServiceImpl implements PostService {
                     .user(new UserResponseDto(information.getUser().getId(), information.getUser().getName()))
                     .mainText(information.getMainText())
                     .comments(information.getComments())
-                    .numOfDislikes(getNumOfDislikes(information))
-                    .numOfLikes(getNumOfLikes(information))
+                    .numOfDislikes(information.getNumOfDislikes())
+                    .numOfLikes(information.getNumOfLikes())
                     .tags(getTags(information))
                     .views(information.getViews())
                     .type(PostType.INFORMATION)
@@ -179,13 +179,18 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(dto.getPid()).orElseThrow(() -> new BadRequestException("유효하지 않은 게시글입니다."));
 
         Optional<LikeDislike> result = likeDislikeRepository.findByPostAndUser(post, user);
-        if (result.isPresent()) {
+        if (result.isPresent()) { // 이미 눌렀던 경우
             if (result.get().isType() == dto.isType()) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
+                post.decreaseLikeDislike(dto.isType());
                 likeDislikeRepository.delete(result.get());
             } else { // 예전에 누른거랑 반대버튼 누른 경우 체인지 좋<->싫
                 result.get().change();
+                // 누른거 증가. 안누른거 감소
+                post.increaseLikeDislike(dto.isType());
+                post.decreaseLikeDislike(!dto.isType());
             }
-        } else {
+        } else { // 처음 누르는 경우
+            post.increaseLikeDislike(dto.isType());
             likeDislikeRepository.save(new LikeDislike(user, post, dto.isType()));
         }
     }
@@ -216,13 +221,13 @@ public class PostServiceImpl implements PostService {
         return tags;
     }
 
-    private Long getNumOfLikes(Post post) {
-        return likeDislikeRepository.countByPostAndType(post, true);
-    }
-
-    private Long getNumOfDislikes(Post post) {
-        return likeDislikeRepository.countByPostAndType(post, false);
-    }
+//    private Long getNumOfLikes(Post post) {
+//        return likeDislikeRepository.countByPostAndType(post, true);
+//    }
+//
+//    private Long getNumOfDislikes(Post post) {
+//        return likeDislikeRepository.countByPostAndType(post, false);
+//    }
 
     private void savePost(PostRequestDto postDto, Post post) {
         postRepository.save(post);
