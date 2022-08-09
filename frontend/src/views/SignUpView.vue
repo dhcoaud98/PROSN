@@ -222,11 +222,10 @@ export default {
                 data: this.credentials
             })
             .then(res => {
-                // console.log("res = ",res);
+                console.log("res = ",res);
+                // 0810 오채명 : 회원가입은 grantType이 없기 때문에 axios할 때 넘겨주면 안됩니다.
                 // 회원가입이 완료되면 바로 로그인을 시켜주기 위함
-                let grantType = res.data.grantType.replace(res.data.grantType.charAt(0), res.data.grantType.charAt(0).toUpperCase());
-                console.log("grantType:", grantType);
-                this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken)
+                this.$store.dispatch('saveToken', res.data.accessToken)
                 this.$store.dispatch('saveName', res.data.name)
                 
                 // 회원가입이 완료되면 메인 페이지로 이동

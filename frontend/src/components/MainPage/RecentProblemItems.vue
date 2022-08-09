@@ -14,7 +14,7 @@
                             account_circle
                         </span>
                     </router-link>
-                    <span class="font-weight-bold font-parent-mid">{{mainProb.writer.name}}</span>
+                    <span class="font-weight-bold font-parent-mid"></span>
                     <span class="ml-2 tmp-border py-1 font-weight-bold font-parent-sml">PROSN</span>
                 </div>
                 
@@ -30,9 +30,9 @@
                         카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" 
                         나중에 for문으로 돌리기
                     -->
-                    <div v-for="tag in mainProb.tag" :key="tag">
-                        <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#{{tag}}</span>
-                    </div>
+                    <!-- <div v-for="tag in mainProb[0].tag" :key="tag">
+                        <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#</span>
+                    </div> -->
                     
                 </v-row>
                 <!-- 0801 임지민
@@ -41,7 +41,7 @@
                 -->
                 <v-row class="px-4 mb-4">
                     <p class="px-4 mb-4 ">
-                        {{mainProb.mainText}}
+                        {{mainProb.title}}
                     </p>
                 </v-row>
             </v-row>
