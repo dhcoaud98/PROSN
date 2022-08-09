@@ -1,12 +1,14 @@
 package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.config.SecurityUtil;
+import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.exception.BadRequestException;
 import com.ssafy.prosn.exception.DuplicateException;
+import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
 import com.ssafy.prosn.repository.user.FriendRepository;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
@@ -14,6 +16,8 @@ import com.ssafy.prosn.repository.user.UserRepository;
 import com.ssafy.prosn.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -43,6 +47,8 @@ public class UserServiceImpl implements UserService {
     private final PostListRepository postListRepository;
     private final MailService mailService;
     private final FriendRepository friendRepository;
+    private final PostRepository postRepository;
+
     @Override
     @Transactional
     public Long join(UserJoinRequestDto joinRequestDto) {
@@ -109,6 +115,13 @@ public class UserServiceImpl implements UserService {
         return UserInfoDto.of(user, followerCount, followingCount, user.getPosts());
     }
 
+    @Override
+    public PostDto getUserPost(Long uid, Pageable pageable) {
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
+        Page<Post> posts = postRepository.findByIsDeletedAndUser(false, user, pageable);
+        return PostDto.of(posts.getContent(), posts.getTotalPages(), posts.getTotalElements());
+    }
+
     private void validateDuplicate(String userId, String email) {
         if (localUserRepository.existsByUserId(userId)) {
             throw new DuplicateException("이미 있는 아이디입니다.");
@@ -123,7 +136,6 @@ public class UserServiceImpl implements UserService {
         String encodedResetPassword = mailService.sendMail(user.getEmail());
         return user.updatePassword(encodedResetPassword);
     }
-
 
 
 }

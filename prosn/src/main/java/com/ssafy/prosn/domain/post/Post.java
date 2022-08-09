@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
- * updated by seongmin on 2022/08/08
+ * updated by seongmin on 2022/08/09
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -39,7 +39,7 @@ public abstract class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     private List<LikeDislike> likeDislikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostTag> postTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -53,6 +53,8 @@ public abstract class Post extends BaseEntity {
     @ColumnDefault("0")
     private Long numOfDislikes;
 
+    @Column(insertable = false, updatable = false)
+    private String dtype;
 
     public Post(String title, User user) {
         this.title = title;
@@ -65,6 +67,22 @@ public abstract class Post extends BaseEntity {
 
     public void renameTitle(String title) {
         this.title = title;
+    }
+
+    public void increaseLikeDislike(boolean type) {
+        if (type) {
+            this.numOfLikes++;
+        } else {
+            this.numOfDislikes++;
+        }
+    }
+
+    public void decreaseLikeDislike(boolean type) {
+        if (type) {
+            this.numOfLikes--;
+        } else {
+            this.numOfDislikes--;
+        }
     }
 
     public void addPostTag(PostTag postTag) {

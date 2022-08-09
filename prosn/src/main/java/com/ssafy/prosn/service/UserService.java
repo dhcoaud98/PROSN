@@ -2,6 +2,7 @@ package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.dto.*;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -17,4 +18,5 @@ public interface UserService {
     List<UserRankingResponseDto> ranking();
     void duplicateUserId(String userId);
     UserInfoDto getUserInfo(Long uid);
+    PostDto getUserPost(Long uid, Pageable pageable);
 }
