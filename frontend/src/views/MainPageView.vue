@@ -3,16 +3,19 @@
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row v-if="!isSearched">
       <!-- col 1: 메인 피드 부분 -->
-      <v-col cols="12" lg="8" class="mt-2 white pt-0 mt-0">
+      <v-col cols="12" lg="8" class="mt-2 white pt-0 mt-0 px-0 rounded-lg">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
-        <v-row class="bottom-line justify-center mt-5 mx-5">
-          <v-col cols="6" xl="4" class="tab-hover clicked-main-tab border-white" @click="changeToProblemFeed" id="problemTab">
-            <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">문제/문제집</p>
-          </v-col>
-          <v-col cols="6" xl="4" class="tab-hover border-white" @click="changeToInfoFeed" id="infoTab">
-            <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">정보</p>
-          </v-col>
-        </v-row>
+        <v-toolbar dark class="mt-0">
+          <v-tabs background-color="#CCA5FE" grow>
+            <v-tab class="pa-0" @click="changeToProblemFeed" id="problemTab">
+              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">Probelm / Book</p>
+            </v-tab>
+              
+            <v-tab class="pa-0" @click="changeToInfoFeed" id="infoTab">
+              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">INFORMATION</p>
+            </v-tab>         
+          </v-tabs>
+        </v-toolbar>
 
         <!-- row 1-2: 피드 컨텐츠 부분 -->
         <v-row>
@@ -27,7 +30,7 @@
       </v-col>
 
       <!-- col 2: 사이드 바 -->
-      <v-col md="4" class="d-md-flex d-none grey lighten-4">
+      <v-col md="4" class="d-lg-flex d-none grey lighten-4">
         <side-bar></side-bar>
       </v-col>
     </v-row>
@@ -101,32 +104,32 @@ export default {
         this.infoFeedClass = 'd-flex'
     },
   },
-  created: {
-    getInfos () {
-      axios({
-        url: drf.post.information(),
-        method: 'get',
-      })
-      .then(res => {
-        this.mainInfos = res.data.content
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    },
-    getProbs () {
-      axios({
-        url: drf.post.problem(),
-        method: 'get',
-      })
-      .then(res => {
-        this.mainProbs = res.data.content
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    },
-  }
+  // created: {
+  //   getInfos () {
+  //     axios({
+  //       url: drf.post.information(),
+  //       method: 'get',
+  //     })
+  //     .then(res => {
+  //       this.mainInfos = res.data.content
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     })
+  //   },
+  //   getProbs () {
+  //     axios({
+  //       url: drf.post.problem(),
+  //       method: 'get',
+  //     })
+  //     .then(res => {
+  //       this.mainProbs = res.data.content
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     })
+  //   },
+  // }
 }
 </script>
 
@@ -171,7 +174,6 @@ export default {
   ::-webkit-scrollbar-thumb {
       height: 30%; /* 스크롤바의 길이 */
       background: #A384FF; /* 스크롤바의 색상 */
-
       border-radius: 10px;
   }
 
