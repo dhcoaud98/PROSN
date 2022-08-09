@@ -69,6 +69,22 @@ public abstract class Post extends BaseEntity {
         this.title = title;
     }
 
+    public void increaseLikeDislike(boolean type) {
+        if (type) {
+            this.numOfLikes++;
+        } else {
+            this.numOfDislikes++;
+        }
+    }
+
+    public void decreaseLikeDislike(boolean type) {
+        if (type) {
+            this.numOfLikes--;
+        } else {
+            this.numOfDislikes--;
+        }
+    }
+
     public void addPostTag(PostTag postTag) {
         postTags.add(postTag);
         if (postTag.getPost() != this) {
