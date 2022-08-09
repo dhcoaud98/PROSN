@@ -8,7 +8,7 @@
           <v-row>
             <!-- 제목 -->
             <v-col cols="12">
-              <v-icon class="mb-3 ml-2">mdi-group</v-icon>
+              
               <span class="ml-4" style="font-size:X-large;color:#512DA8;">8/19 넥슨 기술 면접 구합니다.</span>
             </v-col>
             
@@ -22,6 +22,13 @@
             </v-col>
             <v-col cols="12">
               <v-container class="study-detail-info">
+                  <v-virtual-scroll
+                    :bench="benched"
+                    :items="items"
+                    height="10"
+                    item-height="64"
+                  >
+                  </v-virtual-scroll>
                   <!-- <v-virtual-scroll height="300" item-height="64"> -->
                     <v-row>
                       <p>
@@ -46,8 +53,8 @@
                       </p>
                     </v-row>
                   <!-- </v-virtual-scroll> -->
+                  
               </v-container>
-              
             </v-col>
 
             <!-- 버튼 -->

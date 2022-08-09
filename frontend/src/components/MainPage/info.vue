@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <p>info</p> -->
     <v-row class="pa-0 ma-0" rounded>
       <v-col cols="12" class="pa-0">
         <info-items v-for="(info, idx) in infos" :key="idx" :info="info"></info-items>
