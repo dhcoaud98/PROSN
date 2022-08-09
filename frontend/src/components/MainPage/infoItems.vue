@@ -136,6 +136,23 @@ export default {
         },
     }
 }
+      // }
+      /*
+      "content": [
+        {
+            "id": 2,
+            "title": "네트워크 알고리즘4",
+            "created": "2022-08-09T13:42:23",
+            "updated": "2022-08-09T13:42:23",
+            "dtype": "Problem",
+            "tags": [
+                "AL",
+                "NW"
+            ],
+            "numOfLikes": 0,
+            "numOfDislikes": 0
+        },
+        */
 </script>
 
 <style>
