@@ -3,6 +3,7 @@ package com.ssafy.prosn.repository.post;
 import com.ssafy.prosn.domain.post.*;
 import com.ssafy.prosn.domain.user.LocalUser;
 import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.dto.ProblemDto;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
 import com.ssafy.prosn.repository.post.tag.TagRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -141,14 +144,14 @@ class PostRepositoryTest {
     @Test
     @DisplayName("게시글 검색(태그와 제목명으로)")
     void search() {
-        List<PostTag> result1 = postRepository.searchPost("HTTP", "NW");
-        assertThat(result1.size()).isEqualTo(1);
+        Page<ProblemDto> result1 = postRepository.searchPost(false, PageRequest.of(0, 3), "HTTP", "NW", PostType.PROBLEM);
+        assertThat(result1.getContent().size()).isEqualTo(1);
 
-        List<PostTag> result2 = postRepository.searchPost(null, "AL");
-        assertThat(result2.size()).isEqualTo(2);
+        Page<ProblemDto> result2 = postRepository.searchPost(false, PageRequest.of(0, 3), null, "AL", PostType.PROBLEM);
+        assertThat(result2.getContent().size()).isEqualTo(2);
 
-        List<PostTag> result3 = postRepository.searchPost("시간복잡도", null);
-        assertThat(result3.size()).isEqualTo(2);
+        Page<ProblemDto> result3 = postRepository.searchPost(false, PageRequest.of(0, 3), "시간복잡도", null, PostType.PROBLEM);
+        assertThat(result3.getContent().size()).isEqualTo(2);
     }
 
     @Test

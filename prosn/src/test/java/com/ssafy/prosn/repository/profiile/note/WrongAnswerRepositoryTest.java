@@ -1,5 +1,6 @@
 package com.ssafy.prosn.repository.profiile.note;
 
+import com.ssafy.prosn.domain.post.PostTag;
 import com.ssafy.prosn.domain.post.Problem;
 import com.ssafy.prosn.domain.profile.note.WrongAnswer;
 import com.ssafy.prosn.domain.user.LocalUser;
@@ -150,6 +151,14 @@ class WrongAnswerRepositoryTest {
         Page<NoteDto> result1 = wrongAnswerRepository.findWrongAnswer(user, false, PageRequest.of(0, 3), "NW");
         Page<NoteDto> result2 = wrongAnswerRepository.findWrongAnswer(user, false, PageRequest.of(0, 3), "AL");
 
+        for (NoteDto noteDto : result1) {
+            List<PostTag> postTags = noteDto.getProblem().getPostTags();
+            String title = noteDto.getTitle();
+            System.out.println("title = " + title);
+            for (PostTag postTag : postTags) {
+                System.out.println("postTag = " + postTag.getTag());
+            }
+        }
         // then
         assertThat(result1.getNumberOfElements()).isEqualTo(2);
         assertThat(result2.getNumberOfElements()).isEqualTo(2);

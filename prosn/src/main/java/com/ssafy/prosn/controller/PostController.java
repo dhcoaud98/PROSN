@@ -1,12 +1,15 @@
 package com.ssafy.prosn.controller;
 
 import com.ssafy.prosn.domain.post.Post;
+import com.ssafy.prosn.domain.post.PostType;
 import com.ssafy.prosn.dto.*;
+import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.service.PostService;
 import com.ssafy.prosn.service.UserService;
 import com.ssafy.prosn.service.WorkbookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +22,7 @@ import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by seongmin on 2022/07/28
- * updated by seongmin on 2022/08/08
+ * updated by seongmin on 2022/08/09
  */
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +32,7 @@ public class PostController {
     private final PostService postService;
     private final UserService userService;
     private final WorkbookService workbookService;
+    private final PostRepository postRepository;
 
     @PostMapping("/problem")
     public ResponseEntity<?> writeProblem(@RequestBody @Valid ProblemRequestDto req) {
@@ -53,8 +57,9 @@ public class PostController {
     @GetMapping("/problem")
     public ResponseEntity<?> getAllProblem(Pageable pageable) {
         log.info("문제 전체 조회");
-        PostResponseDto result = postService.showAllProblem(pageable);
-        return ResponseEntity.status(OK).body(result);
+        ProblemWorkbookResponseDto problemWorkbookResponseDto = postService.showAllProblem(pageable);
+        return ResponseEntity.status(OK).body(problemWorkbookResponseDto);
+
     }
 
     @GetMapping("/information")
@@ -85,12 +90,10 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam String title, @RequestParam String code) {
+    public ResponseEntity<?> search(@RequestParam String title, @RequestParam String code, @RequestParam PostType dtype, Pageable pageable) {
         log.info("title = {}", title);
         log.info("code = {}", code);
-        return ResponseEntity.ok(
-                postService.searchPost(new PostSearchRequestDto(title, code))
-        );
+        return ResponseEntity.status(OK).body(postService.search(pageable, title, code, dtype));
     }
 
     @PostMapping("/workbook")
