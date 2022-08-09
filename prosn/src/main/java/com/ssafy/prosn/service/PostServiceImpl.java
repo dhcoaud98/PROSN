@@ -26,7 +26,7 @@ import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/08/08
+ * updated by seongmin on 2022/08/09
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -139,17 +139,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDto showAllPost(Pageable pageable) {
-//        List<Post> posts = postRepository.findAll();
-//        List<PostAllResponseDto> result = new ArrayList<>();
-//        posts.forEach(post -> {
-//            result.add(new PostAllResponseDto(post.getId(),
-//                    new UserResponseDto(post.getUser().getId(),
-//                            post.getUser().getName()),
-//                    post.getTitle(),
-//                    post.getViews(),
-//                    getNumOfLikes(post),
-//                    getNumOfDislikes(post)));
-//        });
         Page<Post> posts = postRepository.findByIsDeleted(false, pageable);
         PostResponseDto result = new PostResponseDto();
         result.addPost(posts.getContent(), posts.getTotalPages(), posts.getTotalElements());
@@ -157,11 +146,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDto showAllProblem(Pageable pageable) {
-        Page<Problem> problems = problemRepository.findByIsDeleted(false, pageable);
-        PostResponseDto result = new PostResponseDto();
-        result.addPost(problems.getContent(), problems.getTotalPages(), problems.getTotalElements());
-        return result;
+    public ProblemWorkbookResponseDto showAllProblem(Pageable pageable) {
+        Page<ProblemDto> problemWorkbook = postRepository.getProblemWorkbook(false, pageable);
+        return ProblemWorkbookResponseDto.of(problemWorkbook.getContent(),problemWorkbook.getTotalPages(), problemWorkbook.getTotalElements());
     }
 
     @Override
@@ -195,21 +182,28 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+//    @Override
+//    public List<PostAllResponseDto> searchPost(PostSearchRequestDto dto) {
+//        List<PostTag> postTags = postRepository.searchPost(dto.getTitle(), dto.getCode(), dto.getDtype());
+//        List<PostAllResponseDto> result = new ArrayList<>();
+//        for (PostTag postTag : postTags) {
+//            PostAllResponseDto post = new PostAllResponseDto(
+//                    postTag.getPost().getId(),
+//                    new UserResponseDto(postTag.getPost().getUser().getId(), postTag.getPost().getUser().getName()),
+//                    postTag.getPost().getTitle(),
+//                    postTag.getPost().getViews(),
+//                    postTag.getPost().getNumOfLikes(),
+//                    postTag.getPost().getNumOfDislikes());
+//            result.add(post);
+//        }
+//        return result;
+//    }
+
     @Override
-    public List<PostAllResponseDto> searchPost(PostSearchRequestDto dto) {
-        List<PostTag> postTags = postRepository.searchPost(dto.getTitle(), dto.getCode());
-        List<PostAllResponseDto> result = new ArrayList<>();
-        for (PostTag postTag : postTags) {
-            PostAllResponseDto post = new PostAllResponseDto(
-                    postTag.getPost().getId(),
-                    new UserResponseDto(postTag.getPost().getUser().getId(), postTag.getPost().getUser().getName()),
-                    postTag.getPost().getTitle(),
-                    postTag.getPost().getViews(),
-                    postTag.getPost().getNumOfLikes(),
-                    postTag.getPost().getNumOfDislikes());
-            result.add(post);
-        }
-        return result;
+    public ProblemWorkbookResponseDto search(Pageable pageable, String title, String code, PostType dtype) {
+        Page<ProblemDto> problemDtos = postRepository.searchPost(false, pageable, title, code, dtype);
+
+        return ProblemWorkbookResponseDto.of(problemDtos.getContent(), problemDtos.getTotalPages(), problemDtos.getTotalElements());
     }
 
     private List<Tag> getTags(Post post) {
