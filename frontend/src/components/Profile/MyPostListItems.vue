@@ -1,43 +1,44 @@
 <template>
-  <v-card outlined class="rounded-xl card-component">
-    <v-card-title class="d-flex justify-space-between mx-3 mt-1">
-      <!-- 문제냐 정보글이냐에 따라 변경 -->
-      <div class="d-flex align-center font-weight-regular grey--text" style="font-size: 1em">
-        <v-icon color="#F355F6" class="me-2">mdi-circle</v-icon><p class="mb-0">I N F O</p></div>
-      <div class="mt-1">
-        <v-chip color="#A384FF" class="white--text ms-3">알고리즘</v-chip>
-        <v-chip color="#A384FF" class="white--text ms-3">네트워크</v-chip>
+  <v-card outlined elevation="3" class="rounded-lg purple-outlined-card">
+    <v-card-title class="d-flex justify-space-between bg-gradation">
+      <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
+        HTTP Header
+      </div>
+      <div class="d-flex">
+        <v-icon class="me-2" color="blue lighten-2">thumb_up</v-icon>
+        <div class="me-3">34</div>
+        <v-icon class="me-2" color="red lighten-2">thumb_down</v-icon>
+        <div class="me-3">2</div>
       </div>
     </v-card-title>
 
-    <v-divider class="mx-5" color="#817EF4"></v-divider>
-
     <v-card-text>
-      <v-row class="pa-0 ma-3">
-        <div class=" card-title text-purple">제목제목제목</div>
+      <v-row>
+        <!-- v-for문 사용해서 태그 띄우기 -->
+        <div class="mt-5">
+          <v-chip small color="#926DFF" class="white--text ms-3">알고리즘</v-chip>
+          <v-chip small color="#926DFF" class="white--text ms-3">네트워크</v-chip>
+        </div>
       </v-row>
 
-      <v-row class="pa-0 ma-4 mt-5 black--text font-weight-medium">
-        <div style="font-size: 1.2em">
+      <!-- 본문 -->
+      <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
+        <div class="mb-4" style="font-size: 1.1em">
           간장공장공장장은 강공장장이고 된장 공장공장장은 공공장장이다. 경찰청 쇠창살은 외쇠창살이고 검찰청 쇠창살을 쌍쇠창살이다.
         </div>
       </v-row>
 
-      <v-row class="d-flex justify-end ma-4">
-        <div class="me-4 mb-3" style="font-size: 1.2em">Created By. 아무개</div>
-      </v-row>
-
-      <v-row class="ma-3">
-        <v-btn elevation="3" large rounded width="100%" height="50px">
-          <div class="show-up-btn font-weight-regular">
-            SHOW INFO
-          </div>
-        </v-btn>
-
+      <v-row class="ma-4 mb-2 d-flex justify-space-between">
+        <!-- 출제자 -->
+          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. 남성은</div>
+        <!-- 모달 띄우기 버튼 -->
+          <v-btn text large rounded height="45px">
+            <div class="show-up-btn font-weight-regular">
+              SHOW UP
+            </div>
+          </v-btn>
       </v-row>
     </v-card-text>
-
-
   </v-card>
 
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
@@ -167,4 +168,15 @@ export default {
   color: #774BFA;
   font-size: 1.7em;
 }
+.bg-gradation {
+  background: linear-gradient(to right, #E1F5FE, #F0D9FF);
+}
 </style>
+
+<!-- 덮어씌우기 -->
+
+<!-- <style scoped>
+.purple-outlined-card {
+  border: thin solid #8A96FD;
+}
+</style> -->

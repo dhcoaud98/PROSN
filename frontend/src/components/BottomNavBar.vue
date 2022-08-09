@@ -1,10 +1,10 @@
 <template>
-  <v-bottom-navigation v-model="icons.value" class="fixed-bottom align-center justify-space-around">
+  <v-bottom-navigation v-model="icons.value" class="blue-navbar fixed-bottom align-center justify-space-around">
     <div v-for="icon in icons" :key="icon.text">
       <!-- url이 같은 상태에서는 상단으로 이동하고, 다른 상태에서는 지정된 url로 이동하기 (0808 임지민 완료)-->
       <div @click="checkUrl(icon.urlName)">
           <button type="button" :value="icon.value" class="col-3 pa-0 transparent">
-              <span class="material-icons font-30 text-decoration-none color-purple" color="#A384FF">
+              <span class="material-icons font-30 text-decoration-none icon-white">
                   {{ icon.text }}
               </span>
           </button>
@@ -74,7 +74,13 @@ export default {
   box-shadow: none;
 }
 
-.color-purple {
-  color: #6776fa;
+.icon-white {
+  color: #f7f7f7;
+}
+</style>
+
+<style scoped>
+.blue-navbar {
+  background-color: #c297fa;
 }
 </style>

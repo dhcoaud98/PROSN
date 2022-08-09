@@ -80,10 +80,8 @@ export default {
        // 2. 해당 탭에 불 들어오게
         const problemTab = document.querySelector('#problemTab')
         const infoTab = document.querySelector('#infoTab')
-        problemTab.classList.add("clicked-main-tab")
         // console.log(problemTab.classList)
         if(infoTab.classList.length >= 5){
-          infoTab.classList.remove("clicked-main-tab")
         }
         this.problemFeedClass ='d-flex'
         this.infoFeedClass = 'd-none'
@@ -94,11 +92,9 @@ export default {
 
       const problemTab = document.querySelector('#problemTab')
       const infoTab = document.querySelector('#infoTab')
-      infoTab.classList.add("clicked-main-tab")
         // console.log(infoTab.classList)
         if(problemTab.classList.length >= 5){
           // console.log('hi')
-          problemTab.classList.remove("clicked-main-tab")
         }
         this.problemFeedClass ='d-none'
         this.infoFeedClass = 'd-flex'
@@ -142,18 +138,7 @@ export default {
   }
   
   /* before로 색을 지정해주니까 hover 했을 때 색이 흰색으로 정상적으로 바뀜 */
-  .tab-hover::before {
-    color: #616161;
-  }
-  :hover.tab-hover,
-  .clicked-main-tab
-   {
-    background: #a384ff;
-    color: white;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    cursor: pointer;
-  }
+  
   .border-white {
     border: 1px solid white;
   }

@@ -4,10 +4,9 @@
     <v-row>
 
       <!-- col 1: 메인 피드 부분 -->
-      <v-col class="mt-2 white">
+      <v-col class="mt-2 white  rounded-lg">
         <profile-center></profile-center>  
       </v-col>
-
 
       <!-- col 2: 사이드 바 -->
       <v-col md="4" class="d-md-flex d-none grey lighten-4">

@@ -45,21 +45,18 @@
   
         <!-- 2. 프로필 하단 -->
         <v-row class="profile_tab d-flex justify-center mt-10 mx-5 mb-0">
-          <v-toolbar dark tabs flat color="#ffffff" class="toolbar" height="45px">
-            <template>
-              <v-tabs v-model="tabs">
-                <v-col>
-                  <v-tab class="tab--text pa-0" href="#one">문제 풀이 현황</v-tab>
-                </v-col>
-                <v-col>
-                  <v-tab class="tab--text pa-0" href="#two">스크랩</v-tab>
-                </v-col>
-                <v-col>
-                  <v-tab class="tab--text pa-0" href="#three">내가 쓴 게시글</v-tab>
-                </v-col>
-                <v-tabs-slider color="#A384FF"></v-tabs-slider>
-              </v-tabs>
-            </template>
+          <v-toolbar dark height="45px">
+            <v-tabs v-model="tabs" background-color="#CCA5FE" grow>
+              <v-col>
+                <v-tab class="tab--text white--text pa-0" href="#one"><h3 class="font-weight-regular">SOLVING</h3></v-tab>
+              </v-col>
+              <v-col>
+                <v-tab class="tab--text white--text pa-0" href="#two"><h3 class="font-weight-regular">SCRAP</h3></v-tab>
+              </v-col>
+              <v-col>
+                <v-tab class="tab--text white--text pa-0" href="#three"><h3 class="font-weight-regular">My Post</h3></v-tab>
+              </v-col>
+            </v-tabs>
           </v-toolbar>
         
           <!-- <v-card-text class="d-flex ma-0">

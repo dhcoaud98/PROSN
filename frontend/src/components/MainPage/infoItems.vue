@@ -70,8 +70,6 @@
 </template>
 
 <script>
-import InfoModal from '@/components/InfoModal/InfoModal.vue'
-
 export default {
     data() {
         return {
