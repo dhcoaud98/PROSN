@@ -15,9 +15,14 @@
       <v-form class="px-5">
         <!-- 스터디이름 -->
         <v-row class="mx-2 mt-2">
-          <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">스터디 이름</p></v-col>
+          <v-col class="col-12 pa-0 mb-2">
+            <p class="font-weight-bold mb-0">스터디 이름</p>
+          </v-col>
           <v-col class="col-12 pa-0">
-            <v-text-field label="스터디 이름을 입력하세요 (최대 20자)" maxlength="20" counter required dense></v-text-field>
+            <v-text-field label="스터디 이름을 입력하세요 (최대 20자)" 
+              maxlength="20" 
+              counter required dense
+              v-model="credentials.title"></v-text-field>
           </v-col>
         </v-row>
 
@@ -25,7 +30,13 @@
         <v-row class="mx-2 mt-5">
           <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">카테고리</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-autocomplete :items="categories" item-text="toUser" item-value="toDB" label="스터디 주제를 선택하세요 (복수선택 가능)" required dense chips small-chips multiple></v-autocomplete>          
+            <v-autocomplete 
+            :items="categories" 
+            item-text="toUser" 
+            item-value="toDB" 
+            label="스터디 주제를 선택하세요 (복수선택 가능)" 
+            required dense chips small-chips multiple
+            v-model="credentials.tags"></v-autocomplete>          
           </v-col>
         </v-row>
 
@@ -36,7 +47,12 @@
               <v-row>
                 <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">최대인원</p></v-col>
                 <v-col class="col-12 pa-0">
-                  <v-select :items="numberofpeople" label="스터디 최대 인원을 선택하세요" dense class="pe-md-2"></v-select>
+                  <v-select 
+                  :items="numberofpeople" 
+                  label="스터디 최대 인원을 선택하세요" 
+                  dense 
+                  class="pe-md-2"
+                  v-model="credentials.maxPerson"></v-select>
                 </v-col>
               </v-row>
             </v-container>
@@ -58,9 +74,9 @@
                     min-width="auto"
                   >
                     <template v-slot:activator="{ on, attrs }">
-                      <v-text-field v-model="date" label="마감일을 선택하세요" readonly v-bind="attrs" v-on="on" dense class="ps-md-2"></v-text-field>
+                      <v-text-field v-model="credentials.expiredDate" label="마감일을 선택하세요" readonly v-bind="attrs" v-on="on" dense class="ps-md-2"></v-text-field>
                     </template>
-                    <v-date-picker v-model="date" color="#A384FF" no-title scrollable :allowed-dates="allowedDates">
+                    <v-date-picker v-model="credentials.expiredDate" color="#A384FF" no-title scrollable :allowed-dates="allowedDates">
                       <v-spacer></v-spacer>
                       <v-btn text color="#A384FF" @click="menu = false">Cancel</v-btn>
                       <v-btn text color="#A384FF" @click="$refs.menu.save(date)">OK</v-btn>
@@ -76,7 +92,10 @@
         <v-row class="mx-2 mt-5">
           <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">장소</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-text-field label="스터디 장소를 입력하세요" required dense></v-text-field>
+            <v-text-field 
+            label="스터디 장소를 입력하세요" 
+            required dense
+            v-model="credentials.place"></v-text-field>
           </v-col>
         </v-row>
 
@@ -85,7 +104,12 @@
         <v-row class="mx-2 mt -5">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">스터디 소개</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea label="스터디 그룹에 대한 설명을 입력하세요 (최대 250자)" maxlength="250" rows="4" no-resize counter required dense></v-textarea>
+            <v-textarea 
+            label="스터디 그룹에 대한 설명을 입력하세요 (최대 250자)" 
+            maxlength="250" 
+            rows="4" 
+            no-resize counter required dense
+            v-model="credentials.mainText"></v-textarea>
           </v-col>
         </v-row>
 
@@ -93,7 +117,11 @@
         <v-row class="mx-2 mt-5 mb-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">상세정보</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea label="스터디 그룹원들에게만 공개할 상세정보를 입력하세요 (최대 250자)" maxlength="250" rows="4" no-resize counter required dense></v-textarea>
+            <v-textarea 
+            label="스터디 그룹원들에게만 공개할 상세정보를 입력하세요 (최대 250자)" 
+            maxlength="250" rows="4" 
+            no-resize counter required dense
+            v-model="credentials.secretText"></v-textarea>
           </v-col>
         </v-row>
 
@@ -103,9 +131,10 @@
         <v-row class="my-2 ">
           <v-col cols="12" class="d-flex justify-end pa-0">
             <!-- router - 1  -->
-            <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5" @click="cancel()">취소하기</v-btn>
+            <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5" @click="cancel">취소하기</v-btn>
             <!-- submit -->
-            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5">출제하기</v-btn>
+            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5"
+              @submit.prevent="submitStudy">등록하기</v-btn>
           </v-col>
         </v-row>
 
@@ -143,6 +172,13 @@ export default {
 
       // DB에 추가할 때 사용
       credentials: {
+        title: '',
+        maxPerson: 0,
+        expiredDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+        place: '',
+        mainText: '',
+        secretText: '',
+        tags: [],
       }
     }),
   methods: {
@@ -152,6 +188,27 @@ export default {
       },
     cancel () {
       this.$router.push({ path: 'study' })
+    },
+    submitStudy() {
+      axios({
+          url: drf.note.wronganswer(),
+          method: 'post',
+          headers: {
+          Authorization: this.accessToken,
+          },
+          data: this.credentials
+      })
+      .then(res => {
+          console.log("res = ",res);
+          // const token = res.data.key
+          // dispatch('saveToken', token)
+          // dispatch('fetchCurrentUser')
+      
+      })
+      .catch(err =>{
+          console.log("에러")
+          console.log(err)
+        })
     }
   },
 }
