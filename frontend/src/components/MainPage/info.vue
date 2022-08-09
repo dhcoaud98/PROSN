@@ -36,11 +36,12 @@ export default {
       infoItems,
     },
     created() {
+      // 0810 오채명 : 밑에 코드 절때로 건들이지 말기
       // 1. 페이지 렌더링 될 때 첫번 째 엑시오스
       axios({
         url: drf.api+'post',
         // 0808 오채명 : 모든 게시글, 문제 가져올 때 확인하려고 위의 주소로 했는데, 밑에꺼로 해야함!
-        // url: drf.api+'post' + '/information',
+        // url: drf.api+'get' + '/information',
         method: 'get',
         headers: {
           Authorization: this.accessToken,
@@ -48,7 +49,9 @@ export default {
       })
         .then(res => {
           this.totalInfos = res.data.content
+          // console.log(this.totalInfos)
           this.endPage = this.totalInfos.length%4 > 0  ? parseInt(this.totalInfos.length/4) + 1 : this.totalInfos.length/4
+          // console.log(this.endPage)
         })
       // 2. 페이지 렌더링 될 때 두번 째 엑시오스
       const params = {
@@ -96,8 +99,8 @@ export default {
         })
         .then(res => {
           console.log("넘어온 data = ", res.data.content)
-          // const token = res.data.key
-          console.log(this.infos)
+          this.infos = res.data.content
+          console.log("현재 data =" , this.infos)
         })
         .catch(err => {
           console.log("에러")

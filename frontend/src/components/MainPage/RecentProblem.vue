@@ -2,7 +2,7 @@
   <div>
     <v-row class="pa-0 ma-0" rounded>
       <v-col cols="12" class="pa-0">
-        <recent-problem-items v-for="mainProb in mainProbs" :key="mainProb.id"></recent-problem-items>
+        <recent-problem-items v-for="(mainProb, idx) in mainProbs" :key="idx" :mainProb="mainProb"></recent-problem-items>
         <v-pagination
           v-model="nowPage"
           :length="endPage"
@@ -23,8 +23,8 @@ import RecentProblemItems from '../MainPage/RecentProblemItems.vue'
 export default {
     data() {
       return {
-        totalInfos: [],
-        infos: [],
+        totalProbs: [],
+        mainProbs: [],
         nowPage: 1,
         clickPage: null,
         endPage: 0,
@@ -43,15 +43,16 @@ export default {
       axios({
         url: drf.api+'post',
         // 0808 오채명 : 모든 게시글, 문제 가져올 때 확인하려고 위의 주소로 했는데, 밑에꺼로 해야함!
-        // url: drf.api+'post' + '/information',
+        // url: drf.api+'get' + '/probelm',
         method: 'get',
         headers: {
           Authorization: this.accessToken,
         },
       })
         .then(res => {
-          this.totalInfos = res.data.content
-          this.endPage = this.totalInfos.length%4 > 0  ? parseInt(this.totalInfos.length/4) + 1 : this.totalInfos.length/4
+          this.totalProbs = res.data.content
+          console.log(this.totalProbs)
+          this.endPage = this.totalProbs.length%4 > 0  ? parseInt(this.totalProbs.length/4) + 1 : this.totalProbs.length/4
         })
       // 2. 페이지 렌더링 될 때 두번 째 엑시오스
       const params = {
@@ -71,8 +72,8 @@ export default {
         //page=0&size=3&sort=updated,desc
       })
       .then(res => {
-        this.infos = res.data.content
-        console.log(this.infos)
+        this.mainProbs = res.data.content
+        console.log(this.mainProbs)
       })
       .cathch(err => {
         console.log("에러")
@@ -99,8 +100,8 @@ export default {
         })
         .then(res => {
           console.log("넘어온 data = ", res.data.content)
-          // const token = res.data.key
-          console.log(this.infos)
+          this.mainProbs = res.data.content
+          console.log(this.mainProbs)
         })
         .catch(err => {
           console.log("에러")

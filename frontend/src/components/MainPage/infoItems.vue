@@ -1,4 +1,5 @@
 <template>
+ <!-- 0810 오채명 : 데이터 생성완료, 코든 수정은 같이하기 -->
   <!-- 피드 하나하나 디자인 하고 그 자리에 받아온 데이터 띄우기 -->
   <div class="my-3 pa-5 w-100">
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
@@ -13,7 +14,7 @@
                             account_circle
                         </span>
                     </router-link>
-                    <span class="font-weight-bold font-parent-mid">{{mainInfo.writer.name}}</span>
+                    <span class="font-weight-bold font-parent-mid">이름</span>
                     <span class="ml-2 tmp-border py-1 font-weight-bold font-parent-sml">PROSN</span>
                 </div>
                 
@@ -29,9 +30,9 @@
                         카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" 
                         나중에 for문으로 돌리기
                     -->
-                    <div v-for="tag in mainInfo.tags" :key="tag">
-                        <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#{{tag}}</span>
-                    </div>
+                    <!-- <div v-for="tag in info.tags" :key="tag">
+                        <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#</span>
+                    </div> -->
                 </v-row>
 
                 <!-- 
@@ -40,7 +41,7 @@
                 -->
                 <v-row class="px-4 mb-4">
                     <p class="px-4 mb-4 ">
-                        {{mainInfo.mainText}}
+                        {{info.title}}
                     </p>
                 </v-row>
             </v-row>
@@ -52,11 +53,9 @@
             <v-row class="justify-end mb-3">
                     <span class="material-icons mr-4" @click="changeLikeStatus" id="upIcon">
                         {{upText}}
-                        {{ mainInfo.numOfLikes}}
                     </span>
                     <span class="material-icons mr-4" @click="changeHateStatus" id="downIcon">
                         {{downText}}
-                        {{ mainInfo.numOfDislikes}}
                     </span>
                     <span class="material-icons mr-4" @click="changeScrapStatus" id="scrapIcon">
                         {{scrapText}}
@@ -84,6 +83,7 @@ export default {
     props: {
       info: Object,
     },
+    
     methods: {
         changeLikeStatus() {
             /* 
