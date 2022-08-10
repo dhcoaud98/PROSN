@@ -212,6 +212,12 @@ public class PostServiceImpl implements PostService {
         return postRepository.updateViews(id);
     }
 
+    @Override
+    public PopularityProblemResponseDto popularProblem() {
+
+        return null;
+    }
+
     private List<Tag> getTags(Post post) {
         List<PostTag> postTagByPost = postTagRepository.findPostTagByPost(post);
         List<Tag> tags = new ArrayList<>();

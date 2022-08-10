@@ -3,6 +3,7 @@ package com.ssafy.prosn.domain.post;
 import com.ssafy.prosn.converter.BooleanToYNConverter;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.comment.Comment;
+import com.ssafy.prosn.domain.profile.status.Solving;
 import com.ssafy.prosn.domain.user.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -42,6 +43,9 @@ public abstract class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post")
     private List<LikeDislike> likeDislikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "problem")
+    private List<Solving> solvingList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostTag> postTags = new ArrayList<>();

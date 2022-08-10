@@ -13,15 +13,25 @@ import java.util.List;
  */
 public interface PostService {
     Post writeProblem(ProblemRequestDto problemDto, Long uid);
+
     Post writeInformation(InformationRequestDto informationDto, Long uid);
+
     void delete(Long id, Long uid);
+
     PostDetailResponseDto showProblemDetail(Long id);
+
     PostResponseDto showAllPost(Pageable pageable);
+
     ProblemWorkbookResponseDto showAllProblem(Pageable pageable);
+
     PostResponseDto showAllInformation(Pageable pageable);
+
     void likeDislikeClick(LikeDisLikeRequestDto likeDisLikeDto, Long uid);
+
     ProblemWorkbookResponseDto search(Pageable pageable, String title, String code, PostType dtype);
 
     int updateViews(Long id);
+
+    PopularityProblemResponseDto popularProblem();
 
 }

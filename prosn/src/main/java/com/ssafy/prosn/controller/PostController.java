@@ -4,6 +4,7 @@ import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.PostType;
 import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.post.PostRepository;
+import com.ssafy.prosn.repository.post.ProblemRepository;
 import com.ssafy.prosn.service.PostService;
 import com.ssafy.prosn.service.UserService;
 import com.ssafy.prosn.service.WorkbookService;
@@ -19,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.HttpStatus.*;
@@ -35,8 +37,8 @@ public class PostController {
     private final PostService postService;
     private final UserService userService;
     private final WorkbookService workbookService;
-    private final PostRepository postRepository;
 
+    private final ProblemRepository problemRepository;
     @PostMapping("/problem")
     public ResponseEntity<?> writeProblem(@RequestBody @Valid ProblemRequestDto req) {
         Post post = postService.writeProblem(req, userService.getMyInfoBySecret().getId());
@@ -145,5 +147,11 @@ public class PostController {
         log.info("문제집 조회");
         PostResponseDto result = workbookService.showAllWorkbook(pageable);
         return ResponseEntity.status(OK).body(result);
+    }
+
+    @GetMapping("/popular/problem")
+    public ResponseEntity<?> getPopularProblem() {
+        List<PopularityProblemResponseDto> popularityProblemResponseDtos = problemRepository.popularProblem();
+        return ResponseEntity.status(OK).body(popularityProblemResponseDtos);
     }
 }
