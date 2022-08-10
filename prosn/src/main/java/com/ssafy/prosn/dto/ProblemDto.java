@@ -1,6 +1,7 @@
 package com.ssafy.prosn.dto;
 
 import com.ssafy.prosn.domain.post.Post;
+import com.ssafy.prosn.domain.post.PostType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class ProblemDto {
     private String writerName;
     private LocalDateTime created;
     private LocalDateTime updated;
-    private String dtype;
+    private PostType ptype;
     private Long numOfLikes;
     private Long numOfDislikes;
 }

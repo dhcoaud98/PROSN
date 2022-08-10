@@ -2,6 +2,7 @@ package com.ssafy.prosn.dto;
 
 import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.PostTag;
+import com.ssafy.prosn.domain.post.PostType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,7 @@ public class ProblemWorkbookResponseDto {
                     post.getWriterName(),
                     post.getCreated(),
                     post.getUpdated(),
-                    post.getDtype(),
+                    post.getPtype(),
                     post.getNumOfLikes(),
                     post.getNumOfDislikes()
             ));
@@ -51,11 +52,11 @@ public class ProblemWorkbookResponseDto {
         private String writerName;
         private LocalDateTime created;
         private LocalDateTime updated;
-        private String dtype;
+        private PostType ptype;
         private Long numOfLikes;
         private Long numOfDislikes;
 
-        public Content(List<String> tags, Long id, String title, Long writerId, String writerName, LocalDateTime created, LocalDateTime updated, String dtype, Long numOfLikes, Long numOfDislikes) {
+        public Content(List<String> tags, Long id, String title, Long writerId, String writerName, LocalDateTime created, LocalDateTime updated, PostType ptype, Long numOfLikes, Long numOfDislikes) {
             this.tags = tags;
             this.id = id;
             this.title = title;
@@ -63,7 +64,7 @@ public class ProblemWorkbookResponseDto {
             this.writerName = writerName;
             this.created = created;
             this.updated = updated;
-            this.dtype = dtype;
+            this.ptype = ptype;
             this.numOfLikes = numOfLikes;
             this.numOfDislikes = numOfDislikes;
         }
@@ -123,12 +124,12 @@ public class ProblemWorkbookResponseDto {
             this.updated = updated;
         }
 
-        public String getDtype() {
-            return dtype;
+        public PostType getPtype() {
+            return ptype;
         }
 
-        public void setDtype(String dtype) {
-            this.dtype = dtype;
+        public void setPtype(PostType dtype) {
+            this.ptype = dtype;
         }
 
         public Long getNumOfLikes() {

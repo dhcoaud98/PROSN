@@ -12,8 +12,9 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/22
+ * updated by seongmin on 2022/08/10
  */
 public interface PostRepositoryCustom {
-    Page<ProblemDto> searchPost(boolean isDeleted, Pageable pageable,String title, String code, PostType dtype);
+    Page<ProblemDto> searchPost(boolean isDeleted, Pageable pageable,String title, String code, PostType ptype);
     Page<ProblemDto> getProblemWorkbook(boolean isDeleted, Pageable pageable);
 }

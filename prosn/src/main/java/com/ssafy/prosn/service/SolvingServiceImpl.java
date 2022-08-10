@@ -6,6 +6,7 @@ import com.ssafy.prosn.domain.post.Problem;
 import com.ssafy.prosn.domain.post.Tag;
 import com.ssafy.prosn.domain.profile.status.Solving;
 import com.ssafy.prosn.domain.user.User;
+import com.ssafy.prosn.dto.RateDto;
 import com.ssafy.prosn.dto.SolvingRequestDto;
 import com.ssafy.prosn.dto.SolvingResponseDto;
 import com.ssafy.prosn.exception.BadRequestException;
@@ -24,7 +25,7 @@ import java.util.Optional;
 
 /**
  * created by yura on 2022/08/01
- * updated by yura on 2022/08/08
+ * updated by seongmin on 2022/08/10
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -70,18 +71,26 @@ public class SolvingServiceImpl implements SolvingService {
                 checkSolving.get().correctAnswer();
                 user.earnPoints(POINT);
             }
-        } else {
+        } else { // 처음 푼 문제
             Solving solving = Solving.builder()
                     .user(user)
                     .problem(problem)
                     .isRight(dto.isRight())
+                    .firstIsRight(dto.isRight())
                     .build();
             solvingRepository.save(solving);
             if (dto.isRight()) {
                 user.earnPoints(POINT);
             }
         }
+    }
 
-
+    @Override
+    public RateDto getRate(Long pid) {
+        Problem problem = problemRepository.findById(pid).orElseThrow(() -> new BadRequestException("유효하지 않은 문제입니다."));
+        List<Solving> solvingInfos = solvingRepository.findByProblem(problem);
+        double submitCnt = solvingInfos.size();
+        double correctCnt = (double) solvingInfos.stream().filter(Solving::isFirstIsRight).count();
+        return new RateDto(Math.round((correctCnt / submitCnt) * 100) / 100.0 * 100, (int)submitCnt);
     }
 }

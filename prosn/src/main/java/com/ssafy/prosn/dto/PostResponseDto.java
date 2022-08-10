@@ -2,6 +2,7 @@ package com.ssafy.prosn.dto;
 
 import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.PostTag;
+import com.ssafy.prosn.domain.post.PostType;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ public class PostResponseDto {
 
     private static class Content {
         private Long id;
-        private String dtype;
+        private PostType ptype;
         private UserResponseDto writer;
         private String title;
         private Integer views;
@@ -57,9 +58,9 @@ public class PostResponseDto {
         private LocalDateTime created;
         private LocalDateTime updated;
 
-        public Content(Long id, String dtype, UserResponseDto writer, String title, Integer views, Long numOfLikes, Long numOfDislikes, List<String> tags, LocalDateTime created, LocalDateTime updated) {
+        public Content(Long id, PostType ptype, UserResponseDto writer, String title, Integer views, Long numOfLikes, Long numOfDislikes, List<String> tags, LocalDateTime created, LocalDateTime updated) {
             this.id = id;
-            this.dtype = dtype;
+            this.ptype = ptype;
             this.writer = writer;
             this.title = title;
             this.views = views;
@@ -78,12 +79,12 @@ public class PostResponseDto {
             this.id = id;
         }
 
-        public String getDtype() {
-            return dtype;
+        public PostType getPtype() {
+            return ptype;
         }
 
-        public void setDtype(String dtype) {
-            this.dtype = dtype;
+        public void setPtype(PostType ptype) {
+            this.ptype = ptype;
         }
 
         public UserResponseDto getWriter() {

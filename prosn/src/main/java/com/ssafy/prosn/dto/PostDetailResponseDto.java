@@ -21,20 +21,20 @@ public class PostDetailResponseDto {
     private String title;
     private Long numOfLikes;
     private Long numOfDislikes;
-    private List<Comment> comments = new ArrayList<>();
+    private List<CommentDto> comments = new ArrayList<>();
     private Integer views;
-    private UserResponseDto user;
-    private List<Tag> tags;
+    private UserResponseDto writer;
+    private List<String> tags;
     private PostType type;
 
-    public PostDetailResponseDto(Long id, String title, Long numOfLikes, Long numOfDislikes, List<Comment> comments, Integer views, UserResponseDto user, List<Tag> tags, PostType type) {
+    public PostDetailResponseDto(Long id, String title, Long numOfLikes, Long numOfDislikes, List<CommentDto> comments, Integer views, UserResponseDto user, List<String> tags, PostType type) {
         this.id = id;
         this.title = title;
         this.numOfLikes = numOfLikes;
         this.numOfDislikes = numOfDislikes;
         this.comments = comments;
         this.views = views;
-        this.user = user;
+        this.writer = user;
         this.tags = tags;
         this.type = type;
     }
