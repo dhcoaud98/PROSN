@@ -30,7 +30,7 @@ public class PostResponseDto {
             }
             this.content.add(new Content(
                     post.getId(),
-                    post.getDtype(),
+                    post.getPtype(),
                     new UserResponseDto(post.getUser().getId(), post.getUser().getName()),
                     post.getTitle(),
                     post.getViews(),

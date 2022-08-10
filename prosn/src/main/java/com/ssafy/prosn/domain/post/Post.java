@@ -14,11 +14,11 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
- * updated by seongmin on 2022/08/09
+ * updated by seongmin on 2022/08/10
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn
+@DiscriminatorColumn(name = "ptype")
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -54,7 +54,7 @@ public abstract class Post extends BaseEntity {
     private Long numOfDislikes;
 
     @Column(insertable = false, updatable = false)
-    private String dtype;
+    private String ptype;
 
     public Post(String title, User user) {
         this.title = title;

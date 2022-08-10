@@ -38,7 +38,7 @@ public class PostDto {
                     post.getTitle(),
                     post.getCreated(),
                     post.getUpdated(),
-                    post.getDtype(),
+                    post.getPtype(),
                     tags,
                     post.getNumOfLikes(),
                     post.getNumOfDislikes()
