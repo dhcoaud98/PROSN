@@ -1,17 +1,37 @@
 <template>
   <v-card outlined elevation="3" class="rounded-lg purple-outlined-card">
-    <v-card-title class="d-flex justify-space-between bg-gradation">
-      <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
-        HTTP Header
-      </div>
-      <div class="d-flex">
-        <v-icon class="me-2" color="blue lighten-2">thumb_up</v-icon>
-        <div class="me-3">34</div>
-        <v-icon class="me-2" color="red lighten-2">thumb_down</v-icon>
-        <div class="me-3">2</div>
-      </div>
+    <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
+    <v-card-title class="pa-0 bg-gradation">
+      <v-container class="pa-0">
+
+        <!-- dType에 따라 바뀌는 뱃지 -->
+        <v-row class="mt-3 ms-5">
+          <div class="d-flex align-center font-weight-regular grey--text" style="font-size: 1em">
+            <v-icon color="#F355F6" class="me-2">mdi-circle</v-icon>
+            <p class="mb-0">I N F O</p>
+          </div>
+          <!-- <div>PROBLEM</div>
+          <div>BOOK</div> -->
+        </v-row>
+
+        <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
+        <v-row class="d-flex justify-space-between mb-3">
+          <!-- 제목 -->
+          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
+            HTTP Header
+          </div>
+          <!-- 좋아요 싫어요 정보 -->
+          <div class="d-flex me-3">
+            <v-icon class="me-2">thumb_up_off_alt</v-icon>
+            <div class="me-3">34</div>
+            <v-icon class="me-2">thumb_down_off_alt</v-icon>
+            <div class="me-3">2</div>
+          </div>
+        </v-row>
+      </v-container>
     </v-card-title>
 
+    <!-- 카드 본문 -->
     <v-card-text>
       <v-row>
         <!-- v-for문 사용해서 태그 띄우기 -->
@@ -21,7 +41,7 @@
         </div>
       </v-row>
 
-      <!-- 본문 -->
+      <!-- 내용 -->
       <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
           간장공장공장장은 강공장장이고 된장 공장공장장은 공공장장이다. 경찰청 쇠창살은 외쇠창살이고 검찰청 쇠창살을 쌍쇠창살이다.
@@ -32,10 +52,13 @@
         <!-- 출제자 -->
           <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. 남성은</div>
         <!-- 모달 띄우기 버튼 -->
-          <v-btn text large rounded height="45px">
-            <div class="show-up-btn font-weight-regular">
-              SHOW UP
-            </div>
+          <!-- 화면 사이즈 md 이상 -->
+          <v-btn text large rounded height="45px" class="d-none d-md-flex">
+            <div class="show-up-btn font-weight-regular">SHOW UP</div>
+          </v-btn>
+          <!-- 화면 사이즈 md 이하 -->
+          <v-btn text large rounded height="45px" class="d-md-none mt-3" width="100%">
+            <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
       </v-row>
     </v-card-text>
@@ -169,7 +192,7 @@ export default {
   font-size: 1.7em;
 }
 .bg-gradation {
-  background: linear-gradient(to right, #E1F5FE, #F0D9FF);
+  background: linear-gradient(to right, #dbeff9, #fcfcfc);
 }
 </style>
 

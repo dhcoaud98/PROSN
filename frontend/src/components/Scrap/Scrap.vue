@@ -35,7 +35,26 @@
 
       <v-divider class="mx-1 my-2"></v-divider>
 
-      <v-row class="my-2">
+      <!-- 평소에는 안보이다가 새로운 목록 추가 버튼 클릭시 보이는 부분 -->
+      <!-- 새 목록 생성란 -->
+      <v-row class="d-none">
+        <v-form>
+          <!-- 새 목록 이름 입력란  -->
+          <v-col cols="9">
+            <v-text-field label="새로운 목록 이름을 입력하세요" 
+              maxlength="20" 
+              counter required dense
+              v-model="credentials.title"></v-text-field>
+          </v-col>
+          <v-col cols="3">
+            <v-btn>
+              생성
+            </v-btn>
+          </v-col>
+        </v-form>
+      </v-row>
+
+      <v-row class="my-2">        
         <v-col cols="12" class="py-1">
           <v-btn rounded width="100%">
             새로운 목록 추가

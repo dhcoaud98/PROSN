@@ -35,6 +35,8 @@
     <div class="side">
       <side-bar></side-bar>
     </div> -->
+    <v-container class="d-flex d-md-none mb-14" style="bottom: 0px">
+    </v-container>
   </v-app>
 </template>
 

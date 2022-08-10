@@ -63,7 +63,7 @@ export default {
 .fixed-bottom {
     position: fixed;
     bottom: 0;
-
+    height: 56px;
 }
 .font-30 {
     font-size: 30px;

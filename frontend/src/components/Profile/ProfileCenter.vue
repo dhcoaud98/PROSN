@@ -17,13 +17,7 @@
             <span class="material-icons" type="button" @click="event2()" style="color:#A384FF">info</span>
           </v-col>
   
-          <v-col cols="3">
-            <v-avatar size="100px" class="d-flex justify-center ml-3">
-              <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
-            </v-avatar>
-          </v-col>
-  
-          <v-col cols="9">
+          <v-col>
             <v-container class="">
               <p class="detail_text ma-0">문제 풀이 500문제</p>
               <p class="detail_text ma-0">문제 제출 300문제</p>

@@ -18,7 +18,6 @@
 
         <v-list nav>
           <v-list-item v-for="(item, i) in items" :key="i">
-
             <v-list-item-content class="py-0 font-parent-mid">
               <!-- <네브바만 남기고 오른쪽 영역 갈아끼기> 0729 임지민
                 클릭하면 to 속성 변경-> app.vue에서 해야하는데 컴포넌트 구조가 복잡해서 prop하고 emit하기가 어려울 것 같다.
@@ -84,18 +83,20 @@ export default {
       loginDisplay: 'd-flex',
       items: [
         { 
-          text: '스터디',
+          text: 'S T U D Y',
+          url: 'study',
           urlName: 'study',
         },
         { 
-          text: '오답노트',
+          text: 'N O T E S',
+          url: 'note',
           urlName: 'note',
         },
         { 
-          text: '내 프로필',
+          text: 'P R O F I L E',
+          url: 'profile',
           urlName: 'profile',
         },
-
       ]
     }
   },
@@ -137,6 +138,7 @@ export default {
   .clicked-tab {
     border-left: solid 5px #A384FF;
     font-weight: bold;
+    color: #774BFA;
   }
   .v-application--wrap {
     max-width: 280px;

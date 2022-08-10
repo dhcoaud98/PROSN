@@ -4,7 +4,7 @@
   <v-container fluid class="bg-grey pa-0 mt-1 ml-3">
     <v-row>
       <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
-      <v-col cols="6" class="justify-center px-0">
+      <v-col cols="6" class="justify-center pa-0">
         <li style="list-style: none;" v-if="!isLoggedIn">
           <router-link to="/signup" class="text-decoration-none black--text"><v-btn class="pa-0" rounded-sm color="#a384ff" width="100%" text>signup</v-btn></router-link>
         </li>
@@ -14,7 +14,7 @@
         </li>
       </v-col>
       
-      <v-col cols="6" class="justify-center px-0">
+      <v-col cols="6" class="justify-center pa-0">
         <li style="list-style: none;" v-if="!isLoggedIn">
           <router-link to="/login" class="text-decoration-none black--text"><v-btn class="pa-0" rounded-sm color="#a384ff" width="100%" text>login</v-btn></router-link>
         </li>

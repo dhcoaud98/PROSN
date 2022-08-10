@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pa-0 pt-10">
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row>
 
       <!-- col 1: 메인 피드 부분 -->
-      <v-col class="mt-2 white  rounded-lg">
+      <v-col class="mt-2 white rounded-lg">
         <profile-center></profile-center>  
       </v-col>
 
