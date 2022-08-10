@@ -35,7 +35,10 @@
     <div class="side">
       <side-bar></side-bar>
     </div> -->
-  </v-app>
+
+    <!-- BottomNavBar md 이하일 때 남는 공간 만들기 위함 -->
+    <v-container class="d-flex d-md-none mb-14" style="bottom: 0px">
+    </v-container>  </v-app>
 </template>
 
 <script>
@@ -133,7 +136,4 @@ export default {
 .bg-grey {
   background-color: #f5f5f5;
 }
-
-
-
 </style>

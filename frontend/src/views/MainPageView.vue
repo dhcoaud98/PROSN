@@ -1,18 +1,21 @@
 <template>
-  <v-container fluid class="pt-0 mt-0">
+  <v-container fluid class="pa-0 pt-10 mt-0">
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row v-if="!isSearched">
       <!-- col 1: 메인 피드 부분 -->
-      <v-col cols="12" lg="8" class="mt-2 white pt-0 mt-0">
+      <v-col cols="12" lg="8" class="mt-0 white pt-0 px-0 rounded-lg">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
-        <v-row class="bottom-line justify-center mt-5 mx-5">
-          <v-col cols="6" xl="4" class="tab-hover clicked-main-tab border-white" @click="changeToProblemFeed" id="problemTab">
-            <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">문제/문제집</p>
-          </v-col>
-          <v-col cols="6" xl="4" class="tab-hover border-white" @click="changeToInfoFeed" id="infoTab">
-            <p class="text-center mb-0 font-weight-bold text-grey font-parent-mid">정보</p>
-          </v-col>
-        </v-row>
+        <v-toolbar dark class="mt-0">
+          <v-tabs background-color="#CCA5FE" grow>
+            <v-tab class="pa-0" @click="changeToProblemFeed" id="problemTab">
+              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">Probelm / Book</p>
+            </v-tab>
+              
+            <v-tab class="pa-0" @click="changeToInfoFeed" id="infoTab">
+              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">INFORMATION</p>
+            </v-tab>         
+          </v-tabs>
+        </v-toolbar>
 
         <!-- row 1-2: 피드 컨텐츠 부분 -->
         <v-row>
@@ -77,10 +80,10 @@ export default {
        // 2. 해당 탭에 불 들어오게
         const problemTab = document.querySelector('#problemTab')
         const infoTab = document.querySelector('#infoTab')
-        problemTab.classList.add("clicked-main-tab")
+        // problemTab.classList.add("clicked-main-tab")
         // console.log(problemTab.classList)
         if(infoTab.classList.length >= 5){
-          infoTab.classList.remove("clicked-main-tab")
+          // infoTab.classList.remove("clicked-main-tab")
         }
         this.problemFeedClass ='d-flex'
         this.infoFeedClass = 'd-none'
@@ -91,11 +94,11 @@ export default {
 
       const problemTab = document.querySelector('#problemTab')
       const infoTab = document.querySelector('#infoTab')
-      infoTab.classList.add("clicked-main-tab")
+      // infoTab.classList.add("clicked-main-tab")
         // console.log(infoTab.classList)
         if(problemTab.classList.length >= 5){
           // console.log('hi')
-          problemTab.classList.remove("clicked-main-tab")
+          // problemTab.classList.remove("clicked-main-tab")
         }
         this.problemFeedClass ='d-none'
         this.infoFeedClass = 'd-flex'

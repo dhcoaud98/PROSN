@@ -3,7 +3,7 @@
   <!-- 2022.08.04 댓글보기 버튼 활성화 (남성은) -->
   <v-container class="modal" appear>
     <v-container class="modal modal-overlay" @click.self="$emit('close')">
-      <v-container class="modal-window pa-0">
+      <v-container class="modal-window pa-0" width="500px">
         <v-container class="rounded-lg modal-content pa-0">
           <v-row class="d-flex justify-center">
             <!-- 정보부분 (항상 떠있음) -->
@@ -16,7 +16,7 @@
               <!-- 정보 제목 -->
               <!-- {{ info.pk }}. {{ info.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold black--text">
-                <h2>158. 정보 표현의 기본 장치에 대하여</h2> 
+                <h2>모달크기가 왜 고정이 안되는지 알길이 없음</h2> 
               </v-card-title>
 
               <!-- 정보 본문 -->
@@ -36,7 +36,7 @@
                         <!-- <v-virtual-scroll height="300"> -->
                         <v-card-text>
                           <div>
-                            아<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>제발좀 되라 좀 제발
+                            아<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>제발
                           </div>                
                         </v-card-text>
                       </v-card>

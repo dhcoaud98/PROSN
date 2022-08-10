@@ -1,6 +1,9 @@
 <template>
   <v-container class="mt-5 mx-2 mb-0">
-
+    <v-row class="d-flex">
+      <v-icon large color="#926DFF">groups</v-icon>
+      <h2 class="ms-3 dark--text">S T U D Y</h2>
+    </v-row>    
     <v-row>
         <!-- 1. 프로필 상단 -->
         <v-row class="justify-center mt-10 mx-5 mb-0 ">
