@@ -3,11 +3,7 @@ package com.ssafy.prosn.repository.post;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.prosn.domain.post.Post;
-import com.ssafy.prosn.domain.post.PostTag;
 import com.ssafy.prosn.domain.post.PostType;
-import com.ssafy.prosn.domain.post.QPost;
-import com.ssafy.prosn.dto.PostDto;
 import com.ssafy.prosn.dto.ProblemDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,7 +39,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.user.name.as("writerName"),
                         post.created,
                         post.updated,
-                        post.dtype,
+                        post.ptype,
                         post.numOfLikes,
                         post.numOfDislikes
                 )).distinct()
@@ -67,12 +63,12 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.user.name.as("writerName"),
                         post.created,
                         post.updated,
-                        post.dtype,
+                        post.ptype,
                         post.numOfLikes,
                         post.numOfDislikes
                 ))
                 .from(post)
-                .where(post.dtype.eq("Problem").or(post.dtype.eq("Workbook")))
+                .where(post.ptype.eq("Problem").or(post.ptype.eq("Workbook")))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -86,9 +82,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         if (dtype == null) {
             return null;
         } else if (dtype == PostType.PROBLEM) {
-            return post.dtype.eq(String.valueOf(dtype)).or(post.dtype.eq(String.valueOf(PostType.WORKBOOK)));
+            return post.ptype.eq(String.valueOf(dtype)).or(post.ptype.eq(String.valueOf(PostType.WORKBOOK)));
         } else {
-            return post.dtype.eq(String.valueOf(dtype));
+            return post.ptype.eq(String.valueOf(dtype));
         }
 
     }
