@@ -3,11 +3,8 @@ package com.ssafy.prosn.repository.post;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.prosn.domain.post.Post;
-import com.ssafy.prosn.domain.post.PostTag;
 import com.ssafy.prosn.domain.post.PostType;
 import com.ssafy.prosn.domain.post.QPost;
-import com.ssafy.prosn.dto.PostDto;
 import com.ssafy.prosn.dto.ProblemDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,7 +30,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
 // OneToMany 관계, paging / fetch join 사용 시 distinct 적용 안됨. N+1 문제..
     @Override
-    public Page<ProblemDto> searchPost(boolean isDeleted, Pageable pageable, String title, String code, PostType dtype) {
+    public Page<ProblemDto> searchPost(boolean isDeleted, Pageable pageable, String title, String code, PostType ptype) {
         List<ProblemDto> result = queryFactory
                 .select(Projections.fields(ProblemDto.class,
                         post,
@@ -49,7 +46,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 )).distinct()
                 .from(post)
                 .leftJoin(post.postTags, postTag)
-                .where(titleContains(title), codeEq(code), typeEq(dtype))
+                .where(titleContains(title), codeEq(code), typeEq(ptype))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -72,23 +69,23 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.numOfDislikes
                 ))
                 .from(post)
-                .where(post.ptype.eq("Problem").or(post.ptype.eq("Workbook")))
+                .where(post.ptype.eq(PostType.Problem).or(post.ptype.eq(PostType.Workbook)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         return new PageImpl<>(result, pageable, result.size());
     }
 
-    private Predicate typeEq(PostType dtype) {
-        if(String.valueOf(dtype).equals("")) {
-            dtype = null;
+    private Predicate typeEq(PostType ptype) {
+        if(String.valueOf(ptype).equals("")) {
+            ptype = null;
         }
-        if (dtype == null) {
+        if (ptype == null) {
             return null;
-        } else if (dtype == PostType.PROBLEM) {
-            return post.ptype.eq(String.valueOf(dtype)).or(post.ptype.eq(String.valueOf(PostType.WORKBOOK)));
+        } else if (ptype == PostType.Problem) {
+            return post.ptype.eq(PostType.Problem).or(post.ptype.eq(PostType.Workbook));
         } else {
-            return post.ptype.eq(String.valueOf(dtype));
+            return post.ptype.eq(ptype);
         }
 
     }

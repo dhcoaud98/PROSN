@@ -62,7 +62,8 @@ public abstract class Post extends BaseEntity {
     private Long numOfDislikes;
 
     @Column(insertable = false, updatable = false)
-    private String ptype;
+    @Enumerated(EnumType.STRING)
+    private PostType ptype;
 
     public Post(String title, User user) {
         this.title = title;

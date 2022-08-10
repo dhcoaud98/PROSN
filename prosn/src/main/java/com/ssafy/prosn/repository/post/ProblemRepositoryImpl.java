@@ -1,22 +1,12 @@
 package com.ssafy.prosn.repository.post;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.NumberOperation;
-import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.prosn.domain.post.Problem;
-import com.ssafy.prosn.domain.post.QPost;
-import com.ssafy.prosn.domain.post.QProblem;
-import com.ssafy.prosn.domain.profile.status.QSolving;
-import com.ssafy.prosn.dto.PopularityProblemResponseDto;
+import com.ssafy.prosn.dto.PopularityProblemDto;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.ssafy.prosn.domain.post.QPost.*;
 import static com.ssafy.prosn.domain.post.QProblem.*;
 import static com.ssafy.prosn.domain.profile.status.QSolving.*;
 
@@ -31,9 +21,9 @@ public class ProblemRepositoryImpl implements ProblemRepositoryCustom {
     }
 
     @Override
-    public List<PopularityProblemResponseDto> popularProblem() {
+    public List<PopularityProblemDto> popularProblem() {
         return queryFactory
-                .select(Projections.fields(PopularityProblemResponseDto.class,
+                .select(Projections.fields(PopularityProblemDto.class,
                         problem.id,
                         problem.title,
                         problem.numOfLikes,

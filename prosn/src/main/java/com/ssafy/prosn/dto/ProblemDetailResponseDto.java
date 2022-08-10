@@ -27,7 +27,7 @@ public class ProblemDetailResponseDto extends PostDetailResponseDto {
 
 
     @Builder
-    public ProblemDetailResponseDto(Long id, String title, Long numOfLikes, Long numOfDislikes, List<Comment> comments, Integer views, UserResponseDto user, List<Tag> tags, String mainText, String example1, String example2, String example3, String example4, String answer, PostType type, double correctRate, int submitCnt) {
+    public ProblemDetailResponseDto(Long id, String title, Long numOfLikes, Long numOfDislikes, List<CommentDto> comments, Integer views, UserResponseDto user, List<String> tags, String mainText, String example1, String example2, String example3, String example4, String answer, PostType type, double correctRate, int submitCnt) {
         super(id, title, numOfLikes, numOfDislikes, comments, views, user, tags, type);
         this.mainText = mainText;
         this.example1 = example1;

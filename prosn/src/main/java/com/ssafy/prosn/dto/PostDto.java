@@ -2,6 +2,7 @@ package com.ssafy.prosn.dto;
 
 import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.PostTag;
+import com.ssafy.prosn.domain.post.PostType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,17 +52,17 @@ public class PostDto {
         private String title;
         private LocalDateTime created;
         private LocalDateTime updated;
-        private String dtype;
+        private PostType ptype;
         private List<String> tags;
         private Long numOfLikes;
         private Long numOfDislikes;
 
-        public Content(Long id, String title, LocalDateTime created, LocalDateTime updated, String dtype, List<String> tags, Long numOfLikes, Long numOfDislikes) {
+        public Content(Long id, String title, LocalDateTime created, LocalDateTime updated, PostType ptype, List<String> tags, Long numOfLikes, Long numOfDislikes) {
             this.id = id;
             this.title = title;
             this.created = created;
             this.updated = updated;
-            this.dtype = dtype;
+            this.ptype = ptype;
             this.tags = tags;
             this.numOfLikes = numOfLikes;
             this.numOfDislikes = numOfDislikes;
@@ -99,12 +100,12 @@ public class PostDto {
             this.updated = updated;
         }
 
-        public String getDtype() {
-            return dtype;
+        public PostType getPtype() {
+            return ptype;
         }
 
-        public void setDtype(String dtype) {
-            this.dtype = dtype;
+        public void setPtype(PostType ptype) {
+            this.ptype = ptype;
         }
 
         public List<String> getTags() {

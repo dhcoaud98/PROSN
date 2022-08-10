@@ -3,14 +3,12 @@ package com.ssafy.prosn.controller;
 import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.post.PostType;
 import com.ssafy.prosn.dto.*;
-import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.post.ProblemRepository;
 import com.ssafy.prosn.service.PostService;
 import com.ssafy.prosn.service.UserService;
 import com.ssafy.prosn.service.WorkbookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -42,13 +40,13 @@ public class PostController {
     @PostMapping("/problem")
     public ResponseEntity<?> writeProblem(@RequestBody @Valid ProblemRequestDto req) {
         Post post = postService.writeProblem(req, userService.getMyInfoBySecret().getId());
-        return ResponseEntity.ok(post.getId());
+        return ResponseEntity.status(CREATED).build();
     }
 
     @PostMapping("/information")
     public ResponseEntity<?> writeInformation(@RequestBody @Valid InformationRequestDto req) {
         Post post = postService.writeInformation(req, userService.getMyInfoBySecret().getId());
-        return ResponseEntity.ok(post.getId());
+        return ResponseEntity.status(CREATED).build();
     }
 
     // 페이징 처리 추가하기
@@ -109,14 +107,14 @@ public class PostController {
     public ResponseEntity<?> deletePost(@PathVariable(value = "id") Long id) {
         log.info("삭제 id = {}", id);
         postService.delete(id, userService.getMyInfoBySecret().getId());
-        return ResponseEntity.ok(HttpEntity.EMPTY);
+        return ResponseEntity.status(NO_CONTENT).build();
     }
 
     @PostMapping("/click")
     public ResponseEntity<?> likeDisLikeClick(@RequestBody @Valid LikeDisLikeRequestDto req) {
         log.info("좋아요 싫어요 req = {}", req);
         postService.likeDislikeClick(req, userService.getMyInfoBySecret().getId());
-        return ResponseEntity.ok(HttpEntity.EMPTY);
+        return ResponseEntity.status(CREATED).build();
     }
 
     @GetMapping("/search")
@@ -131,7 +129,7 @@ public class PostController {
         workbookService.save(Long.parseLong(req.get("pid")),
                 userService.getMyInfoBySecret().getId(),
                 req.get("title"));
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(CREATED).build();
     }
 
     @PatchMapping("/workbook")
@@ -139,7 +137,7 @@ public class PostController {
         workbookService.update(userService.getMyInfoBySecret().getId(),
                 Long.parseLong(req.get("wid")),
                 req.get("title"));
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(CREATED).build();
     }
 
     @GetMapping("/workbook")
@@ -149,9 +147,9 @@ public class PostController {
         return ResponseEntity.status(OK).body(result);
     }
 
-    @GetMapping("/popular/problem")
+    @GetMapping("/problem/ranking")
     public ResponseEntity<?> getPopularProblem() {
-        List<PopularityProblemResponseDto> popularityProblemResponseDtos = postService.popularProblem();
-        return ResponseEntity.status(OK).body(popularityProblemResponseDtos);
+        List<PopularityProblemResponseDto> popularityProblemDtos = postService.popularProblem();
+        return ResponseEntity.status(OK).body(popularityProblemDtos);
     }
 }
