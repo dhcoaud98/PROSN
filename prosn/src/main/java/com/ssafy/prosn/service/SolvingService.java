@@ -1,5 +1,7 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.domain.profile.status.Solving;
+import com.ssafy.prosn.dto.RateDto;
 import com.ssafy.prosn.dto.SolvingRequestDto;
 import com.ssafy.prosn.dto.SolvingResponseDto;
 
@@ -12,4 +14,5 @@ import java.util.List;
 public interface SolvingService {
     List<SolvingResponseDto> showAllSolving(Long uid);
     void problemSolving(Long uid, SolvingRequestDto dto);
+    RateDto getRate(Long pid);
 }

@@ -1,5 +1,6 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.domain.comment.Comment;
 import com.ssafy.prosn.domain.post.*;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.*;
@@ -16,17 +17,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/08/09
+ * updated by seongmin on 2022/08/10
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -41,6 +42,7 @@ public class PostServiceImpl implements PostService {
     private final LikeDislikeRepository likeDislikeRepository;
     private final ProblemRepository problemRepository;
     private final InformationRepository informationRepository;
+    private final SolvingService solvingService;
 
     @Override
     @Transactional
@@ -92,12 +94,14 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostDetailResponseDto showProblemDetail(Long id) {
+        log.info("요기id = {}", id);
         Post post = postRepository.findById(id).orElseThrow(() -> new BadRequestException("유효하지 않은 게시글입니다."));
         log.info("post type = {}", post.getClass());
         if (post instanceof Problem) {
             log.info("문제 디테일");
             Problem problem = (Problem) post;
             if (problem.isDeleted()) throw new BadRequestException("삭제된 게시글입니다.");
+            RateDto rate = solvingService.getRate(problem.getId());
             return ProblemDetailResponseDto.builder()
                     .title(problem.getTitle())
                     .user(new UserResponseDto(problem.getUser().getId(), problem.getUser().getName()))
@@ -108,12 +112,14 @@ public class PostServiceImpl implements PostService {
                     .example2(problem.getExample2())
                     .example3(problem.getExample3())
                     .example4(problem.getExample4())
-                    .comments(problem.getComments())
+                    .comments(getComments(problem))
                     .numOfLikes(problem.getNumOfLikes())
                     .numOfDislikes(problem.getNumOfDislikes())
                     .views(problem.getViews())
                     .tags(getTags(problem))
-                    .type(PostType.PROBLEM)
+                    .type(problem.getPtype())
+                    .correctRate(rate.getCorrectRate())
+                    .submitCnt(rate.getSubmitCount())
                     .build();
         } else if (post instanceof Information) {
             log.info("정보 디테일");
@@ -124,16 +130,28 @@ public class PostServiceImpl implements PostService {
                     .id(information.getId())
                     .user(new UserResponseDto(information.getUser().getId(), information.getUser().getName()))
                     .mainText(information.getMainText())
-                    .comments(information.getComments())
+                    .comments(getComments(information))
                     .numOfDislikes(information.getNumOfDislikes())
                     .numOfLikes(information.getNumOfLikes())
                     .tags(getTags(information))
                     .views(information.getViews())
-                    .type(PostType.INFORMATION)
+                    .type(PostType.Information)
                     .build();
         } else {
-            log.info("그외(문제집) 디테일");
-            return null;
+            log.info("문제집 디테일");
+            Workbook workbook = (Workbook) post;
+            return new InformationDetailResponseDto(
+                    workbook.getId(),
+                    workbook.getTitle(),
+                    workbook.getNumOfLikes(),
+                    workbook.getNumOfDislikes(),
+                    getComments(workbook),
+                    workbook.getViews(),
+                    new UserResponseDto(workbook.getUser().getId(), workbook.getUser().getName()),
+                    getTags(workbook),
+                    null,
+                    PostType.Workbook
+            );
         }
     }
 
@@ -148,7 +166,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public ProblemWorkbookResponseDto showAllProblem(Pageable pageable) {
         Page<ProblemDto> problemWorkbook = postRepository.getProblemWorkbook(false, pageable);
-        return ProblemWorkbookResponseDto.of(problemWorkbook.getContent(),problemWorkbook.getTotalPages(), problemWorkbook.getTotalElements());
+        return ProblemWorkbookResponseDto.of(problemWorkbook.getContent(), problemWorkbook.getTotalPages(), problemWorkbook.getTotalElements());
     }
 
     @Override
@@ -206,13 +224,38 @@ public class PostServiceImpl implements PostService {
         return ProblemWorkbookResponseDto.of(problemDtos.getContent(), problemDtos.getTotalPages(), problemDtos.getTotalElements());
     }
 
-    private List<Tag> getTags(Post post) {
+    @Override
+    @Transactional
+    public int updateViews(Long id) {
+        return postRepository.updateViews(id);
+    }
+
+    @Override
+    public List<PopularityProblemResponseDto> popularProblem() {
+        List<PopularityProblemResponseDto> result = new ArrayList<>();
+
+        List<PopularityProblemDto> popularityProblemDtos = problemRepository.popularProblem();
+        for (PopularityProblemDto popularityProblemDto : popularityProblemDtos) {
+            log.info("인기문제 제목 = {}",popularityProblemDto.getTitle());
+        }
+        for (PopularityProblemDto popularityProblemDto : popularityProblemDtos) {
+            result.add(new PopularityProblemResponseDto(popularityProblemDto, solvingService.getRate(popularityProblemDto.getId())));
+        }
+        return result;
+    }
+
+    private List<String> getTags(Post post) {
         List<PostTag> postTagByPost = postTagRepository.findPostTagByPost(post);
-        List<Tag> tags = new ArrayList<>();
-        postTagByPost.forEach(postTag -> {
-            tags.add(postTag.getTag());
-        });
-        return tags;
+        return postTagByPost.stream().map(postTag -> postTag.getTag().getCode()).collect(Collectors.toList());
+    }
+
+    private List<CommentDto> getComments(Post post) {
+        List<Comment> comments = post.getComments();
+        List<CommentDto> result = new ArrayList<>();
+        for (Comment comment : comments) {
+            result.add(CommentDto.of(comment));
+        }
+        return result;
     }
 
 //    private Long getNumOfLikes(Post post) {

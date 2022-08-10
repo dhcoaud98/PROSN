@@ -11,8 +11,11 @@ import java.util.Optional;
 
 /**
  * created by yura on 2022/08/01
+ * updated by seongmin on 2022/08/10
  */
 public interface SolvingRepository extends JpaRepository<Solving, Long> {
     List<Solving> findSolvingByUserId(Long userId);
     Optional<Solving> findByUserAndProblem(User user, Problem problem);
+
+    List<Solving> findByProblem(Problem problem);
 }

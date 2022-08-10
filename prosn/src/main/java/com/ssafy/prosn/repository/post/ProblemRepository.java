@@ -10,9 +10,9 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/22
- * updated by seongmin on 2022/08/07
+ * updated by seongmin on 2022/08/10
  */
-public interface ProblemRepository extends JpaRepository<Problem, Long> {
+public interface ProblemRepository extends JpaRepository<Problem, Long>, ProblemRepositoryCustom {
     @Query("select p from Problem  p where p.isDeleted = FALSE")
     List<Problem> findAllProblem();
 
