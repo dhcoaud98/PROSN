@@ -27,6 +27,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<?> write(@RequestBody @Valid CommentRequestDto req) {
         log.info("댓글 작성 req = {}", req);
+        commentService.write(req, userService.getMyInfoBySecret().getId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

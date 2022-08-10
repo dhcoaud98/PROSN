@@ -8,6 +8,6 @@ import com.ssafy.prosn.dto.CommentRequestDto;
  * updated by seongmin on 2022/08/01
  */
 public interface CommentService {
-    void write(CommentRequestDto commentRequestDto, Long uid);
+    Comment write(CommentRequestDto commentRequestDto, Long uid);
     void delete(Long id, Long uid);
 }

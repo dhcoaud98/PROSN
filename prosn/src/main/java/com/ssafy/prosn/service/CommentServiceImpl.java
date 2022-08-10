@@ -31,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void write(CommentRequestDto commentRequestDto, Long uid) {
+    public Comment write(CommentRequestDto commentRequestDto, Long uid) {
         Post post = postRepository.findById(commentRequestDto.getPid()).orElseThrow(() -> new BadRequestException("유효하지 않은 게시글입니다."));
         User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
 
@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
                 .user(user)
                 .mainText(commentRequestDto.getMainText())
                 .build();
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
     @Override
