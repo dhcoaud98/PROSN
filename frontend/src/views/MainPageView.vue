@@ -3,7 +3,7 @@
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row v-if="!isSearched">
       <!-- col 1: 메인 피드 부분 -->
-      <v-col cols="12" lg="8" class="mt-0 white pt-0 px-0 rounded-lg">
+      <v-col cols="12" md="7" lg="8" class="mt-2 white pt-0 px-0 rounded-lg">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
         <v-toolbar dark class="mt-0">
           <v-tabs background-color="#CCA5FE" grow>
@@ -30,7 +30,7 @@
       </v-col>
 
       <!-- col 2: 사이드 바 -->
-      <v-col md="4" class="d-md-flex d-none grey lighten-4">
+      <v-col md="5" lg="4" class="d-md-flex d-none grey lighten-4">
         <side-bar></side-bar>
       </v-col>
     </v-row>

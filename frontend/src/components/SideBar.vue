@@ -75,33 +75,65 @@
     </v-card>
 
     <!-- 2. 오늘의 유저 -->
-    <v-card class="mx-auto mb-5 rounded-xl" height ="330px" color="#EDE7F6">
-      <v-card-text class="pb-0">
-        <p class="text-h6 text--primary d-flex justify-center mb-0 color--#f3f3f3">{{nowDate}} 유저 랭킹</p>
-        <p class="text-right">{{nowDate}} {{nowTime}} 실시간</p>
-        <v-row>
-          <v-col cols="12">
-            <!-- 2022.08.04. flat Invalid type error 수정 -->
-            <v-card color="transparent" flat>
-              <v-list two-line>
-                <template>
-                <!-- 2022.08.04. template에서 v-bind:key 쓰지 못하는 문제 해결 -->
-                <!-- <template v-for=item in items.slice(0.6)> -->
-                  <v-list-item v-for="(item,index) in items.slice(0.6)" :key="index" height="5px">
-                  <!-- <v-list-item height="5px"> -->
-                    <v-list-item-avatar>
-                      <img :src= "item.avatar">
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title>{{ item.name }}</v-list-item-title>
-                      <v-list-item-subtitle>{{ item.total }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
+    <v-card class="mx-auto mb-5 purple-gradation rounded-xl" height ="auto">
+      <v-card-text class="py-5 px-3">
+        <v-contatiner>
+        
+          <!-- 전체제목 -->
+          <v-row class="mt-2">
+            <v-col class="pa-0">
+              <p class="d-flex justify-center mb-0 color-purple font-weight-bold">🎈 이주의 유저 랭킹</p>
+            </v-col>
+          </v-row>
+
+          <!-- 랭커 -->
+          <v-row class="mt-7">
+            <v-container class="pa-0 mb-2">
+              <!-- v-for문 돌릴것들 -->
+              <!-- 각 유저 -->
+              <v-row>
+                <v-container class="pa-0 mb-2">
+                  <!-- 설명 -->
+                  <v-row>
+                    <!-- 등수 -->
+                    <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">등수</v-col>
+                    <!-- 유저이름 -->
+                    <v-col cols="3" class="pa-0 black--text font-weight-bold text-center">유저이름</v-col>
+                    <!-- 등급 -->
+                    <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">등급</v-col>
+                    <!-- 포인트 -->
+                    <v-col cols="3" class="pa-0 black--text font-weight-bold text-center">포인트</v-col>
+                    <!-- 문제풀이개수 -->
+                    <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">풀이수</v-col>     
+                  </v-row>    
+
+                  <!-- v-for문 돌릴것들 -->
+                  <!-- 각 유저 -->
+                  <v-row>
+                    <!-- 등수 -->
+                    <v-col cols="2" class="pa-0 dark--text text-center">1</v-col>
+                    <!-- 유저이름 -->
+                    <v-col cols="3" class="pa-0 dark--text text-center">박성민</v-col>
+                    <!-- 등급 -->
+                    <v-col cols="2" class="pa-0 dark--text text-center">
+                      <v-chip x-small class="text-center px-2">purple</v-chip>
+                      </v-col>
+                    <!-- 포인트 -->
+                    <v-col cols="3" class="pa-0 dark--text text-center">2101</v-col>
+                    <!-- 문제풀이개수 -->
+                    <v-col cols="2" class="pa-0 dark--text text-center">21</v-col>     
+                  </v-row>    
+                </v-container>
+              </v-row>
+              <!-- 여기까지를 v-for문 돌리면 됨 -->
+            </v-container>
+          </v-row>
+
+          <!-- 실시간 시간 표시 -->
+          <v-row class="d-flex justify-end">
+            <p class="text-right ma-0">{{nowDate}} {{nowTime}} 실시간</p>
+          </v-row>
+        </v-contatiner>
       </v-card-text>
     </v-card>
   </v-container>
@@ -191,12 +223,19 @@ export default {
 .btn {
   color: aqua;
 }
+.color-purple {
+  color: #512DA8;
+  font-size: 1.5em;
+}
 .color-magenta {
   color: #C2185B;
   font-size: 1.5em;
 }
 .pink-gradation {
   background: linear-gradient(#E7C0F4, #F0BBCF);
+}
+.purple-gradation {
+  background: linear-gradient(#D4B4FF, #D9DFFF);
 }
 .title-font-size {
   font-size: 1.1em;

@@ -1,5 +1,10 @@
 <template>
-  <v-container class="mt-5 mx-2 mb-0">
+  <v-container class="ma-0 pa-0">
+    <v-row class="d-flex mt-5 ms-5">
+      <v-icon large color="#926DFF">sticky_note_2</v-icon>
+      <h2 class="ms-3 dark--text">N O T E</h2>
+    </v-row>  
+
     <!-- row 1. 제목 -->
     <v-row>
       <p class="font-parent-lar">
