@@ -41,6 +41,7 @@ public class PostServiceImpl implements PostService {
     private final LikeDislikeRepository likeDislikeRepository;
     private final ProblemRepository problemRepository;
     private final InformationRepository informationRepository;
+    private final SolvingService solvingService;
 
     @Override
     @Transactional
@@ -98,6 +99,7 @@ public class PostServiceImpl implements PostService {
             log.info("문제 디테일");
             Problem problem = (Problem) post;
             if (problem.isDeleted()) throw new BadRequestException("삭제된 게시글입니다.");
+            RateDto rate = solvingService.getRate(problem.getId());
             return ProblemDetailResponseDto.builder()
                     .title(problem.getTitle())
                     .user(new UserResponseDto(problem.getUser().getId(), problem.getUser().getName()))
@@ -114,6 +116,8 @@ public class PostServiceImpl implements PostService {
                     .views(problem.getViews())
                     .tags(getTags(problem))
                     .type(PostType.PROBLEM)
+                    .correctRate(rate.getCorrectRate())
+                    .submitCnt(rate.getSubmitCount())
                     .build();
         } else if (post instanceof Information) {
             log.info("정보 디테일");
@@ -213,9 +217,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PopularityProblemResponseDto popularProblem() {
-
-        return null;
+    public List<PopularityProblemResponseDto> popularProblem() {
+        return problemRepository.popularProblem();
     }
 
     private List<Tag> getTags(Post post) {

@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 /**
  * created by seongmin on 2022/07/22
- * updated by yura on 2022/08/04
+ * updated by seongmin on 2022/08/10
  */
 @Entity
 //@RequiredArgsConstructor
@@ -38,14 +38,18 @@ public class Solving extends BaseEntity {
     @ApiModelProperty(example = "풀이 여부")
     private boolean isRight;
 
+    @Convert(converter = BooleanToYNConverter.class)
+    private boolean firstIsRight;
+
     public void correctAnswer() {
         this.isRight = true;
     }
 
     @Builder
-    public Solving(User user, Problem problem, boolean isRight) {
+    public Solving(User user, Problem problem, boolean isRight, boolean firstIsRight) {
         this.user = user;
         this.problem = problem;
         this.isRight = isRight;
+        this.firstIsRight = firstIsRight;
     }
 }

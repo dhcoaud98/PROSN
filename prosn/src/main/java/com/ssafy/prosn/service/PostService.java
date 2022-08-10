@@ -32,6 +32,6 @@ public interface PostService {
 
     int updateViews(Long id);
 
-    PopularityProblemResponseDto popularProblem();
+    List<PopularityProblemResponseDto> popularProblem();
 
 }

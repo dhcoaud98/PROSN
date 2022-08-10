@@ -46,6 +46,6 @@ public class SolvingRepositoryTest {
 
         problemRepository.save(problem);
 
-        solvingRepository.save(new Solving(user, problem, true));
+        solvingRepository.save(new Solving(user, problem, true, true));
     }
 }

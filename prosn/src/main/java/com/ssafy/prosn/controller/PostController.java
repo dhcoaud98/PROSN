@@ -151,7 +151,7 @@ public class PostController {
 
     @GetMapping("/popular/problem")
     public ResponseEntity<?> getPopularProblem() {
-        List<PopularityProblemResponseDto> popularityProblemResponseDtos = problemRepository.popularProblem();
+        List<PopularityProblemResponseDto> popularityProblemResponseDtos = postService.popularProblem();
         return ResponseEntity.status(OK).body(popularityProblemResponseDtos);
     }
 }
