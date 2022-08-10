@@ -12,7 +12,7 @@
     <v-divider class="mx-5" color="#A384FF"></v-divider>
 
     <!-- 문제정보 작성란 -->
-      <v-form class="px-5">
+      <v-form class="px-5" ref="form" @submit.prevent="submitStudy">
         <!-- 스터디이름 -->
         <v-row class="mx-2 mt-2">
           <v-col class="col-12 pa-0 mb-2">
@@ -131,10 +131,9 @@
         <v-row class="my-2 ">
           <v-col cols="12" class="d-flex justify-end pa-0">
             <!-- router - 1  -->
-            <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5" @click="cancel">취소하기</v-btn>
+            <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5" @click="cancel()">취소하기</v-btn>
             <!-- submit -->
-            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5"
-              @submit.prevent="submitStudy">등록하기</v-btn>
+            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5">등록하기</v-btn>
           </v-col>
         </v-row>
 
@@ -143,6 +142,10 @@
 </template>
 
 <script>
+import axios from 'axios';
+import drf from '@/api/drf';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'CreateProblem',
   data: () => ({
@@ -189,12 +192,12 @@ export default {
     cancel () {
       this.$router.push({ path: 'study' })
     },
-    submitStudy() {
+    submitStudy () {
       axios({
-          url: drf.note.wronganswer(),
+          url: drf.study.study(),
           method: 'post',
           headers: {
-          Authorization: this.accessToken,
+            Authorization: this.accessToken,
           },
           data: this.credentials
       })
@@ -203,6 +206,7 @@ export default {
           // const token = res.data.key
           // dispatch('saveToken', token)
           // dispatch('fetchCurrentUser')
+          this.$router.push({ path: 'profile' })
       
       })
       .catch(err =>{
@@ -210,6 +214,9 @@ export default {
           console.log(err)
         })
     }
+  },
+  computed: {
+    ...mapGetters(['accessToken']),
   },
 }
 </script>

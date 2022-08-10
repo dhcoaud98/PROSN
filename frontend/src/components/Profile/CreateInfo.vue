@@ -99,8 +99,8 @@ export default {
         this.$router.push({ path: 'profile' })
       })
       .catch((err) => {
-        console.log('에러')
-        console.log(err)
+        console.log('에러 = ', err)
+
       })
     },
   },

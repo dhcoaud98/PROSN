@@ -4,7 +4,7 @@
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
     <div class="color-FAF0F3 mx-auto border-a-10">
         <!-- 카드 클릭시 모달 오픈 -->
-        <v-container class="px-2" @click="openModal">
+        <v-container class="px-2" >
             <!-- 첫번째 v-row: 프사, 사용자 이름, 사용자 등급, 팔로우 버튼 -->
             <v-row class="align-center justify-space-between">
                 <div class="d-flex align-center mx-2 my-4">
@@ -14,7 +14,7 @@
                             account_circle
                         </span>
                     </router-link>
-                    <span class="font-weight-bold font-parent-mid"></span>
+                    <span class="font-weight-bold font-parent-mid">{{mainProb.writerName}}</span>
                     <span class="ml-2 tmp-border py-1 font-weight-bold font-parent-sml">PROSN</span>
                 </div>
                 
