@@ -46,6 +46,8 @@
 
 <script>
 import NoteList from '@/components/Note/NoteList.vue'
+import axios from 'axios'
+import drf from '@/api/drf.js'
 
 export default {
   components: {
@@ -67,8 +69,8 @@ export default {
         {toDB:"SC", toUser: "보안"},
         {toDB:"ETC", toUser: "기타"},
       ],
-      beforeProbs : {},
-      afterProbs: {},
+      beforeProbs : [],
+      afterProbs: [],
     }
   },
   methods: {
@@ -77,17 +79,21 @@ export default {
     }
   },
   created() {
+    const params = {
+        pageable: 0,
+        // sort: onUpdated, 'desc'
+      } 
     axios({
-      url: drf.note.wronganswer(),
+      url: drf.api + 'wrongAnswer/' + 'all/',
       method: 'get',
       headers: {
-      Authorization: this.accessToken,
+        Authorization: this.accessToken,
       },
+      params: params,
     })
     .then(res => {
       // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-      this.beforeProbs = res.data
-      this.afterProbs = res.data
+      console.log(res.data);
     })
     .catch(err => {
       console.log(err);
