@@ -4,9 +4,12 @@
     <v-row>
       <p class="font-parent-lar">
         <!-- 나중에 유저 이름 받아올 수 있으면 아래 부분 바꿔주기 -->
-        <span class="font-weight-bold">임지민</span>
+        <span class="font-weight-bold">{{userName}}</span>
         님의 오답노트
       </p>
+      <!-- <p>{{userId}}</p> -->
+      <!-- <p>{{accessToken}}</p> -->
+      <!-- <p>{{ accessToken }}</p> -->
     </v-row>
 
     <!-- 
@@ -48,6 +51,7 @@
 import NoteList from '@/components/Note/NoteList.vue'
 import axios from 'axios'
 import drf from '@/api/drf.js'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   components: {
@@ -78,13 +82,17 @@ export default {
       this.selected = categoryName
     }
   },
+  computed: {
+    ...mapGetters(['accessToken', 'userId', 'userName'])
+  },
   created() {
     const params = {
         pageable: 0,
+        isWrite: 'true',
         // sort: onUpdated, 'desc'
       } 
     axios({
-      url: drf.api + 'wrongAnswer/' + 'all/',
+      url: drf.api + 'wrongAnswer/' + 'all',
       method: 'get',
       headers: {
         Authorization: this.accessToken,
@@ -93,9 +101,12 @@ export default {
     })
     .then(res => {
       // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-      console.log(res.data);
+      console.log(res);
+      // console.log('in'); //ok
     })
     .catch(err => {
+      // console.log(this.accessToken)
+      // console.log(this.userId)
       console.log(err);
     })
   },

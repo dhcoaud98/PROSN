@@ -9,7 +9,7 @@ import ProfilePageView from '@/views/ProfilePageView.vue'
 import CreateStudy from '@/components/Study/CreateStudy.vue'
 import CreateProblem from '@/components/Profile/CreateProblem.vue'
 import CreateInfo from '@/components/Profile/CreateInfo.vue'
-// import CreateNote from '@/components/Note/CreateNote.vue'
+import CreateNote from '@/components/Note/CreateNote.vue'
 import Information from '@/components/Information/Information.vue'
 import Problem from '@/components/Problem/Problem.vue'
 import ProblemBook from '@/components/ProblemBook/ProblemBook.vue'
@@ -63,11 +63,11 @@ const routes = [
     name: 'createinfo',
     component: CreateInfo
   },
-  // {
-  //   path: '/createnote',
-  //   name: 'createnote',
-  //   component: CreateNote
-  // },
+  {
+    path: '/createnote',
+    name: 'createnote',
+    component: CreateNote
+  },
   {
     path: '/problem',
     name: 'problem',
