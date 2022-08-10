@@ -4,7 +4,6 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.prosn.domain.post.PostType;
-import com.ssafy.prosn.domain.post.QPost;
 import com.ssafy.prosn.dto.ProblemDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

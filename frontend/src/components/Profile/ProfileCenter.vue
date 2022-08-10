@@ -1,52 +1,101 @@
 <template>
-  <v-container class="mt-2 white mb-5">
-    <v-row class="justify-center mt-10 mx-5">
-      <!-- 프로필 사진 -->
-      <v-col cols="3 lg-2">
-        <v-avatar size="100px" class="d-flex justify-center">
-          <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
-        </v-avatar>
-        <!-- 채명: 본인에 대한 태그는 최대 4개를 넘지 않도록!-->
-        <!-- lg 사이즈 이하에서는 태그 사라짐 -->
-        <v-col cols="12" class="mt-2 d-none d-lg-block">
-          <v-row>
-            <!-- 카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" -->
-            <span class="category-tag text-center pa-1">#알고리즘</span>
-            <span class="category-tag pa-1">#최고</span>
-            <span class="category-tag pa-1">#CS</span>
-            <span class="category-tag pa-1">#어려워</span>
-          </v-row>
-        </v-col>
-      </v-col>
-      <!-- 뱃지, 이름 -->
-      <v-col cols="9">
-        <v-row class="ma-0">
-          <v-col class="rank_box" cols="5">
-            <!-- 채명 : user 정보에서 문제 푼 갯수 받아서 비교 후 뱃지 색상과 뱃지 글자 정하면 됨. -->
-            <p class="rank mb-0">Prosn</p>
+  <v-container class="mt-5 mx-2 mb-0">
+    <v-row>
+      <!-- 1. 프로필 상단 -->
+        <v-row class="justify-center mt-10 mx-5 mb-0">
+          <!-- 뱃지, 이름 -->
+          <v-col cols="3" class="rank_box d-flex justify-center py-0">
+            <p class="font-weight-bold text-grey ma-0">Prosn</p>
           </v-col>
-          <v-col cols="5" class="pa-0 pl-4 pt-2">
-            <p class="font-weight-bold text-grey">오채명</p>
+          <v-col cols="7" class="pa-0 pl-3">
+            <p class="font-weight-bold text-grey ma-0">오채명</p>
           </v-col>
-          <v-col cols="2" class="pa-0 pl-4 pt-2">
-            <!-- 채명 : 정보랑 문제 생성 라우터로 연결, 플러스 버튼 수정-->
-            <v-icon>+</v-icon>
-          </v-col>            
+          <v-col cols="1" class="pa-0">
+            <span class="material-icons" type="button" @click="event1()" style="color:#A384FF">quiz</span>
+          </v-col>
+          <v-col cols="1" class="pa-0">
+            <span class="material-icons" type="button" @click="event2()" style="color:#A384FF">info</span>
+          </v-col>
+  
+          <v-col cols="3">
+            <v-avatar size="100px" class="d-flex justify-center ml-3">
+              <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
+            </v-avatar>
+          </v-col>
+  
+          <v-col cols="9">
+            <v-container class="">
+              <p class="detail_text ma-0">문제 풀이 500문제</p>
+              <p class="detail_text ma-0">문제 제출 300문제</p>
+              <p class="detail_text ma-0">정답률 68%</p>
+            </v-container>
+          </v-col>
+          
+          <v-col cols="12" class="pl-0">
+              <!-- lg 사이즈 이하에서는 태그 사라짐 -->
+              <!-- 카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" -->
+              <span class="category-tag text-center pa-1">#알고리즘</span>
+              <span class="category-tag pa-1">#최고</span>
+              <span class="category-tag pa-1">#CS</span>
+              <span class="category-tag pa-1">#어려워</span>
+              <span class="category-tag pa-1">#배고파</span>
+          </v-col>
+  
         </v-row>
-        <v-container class="detail">
-          <p class="detail_text ma-0 text-bold">문제 풀이 - 500</p>
-          <p class="detail_text ma-0">문제 제출 - 300</p>
-          <p class="detail_text">정답률 ----- 68%</p>
-        </v-container>
-      </v-col>
+  
+        <!-- 2. 프로필 하단 -->
+        <v-row class="profile_tab d-flex justify-center mt-10 mx-5 mb-0">
+          <v-toolbar dark tabs flat color="#ffffff" class="toolbar" height="45px">
+            <template>
+              <v-tabs v-model="tabs">
+                <v-col>
+                  <v-tab class="tab--text pa-0" href="#one">문제 풀이 현황</v-tab>
+                </v-col>
+                <v-col>
+                  <v-tab class="tab--text pa-0" href="#two">스크랩</v-tab>
+                </v-col>
+                <v-col>
+                  <v-tab class="tab--text pa-0" href="#three">내가 쓴 게시글</v-tab>
+                </v-col>
+                <v-tabs-slider color="#A384FF"></v-tabs-slider>
+              </v-tabs>
+            </template>
+          </v-toolbar>
+        
+          <!-- <v-card-text class="d-flex ma-0">
+            <v-tabs-items v-model="tabs">
+              <v-tab-item v-for="content in ['one', 'two', 'three']" :key="content" :value="content">
+              </v-tab-item>
+            </v-tabs-items>
+          </v-card-text> -->
+          
+          <v-container class="ma-0 pa-0" v-if="activeFab.page === '1'">
+            <solved-problem-list></solved-problem-list>
+          </v-container>
+          <v-container class="ma-0 pa-0" v-if="activeFab.page === '2'">
+            <scrap-post-list></scrap-post-list>
+          </v-container>
+          <v-container class="ma-0 pa-0" v-if="activeFab.page === '3'">
+            <my-post-list></my-post-list>
+          </v-container>
+        </v-row>
     </v-row>
   </v-container>
-  
 </template>
 
 <script>
+import SolvedProblemList from "./SolvedProblemList.vue"
+import ScrapPostList from "./ScrapPostList.vue"
+import MyPostList from "./MyPostList.vue"
+
+
 export default {
   name: 'ProfileCenter',
+  components: {
+    SolvedProblemList,
+    ScrapPostList,
+    MyPostList,
+  },
   data () {
     return {
       ranking : [
@@ -57,22 +106,42 @@ export default {
         {rank_name: 'Bronze', rank_color: 'rgb(176, 141, 87)', rank_solve_problem: 50},
         {rank_name: 'Green', rank_color: 'rgb(0, 128, 0)', rank_solve_problem: 10},
         {rank_name: 'Seed', rank_color: 'rgb(0, 207, 87)', rank_solve_problem: 0},
-      ]
+      ],
+      fab: false,
+      hidden: false,
+      tabs: null,
+      pass: '',
     }
   },
+  computed: {
+    activeFab () {
+      switch (this.tabs) {
+        case 'one': return { page: '1' }
+        case 'two': return { page: '2' }
+        case 'three': return { page : '3' }
+        default: return {}
+      }
+    },
+  },
+  methods:{
+    event1 () {
+      this.$router.push({ path: 'createproblem' })
+    },
+    event2 () {
+      this.$router.push({ path: 'createinfo' })
+    }
+  }
 }
 </script>
 
 
 <style>
 .rank_box{
-  border-radius: 20px;
+  border-radius: 10px;
   border: 1px solid rgb(142, 68, 173);
   background-color: rgb(142, 68, 173);
-  height: 40px;
-  width: 40px;
-  display: flex;
-  justify-content: center;
+  height: 25px;
+  width: 20px;
 }
 .rank {
   font-size: 18px;
@@ -84,8 +153,8 @@ export default {
 }
 .category-tag {
   border-radius: 20px;
-  border: 1px solid #a384ff;
-  background-color: #a384ff;
+  border: 1px solid #A384FF;
+  background-color: #A384FF;
   font-size: 5px;
   color: white;
   font-weight: bold;
@@ -94,12 +163,15 @@ export default {
 }
 .detail{
   border-radius : 5px;
-  border: 1px solid #000000;
+  border: 1px dashed #000000;
   height : 100px;
 }
 .detail_text {
   font-size: 16px;
   font-weight: 500;
+}
+.tab--text {
+  color: #000000 !important;
 }
 </style>
 

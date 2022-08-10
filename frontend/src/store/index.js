@@ -1,23 +1,33 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import accounts from './modules/accounts'
-import info from './modules/info'
-import note from './modules/note'
-import problem from './modules/problem'
-import search from './modules/search'
-import study from './modules/study'
+
+import accounts from '@/store/modules/accounts.js'
+import createPersistedState from "vuex-persistedstate";
+// import info from './modules/info.js'
+// import note from './modules/note.js'
+import problem from './modules/problem.js'
+// import search from './modules/search.js'
+// import study from './modules/study.js'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
+  state: {},
+	getters: {},
+	mutations: {},
+	actions: {},
   modules: {
     accounts,
-    info,
-    note,
+    // info,
+    // note,
     problem,
-    search,
-    study
-  }
+    // search,
+    // study
+  },
+  plugins: [
+		createPersistedState({
+			storage: sessionStorage,
+		}),
+	],
 })
 
-export default store

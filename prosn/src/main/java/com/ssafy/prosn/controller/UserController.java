@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody UserJoinRequestDto req) {
+    public ResponseEntity<?> join(@RequestBody @Valid UserJoinRequestDto req) {
         userService.join(req);
 
         return ResponseEntity.ok("회원가입에 성공하였습니다.");

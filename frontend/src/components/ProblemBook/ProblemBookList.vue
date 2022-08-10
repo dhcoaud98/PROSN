@@ -4,7 +4,7 @@
   - 문제 개수대로 탭 띄우기
   - 탭 모양: 동그라미 숫자  
 -->
-   <v-container>
+  <v-container>
     <v-row>
       <v-col>
         <v-toolbar
@@ -38,8 +38,8 @@
             <v-card>
               <v-card-text>
                 <!-- hello world: ok -->
-                <!-- create-note-list-items도 정상적으로 작동함 -->
-                <create-note-list-items :problem="problems"></create-note-list-items>
+                <!-- problem-book-list-items도 정상적으로 작동함 -->
+                <problem-book-list-items></problem-book-list-items>
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -47,28 +47,21 @@
       </v-col>
     </v-row>
   </v-container>
-  
 
-  
 </template>
 
 <script>
-import CreateNoteListItems from '@/components/Note/CreteNoteListItems.vue'
+import ProblemBookListItems from '@/components/ProblemBook/ProblemBookListItems.vue'
 
 export default {
   components: {
-    CreateNoteListItems,
+    ProblemBookListItems,
   },
   data() {
     return {
       tab: null,
-      problems: {
-        myAnswer: 2,
-        realAnswer: 4,
-      }
     }
   },
- 
 }
 </script>
 

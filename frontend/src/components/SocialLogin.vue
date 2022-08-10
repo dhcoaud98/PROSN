@@ -7,7 +7,7 @@
         <v-col cols="12" class="d-flex justify-center"><v-btn color="#FFEB3B" class="col-11 my-2">카카오 계정으로 시작하기</v-btn></v-col>
         <v-col cols="12" class="d-flex justify-center"><v-btn color="#2DB400" class="col-11 my-2">네이버 계정으로 시작하기</v-btn></v-col>
         <v-col cols="12" class="d-flex justify-center ">
-          <a href="">이메일로 시작하기</a>
+          <a href="" class="black--text">이메일로 시작하기</a>
         </v-col>
       </v-row>
     </v-container>

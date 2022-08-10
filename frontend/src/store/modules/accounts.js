@@ -1,62 +1,69 @@
-import axios from 'axios'
-import drf from '@/api/drf'
+import axios from 'axios';
+import drf from '@/api/drf.js';
+import router from '@/router';
 
+const accountStore = {
+	// namespaced: true,
 
-export default {
-  namespaced: true,
-
-  // state는 직접 접근 금지!
-  state: {
-    accessToken: localStorage.getItem('token') || '' ,
-    authError: null,
-  },
-  getters: {
-    authError: state => state.authError,
-  },
-  mutations: {
-    SET_TOKEN: (state, accessToken) => state.accessToken = accessToken,
-    SET_AUTH_ERROR: (state, error) => state.authError = error,
-  },
-  actions: {
-    saveToken({ commit }, accessToken) {
-      /* 
+	// state는 직접 접근 금지!
+	state: {
+		accessToken: sessionStorage.getItem('token') || '',
+		userName: '',
+		authError: null,
+	},
+	getters: {
+		isLoggedIn: (state) => !!state.accessToken,
+		authError: (state) => state.authError,
+		userName: (state) => state.userName,
+		accessToken: (state) => state.accessToken,
+	},
+	mutations: {
+		SET_TOKEN: (state, accessToken) => {
+			console.log('mutations accessToekn = ', accessToken)
+			state.accessToken = accessToken;
+		},
+		SET_AUTH_ERROR: (state, error) => (state.authError = error),
+		SET_USER_NAME: (state, userName) => (state.userName = userName),
+	},
+	actions: {
+		saveToken({ commit }, accessToken) {
+			console.log('accessToken save : ', accessToken)
+			/* 
       state.token 추가 
       localStorage에 token 추가
       */
-      commit('SET_TOKEN', accessToken)
-      localStorage.setItem('token', accessToken)
-    },
-
-    // removeToken({ commit }) {
-    //   /* 
-    //   state.token 삭제
-    //   localStorage에 token 추가
-    //   */
-    //   commit('SET_TOKEN', '')
-    //   localStorage.setItem('token', '')
-    // },
-
-    login({ commit, dispatch }, credentials) {
-      /* 
-      POST: 사용자 입력정보를 login URL로 보내기
-        성공하면 현재 사용자 정보 받기
-        실패하면 에러 메시지 표시
+			commit('SET_TOKEN', accessToken)
+			// sessionStorage.setItem('token', accessToken)/
+			// commit('SET_CURRENT_USER', accessToken)
+		},
+		removeToken({ commit }) {
+			/* 
+      state.token 삭제
+      localStorage에 token 추가
       */
-      axios({
-        url: drf.user.login(),
-        method: 'post',
-        data: credentials
-      })
-      .then(res => {
-        console.log("axios complete")
-        dispatch('saveToken', res.accessToken)
-      })
-      .catch(err => {
-        commit('SET_AUTH_ERROR', err.response.data)
-      })
+			commit('SET_TOKEN', '')
+			localStorage.setItem('token', '')
+		},
+		removeName({ commit }) {
+			commit('SET_USER_NAME', null)
+			// sessionStorage.setItem('userName')
+		},
+		saveName({ commit }, userName) {
+			commit('SET_USER_NAME', userName)
+			console.log('current username =', userName) //ok
 
-    }
-  },
-  modules: {
-  }
-}
+			// localStorage.setItem('userName', userName)
+		},
+
+		// removeToken({ commit }) {
+		//   /*
+		//   state.token 삭제
+		//   localStorage에 token 추가
+		//   */
+		//   commit('SET_TOKEN', '')
+		//   localStorage.setItem('token', '')
+		// },
+	},
+	modules: {},
+};
+export default accountStore
