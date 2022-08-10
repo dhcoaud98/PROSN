@@ -26,7 +26,7 @@ import java.util.Optional;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/08/09
+ * updated by seongmin on 2022/08/10
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -148,7 +148,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public ProblemWorkbookResponseDto showAllProblem(Pageable pageable) {
         Page<ProblemDto> problemWorkbook = postRepository.getProblemWorkbook(false, pageable);
-        return ProblemWorkbookResponseDto.of(problemWorkbook.getContent(),problemWorkbook.getTotalPages(), problemWorkbook.getTotalElements());
+        return ProblemWorkbookResponseDto.of(problemWorkbook.getContent(), problemWorkbook.getTotalPages(), problemWorkbook.getTotalElements());
     }
 
     @Override
@@ -204,6 +204,12 @@ public class PostServiceImpl implements PostService {
         Page<ProblemDto> problemDtos = postRepository.searchPost(false, pageable, title, code, dtype);
 
         return ProblemWorkbookResponseDto.of(problemDtos.getContent(), problemDtos.getTotalPages(), problemDtos.getTotalElements());
+    }
+
+    @Override
+    @Transactional
+    public int updateViews(Long id) {
+        return postRepository.updateViews(id);
     }
 
     private List<Tag> getTags(Post post) {

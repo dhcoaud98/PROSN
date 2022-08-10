@@ -29,8 +29,12 @@ public abstract class Post extends BaseEntity {
     private Long id;
 
     private String title;
+
     @ColumnDefault("0")
     private Integer views;
+
+//    @Version
+//    private Long version;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

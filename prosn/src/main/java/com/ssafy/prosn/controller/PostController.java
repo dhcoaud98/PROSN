@@ -15,6 +15,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -70,8 +73,33 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPost(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<?> getPost(@PathVariable(value = "id") Long id, HttpServletRequest req, HttpServletResponse res) {
         log.info("조회 id = {}", id);
+        Cookie oldCookie = null;
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("postView")) {
+                    oldCookie = cookie;
+                }
+            }
+        }
+        if (oldCookie != null) {
+            log.info("oldCookie.getValue() = {}", oldCookie.getValue());
+            if (!oldCookie.getValue().contains("[" + id.toString() + "]")) {
+                postService.updateViews(id);
+                oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60 * 60 * 24);
+                res.addCookie(oldCookie);
+            }
+        } else {
+            postService.updateViews(id);
+            Cookie newCookie = new Cookie("postView", "[" + id + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24);
+            res.addCookie(newCookie);
+        }
         return ResponseEntity.ok(postService.showProblemDetail(id));
     }
 
