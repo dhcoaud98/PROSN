@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/07/29
+ * updated by seongmin on 2022/08/10
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -28,11 +28,10 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
-    private final UserService userService;
 
     @Override
     @Transactional
-    public Comment write(CommentRequestDto commentRequestDto, Long uid) {
+    public void write(CommentRequestDto commentRequestDto, Long uid) {
         Post post = postRepository.findById(commentRequestDto.getPid()).orElseThrow(() -> new BadRequestException("유효하지 않은 게시글입니다."));
         User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
 
@@ -41,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
                 .user(user)
                 .mainText(commentRequestDto.getMainText())
                 .build();
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
     }
 
     @Override
