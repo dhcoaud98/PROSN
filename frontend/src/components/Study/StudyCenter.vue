@@ -2,7 +2,7 @@
   <v-container class="ma-0 pa-0">
     <v-row class="d-flex mt-5 ms-5">
       <v-icon large color="#926DFF">groups</v-icon>
-      <h2 class="ms-3 dark--text">S T U D Y</h2>
+      <h2 class="ms-3 dark--text font-weight-regular">S T U D Y</h2>
     </v-row>    
     <v-row>
         <!-- 1. 프로필 상단 -->

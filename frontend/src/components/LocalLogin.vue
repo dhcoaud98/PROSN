@@ -12,7 +12,7 @@
           <v-col cols="12" md="9" class="ma-0 px-1">
             <!-- 네임룰 추후 설정 필요 -->
             <!-- ID 입력란 -->
-            <v-text-field v-model="credentials.userId" label="ID" required></v-text-field>
+            <v-text-field v-model="credentials.userId" :rules="idRules" :counter="12" name="userId" label="아이디" required></v-text-field>
             <!-- PASSWORD 입력란 -->
             <v-text-field
             v-model="credentials.password"
@@ -20,7 +20,7 @@
             :rules="[rules.required, rules.min]"
             :type="show ? 'text' : 'password'"
             name="input-10-2"
-            label="PASSWORD"
+            label="비밀번호"
             hint="At least 8 characters"
             value=""
             class="input-group--focused"
@@ -30,7 +30,7 @@
 
           <!-- 로그인 버튼 -->
           <v-col cols="12" md="3" class="ma-0 px-1">
-            <v-btn type="submit" color="#A384FF" class="rounded-xl white--text my-0 py-5" height="100%" width="100%"><bold>로그인</bold></v-btn>
+            <v-btn :disabled="!valid" type="submit" color="#CCA5FE" class="rounded-xl white--text my-0 py-3 mt-3" height="80%" width="100%"><h3>로그인</h3></v-btn>
           </v-col>
         </v-row>
       </v-form>
@@ -38,7 +38,7 @@
       <!-- 회원가입/아이디찾기/비밀번호찾기 --> 
       <v-row class="mt-5">
         <v-col cols="12" class=" d-flex justify-center pa-0">
-          <p>아직 계정이 없으신가요?<router-link to="/signup" class="hover-login ml-3 font-weight-bold black--text">회원가입</router-link></p>
+          <p>아직 계정이 없으신가요?<router-link to="/signup" class="purple--text text--lighten-2 text-decoration-none hover-login ml-3 font-weight-bold black--text">회원가입</router-link></p>
         </v-col>
       </v-row>
       <v-row>
@@ -102,6 +102,11 @@ import {mapState, mapActions } from 'vuex'
         required: value => !!value || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
       },
+      id: '',
+      idRules: [
+          v => !!v || '아이디는 필수 입력값입니다.',
+          v => (v && v.length <= 12) || '아이디는 12자 이하로 입력하세요',
+      ],
     }),
 
     // 2022.07.25. 로그인 버튼 (남성은)

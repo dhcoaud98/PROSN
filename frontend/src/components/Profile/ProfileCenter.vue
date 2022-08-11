@@ -2,7 +2,7 @@
   <v-container class="ma-0 pa-0">
     <v-row class="d-flex mt-5 ms-5">
       <v-icon large color="#926DFF">person</v-icon>
-      <h2 class="ms-3 dark--text">P R O F I L E</h2>
+      <h2 class="ms-3 dark--text font-weight-regular">P R O F I L E</h2>
     </v-row>
 
     <!-- 1. 프로필 상단 -->

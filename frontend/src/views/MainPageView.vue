@@ -5,7 +5,13 @@
       <!-- col 1: 메인 피드 부분 -->
       <v-col cols="12" md="7" lg="8" class="mt-2 white pt-0 px-0 rounded-lg">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
-        <v-toolbar dark class="mt-0">
+        <v-row class="d-flex mt-8 ms-8">
+          <img src="@/assets/prosn_logo_sm.png" alt="..." class="small-logo">
+          <h2 class="ms-3 dark--text font-weight-regular">F E E D</h2>
+        </v-row>    
+
+
+        <v-toolbar dark class="mt-10 mx-4">
           <v-tabs background-color="#CCA5FE" grow>
             <v-tab class="pa-0" @click="changeToProblemFeed" id="problemTab">
               <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">Probelm / Book</p>
@@ -180,5 +186,9 @@ export default {
 
   ::-webkit-scrollbar-track {
       background: rgba(172, 35, 252, 0.2);  /*스크롤바 뒷 배경 색상*/
+  }
+  .small-logo {
+    height: 40px;
+    width: 40px;
   }
 </style>

@@ -4,15 +4,17 @@
     <v-container class="px-0">
       <v-row>
         <v-col cols="12" class="d-flex justify-center">
-          <v-btn rounded color="#FFEB3B" class="col-12 my-2" height="45px">
-            <img src="./assets/kakaotalk_logo.png" alt="...">
+          <v-btn rounded color="#FFEB3B" class="col-12 my-2 d-flex justify-space-between" height="45px">
+            <img src="@/assets/kakaotalk_logo.png" alt="..." class="social-logo">
             <p class="pa-0 ma-0 font-weight-bold social-kakao">카카오로 시작</p>
+            <div class="pa-2"></div>
           </v-btn>
         </v-col>
         <v-col cols="12" class="d-flex justify-center">
-          <v-btn rounded color="#EEEEEE" class="col-12 my-2" height="45px">
-            <img src="./assets/google_logo.png" alt="...">
+          <v-btn rounded color="#EEEEEE" class="col-12 my-2 d-flex justify-space-between" height="45px">
+            <img src="@/assets/google_logo.png" alt="..." class="social-logo">
             <p class="pa-0 ma-0 font-weight-bold social-google">구글로 시작</p>
+            <div class="pa-2"></div>
           </v-btn>
         </v-col>
       </v-row>
@@ -34,5 +36,9 @@ export default {
 .social-google {
   color: #585757;
   font-size: 1.2rem;
+}
+.social-logo {
+  height: 25px;
+  width: 25px;
 }
 </style>
