@@ -8,6 +8,7 @@ import com.ssafy.prosn.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +35,11 @@ public class SolvingController {
     /**
      * 유저 아이디에 맞는 문제풀이 현황을 불러오는 메서드
      */
-    @GetMapping("/getSolving")
+    @GetMapping
     @ApiOperation(value = "풀이한 문제 불러오기", notes = "풀이된 문제를 불러온다.")
-    public ResponseEntity<?> getAllSolving() {
-        UserResponseDto userInfo = userService.getMyInfoBySecret();
-        Long userId = userInfo.getId();
-        List<SolvingResponseDto> result = solvingService.showAllSolving(userId);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> getAllSolving(Pageable pageable) {
+        SolvingResponseDto result = solvingService.showAllSolving(userService.getMyInfoBySecret().getId(), pageable);
+        return ResponseEntity.status(OK).body(result);
     }
 
     @PostMapping
