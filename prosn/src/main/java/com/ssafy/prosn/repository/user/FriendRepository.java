@@ -6,8 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * created by seongmin on 2022/08/08
+ * updated by seongmin on 2022/08/11
  */
 public interface FriendRepository extends JpaRepository<Friend, Long> {
     Page<Friend> findByFollower(User user, Pageable pageable); // 팔로잉 조회
@@ -15,4 +18,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     long countByFollower(User user);
     long countByFollowing(User user);
+    Optional<Friend> findByFollowerAndFollowing(User follower, User following);
+
 }

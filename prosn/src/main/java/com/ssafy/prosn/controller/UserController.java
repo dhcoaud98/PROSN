@@ -79,7 +79,7 @@ public class UserController {
     @PostMapping("/id/check")
     public ResponseEntity<?> idDuplicateCheck(@RequestBody Map<String, String> req) {
         userService.duplicateUserId(req.get("uid"));
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(OK).build();
     }
 
     @GetMapping("/following/{id}")
