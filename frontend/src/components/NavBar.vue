@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'NavBar',
@@ -99,6 +99,8 @@ export default {
         },
       ]
     }
+  },
+  computed: {
   },
   watch: {
     // url이 바뀔 때마다 감시해서 nav바 상태 바꿔주기

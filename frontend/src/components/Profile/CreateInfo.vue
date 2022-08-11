@@ -79,6 +79,9 @@ export default {
         mainText: '',
       }
     }),
+  computed: {
+    ...mapGetters(['accessToken'])
+  },
   methods: {
     cancel () {
       this.$router.push({ path: 'profile' })
@@ -103,9 +106,6 @@ export default {
 
       })
     },
-  },
-  computed: {
-    ...mapGetters(['accessToken']),
   },
 }
 </script>

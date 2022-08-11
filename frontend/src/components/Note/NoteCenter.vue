@@ -1,12 +1,20 @@
 <template>
-  <v-container class="mt-5 mx-2 mb-0">
+  <v-container class="ma-0 pa-0">
+    <v-row class="d-flex mt-5 ms-5">
+      <v-icon large color="#926DFF">sticky_note_2</v-icon>
+      <h2 class="ms-3 dark--text">N O T E</h2>
+    </v-row>  
+
     <!-- row 1. 제목 -->
     <v-row>
       <p class="font-parent-lar">
         <!-- 나중에 유저 이름 받아올 수 있으면 아래 부분 바꿔주기 -->
-        <span class="font-weight-bold">임지민</span>
+        <span class="font-weight-bold">{{userName}}</span>
         님의 오답노트
       </p>
+      <!-- <p>{{userId}}</p> -->
+      <!-- <p>{{accessToken}}</p> -->
+      <!-- <p>{{ accessToken }}</p> -->
     </v-row>
 
     <!-- 
@@ -46,6 +54,9 @@
 
 <script>
 import NoteList from '@/components/Note/NoteList.vue'
+import axios from 'axios'
+import drf from '@/api/drf.js'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -67,8 +78,8 @@ export default {
         {toDB:"SC", toUser: "보안"},
         {toDB:"ETC", toUser: "기타"},
       ],
-      beforeProbs : {},
-      afterProbs: {},
+      beforeProbs : [],
+      afterProbs: [],
     }
   },
   methods: {
@@ -76,20 +87,32 @@ export default {
       this.selected = categoryName
     }
   },
+  computed: {
+    ...mapGetters(['accessToken', 'userId', 'userName'])
+  },
   created() {
+    const params = {
+        // pageable: 0,
+        isWrite: 'true',
+        // sort: onUpdated, 'desc'
+      } 
     axios({
-      url: drf.note.wronganswer(),
+      url: drf.api + 'wrongAnswer/' + 'all',
       method: 'get',
       headers: {
-      Authorization: this.accessToken,
+        Authorization: this.accessToken,
       },
+      params: params,
     })
     .then(res => {
       // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-      this.beforeProbs = res.data
-      this.afterProbs = res.data
+      this.afterProbs = res.data.content
+      // this.afterProbs.push(res.data.content)
+      // console.log('in'); //ok
     })
     .catch(err => {
+      // console.log(this.accessToken)
+      // console.log(this.userId)
       console.log(err);
     })
   },

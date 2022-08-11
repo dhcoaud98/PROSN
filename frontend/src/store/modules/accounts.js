@@ -1,6 +1,6 @@
-import axios from 'axios';
-import drf from '@/api/drf.js';
-import router from '@/router';
+// import axios from 'axios';
+// import drf from '@/api/drf.js';
+// import router from '@/router';
 
 const accountStore = {
 	// namespaced: true,

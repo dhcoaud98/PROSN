@@ -9,10 +9,11 @@ import ProfilePageView from '@/views/ProfilePageView.vue'
 import CreateStudy from '@/components/Study/CreateStudy.vue'
 import CreateProblem from '@/components/Profile/CreateProblem.vue'
 import CreateInfo from '@/components/Profile/CreateInfo.vue'
-// import CreateNote from '@/components/Note/CreateNote.vue'
+import CreateNote from '@/components/Note/CreateNote.vue'
 import Information from '@/components/Information/Information.vue'
 import Problem from '@/components/Problem/Problem.vue'
 import ProblemBook from '@/components/ProblemBook/ProblemBook.vue'
+import NoteDetail from '@/components/Note/NoteDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -42,6 +43,16 @@ const routes = [
     name: 'note',
     component: NoteView
   },
+  {
+    path: '/note/post/:noteId',
+    name: 'noteDetail',
+    component: NoteDetail
+  },
+  {
+    path: '/note/pre/:noteId',
+    name: 'createNote',
+    component: CreateNote
+  },
   // 회원가입, 로그인 구현 후 username 받을 수 있으면 path 뒤에 /:username 붙이기(1/3 0729임지민)
   {
     path: '/profile',
@@ -63,11 +74,6 @@ const routes = [
     name: 'createinfo',
     component: CreateInfo
   },
-  // {
-  //   path: '/createnote',
-  //   name: 'createnote',
-  //   component: CreateNote
-  // },
   {
     path: '/problem',
     name: 'problem',

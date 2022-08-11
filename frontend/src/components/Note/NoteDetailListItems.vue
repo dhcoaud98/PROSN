@@ -8,6 +8,7 @@
     <v-col sm="6" cols="12" class="pr-5">
       <!-- 문제 보러가기 버튼: 문제 번호 받아와서 연결 -->
       <v-row class="mt-3 mb-5">
+        <p>{{noteDetail}}</p>
         <router-link to="/problem" class="text-decoration-none ">
           <v-chip small outlined color="#a384ff">문제 다시 풀기</v-chip>
         </router-link>
@@ -15,17 +16,13 @@
 
       <!-- 문제 제목 -->
       <v-row class="justify-space-between">
-        <h2>158. 정보 표현의 기본 장치</h2>
+        <h2>{{noteDetail}}</h2>
       </v-row>
 
       <!-- 문제 지문 -->
       <v-row>
-        <p class="font-parent-mid-l">다음 설명에 맞는 장치로 적절한 것은 무엇인가요?</p>
-      </v-row>
-      <v-row>
-        <p class="font-parent-mid">
-            컴퓨터에는 (       )라고 불리는 굉장히 많은 스위치가 있고,<br>
-            on/off 상태를 통해 0과 1을 표현합니다.
+        <p class="font-parent-mid-l">
+          {{noteDetail}}
         </p>
       </v-row>
 
@@ -101,7 +98,7 @@
             no-resize counter required dense 
             rows="3" 
             class="font-parent-mid"
-            v-model="credentials.studyContent"> {{ credentials.studyContent }} /v-textarea>
+            v-model="credentials.studyContent"> {{ credentials.studyContent }} </v-textarea>
           </v-col>
         </v-row>
         <!-- 메모 -->
@@ -139,7 +136,7 @@ export default {
     }
   },
   props: {
-    problem: Object,
+    noteDetail: Object,
   },
   methods :{
     selectMyAnswer() {
@@ -198,29 +195,29 @@ export default {
     }
   },
   created : {
-    getNote() {
-      axios({
-          url: drf.note.wronganswer(),
-          method: 'get',
-          data: this.credentials
-      })
-      .then(res => {
-          console.log("res = ",res);
-          const token = res.data.key
-          token 
-          // data에 저장해서 띄우기
-          this.credentials.reason = res.data.reason
-          this.credentials.studyContent = res.data.studyContent
-          this.credentials.memo = res.data.memo
-          // dispatch('saveToken', token)
-          // dispatch('fetchCurrentUser')
+    // getNote() {
+    //   axios({
+    //       url: drf.note.wronganswer(),
+    //       method: 'get',
+    //       data: this.credentials
+    //   })
+    //   .then(res => {
+    //       console.log("res = ",res);
+    //       const token = res.data.key
+    //       token 
+    //       // data에 저장해서 띄우기
+    //       this.credentials.reason = res.data.reason
+    //       this.credentials.studyContent = res.data.studyContent
+    //       this.credentials.memo = res.data.memo
+    //       // dispatch('saveToken', token)
+    //       // dispatch('fetchCurrentUser')
       
-      })
-      .catch(err =>{
-          console.log("에러")
-          console.log(err)
-        })
-    }
+    //   })
+    //   .catch(err =>{
+    //       console.log("에러")
+    //       console.log(err)
+    //     })
+    // }
   }
 }
 </script>

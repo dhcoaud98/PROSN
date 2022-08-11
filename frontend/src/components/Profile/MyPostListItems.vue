@@ -6,7 +6,7 @@
 
         <!-- dType에 따라 바뀌는 뱃지 -->
         <v-row class="mt-3 ms-5">
-          <div class="d-flex align-center font-weight-regular grey--text" style="font-size: 1em">
+          <div class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
             <v-icon color="#F355F6" class="me-2">mdi-circle</v-icon>
             <p class="mb-0">I N F O</p>
           </div>
@@ -15,9 +15,9 @@
         </v-row>
 
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
-        <v-row class="d-flex justify-space-between mb-3">
+        <v-row class="d-flex justify-space-between my-1">
           <!-- 제목 -->
-          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
+          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.1em; color: #585757;">
             HTTP Header
           </div>
           <!-- 좋아요 싫어요 정보 -->
