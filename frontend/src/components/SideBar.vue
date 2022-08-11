@@ -39,7 +39,7 @@
           <!-- 전체제목 -->
           <v-row class="mt-2">
             <v-col class="pa-0">
-              <p class="d-flex justify-center mb-0 color-magenta font-weight-bold">🎨 이주의 인기 문제</p>
+              <p class="d-flex justify-center mb-0 color-magenta font-weight-bold">🎨 인기 문제</p>
             </v-col>
           </v-row>
 
@@ -82,7 +82,7 @@
           <!-- 전체제목 -->
           <v-row class="mt-2">
             <v-col class="pa-0">
-              <p class="d-flex justify-center mb-0 color-purple font-weight-bold">🎈 이주의 유저 랭킹</p>
+              <p class="d-flex justify-center mb-0 color-purple font-weight-bold">🎈 유저 랭킹</p>
             </v-col>
           </v-row>
 
