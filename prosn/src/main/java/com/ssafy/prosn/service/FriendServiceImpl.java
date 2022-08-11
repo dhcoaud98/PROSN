@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by seongmin on 2022/08/08
@@ -36,10 +37,15 @@ public class FriendServiceImpl implements FriendService {
         if (user.equals(friend)) {
             throw new BadRequestException("자기 자신은 팔로잉 할 수 없습니다.");
         }
-        friendRepository.save(Friend.builder()
-                .follower(user)
-                .following(friend)
-                .build());
+        Optional<Friend> check = friendRepository.findByFollowerAndFollowing(user, friend);
+        if (check.isPresent()) {
+            friendRepository.delete(check.get());
+        } else {
+            friendRepository.save(Friend.builder()
+                    .follower(user)
+                    .following(friend)
+                    .build());
+        }
     }
 
     @Override
