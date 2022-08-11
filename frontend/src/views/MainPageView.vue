@@ -37,7 +37,7 @@
 
     <!-- row 2: 메인 피드와 sidebar 모두를 감싸는 줄 (검색 결과가 있을 경우 검색 페이지) -->
     <v-row v-if="isSearched">
-      <search-result-view></search-result-view>
+      <search-result-view ></search-result-view>
     </v-row> 
   
   </v-container>

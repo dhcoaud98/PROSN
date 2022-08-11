@@ -7,7 +7,7 @@
         <v-row>
           <search-bar>
           </search-bar>
-          <h1 class="result ml-5" style="color:#A384FF">
+          <h1 class="result ml-5" style="color:#A384FF" >
             {{ inputChange }}
           </h1> 
           <v-col>
@@ -70,22 +70,38 @@ export default {
       feedFlag: 0,
       problemFeedClass: 'd-flex',
       infoFeedClass: 'd-none',
+      searchInput: null,
     }
-  },
+  }, 
+  created() {
+    this.searchInput = this.inputChange
+    console.log("서치 =",this.searchInput)
+    // 0812 채명 : 검색 문제 엑시오스
+    // axios({
+    //   url: drf.api + 'post' + `/${this.probId}`,
+    //   methods: 'get',
+    //   headers: {
+    //     Authorization : this.accessToken,
+    //   },      
+    // })
+    // .then(res => {
+    //   console.log(this.res)
+    //   this.probdetail = res
+    // })
+    // .catch(err => {
+    //   console.log("에러")
+    //   console.log(err)
+    // })
+    // 0812 채명 : 검색 문제 엑시오스
+  },  
   computed: {
-    // activeFab () {
-    //   switch (this.tabs) {
-    //     case 'one': return { page: '1' }
-    //     case 'two': return { page: '2' }
-    //     default: return {}
-    //   }
-    // },
     isSearched() {
       return this.$store.getters['problem/isSearched']
     },
     inputChange() {
       return this.$store.getters['problem/inputChange']
-    }
+    },
+    
   },
   methods: {
     // onInputChange: function(inputData) {
