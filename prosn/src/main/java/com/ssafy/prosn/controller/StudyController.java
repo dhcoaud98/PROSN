@@ -11,10 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
+
+import static org.springframework.http.HttpStatus.*;
 
 
 /**
@@ -37,21 +41,21 @@ public class StudyController {
     @PostMapping
     public ResponseEntity<?> createStudy(@RequestBody @Valid StudyGroupRequestDto dto) {
         UserResponseDto user = userService.getMyInfoBySecret();
-        return ResponseEntity.ok(studyService.create(dto, user.getId()));
+        return ResponseEntity.status(OK).body(studyService.create(dto, user.getId()));
     }
 
     //목록 조회
     @GetMapping
     public ResponseEntity<?> studyGroupList(@PageableDefault(size = 5) Pageable pageable) {
         Page<StudyGroupListResponseDto> page = studyGroupRepository.showStudyGroupList(pageable);
-        return ResponseEntity.ok(page);
+        return ResponseEntity.status(OK).body(page);
     }
 
     //상세내용
     @GetMapping("/{studyid}")
     public ResponseEntity<?> showStudy(@PathVariable(value = "studyid") Long studyid) {
         UserResponseDto user = userService.getMyInfoBySecret();
-        return ResponseEntity.ok(studyService.showStudyGroup(user.getId(), studyid));
+        return ResponseEntity.status(OK).body(studyService.showStudyGroup(user.getId(), studyid));
     }
 
     //수정
@@ -61,7 +65,7 @@ public class StudyController {
         if (!studyGroup.getUser().getId().equals(userService.getMyInfoBySecret().getId())) {
             throw new IllegalStateException("스터디를 수정할 권한이 없습니다.");
         }
-        return ResponseEntity.ok(studyService.update(studyGroup.getId(), dto));
+        return ResponseEntity.status(OK).body(studyService.update(studyGroup.getId(), dto));
     }
 
     //삭제
@@ -72,7 +76,7 @@ public class StudyController {
             throw new IllegalStateException("스터디를 삭제할 권한이 없습니다.");
         }
         studyService.deleteStudy(studyGroup);
-        return ResponseEntity.ok("해당 스터디 삭제 완료");
+        return ResponseEntity.status(OK).build();
     }
 
     //내스터디
@@ -80,23 +84,23 @@ public class StudyController {
     @GetMapping("/me")
     public ResponseEntity<?> myStudyGroupList(@PageableDefault(size = 5) Pageable pageable) {
         UserResponseDto user = userService.getMyInfoBySecret();
-        return ResponseEntity.ok(userStudyRepository.findByUserId(user.getId(), pageable));
+        return ResponseEntity.status(OK).body(userStudyRepository.findByUserId(user.getId(), pageable));
     }
 
     //가입
     @PostMapping("/me")
-    public ResponseEntity<?> joinStudy(@RequestBody Long studyid) {
+    public ResponseEntity<?> joinStudy(@RequestBody Map<String, String> req) {
         UserResponseDto user = userService.getMyInfoBySecret();
-        StudyGroup studyGroup = studyGroupRepository.findById(studyid).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
-        return ResponseEntity.ok(studyService.joinStudy(user.getId(), studyGroup));
+        StudyGroup studyGroup = studyGroupRepository.findById(Long.parseLong(req.get("id"))).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
+        return ResponseEntity.status(CREATED).build();
     }
 
     //탈퇴
     @DeleteMapping("me")
-    public ResponseEntity<?> removeStudy(@RequestBody Long studyid) {
+    public ResponseEntity<?> removeStudy(@RequestBody Map<String, String> req) {
         UserResponseDto user = userService.getMyInfoBySecret();
-        StudyGroup studyGroup = studyGroupRepository.findById(studyid).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
+        StudyGroup studyGroup = studyGroupRepository.findById(Long.parseLong(req.get("id"))).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
         studyService.removeStudy(user.getId(), studyGroup);
-        return ResponseEntity.ok("해당 스터디 탈퇴 완료");
+        return ResponseEntity.status(OK).build();
     }
 }

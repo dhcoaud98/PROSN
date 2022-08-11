@@ -21,8 +21,8 @@ public class StudyGroupResponseDto extends StudyResponseDto{
     private LocalDate expiredDate;
 
     @Builder
-    public StudyGroupResponseDto(String title, int currentPerson, int maxPerson, String place, String mainText, LocalDate expiredDate, List<Tag> tags) {
-        super(title, currentPerson, maxPerson, place, mainText, tags);
+    public StudyGroupResponseDto(Long id, String title, int currentPerson, int maxPerson, String place, String mainText, LocalDate expiredDate, List<Tag> tags, boolean secret, Long mId, String mName) {
+        super(id, title, currentPerson, maxPerson, place, mainText, tags, secret, mId, mName);
         this.expiredDate = expiredDate;
     }
 }
