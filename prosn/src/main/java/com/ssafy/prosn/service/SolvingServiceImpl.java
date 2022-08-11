@@ -17,6 +17,8 @@ import com.ssafy.prosn.repository.profiile.status.SolvingRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 /**
  * created by yura on 2022/08/01
- * updated by seongmin on 2022/08/10
+ * updated by seongmin on 2022/08/11
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -34,31 +36,16 @@ import java.util.Optional;
 @Service
 public class SolvingServiceImpl implements SolvingService {
     private final SolvingRepository solvingRepository;
-    private final PostTagRepository postTagRepository;
     private final UserRepository userRepository;
     private final ProblemRepository problemRepository;
     private final WrongAnswerService wrongAnswerService;
     private final int POINT = 10;
 
     @Override
-    public List<SolvingResponseDto> showAllSolving(Long userId) {
-        List<Solving> solvings = solvingRepository.findSolvingByUserId(userId);
-        List<SolvingResponseDto> result = new ArrayList<>();
-
-        for (Solving solving : solvings) {
-            List<PostTag> postTagByPost = postTagRepository.findPostTagByPost(solving.getProblem());
-            List<Tag> tags = new ArrayList<>();
-            for (PostTag postTag : postTagByPost) {
-                tags.add(postTag.getTag());
-            }
-
-            result.add(SolvingResponseDto.builder()
-                    .postId(solving.getId())
-                    .tagCode(tags)
-                    .title(solving.getProblem().getTitle())
-                    .isRight(solving.isRight())
-                    .build());
-        }
+    public SolvingResponseDto showAllSolving(Long userId, Pageable pageable) {
+        Page<Solving> solvings = solvingRepository.findSolvingByUserId(userId, pageable);
+        SolvingResponseDto result = new SolvingResponseDto();
+        result.addSolving(solvings.getContent(), solvings.getTotalPages(), solvings.getTotalElements());
         return result;
     }
 

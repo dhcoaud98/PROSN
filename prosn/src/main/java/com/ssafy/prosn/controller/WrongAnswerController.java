@@ -47,7 +47,7 @@ public class WrongAnswerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         wrongAnswerService.delete(id, userService.getMyInfoBySecret().getId());
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(OK).build();
     }
 
     // 오답노트 전체 조회
