@@ -110,4 +110,17 @@ public class UserController {
         log.info("결과 = {}",userPost.getContent().get(0));
         return ResponseEntity.status(OK).body(userPost);
     }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<?> logout() {
+        userService.logout(userService.getMyInfoBySecret().getId());
+        return ResponseEntity.status(OK).build();
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<?> reissue(@RequestHeader(value = "Access-Token")String accessToken,
+                                     @RequestHeader(value="Refresh-Token") String refreshToken) {
+        TokenDto reissue = userService.reissue(new TokenRequestDto(accessToken, refreshToken));
+        return ResponseEntity.status(OK).body(reissue);
+    }
 }
