@@ -9,6 +9,7 @@ import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.RateDto;
 import com.ssafy.prosn.dto.SolvingRequestDto;
 import com.ssafy.prosn.dto.SolvingResponseDto;
+import com.ssafy.prosn.dto.WrongAnswerRequestDto;
 import com.ssafy.prosn.exception.BadRequestException;
 import com.ssafy.prosn.repository.post.ProblemRepository;
 import com.ssafy.prosn.repository.post.tag.PostTagRepository;
@@ -36,6 +37,7 @@ public class SolvingServiceImpl implements SolvingService {
     private final PostTagRepository postTagRepository;
     private final UserRepository userRepository;
     private final ProblemRepository problemRepository;
+    private final WrongAnswerService wrongAnswerService;
     private final int POINT = 10;
 
     @Override
@@ -83,6 +85,10 @@ public class SolvingServiceImpl implements SolvingService {
                 user.earnPoints(POINT);
             }
         }
+        // 틀린 문제는 바로 오답노트로 넘어감
+        if (!dto.isRight()) {
+            wrongAnswerService.save(new WrongAnswerRequestDto(dto.getPid(), dto.getWrongAnswer()), uid);
+        }
     }
 
     @Override
@@ -91,6 +97,6 @@ public class SolvingServiceImpl implements SolvingService {
         List<Solving> solvingInfos = solvingRepository.findByProblem(problem);
         double submitCnt = solvingInfos.size();
         double correctCnt = (double) solvingInfos.stream().filter(Solving::isFirstIsRight).count();
-        return new RateDto(Math.round((correctCnt / submitCnt) * 100) / 100.0 * 100, (int)submitCnt);
+        return new RateDto(Math.round((correctCnt / submitCnt) * 100) / 100.0 * 100, (int) submitCnt);
     }
 }

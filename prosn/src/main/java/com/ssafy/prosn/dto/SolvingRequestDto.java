@@ -2,11 +2,12 @@ package com.ssafy.prosn.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
  * created by yura on 2022/08/01
- * updated by seongmin on 2022/08/06
+ * updated by seongmin on 2022/08/11
  */
 @Getter
 @ToString
@@ -17,4 +18,6 @@ public class SolvingRequestDto {
     private Long pid;
     @NotNull(message = "풀이 결과는 필수 입력값입니다.")
     private boolean right; // IsRight 로 하면 매핑 안됨.
+    @NotBlank(message = "골라서 틀린 값은 필수 입력 값입니다.")
+    private String wrongAnswer;
 }
