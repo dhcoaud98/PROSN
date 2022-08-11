@@ -12,6 +12,7 @@ import java.io.IOException;
 
 /**
  * created by seongmin on 2022/07/27
+ * updated by seongmin on 2022/08/11
  */
 @Slf4j
 @Component
@@ -19,8 +20,9 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
-        log.error("로그 Unauthorized error: {}", authException.getMessage());
+                         AuthenticationException authException) throws IOException {
+        // 유효한 자격증명을 제공하지 않고 접근하려 할때 401
+        log.error("Unauthorized error: {}", authException.getMessage());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
 
     }
