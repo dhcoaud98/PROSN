@@ -5,80 +5,88 @@
     <v-container class="modal modal-overlay" @click.self="$emit('close')">
       <v-container class="modal-window pa-0">
         <v-container class="rounded-lg modal-content pa-0">
-          <v-row class="d-flex justify-center">
+          <v-row class="d-flex justify-center px-3 problem-modal-white">
             <!-- 문제부분 (항상 떠있음) -->
-            <v-col width="600" class="pa-0 problem-modal-white">
+            <v-col width="600" class="pa-0">
               <!-- <slot name="btns">
               </slot>               -->
-              <v-card-text class="d-flex justify-space-between">
-                <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
-                <v-btn @click="$emit('close')" text class="font-weight-bold">뒤로가기</v-btn>
+              <v-card-text class="d-flex justify-space-between align-center px-0">
+                <v-btn @click="event()" text class="font-weight-bold pr-0 pl-3" small>자세히</v-btn>
+                <v-btn @click="$emit('close')" text class="font-weight-bold pa-0">X</v-btn>
               </v-card-text>    
 
               <!-- 문제 제목 -->
               <!-- {{ problem.pk }}. {{ problem.MAIN_TEXT}} -->
-              <v-card-title class="font-weight-bold black--text">
-                <h2>{{mainProb.title}}</h2> 
+              <v-card-title class="font-weight-bold">
+                <p class="font-parent-lar mb-0">{{probdetail.title}}</p> 
+                <div class="pl-3 d-inline-block mb-4" v-for="(tag, idx) in probdetail.tags" :key="idx">
+                  <span class="category-tag text-center pa-1">#{{ tag }}</span>
+                </div>
               </v-card-title>
 
               <!-- 문제 본문 -->
               <v-card-text>
                 <!-- 카테고리 라벨 -->
                 <!-- for문으로 돌리면 될듯 -->
-                <div class="pl-3" v-for="(tag, idx) in mainProb.tags" :key="idx">
-                  <span class="category-tag text-center pa-1">{{ tag }}</span>
-                </div>
               </v-card-text>
 
               <!-- 문제 -->
               <v-card-text class="font-weight-bold">
-                <h2 class="black--text">
+                <!-- <h2 class="black--text">
                 다음 설명에 맞는 장치로 적절한 것은 무엇인가요?
                 </h2>
-                <!-- 문제지문 -->
+                문제지문
                 <h3 class="black--text my-4">
                   컴퓨터에는 (       )라고 불리는 굉장히 많은 스위치가 있고,<br>
                   on/off 상태를 통해 0과 1을 표현합니다.
-                </h3>
+                </h3> -->
+                <!--  문제가 길어지면 모달이 화면 전체만큼 커져서 크기를 450px로 고정함 0811 임지민 -->
+                <div>
+                  <!-- <p>{{probdetail}}</p> -->
+                  <p>{{probdetail.mainText}}</p>
+                </div>
 
                 <div>
                   <v-container>
                     <!-- 문제보기: 이것도 랜덤으로 for문 돌리기/ 체크박스로 라디오 묶는거....ㅠ-->
-                    <v-form>
+                    <v-form @submit.prevent="submitProblem">
                       <v-row>
-                        <v-radio-group column class="ms-5">
-                        <v-radio label="보기1" color="info" value="보기1"></v-radio>
-                        <v-radio label="보기2" color="info" value="보기2"></v-radio>
-                        <v-radio label="보기3" color="info" value="보기3"></v-radio>
-                        <v-radio label="보기4" color="info" value="보기4"></v-radio>
-                      </v-radio-group>
-                    </v-row>
+                        <v-col>
+                          <div v-for="example in examples" :key="example.id" class="my-3">
+                            <input type="radio" :value="`보기${example.id}`" :id="example.id" name="bogey">
+                            <label :for="`check${example.id}`" 
+                            class="ml-2 font-parent-mid-l">
+                            {{example.example}} </label>
+                          </div>
+                        </v-col>
+                      </v-row>
                     <!-- 저작권 / 버튼 -->
-                    <v-row class="d-flex justify-space-between">
+                    <v-row>
                       <!-- 출제자 정보 -->
-                      <v-col class="col-12 col-lg-8">
-                        <div>출제자 | </div>            
-                        <div>출제일 | </div>
+                      <v-col cols="12" class="pa-0">
+                        <p class="font-parent-mid-l">
+                        <span class="grey--text mr-2 mb-1">created by.</span>
+                          {{probdetail.writer.name}} 
+                        </p>
                       </v-col>
-  
-                      <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-                      <v-col class="d-flex justify-end col-12 col-lg-4">
+                      <v-col cols="12" class="pa-0 justify-end d-flex align-center">
                         <!-- 좋아요 버튼 -->
-                        <v-btn class="ms-2" icon color="blue lighten-2" @click="changeLikeStatus" id="upIcon">
+                        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
                           <v-icon>{{upText}}</v-icon>
                         </v-btn>
                         <!-- 싫어요 버튼 -->
-                        <v-btn class="ms-2" icon color="red lighten-2" @click="changeHateStatus" id="downIcon">
+                        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
                           <v-icon>{{downText}}</v-icon>
                         </v-btn>
                         <!-- 스크랩 버튼 -->
-                        <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
+                        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
                           <v-icon>{{scrapText}}</v-icon>
                         </v-btn>                    
                         <!-- 제출 버튼 -->
-                        <v-btn rounded class="ms-2" color="#F3F3F4">제출</v-btn>
+                        <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
                       </v-col>
                     </v-row>
+                      <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
                   </v-form>
                 </v-container>
 
@@ -109,6 +117,7 @@
 import drf from '@/api/drf'
 import axios from 'axios'
 import ProblemReply from './ProblemReply.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ProblemModal',
@@ -121,16 +130,26 @@ export default {
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
       probId: 0,
-      probdetail: [],
+      probdetail: {},
+      examples: [],
+      credentials: {
+        pid: '',
+        right: '',
+        wrongAnswer: '',
+      }
     }
   },
   props: {
     mainProb: Object,
   },
+  computed: {
+    ...mapGetters(['accessToken'])
+  },
   // 0811 : 엑시오스 통신 코드
   created() {
     console.log("problem = ", this.mainProb.id)
     this.probId = this.mainProb.id
+    this.credentials.pid = this.mainProb.id
 
     axios({
       url: drf.api + 'post' + `/${this.probId}`,
@@ -140,14 +159,25 @@ export default {
       },      
     })
     .then(res => {
-      console.log(this.res)
-      this.probdetail = res
+      console.log(res.data)
+      this.probdetail = res.data
+      const nums  = [1,2,3,4]
+      const shuffled = nums.sort(() => Math.random() - 0.5)
+      // const noteDetail = this.noteDetail
+      // this.shuffledNum = shuffled
+      nums.forEach(num => {
+        // console.log(num);
+        // console.log(this.probdetail[`example${num}`])
+        this.examples.push({'id': num, 'example': this.probdetail[`example${num}`]})
+        // console.log(this.examples)
+      })
     })
     .catch(err => {
       console.log("에러")
       console.log(err)
     })
-  },  
+   
+  },
   methods: {
     changeLikeStatus() {
         /* 
@@ -220,6 +250,41 @@ export default {
     // goBack () {
     //   this.$router.go(-1)
     // }
+
+    // 문제 풀기; 문제 푼 후 결과 저장(0811 임지민)
+    submitProblem() {
+      // 문제 맞는 지 틀린 지 먼저 확인하고
+      // 이게 null이면 답을 선택하라는 alert 창 띄우기
+      const selectedAnswer = document.querySelector('input[name="bogey"]:checked').id
+      // console.log(selectedAnswer)
+      this.credentials.wrongAnswer = selectedAnswer
+      if (selectedAnswer === "1") {
+        this.credentials.right = true
+        alert('정답입니다.')
+      } else {
+        this.credentials.right = false
+        alert('오답입니다.')
+      }
+      // console.log(this.credentials)
+      // axios 보내기
+      axios({
+      url: drf.solving.solving(),
+      method: 'post',
+      headers: {
+        Authorization: this.accessToken,
+      },
+      data: this.credentials
+    })
+    .then(res => {
+      // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+      console.log(res)
+    })
+    .catch(err => {
+      // console.log(this.accessToken)
+      // console.log(this.userId)
+      console.log(err);
+    })
+    }
   }
 }
 </script>

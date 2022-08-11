@@ -50,6 +50,7 @@
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
       </v-row>
+
     </v-card-text>
 
     <!-- 모달 -->
