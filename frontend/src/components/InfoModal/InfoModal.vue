@@ -13,18 +13,37 @@
                 <v-btn @click="$emit('close')" text class="font-weight-bold">뒤로가기</v-btn>
               </v-card-text>
 
+
+              <!-- 
+                created: "2022-08-10T10:44:07"
+                dtype: "Information"
+                id: 3
+                numOfDislikes: 0
+                numOfLikes: 0
+                tags: Array(1)
+                0: "NW"
+                length: 1
+                __ob__: Observer {value: Array(1), shallow: false, mock: false, dep: Dep, vmCount: 0}
+                [[Prototype]]: Array
+                title: "df"
+                updated: "2022-08-10T10:44:07"
+                views: 0
+                writer: Object
+                id: (...)
+                name: "홍길동"
+              -->
+
               <!-- 정보 제목 -->
               <!-- {{ info.pk }}. {{ info.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold black--text">
-                <h2>모달크기가 왜 고정이 안되는지 알길이 없음</h2> 
+                <h2>{{info.title}}</h2> 
               </v-card-title>
 
               <!-- 정보 본문 -->
               <v-card-text>
                 <!-- 카테고리 라벨 -->
-                <!-- for문으로 돌리면 될듯 -->
-                <div>
-                  <v-chip small color="#A384FF" class="white--text">http</v-chip>
+                <div class="pl-3" v-for="(tag, idx) in info.tags" :key="idx">
+                  <span class="category-tag text-center pa-1">{{ tag }}</span>
                 </div>
               </v-card-text>
 
@@ -89,6 +108,9 @@
 </template>
 
 <script>
+import drf from '@/api/drf'
+import axios from 'axios'
+import { mapGetters } from "vuex"
 import InfoModalReply from './InfoModalReply.vue'
 
 export default {
@@ -96,12 +118,37 @@ export default {
   components: {
     InfoModalReply,
   },
+  props: {
+    info: Object,
+  },
   data () {
     return {
       upText: 'thumb_up_off_alt',
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
+      infoId: 0,
+      infodetail: [],
     }
+  },
+  created() {
+    console.log("info = ",this.info.id)
+    this.infoId = this.info.id
+
+    axios({
+      url: drf.api + 'post' + `/${this.infoId}`,
+      methods: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      console.log(this.res)
+      this.infodetail = res
+    })
+    .catch(err => {
+      console.log("에러")
+      console.log(err)
+    })
   },
   methods: {
     changeLikeStatus() {
@@ -177,6 +224,9 @@ export default {
     // goBack () {
     //   this.$router.go(-1)
     // }
+  },
+  computed: {
+    ...mapGetters(['accessToken']),
   }
 }
 </script>

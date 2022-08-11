@@ -10,7 +10,7 @@
 
 
       <!-- col 2: 사이드 바 -->
-      <v-col md="4" class="d-md-flex d-none grey lighten-4">
+      <v-col md="5" lg="4" class="d-md-flex d-none grey lighten-4">
         <side-bar></side-bar>
       </v-col>
     </v-row>

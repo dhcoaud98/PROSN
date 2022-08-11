@@ -20,7 +20,8 @@ export default {
   },
   api: HOST,
   study : {
-    study: () => HOST + STUDY
+    study: () => HOST + STUDY 
+    // + `${pageId}/`,
   },
   comment : {
     COMMENT

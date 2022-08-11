@@ -53,7 +53,7 @@
     </v-card-text>
 
     <!-- 모달 -->
-    <problem-modal @close="closeModal" v-if="modal"></problem-modal>
+    <problem-modal @close="closeModal" v-if="modal" :mainProb="mainProb"></problem-modal>
   </v-card>
 </template>
 

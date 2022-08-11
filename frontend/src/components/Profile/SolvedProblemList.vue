@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mt-5">
     <!-- v-for 사용하기 -->
     <solved-problem-list-items></solved-problem-list-items>
     <br>  

@@ -18,15 +18,15 @@
               <!-- 문제 제목 -->
               <!-- {{ problem.pk }}. {{ problem.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold black--text">
-                <h2>158. 정보 표현의 기본 장치</h2> 
+                <h2>{{mainProb.title}}</h2> 
               </v-card-title>
 
               <!-- 문제 본문 -->
               <v-card-text>
                 <!-- 카테고리 라벨 -->
                 <!-- for문으로 돌리면 될듯 -->
-                <div>
-                  <v-chip small color="#A384FF" class="white--text">http</v-chip>
+                <div class="pl-3" v-for="(tag, idx) in mainProb.tags" :key="idx">
+                  <span class="category-tag text-center pa-1">{{ tag }}</span>
                 </div>
               </v-card-text>
 
@@ -106,6 +106,8 @@
 </template>
 
 <script>
+import drf from '@/api/drf'
+import axios from 'axios'
 import ProblemReply from './ProblemReply.vue'
 
 export default {
@@ -118,8 +120,34 @@ export default {
       upText: 'thumb_up_off_alt',
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
+      probId: 0,
+      probdetail: [],
     }
   },
+  props: {
+    mainProb: Object,
+  },
+  // 0811 : 엑시오스 통신 코드
+  created() {
+    console.log("problem = ", this.mainProb.id)
+    this.probId = this.mainProb.id
+
+    axios({
+      url: drf.api + 'post' + `/${this.probId}`,
+      methods: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },      
+    })
+    .then(res => {
+      console.log(this.res)
+      this.probdetail = res
+    })
+    .catch(err => {
+      console.log("에러")
+      console.log(err)
+    })
+  },  
   methods: {
     changeLikeStatus() {
         /* 

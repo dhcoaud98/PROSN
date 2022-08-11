@@ -9,10 +9,10 @@
             <!-- 문제 태그, 문제 제목 --> 
             <v-col cols="10">
               <v-col cols="12" class="pa-0 mb-1">
-                <h4>8/19 넥슨 기술 면접 스터디원 구함</h4>
+                <h4>{{ study.title }}</h4>
               </v-col>
               <v-col cols="12" class="problem_title pa-0 pt-1">
-                2/5
+                {{ study.currentPerson + 1 }} / {{ study.maxPerson }}
               </v-col>
             </v-col>
             <v-col cols="2" class="problem_detail">
@@ -23,8 +23,7 @@
       </v-col>
 
       <!-- 08.04 모달 (오채명) -->
-      <study-modal @close="closeModal" v-if="this.modal">
-      </study-modal>
+      <study-modal @close="closeModal" v-if="this.modal" :study="study"></study-modal>
     </v-row>
 </template>
 
@@ -33,18 +32,23 @@ import StudyModal from "@/components/Study/StudyModal.vue"
 
 export default {
   name: 'StudyListItems',
-  components: {
-    StudyModal,
-  },
   data() {
     return {
       modal: false,
+      pageId: 0,
     }
+  },
+  props: {
+    study: Object,
+  },
+  components: {
+    StudyModal,
   },
   methods: {
     openModal() {
       this.modal = true
       console.log(openModal)
+      console.log(this.study.id)
     },
     closeModal() {
       this.modal = false
@@ -55,7 +59,8 @@ export default {
         this.message = ''
         this.closeModal()
     }
-  }
+  },
+
 }
 </script>
 
