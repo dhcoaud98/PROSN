@@ -6,15 +6,14 @@
       - 회원가입 hover시 보라색 text와 보라색 underline 뜨도록 수정
       - 회원가입 글자 bold로 바꿈
      -->
-    <v-container class="my-5">
+    <v-container class="mt-5">
       <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login" class="ma-0 pa-0">
         <v-row no-gutters>
-          <v-col cols="9" class="ma-0 pe-3">
+          <v-col cols="12" md="9" class="ma-0 px-1">
             <!-- 네임룰 추후 설정 필요 -->
             <!-- ID 입력란 -->
             <v-text-field v-model="credentials.userId" label="ID" required></v-text-field>
             <!-- PASSWORD 입력란 -->
-            <!-- <v-text-field v-model="password" label="PASSWORD" required></v-text-field> -->
             <v-text-field
             v-model="credentials.password"
             :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
@@ -30,8 +29,8 @@
           </v-col>
 
           <!-- 로그인 버튼 -->
-          <v-col cols="3">
-            <v-btn type="submit" color="#A384FF" class="white--text my-0 mx-5 py-5" height="100%" width="100%">로그인</v-btn>
+          <v-col cols="12" md="3" class="ma-0 px-1">
+            <v-btn type="submit" color="#A384FF" class="rounded-xl white--text my-0 py-5" height="100%" width="100%"><bold>로그인</bold></v-btn>
           </v-col>
         </v-row>
       </v-form>
