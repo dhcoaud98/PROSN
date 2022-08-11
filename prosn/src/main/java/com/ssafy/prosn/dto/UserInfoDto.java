@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/08/08
+ * updated by seongmin on 2022/08/11
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,69 +25,21 @@ public class UserInfoDto {
     private Integer point;
     private Long followerCount;
     private Long followingCount;
-//    private List<PostInfo> postInfo;
+    private double correctRate;
+    private Long problemSolvingCount;
+    private Long writePostCount;
 
-    public static UserInfoDto of(User user, Long followerCount, Long followingCount, List<Post> posts) {
-//        List<PostInfo> postInfo = new ArrayList<>();
-//        for (Post post : posts) {
-//            postInfo.add(new PostInfo(post.getId(), post.getTitle(), post.getCreated(), post.getUpdated()));
-//        }
+    public static UserInfoDto of(User user, Long followerCount, Long followingCount, double correctRate, Long problemSolvingCount, Long writePostCount) {
         return new UserInfoDto(
                 user.getId(),
                 user.getName(),
                 user.getPoint(),
                 followerCount,
-                followingCount
-//                postInfo
+                followingCount,
+                correctRate,
+                problemSolvingCount,
+                writePostCount
         );
     }
 
-//    private static class PostInfo {
-//        private Long id;
-//        private String title;
-//        private LocalDateTime created;
-//        private LocalDateTime updated;
-//
-//        public PostInfo() {
-//        }
-//
-//        public PostInfo(Long id, String title, LocalDateTime created, LocalDateTime updated) {
-//            this.id = id;
-//            this.title = title;
-//            this.created = created;
-//            this.updated = updated;
-//        }
-//
-//        public Long getId() {
-//            return id;
-//        }
-//
-//        public void setId(Long id) {
-//            this.id = id;
-//        }
-//
-//        public String getTitle() {
-//            return title;
-//        }
-//
-//        public void setTitle(String title) {
-//            this.title = title;
-//        }
-//
-//        public LocalDateTime getCreated() {
-//            return created;
-//        }
-//
-//        public void setCreated(LocalDateTime created) {
-//            this.created = created;
-//        }
-//
-//        public LocalDateTime getUpdated() {
-//            return updated;
-//        }
-//
-//        public void setUpdated(LocalDateTime updated) {
-//            this.updated = updated;
-//        }
-//    }
 }

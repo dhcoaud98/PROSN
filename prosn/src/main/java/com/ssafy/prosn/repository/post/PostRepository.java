@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/20
- * updated by seongmin on 2022/08/10
+ * updated by seongmin on 2022/08/11
  */
 public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
     @Query("select p from Post  p where p.isDeleted = FALSE")
@@ -24,6 +24,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, PostRepositor
     Page<Post> findByIsDeleted(boolean isDeleted, Pageable pageable);
     Page<Post> findByIsDeletedAndUser(boolean isDeleted, User user, Pageable pageable);
 
+    Long countByUser(User user);
     @Modifying
 //    @Lock(LockModeType.OPTIMISTIC)
     @Query("update Post p set p.views = p.views + 1 where p.id = :id")
