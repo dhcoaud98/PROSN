@@ -59,7 +59,7 @@ export default {
         console.log("problem = ",this.mainProbs)
         this.endPage = res.data.totalPages + 1
       })
-      .cathch(err => {
+      .catch(err => {
         console.log("에러")
         console.log(err)
       })

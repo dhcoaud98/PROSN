@@ -34,7 +34,7 @@
     <!-- icon 찾기 -->
     <v-card class="mx-auto mb-5 pink-gradation rounded-xl" height ="auto">
       <v-card-text class="pa-5">
-        <v-contatiner>
+        <v-container>
         
           <!-- 전체제목 -->
           <v-row class="mt-2">
@@ -70,14 +70,14 @@
           <v-row class="d-flex justify-end">
             <p class="text-right ma-0">{{nowDate}} {{nowTime}} 실시간</p>
           </v-row>
-        </v-contatiner>
+        </v-container>
       </v-card-text>
     </v-card>
 
     <!-- 2. 오늘의 유저 -->
     <v-card class="mx-auto mb-5 purple-gradation rounded-xl" height ="auto">
       <v-card-text class="py-5 px-3">
-        <v-contatiner>
+        <v-container>
         
           <!-- 전체제목 -->
           <v-row class="mt-2">
@@ -133,7 +133,7 @@
           <v-row class="d-flex justify-end">
             <p class="text-right ma-0">{{nowDate}} {{nowTime}} 실시간</p>
           </v-row>
-        </v-contatiner>
+        </v-container>
       </v-card-text>
     </v-card>
   </v-container>

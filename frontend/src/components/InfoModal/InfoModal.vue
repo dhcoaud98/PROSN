@@ -36,13 +36,13 @@
               <!-- 정보 제목 -->
               <!-- {{ info.pk }}. {{ info.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold black--text">
-                <h2>{{info.title}}</h2> 
+                <h2>{{ info.id }}. {{info.title}}</h2> 
               </v-card-title>
 
               <!-- 정보 본문 -->
               <v-card-text>
                 <!-- 카테고리 라벨 -->
-                <div class="pl-3" v-for="(tag, idx) in info.tags" :key="idx">
+                <div class="pl-3" style="display:inline;" v-for="(tag, idx) in info.tags" :key="idx">
                   <span class="category-tag text-center pa-1">{{ tag }}</span>
                 </div>
               </v-card-text>
@@ -64,8 +64,8 @@
                     <v-row class="d-flex justify-space-between">
                       <!-- 출제자 정보 -->
                       <v-col class="col-12 col-md-8">
-                        <div>출제자 | </div>              
-                        <div>출제일 | </div>
+                        <div>출제자 | {{ info.writer.name }}</div>              
+                        <div>출제일 | {{ info.created }}</div>
                       </v-col>
                       <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
                       <v-col class="d-flex justify-end col-12 col-md-4">
@@ -142,7 +142,7 @@ export default {
       },
     })
     .then(res => {
-      console.log(this.res)
+      console.log("res = ",this.res)
       this.infodetail = res
     })
     .catch(err => {
