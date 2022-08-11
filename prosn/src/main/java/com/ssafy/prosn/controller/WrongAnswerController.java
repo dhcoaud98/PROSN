@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by seongmin on 2022/08/01
- * updated by seongmin on 2022/08/10
+ * updated by seongmin on 2022/08/11
  */
 @RestController
 @RequiredArgsConstructor
@@ -30,12 +30,13 @@ public class WrongAnswerController {
     private final WrongAnswerService wrongAnswerService;
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody @Valid WrongAnswerRequestDto req) {
-        WrongAnswer result = wrongAnswerService.save(req, userService.getMyInfoBySecret().getId());
-        log.info("result = {}", result);
-        return ResponseEntity.status(CREATED).build();
-    }
+    // 틀린 문제는 바로 오답노트에 저장하도록 수정
+//    @PostMapping
+//    public ResponseEntity<?> save(@RequestBody @Valid WrongAnswerRequestDto req) {
+//        WrongAnswer result = wrongAnswerService.save(req, userService.getMyInfoBySecret().getId());
+//        log.info("result = {}", result);
+//        return ResponseEntity.status(CREATED).build();
+//    }
 
     @PatchMapping
     public ResponseEntity<?> write(@RequestBody @Valid WrongNoteRequestDto req) {
