@@ -36,19 +36,20 @@ public class ScrapController {
     public ResponseEntity<?> makeFolder(@RequestBody Map<String, String> req) {
         UserResponseDto userInfo = userService.getMyInfoBySecret();
         postListService.make(userInfo.getId(), req.get("title"));
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(CREATED).build();
     }
 
     @DeleteMapping("/folder/{id}")
     public ResponseEntity<?> deleteFolder(@PathVariable(value = "id") Long id) {
         UserResponseDto userInfo = userService.getMyInfoBySecret();
         postListService.delete(userInfo.getId(), id);
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(OK).build();
     }
 
-    @GetMapping("/folder/{id}") // user id
-    public ResponseEntity<?> getFolderList(@PathVariable(value = "id") Long id) {
-        return ResponseEntity.status(OK).body(postListService.getPostListFolder(id));
+    @GetMapping("/folder")
+    public ResponseEntity<?> getFolderList() {
+        UserResponseDto userInfo = userService.getMyInfoBySecret();
+        return ResponseEntity.status(OK).body(postListService.getPostListFolder(userInfo.getId()));
     }
 
     @PostMapping
@@ -56,7 +57,7 @@ public class ScrapController {
         log.info("pid = {}", req.get("pid"));
         UserResponseDto userInfo = userService.getMyInfoBySecret();
         scrapService.save(Long.parseLong(req.get("pid")), Long.parseLong(req.get("lid")), userInfo.getId());
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(CREATED).build();
     }
 
     @GetMapping("/{id}") // folder(postList) id
@@ -68,7 +69,7 @@ public class ScrapController {
     public ResponseEntity<?> deleteScrap(@PathVariable(value = "id") Long id) {
         UserResponseDto userInfo = userService.getMyInfoBySecret();
         scrapService.delete(userInfo.getId(), id);
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(OK).build();
     }
 
 //    private static class ScrapRequest {

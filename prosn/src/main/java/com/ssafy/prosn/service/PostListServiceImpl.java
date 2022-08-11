@@ -41,6 +41,7 @@ public class PostListServiceImpl implements PostListService {
     }
 
     @Override
+    @Transactional
     public Long make(Long uid, String title) {
         User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
         PostList savePostList = postListRepository.save(PostList.builder()
@@ -50,6 +51,7 @@ public class PostListServiceImpl implements PostListService {
     }
 
     @Override
+    @Transactional
     public void delete(Long uid, Long id) {
         User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
         PostList postList = postListRepository.findById(id).orElseThrow(() -> new BadRequestException("유효하지 않은 폴더입니다."));
