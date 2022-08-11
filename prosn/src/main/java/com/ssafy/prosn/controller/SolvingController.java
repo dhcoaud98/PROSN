@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.*;
 
 /**
  * created by yura on 2022/08/01
- * updated by seongmin on 2022/08/06
+ * updated by seongmin on 2022/08/11
  */
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +29,7 @@ public class SolvingController {
 
     private final SolvingService solvingService;
     private final UserService userService;
+
 
     /**
      * 유저 아이디에 맞는 문제풀이 현황을 불러오는 메서드
