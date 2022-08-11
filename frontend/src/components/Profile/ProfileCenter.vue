@@ -6,7 +6,6 @@
     </v-row>
     
     <!-- 1. 프로필 상단 -->
-<!-- 1. 프로필 상단 -->
     <v-row class="justify-center mt-10 mx-5 mb-0">
       <!-- 뱃지, 이름 -->
       <v-container class="pa-0 mx-0">

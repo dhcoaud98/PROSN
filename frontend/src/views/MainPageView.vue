@@ -8,7 +8,7 @@
         <v-toolbar dark class="mt-0">
           <v-tabs background-color="#CCA5FE" grow>
             <v-tab class="pa-0" @click="changeToProblemFeed" id="problemTab">
-              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">Probelm / Book</p>
+              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">Problem / Book</p>
             </v-tab>
               
             <v-tab class="pa-0" @click="changeToInfoFeed" id="infoTab">
