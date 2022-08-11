@@ -1,7 +1,10 @@
 package com.ssafy.prosn.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -11,8 +14,10 @@ import java.util.List;
  * updated by yeomyeong on 2022/08/07
  */
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StudyGroupRequestDto {
-//    @NotNull(message = "id는 필수 입력 값입니다.")
     private Long id;
     @NotBlank(message = "제목은 필수 입력 값입니다.")
     private String title;
@@ -29,15 +34,4 @@ public class StudyGroupRequestDto {
     @NotNull(message = "태그는 1개 이상 선택해야 합니다.")
     private List<String> tags;
 
-    @Builder
-    public StudyGroupRequestDto(Long id, String title, int maxPerson, LocalDate expiredDate, String place, String mainText, String secretText, List<String> tags) {
-        this.id = id;
-        this.title = title;
-        this.maxPerson = maxPerson;
-        this.expiredDate = expiredDate;
-        this.place = place;
-        this.mainText = mainText;
-        this.secretText = secretText;
-        this.tags = tags;
-    }
 }
