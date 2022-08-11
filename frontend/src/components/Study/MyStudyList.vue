@@ -26,32 +26,32 @@ export default {
     return {
       value: null,
       nowPage: 1,
-      endPage: 0,
+      endPage: 4,
       myStudys: [],
       page: 0,
     }
   },
-  created() {
-    // 0811 오채명
-    // 나의 스터디 조회하기
-    const params = {
-      page: 0,
-      size: 5,
-    }
-    axios({
-      url: drf.study.study() + 'me',
-      method: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-      params: params
-    })
-    .then(res => {
-      console.log(res.data)
-      this.myStudys = res.data
-    })
+  // created() {
+  //   // 0811 오채명
+  //   // 나의 스터디 조회하기
+  //   const params = {
+  //     page: 0,
+  //     size: 5,
+  //   }
+  //   axios({
+  //     url: drf.study.study() + 'me',
+  //     method: 'get',
+  //     headers: {
+  //       Authorization : this.accessToken,
+  //     },
+  //     params: params
+  //   })
+  //   .then(res => {
+  //     console.log(res.data)
+  //     this.myStudys = res.data
+  //   })
 
-  },
+  // },
   methods: {
 
   },
