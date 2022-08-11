@@ -4,10 +4,7 @@ import com.ssafy.prosn.domain.post.Post;
 import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.profile.scrap.Scrap;
 import com.ssafy.prosn.domain.user.User;
-import com.ssafy.prosn.dto.InformationRequestDto;
-import com.ssafy.prosn.dto.ProblemRequestDto;
-import com.ssafy.prosn.dto.ScrapResponseDto;
-import com.ssafy.prosn.dto.UserJoinRequestDto;
+import com.ssafy.prosn.dto.*;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
 import com.ssafy.prosn.repository.profiile.scrap.ScrapRepository;
@@ -17,12 +14,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * created by seongmin on 2022/08/05
@@ -107,8 +106,8 @@ class ScrapServiceImplTest {
         }
 
         // then
-        List<ScrapResponseDto> scraps = scrapService.getScrapList(netFolderId);
-        assertThat(scraps.size()).isEqualTo(2);
+        ScrapResponseDto scrapList = scrapService.getScrapList(netFolderId, PageRequest.of(0, 3));
+        assertThat(scrapList.getContent().size()).isEqualTo(2);
     }
 
     @Test
@@ -122,14 +121,14 @@ class ScrapServiceImplTest {
             scrapService.save(post.getId(), netFolderId, user.getId());
         }
 
-        assertThat(scrapService.getScrapList(netFolderId).size()).isEqualTo(2);
+        assertThat(scrapService.getScrapList(netFolderId,PageRequest.of(0,3)).getContent().size()).isEqualTo(2);
 
         PostList postList = postListRepository.findById(netFolderId).get();
         List<Scrap> scraps = scrapRepository.findByPostList(postList);
 
         // when
         scrapService.delete(user.getId(), scraps.get(0).getId());
-        assertThat(scrapService.getScrapList(netFolderId).size()).isEqualTo(1);
+        assertThat(scrapService.getScrapList(netFolderId,PageRequest.of(0,3)).getContent()).size().isEqualTo(1);
     }
 
 }
