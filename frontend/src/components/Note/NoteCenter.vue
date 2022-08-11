@@ -1,5 +1,10 @@
 <template>
-  <v-container class="mt-5 mx-2 mb-0">
+  <v-container class="ma-0 pa-0">
+    <v-row class="d-flex mt-5 ms-5">
+      <v-icon large color="#926DFF">sticky_note_2</v-icon>
+      <h2 class="ms-3 dark--text">N O T E</h2>
+    </v-row>  
+
     <!-- row 1. 제목 -->
     <v-row>
       <p class="font-parent-lar">
@@ -51,7 +56,7 @@
 import NoteList from '@/components/Note/NoteList.vue'
 import axios from 'axios'
 import drf from '@/api/drf.js'
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -101,7 +106,8 @@ export default {
     })
     .then(res => {
       // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-      console.log(res);
+      this.afterProbs = res.data.content
+      // this.afterProbs.push(res.data.content)
       // console.log('in'); //ok
     })
     .catch(err => {

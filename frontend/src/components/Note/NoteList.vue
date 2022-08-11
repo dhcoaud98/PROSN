@@ -25,8 +25,6 @@
 
 <script>
 import NoteListItems from '@/components/Note/NoteListItems.vue'
-import axios from 'axios'
-import drf from '@/api/drf.js'
 
 export default {
   data () {
@@ -38,6 +36,10 @@ export default {
   },
   components :{
     NoteListItems,
+  },
+  props: {
+    afterProbs: Array,
+    beforeProbs: Array,
   },
   created() {
     }

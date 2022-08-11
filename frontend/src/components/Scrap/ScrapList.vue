@@ -1,5 +1,14 @@
 <template>
-  <scrap-list-items></scrap-list-items>
+  <v-container>
+    <v-checkbox
+      label="기본폴더"
+      color="info"
+      value=""
+      hide-details
+      class="mt-0 font-weight-bold"
+    ></v-checkbox>
+    <scrap-list-items></scrap-list-items>
+  </v-container>
 </template>
 
 <script>
