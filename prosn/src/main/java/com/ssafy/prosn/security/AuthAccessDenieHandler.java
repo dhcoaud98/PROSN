@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 /**
  * created by seongmin on 2022/07/27
+ * updated by seongmin on 2022/08/11
  */
 @Component
 public class AuthAccessDenieHandler implements AccessDeniedHandler {
