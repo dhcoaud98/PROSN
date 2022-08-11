@@ -10,6 +10,7 @@ import com.ssafy.prosn.exception.BadRequestException;
 import com.ssafy.prosn.exception.DuplicateException;
 import com.ssafy.prosn.repository.post.PostRepository;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
+import com.ssafy.prosn.repository.profiile.status.SolvingRepository;
 import com.ssafy.prosn.repository.user.FriendRepository;
 import com.ssafy.prosn.repository.user.LocalUserRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -31,7 +32,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/22
- * updated by seongmin on 2022/08/08
+ * updated by seongmin on 2022/08/11
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -48,6 +49,7 @@ public class UserServiceImpl implements UserService {
     private final MailService mailService;
     private final FriendRepository friendRepository;
     private final PostRepository postRepository;
+    private final SolvingRepository solvingRepository;
 
     @Override
     @Transactional
@@ -109,10 +111,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoDto getUserInfo(Long uid) {
         User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
-        long followingCount = friendRepository.countByFollower(user);
-        long followerCount = friendRepository.countByFollowing(user);
+        Long followingCount = friendRepository.countByFollower(user);
+        Long followerCount = friendRepository.countByFollowing(user);
         log.info("user.getPosts.size = {}", user.getPosts().size());
-        return UserInfoDto.of(user, followerCount, followingCount, user.getPosts());
+        Long problemSolvingCount = solvingRepository.countByUser(user);
+        Long problemCorrectCount = solvingRepository.countByUserAndFirstIsRight(user, true);
+        double correctRate = Math.round((problemCorrectCount * 1.0 / problemSolvingCount) * 100) / 100.0 * 100;
+        Long writePostCount = postRepository.countByUser(user);
+        return UserInfoDto.of(user, followerCount, followingCount, correctRate, problemSolvingCount, writePostCount);
     }
 
     @Override
