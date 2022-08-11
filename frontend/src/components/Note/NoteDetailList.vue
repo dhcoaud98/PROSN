@@ -4,13 +4,14 @@
   <!-- 화면 크기가 xs 이하일 때는 문제와 노트 작성 칸이 세로로 배치되게 수정하기 0805 임지민 -->
 
   <v-row class="mt-3">
+    <!-- <p>{{ shuffledNum }}</p>  ok-->
     <!-- col 1: 상위의 createnotelist에서 받아온 문제 출력 -->
     <v-col sm="6" cols="12" class="pr-5">
       <!-- 문제 보러가기 버튼: 문제 번호 받아와서 연결 -->
       <v-row class="mt-3 mb-5">
-        <p>{{noteDetail}}</p>
-        <router-link to="/problem" class="text-decoration-none ">
-          <v-chip small outlined color="#a384ff">문제 다시 풀기</v-chip>
+        <!-- <p>{{noteDetail}}</p> -->
+        <router-link :to="`/problem/${noteDetail.pid}`" class="text-decoration-none ">
+          <v-chip small outlined color="#a384ff" class="hover-pointer">문제 다시 풀기</v-chip>
         </router-link>
       </v-row>
 
@@ -29,24 +30,15 @@
       <!-- 문제보기: 이것도 랜덤으로 for문 돌리기/ 체크박스로 라디오 묶는거....ㅠ-->
       <v-row>
         <v-col>
-          <v-row>
-            <input type="radio" value="보기1" id="check1" name="bogey">
-            <label for="check1" class="ml-2 font-parent-mid-l">{{noteDetail.example1}}</label>
-          </v-row>
-          <v-row>
-            <input type="radio" value="보기2" id="check2" name="bogey">
-            <label for="check2" class="ml-2 font-parent-mid-l">{{noteDetail.example2}}</label>
-          </v-row>
-          <v-row>
-            <input type="radio" value="보기3" id="check3" name="bogey">
-            <label for="check3" class="ml-2 font-parent-mid-l">{{noteDetail.example3}}</label>
-          </v-row>
-          <v-row>
-            <input type="radio" value="보기4" id="check4" name="bogey">
-            <label for="check4" class="ml-2 font-parent-mid-l">{{noteDetail.example4}}</label>
-          </v-row>
+          <div v-for="example in examples" :key="example.id" class="my-3">
+            <input type="radio" :value="`보기${example.id}`" :id="`check${example.id}`" name="bogey">
+            <label :for="`check${example.id}`" 
+            class="ml-2 font-parent-mid-l">
+            {{example.example}} </label>
+          </div>
         </v-col>
       </v-row>
+ 
       
       <v-row>
         <!-- 클릭하면 선지에서 보이게 -->
@@ -76,19 +68,20 @@
     </v-col>
 
     <!-- col 2: 오답노트 양식 -->
+    <!-- v-textarea에 v-model이랑 value를 같이 쓰면 value가 적용이 안됨 -->
     <v-col sm="6" cols="12" class="pl-3 left-border-grey">
-      <v-form class="pl-3">
+      <v-form class="pl-3" @submit.prevent="editNote">
         <!-- 틀린 이유 -->
         <v-row class="mx-2 my-2">
-          <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold font-parent-mid-l mb-0">틀린 이유</p></v-col>
+          <p class="font-weight-bold font-parent-mid-l mb-0">틀린 이유</p>
           <v-col class="col-12 pa-0">
             <v-textarea 
             maxlength="150" 
             no-resize counter required dense 
             rows="3" 
             class="font-parent-mid"
-            v-model="credentials.reason"
-            :value="noteDetail.reason"> </v-textarea>
+            v-model="noteDetail.reason"
+            ></v-textarea>
           </v-col>
         </v-row>
         <!-- 추가로 공부할 것 -->
@@ -99,7 +92,7 @@
             no-resize counter required dense 
             rows="3" 
             class="font-parent-mid"
-            v-model="credentials.studyContent"
+            v-model="noteDetail.studyContent"
             > </v-textarea>
           </v-col>
         </v-row>
@@ -111,14 +104,14 @@
             no-resize counter required dense 
             rows="3" 
             class="font-parent-mid"
-            v-model="credentials.memo"
-            :value="noteDetail.memo"></v-textarea>
+            v-model="noteDetail.memo"
+            ></v-textarea>
           </v-col>
         </v-row>
         <!-- 수정하기 -->
         <v-row class="justify-end mt-5">
-          <v-btn outlined rounded small class="mr-3" @submit.prevent="editNote">수정하기</v-btn>
-          <v-btn outlined rounded small @submit.prevent="deleteNote">삭제하기</v-btn>
+          <v-btn type="submit" outlined rounded small class="mr-3">수정하기</v-btn>
+          <v-btn outlined rounded small @click="deleteNote">삭제하기</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -127,35 +120,40 @@
 
 <script>
 import axios from 'axios'
+import drf from '@/api/drf.js'
+import { mapGetters } from 'vuex'
 
 export default {
   data(){
     return {
-      credentials: {
+      noteDetail: {
         reason: '',
         studyContent: '',
         memo: '',
       },
-      
+      examples: [],
+
     }
   },
   props: {
     noteDetail: Object,
+  },
+  computed: {
+    ...mapGetters(['accessToken'])
   },
   methods :{
     selectMyAnswer() {
       // 클릭하면 내 정답에 해당되는 걸 위에 선지에서 표시
       // script에 props로 값이 넘어오니까 this.어쩌구로 받아오기
       // v-model로 스크립트와 템플릿 연결하기
-      const myAnswer = this.problem.myAnswer
+      const myAnswer = this.noteDetail.wrongAnswer
       const targetMyAnswer = document.querySelector(`#check${myAnswer}`)
       console.log('targetMyAnswer=', targetMyAnswer)
       targetMyAnswer.checked=true
       targetMyAnswer.setAttribute("style", "accent-color: red;")
     },
     selectRealAnswer() {
-      const realAnswer = this.problem.realAnswer
-      const targetRealAnswer = document.querySelector(`#check${realAnswer}`)
+      const targetRealAnswer = document.querySelector('#check1')
       console.log('targetRealAnswer=', targetRealAnswer)
       targetRealAnswer.checked=true
       targetRealAnswer.setAttribute("style", "accent-color: green;")
@@ -164,7 +162,15 @@ export default {
       axios({
           url: drf.wrongAnswer.wrongAnswer(),
           method: 'patch',
-          data: this.credentials
+          data: {
+            id: this.noteDetail.id,
+            reason: this.noteDetail.reason,
+            studyContent: this.noteDetail.studyContent,
+            memo: this.noteDetail.memo,
+          },
+          headers: {
+            Authorization: this.accessToken,
+          },
       })
       .then(res => {
           console.log("res = ",res);
@@ -179,47 +185,50 @@ export default {
         })
     },
     deleteNote() {
-      const userDecision = alert('정말로 삭제하시겠습니까?')
-      if (userDecision === true) {
+      const userDecision = confirm('정말로 삭제하시겠습니까?')
+      if (userDecision) {
         axios({
-            url: drf.note.wronganswer(),
+            url: drf.wrongAnswer.wrongAnswer() + this.noteDetail.id,
             method: 'delete',
+            headers: {
+              Authorization: this.accessToken,
+            },
         })
         .then(res => {
             console.log("res.data = ",res.data);
+            this.$router.push('note/')
         })
         .catch(err =>{
             console.log("에러")
             console.log(err)
             })
       }
-    }
+    },
+    
   },
-  // created : {
-    // getNote() {
-    //   axios({
-    //       url: drf.note.wronganswer(),
-    //       method: 'get',
-    //       data: this.credentials
-    //   })
-    //   .then(res => {
-    //       console.log("res = ",res);
-    //       const token = res.data.key
-    //       token 
-    //       // data에 저장해서 띄우기
-    //       this.credentials.reason = res.data.reason
-    //       this.credentials.studyContent = res.data.studyContent
-    //       this.credentials.memo = res.data.memo
-    //       // dispatch('saveToken', token)
-    //       // dispatch('fetchCurrentUser')
-      
-    //   })
-    //   .catch(err =>{
-    //       console.log("에러")
-    //       console.log(err)
-    //     })
-    // }
-  // }
+  created() {
+    // 랜덤으로 띄워주기 위해 숫자 섞기
+    // 근데 이렇게하면 어쩔때는 보기가 undefined가 뜸
+    const nums  = [1,2,3,4]
+    const shuffled = nums.sort(() => Math.random() - 0.5)
+    // const noteDetail = this.noteDetail
+    // this.shuffledNum = shuffled
+    nums.forEach(num => {
+      // console.log(ex)
+      // console.log(dict);
+      // const dict = {}
+      // this.examples.push(`example${num}`)
+      // console.log(dict)
+
+      this.examples.push({'id': num, 'example': this.noteDetail[`example${num}`]})
+      console.log(this.noteDetail[`example${num}`])
+
+      // const arr = []
+      // arr.push(this.noteDetail[`example${num}`])
+      // console.log(arr)
+    })
+    // console.log(this.shuffledNum)
+  }
 }
 </script>
 
@@ -231,6 +240,9 @@ export default {
   /* 내가 고른 답, 정답이 나오는 드롭다운의 box shadow 없애기 */
   .v-menu__content {
     box-shadow: none;
+  }
+  .hover-pointer:hover{
+    cursor: pointer;
   }
 
 </style>

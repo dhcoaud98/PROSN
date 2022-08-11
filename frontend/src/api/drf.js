@@ -34,6 +34,6 @@ export default {
     wrongAnswer: () => HOST + WRONGANSWER,
   },
   solving: {
-    SOLVING
+    solving: () => HOST + SOLVING
   }
 }
