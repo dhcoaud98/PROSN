@@ -47,6 +47,6 @@ public class SolvingController {
     public ResponseEntity<?> problemSolving(@RequestBody @Valid SolvingRequestDto req) {
         UserResponseDto userInfo = userService.getMyInfoBySecret();
         solvingService.problemSolving(userInfo.getId(), req);
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(CREATED).build();
     }
 }
