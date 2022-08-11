@@ -206,7 +206,7 @@ export default {
           // const token = res.data.key
           // dispatch('saveToken', token)
           // dispatch('fetchCurrentUser')
-          this.$router.push({ path: 'profile' })
+          this.$router.push({ path: 'study' })
       
       })
       .catch(err =>{

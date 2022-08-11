@@ -53,7 +53,7 @@
     </v-card-text>
 
     <!-- 모달 -->
-    <info-modal @close="closeModal" v-if="modal"></info-modal>
+    <info-modal @close="closeModal" v-if="modal" :info="info"></info-modal>
   </v-card>
 </template>
 

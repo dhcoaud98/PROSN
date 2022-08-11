@@ -1,19 +1,20 @@
 <template>
   <v-container>
-    <!-- v-for 사용하기 -->
-    <my-study-list-items></my-study-list-items>
+    <my-study-list-items v-for="(study, idx) in studys" :key="idx" :study="study"></my-study-list-items>
     <br>  
-    <v-div class="text-center ">
-      <v-pagination
-        v-model="page"
-        :length="5"
-        color="#A384FF"
-      ></v-pagination>
-    </v-div>
+    <v-pagination
+      v-model="nowPage"
+      :length="endPage"
+      color="#A384FF"
+      circle
+      @input="handlePage()"
+    ></v-pagination>
   </v-container>
 </template>
 
 <script>
+import axios from 'axios'
+import drf from '@/api/drf'
 import MyStudyListItems from "./MyStudyListItems.vue"
 
 export default {
@@ -23,8 +24,36 @@ export default {
   },
   data () {
     return {
-      page: 1,
+      value: null,
+      nowPage: 1,
+      endPage: 0,
+      myStudys: [],
+      page: 0,
     }
+  },
+  created() {
+    // 0811 오채명
+    // 나의 스터디 조회하기
+    const params = {
+      page: 0,
+      size: 5,
+    }
+    axios({
+      url: drf.study.study() + 'me',
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+      params: params
+    })
+    .then(res => {
+      console.log(res.data)
+      this.myStudys = res.data
+    })
+
+  },
+  methods: {
+
   },
 }
 </script>

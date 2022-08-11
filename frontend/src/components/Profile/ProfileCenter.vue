@@ -5,7 +5,7 @@
         <v-row class="justify-center mt-10 mx-5 mb-0">
           <!-- 뱃지, 이름 -->
           <v-col cols="3" class="rank_box d-flex justify-center py-0">
-            <p class="font-weight-bold text-grey ma-0">Prosn</p>
+            <p class="font-weight-bold text-grey ma-0 white--text">Prosn</p>
           </v-col>
           <v-col cols="7" class="pa-0 pl-3">
             <p class="font-weight-bold text-grey ma-0">오채명</p>

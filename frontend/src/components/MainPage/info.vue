@@ -56,10 +56,10 @@ export default {
       })
       .then(res => {
         this.infos = res.data.content
-        console.log(this.infos)
+        console.log("infos = ",this.infos)
         this.endPage = res.data.totalPages
       })
-      .cathch(err => {
+      .catch(err => {
         console.log("에러")
         console.log(err)
       })
