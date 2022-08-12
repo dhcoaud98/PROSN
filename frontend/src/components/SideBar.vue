@@ -203,7 +203,7 @@ export default {
       })
       .catch(err =>{
           console.log("에러")
-          console.log(err.status)
+          console.log(err.response.status)
       })
     },
     // 유저 정보 모두 가져와서 문제 많이 푼 횟수로 3개 가져오기

@@ -3,7 +3,7 @@
   <v-app :class="bgColor" @resize="selectBgColor">
     <v-container>
       <!-- sm 이하일 때 로고 나오도록 -->
-      <v-row class= "d-flex d-md-none pb-0 justify-space-between px-5">
+      <v-row id="sm-logo" class= "d-flex d-md-none pb-0 justify-space-between px-5">
         <v-col class="d-flex d-md-none pb-0">
           <router-link to="/">
             <v-img src="./assets/prosn_logo.png" max-width="150px" max-height="50px"></v-img>
@@ -37,8 +37,8 @@
     </div> -->
 
     <!-- BottomNavBar md 이하일 때 남는 공간 만들기 위함 -->
-    <v-container class="d-flex d-md-none mb-14" style="bottom: 0px"></v-container>  
-  </v-app>
+    <v-container class="d-flex d-md-none mb-14" style="bottom: 0px">
+    </v-container>  </v-app>
 </template>
 
 <script>
@@ -80,6 +80,8 @@ export default {
       if(to.name === 'login' || to.name === 'signUp') {
         this.navDisplay = 'd-none'
         this.navDisplayCol = 'd-none'
+        const smLogo = document.querySelector('#sm-logo')
+        smLogo.setAttribute('class', 'd-none')
 
       } else {
         this.navDisplay = 'd-flex'
@@ -106,13 +108,14 @@ export default {
         if (currentUrl.endsWith('login') || currentUrl.endsWith('signup')) {
           this.navDisplay = 'd-none'
           this.navDisplayCol = 'd-none'
+          // 여기 진짜 무슨일이냐 매번
+          const smLogo = document.querySelector('#sm-logo')
+          smLogo.setAttribute('class', 'd-none')
         } else {
           this.navDisplay = 'd-flex'
           this.navDisplayCol = 'd-none d-md-flex'
-        }
-    
-    },
-  
+        }    
+    },  
   } 
 </script>
 

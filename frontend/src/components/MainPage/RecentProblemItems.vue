@@ -64,11 +64,13 @@
     </v-card-text>
 
     <!-- 모달 -->
-    <problem-modal @close="closeModal" v-if="modal" :probdetail="probdetail"></problem-modal>
+    <problem-modal @close="closeModal" v-if="modal" :mainProb="mainProb" :probdetail="probdetail"></problem-modal>
   </v-card>
 </template>
 
 <script>
+import drf from '@/api/drf'
+import axios from 'axios'
 import ProblemModal from '@/components/ProblemModal/ProblemModal.vue'
 import axios from 'axios'
 import drf from '@/api/drf.js'
@@ -81,14 +83,37 @@ export default {
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
             modal: false,
-            probdetail : null,
+            probId: 0,
+            probdetail: [],
         }
     },
     components: {
-        ProblemModal,
+      ProblemModal,
     },
     props: {
-        mainProb: Object,
+      mainProb: Object,
+    },
+    // 0811 : 엑시오스 통신 코드
+    created() {
+      console.log("problem = ", this.mainProb.id)
+      this.probId = this.mainProb.id
+
+      axios({
+        url: drf.api + 'post' + `/${this.probId}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },      
+      })
+      .then(res => {
+        console.log(res.data)
+        this.probdetail = res.data
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })
+    
     },
     computed: {
       ...mapGetters(['accessToken'])

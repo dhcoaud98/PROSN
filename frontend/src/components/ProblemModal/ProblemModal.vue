@@ -134,6 +134,7 @@ export default {
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
       probId: 0,
+      probdetail: [],
       examples: [],
       credentials: {
         pid: '',
@@ -144,14 +145,27 @@ export default {
     }
   },
   props: {
+    mainProb: Object,
     probdetail: Object,
   },
   computed: {
     ...mapGetters(['accessToken'])
   },
-  // 0811 : 엑시오스 통신 코드
-  // recentproblemitems에서 axios 통신하고 prop으로 내려서 보기만 셔플함 0812 암지민
   created() {
+    console.log("problem = ", this.mainProb.id)
+    this.probId = this.mainProb.id
+    this.credentials.pid = this.mainProb.id
+
+    axios({
+      url: drf.api + 'post' + `/${this.probId}`,
+      methods: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },      
+    })
+    .then(res => {
+      // console.log(res.data)
+      // this.probdetail = res.data
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
       // const noteDetail = this.noteDetail
@@ -161,6 +175,12 @@ export default {
         // console.log(this.probdetail[`example${num}`])
         this.examples.push({'id': num, 'example': this.probdetail[`example${num}`]})
       })
+    })
+    .catch(err => {
+      console.log("에러")
+      console.log(err)
+    })
+  
   },
 
   methods: {

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mt-5">
     <!-- v-for 사용하기 -->
     <scrap-post-list-items></scrap-post-list-items>
     <br>  

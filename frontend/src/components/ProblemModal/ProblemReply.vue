@@ -15,7 +15,7 @@
       <!-- 추후에 더미 데이터 넣고 버추얼스크롤 넣어서 확인하기-->
       <!-- 여기서 for문 돌려서 ProblemReplyItems 하나씩 띄우기 -->
       <v-row>
-        <v-col>
+        <v-col class="pa-0">
           <problem-reply-items></problem-reply-items>
         </v-col>
       </v-row>

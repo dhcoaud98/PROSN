@@ -33,7 +33,7 @@
       <!-- 내용 -->
       <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
-          {{ info }}
+          {{ infodetail.mainText }}
         </div>
       </v-row>
 
@@ -53,11 +53,13 @@
     </v-card-text>
 
     <!-- 모달 -->
-    <info-modal @close="closeModal" v-if="modal" :info="info"></info-modal>
+    <info-modal @close="closeModal" v-if="modal" :infodetail="infodetail" :info="info"></info-modal>
   </v-card>
 </template>
 
 <script>
+import drf from '@/api/drf'
+import axios from 'axios'
 import InfoModal from '@/components/InfoModal/InfoModal.vue'
 
 export default {
@@ -67,6 +69,8 @@ export default {
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
             modal: false,
+            infoId: 0,
+            infodetail: [],
         }
     },
     props: {
@@ -74,6 +78,27 @@ export default {
     },
     components: {
       InfoModal,
+    },
+    created() {
+      console.log("info = ",this.info.id)
+      this.infoId = this.info.id
+
+      axios({
+        url: drf.api + 'post' + `/${this.infoId}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+      })
+      .then(res => {
+        console.log("res = ",res.data)
+        this.infodetail = res.data
+        // console.log("infodetail = ", this.infodetail)
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })
     },
     methods: {
         changeLikeStatus() {
