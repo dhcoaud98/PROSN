@@ -1,5 +1,6 @@
 package com.ssafy.prosn.domain.user;
 
+import com.ssafy.prosn.oauth.Platform;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -12,11 +13,11 @@ import javax.persistence.Entity;
 @Getter
 public class SocialUser extends User {
 
-    private String oauthId;
-    private String platform;
+    private int oauthId;
+    private Platform platform;
 
     @Builder
-    public SocialUser(String name, String email, String oauthId, String platform) {
+    public SocialUser(String name, String email, int oauthId, Platform platform) {
         super(name, email);
         this.oauthId = oauthId;
         this.platform = platform;
