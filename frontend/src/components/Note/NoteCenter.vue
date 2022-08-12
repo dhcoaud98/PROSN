@@ -85,6 +85,39 @@ export default {
   methods: {
     selectCategory(categoryName) {
       this.selected = categoryName
+      const isWriteParams = ['true', 'false']
+      isWriteParams.forEach(oneParam => {
+        const params = {
+          tag: categoryName,
+          isWrite: oneParam
+        }
+        axios({
+          url: drf.api + 'wrongAnswer/' + 'tag',
+          method: 'get',
+          headers: {
+            Authorization: this.accessToken,
+          },
+          params: params,
+        })
+        .then(res => {
+          // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+          // console.log(res.data.content)
+          if (oneParam === 'false'){
+            this.beforeProbs = res.data.content
+            console.log('before=', this.beforeProbs)
+          } else {
+            this.afterProbs = res.data.content
+            console.log('after=',this.afterProbs)
+          }
+          // console.log('in'); //ok
+        })
+        .catch(err => {
+          // console.log(this.accessToken)
+          // console.log(this.userId)
+          console.log(err);
+        })
+
+      })
     }
   },
   computed: {
