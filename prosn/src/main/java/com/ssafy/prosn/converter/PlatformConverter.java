@@ -1,6 +1,6 @@
-package com.ssafy.prosn.cj.converter;
+package com.ssafy.prosn.converter;
 
-import com.ssafy.prosn.cj.Platform;
+import com.ssafy.prosn.oauth.Platform;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 
