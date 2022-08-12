@@ -113,8 +113,8 @@ public class PostController {
     @PostMapping("/click")
     public ResponseEntity<?> likeDisLikeClick(@RequestBody @Valid LikeDisLikeRequestDto req) {
         log.info("좋아요 싫어요 req = {}", req);
-        postService.likeDislikeClick(req, userService.getMyInfoBySecret().getId());
-        return ResponseEntity.status(CREATED).build();
+        LikeDisLikeNumDto result = postService.likeDislikeClick(req, userService.getMyInfoBySecret().getId());
+        return ResponseEntity.status(OK).body(result);
     }
 
     @GetMapping("/search")

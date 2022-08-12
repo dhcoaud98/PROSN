@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/08/10
+ * updated by seongmin on 2022/08/12
  */
 public interface PostService {
     Post writeProblem(ProblemRequestDto problemDto, Long uid);
@@ -26,7 +26,7 @@ public interface PostService {
 
     PostResponseDto showAllInformation(Pageable pageable);
 
-    void likeDislikeClick(LikeDisLikeRequestDto likeDisLikeDto, Long uid);
+    LikeDisLikeNumDto likeDislikeClick(LikeDisLikeRequestDto likeDisLikeDto, Long uid);
 
     ProblemWorkbookResponseDto search(Pageable pageable, String title, String code, PostType dtype);
 
