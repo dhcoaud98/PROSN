@@ -75,7 +75,7 @@ const routes = [
     component: CreateInfo
   },
   {
-    path: '/problem',
+    path: '/problem/:pid',
     name: 'problem',
     component: Problem
   },

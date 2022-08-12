@@ -1,64 +1,67 @@
 <template>
   <v-container>
-    <v-row class="d-flex justify-space-between">
-      <h2>158. 정보 표현의 기본 장치</h2> 
-      <v-btn @click="goBack()" text class="font-weight-bold">뒤로가기</v-btn>
+    <v-row class="justify-space-between mt-5">
+      <div class="d-flex mt-5">
+        <h2>{{ probDetail.title }}</h2>
+        <div class="d-inline-block ms-3">
+          <v-btn v-if="myCorrectStatus" rounded small outlined color="green">정답</v-btn>
+          <v-btn v-else rounded small outlined color="red">오답</v-btn>
+        </div>
+      </div>
+      <v-btn @click="goBack()" text class="font-weight-bold mt-5">뒤로가기</v-btn>
     </v-row>
-
+    <!-- <p>{{probDetail}}</p> -->
     <v-row>
-      <v-col>
-        <v-chip small color="#A384FF" class="white--text">http</v-chip>
-      </v-col>
+      <div v-for="tag in probDetail.tags" :key="tag" class="ms-2 mb-3">
+        <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#{{tag}}</span>
+      </div>
     </v-row>
 
     <v-row>
       <v-col cols="12">
-      <h2 class="black--text">다음 설명에 맞는 장치로 적절한 것은 무엇인가요?</h2>
-      </v-col>
-      <v-col cols="12">
-        <h3 class="black--text my-4">
-            컴퓨터에는 (       )라고 불리는 굉장히 많은 스위치가 있고,<br>
-            on/off 상태를 통해 0과 1을 표현합니다.
-          </h3>
+        <p class="font-parent-lar black--text my-4">
+          {{ probDetail.mainText }}
+        </p>
+          
       </v-col>
     </v-row>
 
     <v-row>
       <v-container>
         <!-- 문제보기: 이것도 랜덤으로 for문 돌리기 -->
-        <v-form>
+        <v-form @submit.prevent="submitProblem">
           <v-row>
-            <v-radio-group column class="ms-5">
-              <v-radio label="보기1" color="info" value="보기1"></v-radio>
-              <v-radio label="보기2" color="info" value="보기2"></v-radio>
-              <v-radio label="보기3" color="info" value="보기3"></v-radio>
-              <v-radio label="보기4" color="info" value="보기4"></v-radio>
-            </v-radio-group>
+            <v-col>
+              <div v-for="example in examples" :key="example.id" class="my-3">
+                <input type="radio" :value="`보기${example.id}`" :id="example.id" name="bogey">
+                <label :for="`check${example.id}`" 
+                class="ml-2 font-parent-mid-l">
+                {{example.example}} </label>
+              </div>
+            </v-col>
           </v-row>
           <!-- 저작권 / 버튼 -->
           <v-row class="d-flex justify-space-between">
             <!-- 출제자 정보 -->
             <v-col>
-              <div>출제자 | </div>
-              
-              <div>출제일 | </div>
+              <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ probDetail.writer.name }}</div>
             </v-col>
             <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-            <v-col class="col-12 col-lg-6 col-xl-3">
+            <v-col cols="8" class="pa-0 justify-end d-flex align-center">
               <!-- 좋아요 버튼 -->
-              <v-btn class="ms-2" icon color="blue lighten-2">
-                <v-icon>mdi-thumb-up</v-icon>
+              <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
+                <v-icon>{{upText}}</v-icon>
               </v-btn>
               <!-- 싫어요 버튼 -->
-              <v-btn class="ms-2" icon color="red lighten-2">
-                <v-icon>mdi-thumb-down</v-icon>
+              <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon" large>
+                <v-icon>{{downText}}</v-icon>
               </v-btn>
               <!-- 스크랩 버튼 -->
-              <v-btn class="ms-2" icon color="dark lighten-2">
-                <v-icon>mdi-folder-open</v-icon>
+              <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon" large>
+                <v-icon>{{scrapText}}</v-icon>
               </v-btn>                    
               <!-- 제출 버튼 -->
-              <v-btn rounded class="ms-2" color="#F3F3F4">제출</v-btn>
+              <v-btn type="submit" rounded outlined class="ms-1" large>제출</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -78,19 +81,146 @@
 
 <script>
 import ProblemReply from '@/components/ProblemModal/ProblemReply.vue'
+import { mapGetters } from 'vuex'
+import axios from 'axios'
+import drf from '@/api/drf.js'
 
 export default {
   name: 'Problem',
-  
+  data(){
+    return {
+      upText: 'thumb_up_off_alt',
+      downText: 'thumb_down_off_alt',
+      scrapText: 'bookmark_border',
+      probDetail: null,
+      examples: [],
+      credentials: {
+        pid: '',
+        right: '',
+        wrongAnswer: '',
+      },
+      myCorrectStatus: null,
+    }
+  },
   components: {
     ProblemReply,
+  },
+  computed: {
+    ...mapGetters(['accessToken'])
   },
   methods: {
     // 2022.08.04. 라우터 경로 연결
     goBack () {
       this.$router.go(-1)
+    },
+    changeLikeStatus() {
+        /* 
+        버튼 클릭하면 색이 바뀌도록
+        thumb up --> thumb up off alt
+        thumb down --> thumb down off alt
+        bookmark border --> bookmark
+        */
+        /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
+
+        if (this.upText === "thumb_up_off_alt") {
+          // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
+          if (this.downText === "thumb_down") {
+              // console.log(this.downText)
+              this.downText = "thumb_down_off_alt"
+          }
+          this.upText = "thumb_up"
+          } else {
+            this.upText = "thumb_up_off_alt"
+          }
+    },
+    changeHateStatus() {
+        /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
+        if (this.downText === "thumb_down_off_alt") {
+            this.downText = "thumb_down"
+            // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
+            if (this.upText === "thumb_up") {
+                this.upText = "thumb_up_off_alt"
+            }
+       } else {
+            this.downText = "thumb_down_off_alt"
+       }
+    },
+    changeScrapStatus() {
+       if (this.scrapText === "bookmark_border") {
+            this.scrapText = "bookmark"
+       } else {
+            this.scrapText = "bookmark_border"
+       }
+    },
+    // 문제 풀기; 문제 푼 후 결과 저장(0811 임지민)
+    submitProblem() {
+      // 문제 맞는 지 틀린 지 먼저 확인하고
+      // 이게 null이면 답을 선택하라는 alert 창 띄우기
+      const selectedAnswer = document.querySelector('input[name="bogey"]:checked').id
+      // console.log(selectedAnswer)
+      this.credentials.wrongAnswer = selectedAnswer
+      if (selectedAnswer === "1") {
+        this.credentials.right = true
+        this.myCorrectStatus = true
+        alert('정답입니다.')
+      } else {
+        this.credentials.right = false
+        alert('오답입니다.')
+        this.myCorrectStatus = false
+        this.$router
+      }
+      // console.log(this.credentials)
+      // axios 보내기
+      axios({
+      url: drf.solving.solving(),
+      method: 'post',
+      headers: {
+        Authorization: this.accessToken,
+      },
+      data: this.credentials
+    })
+    .then(res => {
+      // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+      console.log(res)
+    })
+    .catch(err => {
+      // console.log(this.accessToken)
+      // console.log(this.userId)
+      console.log(err);
+    })
     }
-  }
+  },
+  created() {
+    // console.log('problem ')
+    const probId = this.$route.params.pid
+    // console.log('probid=', probId)
+
+    axios({
+      url: drf.api + 'post/' + `${probId}`,
+      method: 'get',
+      headers: {
+        Authorization: this.accessToken,
+      },
+    })
+    .then(res => {
+      // console.log(res) //ok
+      this.probDetail = res.data
+      // console.log(this.probDetail)
+      const nums  = [1,2,3,4]
+      const shuffled = nums.sort(() => Math.random() - 0.5)
+      // const noteDetail = this.noteDetail
+      // this.shuffledNum = shuffled
+      nums.forEach(num => {
+        // console.log(num);
+        // console.log(this.probdetail[`example${num}`])
+        this.examples.push({'id': num, 'example': this.probDetail[`example${num}`]})
+      })
+
+    })
+    .catch(err => {
+      console.log(err);
+    })
+    },
 }
 </script>
 

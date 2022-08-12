@@ -6,16 +6,29 @@
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
         <v-row class="d-flex justify-space-between ma-3">
           <!-- 제목 -->
-          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
-            {{mainProb.title}}
-          </div>
+          <v-col class="pa-0" cols="6">
+            <v-row class="align-center">
+              <p class="my-0 ms-5 dark--text font-weight-bold pa-0" style="font-size: 1em; color: #585757;">
+                {{mainProb.title}}
+              </p>
+              <div v-for="tag in mainProb.tags" :key="tag" class="ms-2 mb-3">
+                <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#{{tag}}</span>
+              </div>
+            </v-row>
+          </v-col>
+          <v-col class="py-0">
+            <v-row class="justify-end py-1">
+              <div>
+                <v-icon class="me-2">thumb_up_off_alt</v-icon>
+                <span class="me-3">{{ mainProb.numOfLikes }}</span>
+              </div>
+              <div>
+                <v-icon class="me-2">thumb_down_off_alt</v-icon>
+                <span class="me-3">{{ mainProb.numOfDislikes }}</span>
+              </div>
+            </v-row>
+          </v-col>
           <!-- 좋아요 싫어요 정보 -->
-          <div class="d-flex me-3">
-            <v-icon class="me-2">thumb_up_off_alt</v-icon>
-            <div class="me-3">{{ mainProb.numOfLikes }}</div>
-            <v-icon class="me-2">thumb_down_off_alt</v-icon>
-            <div class="me-3">{{ mainProb.numOfDislikes }}</div>
-          </div>
         </v-row>
       </v-container>
     </v-card-title>
@@ -23,17 +36,14 @@
     <!-- 카드 본문 -->
     <v-card-text>
       <v-row>
-        <!-- v-for문 사용해서 태그 띄우기 -->
-        <div class="mt-5">
-          <v-chip small color="#926DFF" class="white--text ms-3">알고리즘</v-chip>
-          <v-chip small color="#926DFF" class="white--text ms-3">네트워크</v-chip>
-        </div>
       </v-row>
 
       <!-- 내용 -->
+      <!-- textoverflow 지정해 놓기 0812 임지민 -->
       <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
-          {{ mainProb }}
+          {{ probdetail.mainText }}
+          <!-- {{ probdetail}} -->
         </div>
       </v-row>
 
@@ -42,11 +52,11 @@
           <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{ mainProb.writerName }}</div>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
-          <v-btn @click="openModal" text large rounded height="45px" class="d-none d-md-flex">
+          <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
           <!-- 화면 사이즈 md 이하 -->
-          <v-btn @click="openModal" text large rounded height="45px" class="d-md-none mt-3" width="100%">
+          <v-btn @click="openModal" text small rounded height="45px" class="d-md-none mt-3" width="100%">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
       </v-row>
@@ -54,12 +64,15 @@
     </v-card-text>
 
     <!-- 모달 -->
-    <problem-modal @close="closeModal" v-if="modal" :mainProb="mainProb"></problem-modal>
+    <problem-modal @close="closeModal" v-if="modal" :probdetail="probdetail"></problem-modal>
   </v-card>
 </template>
 
 <script>
 import ProblemModal from '@/components/ProblemModal/ProblemModal.vue'
+import axios from 'axios'
+import drf from '@/api/drf.js'
+import {mapGetters} from 'vuex'
 
 export default {
     data() {
@@ -68,6 +81,7 @@ export default {
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
             modal: false,
+            probdetail : null,
         }
     },
     components: {
@@ -75,6 +89,9 @@ export default {
     },
     props: {
         mainProb: Object,
+    },
+    computed: {
+      ...mapGetters(['accessToken'])
     },
     methods: {
         changeLikeStatus() {
@@ -129,7 +146,28 @@ export default {
         // event () {
         //   this.$router.push({ path: 'problem' })
         // },
-    }
+    },
+    created() {
+      const probId = this.mainProb.id
+
+      axios({
+      url: drf.api + 'post' + `/${probId}`,
+      methods: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },      
+    })
+    .then(res => {
+      console.log(res.data)
+      this.probdetail = res.data
+      console.log('probdetail=', this.probdetail)
+    })
+    .catch(err => {
+      console.log("에러")
+      console.log(err)
+    })
+
+    },
 }
 </script>
 
