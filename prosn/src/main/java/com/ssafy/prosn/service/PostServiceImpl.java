@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/08/10
+ * updated by seongmin on 2022/08/12
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -179,7 +179,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void likeDislikeClick(LikeDisLikeRequestDto dto, Long uid) {
+    public LikeDisLikeNumDto likeDislikeClick(LikeDisLikeRequestDto dto, Long uid) {
         User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
         Post post = postRepository.findById(dto.getPid()).orElseThrow(() -> new BadRequestException("유효하지 않은 게시글입니다."));
 
@@ -198,6 +198,7 @@ public class PostServiceImpl implements PostService {
             post.increaseLikeDislike(dto.isType());
             likeDislikeRepository.save(new LikeDislike(user, post, dto.isType()));
         }
+        return new LikeDisLikeNumDto(post.getNumOfLikes(), post.getNumOfDislikes());
     }
 
 //    @Override
