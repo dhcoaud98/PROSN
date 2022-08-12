@@ -2,7 +2,7 @@
   <v-container class="ma-0 pa-0">
     <v-row class="d-flex mt-5 ms-5">
       <v-icon large color="#926DFF">groups</v-icon>
-      <h2 class="ms-3 dark--text">S T U D Y</h2>
+      <h2 class="ms-3 dark--text font-weight-regular">S T U D Y</h2>
     </v-row>    
 
     <!-- 1. 프로필 상단 -->
@@ -12,7 +12,7 @@
         <v-row>
           <div class="d-flex">
             <div><v-chip color="orange lighten-2" class="white--text font-weight-bold mx-3">P R O S N</v-chip></div>
-            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">아무개</h2><h3 class="grey--text">님의 스터디</h3></div>
+            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 스터디</h3></div>
           </div>
 
           <div class="d-flex">
@@ -63,6 +63,7 @@
 import StudyList from "./StudyList.vue"
 import MyStudyList from "./MyStudyList.vue"
 import router from "@/router"
+import { mapGetters } from 'vuex'
 
 
 export default {
@@ -96,6 +97,7 @@ export default {
         default: return {}
       }
     },
+    ...mapGetters(['accessToken', 'userId', 'userName'])
   },
   methods:{
     event () {
