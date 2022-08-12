@@ -126,11 +126,6 @@ import { mapGetters } from 'vuex'
 export default {
   data(){
     return {
-      noteDetail: {
-        reason: '',
-        studyContent: '',
-        memo: '',
-      },
       examples: [],
 
     }
@@ -174,6 +169,7 @@ export default {
       })
       .then(res => {
           console.log("res = ",res);
+          this.$router.push({path: '/note'})
           // data에 저장해서 띄우기
           // dispatch('saveToken', token)
           // dispatch('fetchCurrentUser')
@@ -221,7 +217,7 @@ export default {
       // console.log(dict)
 
       this.examples.push({'id': num, 'example': this.noteDetail[`example${num}`]})
-      console.log(this.noteDetail[`example${num}`])
+      // console.log(this.noteDetail[`example${num}`])
 
       // const arr = []
       // arr.push(this.noteDetail[`example${num}`])
