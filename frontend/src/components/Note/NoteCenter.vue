@@ -6,7 +6,7 @@
     </v-row>  
 
     <!-- row 1. 제목 -->
-    <v-row>
+    <v-row class="mt-10 mx-5 mb-0">
       <p class="font-parent-lar">
         <!-- 나중에 유저 이름 받아올 수 있으면 아래 부분 바꿔주기 -->
         <span class="font-weight-bold">{{userName}}</span>
@@ -22,31 +22,31 @@
       - 클릭하면 내부 텍스트 값을 아래 열로 보내주기
       - 그리고 그 텍스트 값을 notelist로 내려줘야 함
     -->
-    <v-row class="bottom-border-grey pb-5 mr-2">
+    <v-row class="bottom-border-grey pb-5 mr-2 mx-5 mb-0">
       <v-chip-group column mandatory active-class="clicked-chip">
         <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('전체')" id="whole" small>#전체</v-chip>
         <div v-for="category in categories" :key="category.toDB">
-          <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toUser)" small>
+          <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toDB)" small>
             #{{category.toUser}}</v-chip>
         </div>
       </v-chip-group>
     </v-row>
 
     <!-- row 3: 선택한 카테고리 -->
-    <v-row class="mt-2 mr-0">
+    <v-row class="mt-2 mr-0 mx-5">
       <v-col class="bottom-border-grey">
         <p class="font-parent-lar font-weight-bold mb-1">#{{ selected }}</p>
       </v-col>
     </v-row>
 
     <!-- row4. note list -->
-    <v-row class="ml-2">
-      <p class="font-parent-mid-l font-weight-bold bottom-border-grey mt-3">작성 전 문제</p>
+    <v-row class="ml-2 mx-5">
+      <p class="font-parent-mid-l font-weight-bold bottom-border-grey mt-3 mx-5">작성 전 문제</p>
       <note-list :beforeProbs="beforeProbs"></note-list>
     </v-row>
-    <hr class="my-5 border-grey">
+    <hr class="my-5 border-grey mx-5">
     <v-row class="ml-2">
-      <p class="font-parent-mid-l font-weight-bold bottom-border-grey">이미 작성한 문제</p>
+      <p class="font-parent-mid-l font-weight-bold bottom-border-grey mx-5">이미 작성한 문제</p>
       <note-list :afterProbs="afterProbs"></note-list>
     </v-row>
   </v-container>
