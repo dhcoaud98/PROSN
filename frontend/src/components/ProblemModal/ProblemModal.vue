@@ -12,7 +12,7 @@
               </slot>               -->
               <v-card-text class="d-flex justify-space-between align-center px-0">
                 <v-btn @click="event(probdetail.id)" text class="font-weight-bold pr-0 pl-3" small>자세히</v-btn>
-                <v-btn @click="$emit('close')" text class="font-weight-bold pa-0">X</v-btn>
+                <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
               </v-card-text>    
 
               <!-- 문제 제목 -->
@@ -83,9 +83,13 @@
                           <v-icon>{{downText}}</v-icon>
                         </v-btn>
                         <!-- 스크랩 버튼 -->
-                        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
+                        <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
                           <v-icon>{{scrapText}}</v-icon>
-                        </v-btn>                    
+                        </v-btn>   
+
+                        <!-- 스크랩 모달 -->
+                        <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
+
                         <!-- 제출 버튼 -->
                         <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
                       </v-col>
@@ -121,15 +125,18 @@
 import drf from '@/api/drf'
 import axios from 'axios'
 import ProblemReply from './ProblemReply.vue'
+import Scrap from '@/components/Scrap/Scrap.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'ProblemModal',
   components: {
-    ProblemReply
+    ProblemReply,
+    Scrap,
   },
   data () {
     return {
+      scrapModal: false,
       upText: 'thumb_up_off_alt',
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
@@ -222,6 +229,14 @@ export default {
        } else {
             this.scrapText = "bookmark_border"
        }
+    },
+    openScrapModal() {
+        this.scrapModal = true
+        console.log('openModal')
+    },
+    closeScrapModal() {
+        this.scrapModal = false
+        console.log('closeModal')
     },
 
     // 2022.08.03. 댓글보기 버튼 누를 때

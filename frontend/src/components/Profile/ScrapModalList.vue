@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-list>
     <scrap-modal-list-items></scrap-modal-list-items>
-  </v-container>
+  </v-list>
 </template>
 
 <script>

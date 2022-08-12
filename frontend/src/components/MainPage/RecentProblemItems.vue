@@ -69,10 +69,8 @@
 </template>
 
 <script>
-import drf from '@/api/drf'
 import axios from 'axios'
 import ProblemModal from '@/components/ProblemModal/ProblemModal.vue'
-import axios from 'axios'
 import drf from '@/api/drf.js'
 import {mapGetters} from 'vuex'
 
