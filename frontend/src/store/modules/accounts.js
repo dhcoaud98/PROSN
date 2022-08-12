@@ -10,12 +10,14 @@ const accountStore = {
 		accessToken: sessionStorage.getItem('token') || '',
 		userName: '',
 		authError: null,
+		refreshToken: sessionStorage.getItem('reToken') || '',
 	},
 	getters: {
 		isLoggedIn: (state) => !!state.accessToken,
 		authError: (state) => state.authError,
 		userName: (state) => state.userName,
 		accessToken: (state) => state.accessToken,
+		refreshToken: (state) => state.refreshToken
 	},
 	mutations: {
 		SET_TOKEN: (state, accessToken) => {
@@ -24,15 +26,17 @@ const accountStore = {
 		},
 		SET_AUTH_ERROR: (state, error) => (state.authError = error),
 		SET_USER_NAME: (state, userName) => (state.userName = userName),
+		SET_REFRESH_TOKEN: (state, refreshToken) => (state.refreshToken = refreshToken)
 	},
 	actions: {
-		saveToken({ commit }, accessToken) {
+		saveToken({ commit }, accessToken, refreshToken) {
 			console.log('accessToken save : ', accessToken)
 			/* 
       state.token 추가 
       localStorage에 token 추가
       */
 			commit('SET_TOKEN', accessToken)
+			commit('SET_REFRESH_TOKEN', refreshToken)
 			// sessionStorage.setItem('token', accessToken)/
 			// commit('SET_CURRENT_USER', accessToken)
 		},

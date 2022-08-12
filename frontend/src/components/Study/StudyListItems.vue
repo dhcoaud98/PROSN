@@ -12,7 +12,7 @@
           <!-- 좋아요 싫어요 정보 -->
           <div class="d-flex me-3">
             <v-icon class="me-2">mdi-account-check-outline</v-icon>
-            <div class="me-3 grey--text">{{ study.currentPerson + 1 }}</div><div>/ {{ study.maxPerson }}</div>
+            <div class="me-3 grey--text">{{ study.currentPerson }}</div><div>/ {{ study.maxPerson }}</div>
           </div>
         </v-row>
       </v-container>

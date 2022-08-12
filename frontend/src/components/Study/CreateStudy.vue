@@ -145,6 +145,7 @@
 import axios from 'axios';
 import drf from '@/api/drf';
 import { mapGetters } from 'vuex';
+import Token from '@/components/Token.js'
 
 export default {
   name: 'CreateProblem',
@@ -212,11 +213,16 @@ export default {
       .catch(err =>{
           console.log("에러")
           console.log(err)
+          console.log(err.response.status)
+          console.log("refreshToken=",this.refreshToken)
+          if (err.response.status === 401) {
+            Token.reissue(this.accessToken, this.refreshToken)
+          }
         })
     }
   },
   computed: {
-    ...mapGetters(['accessToken']),
+    ...mapGetters(['accessToken', 'refreshToken']),
   },
 }
 </script>

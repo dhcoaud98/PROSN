@@ -15,7 +15,7 @@
             <!-- 중간 정보 -->
             <v-col cols="12">
               <v-divider class="info-divider mb-2"></v-divider>
-              <p class="ma-0 px-2" style="color:#512DA8">현재원 / 총원 : {{studydetail.currentPerson + 1}} / {{studydetail.maxPerson}} </p>
+              <p class="ma-0 px-2" style="color:#512DA8">현재원 / 총원 : {{studydetail.currentPerson}} / {{studydetail.maxPerson}} </p>
               <p class="ma-0 px-2">마감일 : {{studydetail.expiredDate}}</p>
               <p class="ma-0 px-2">장소 : {{studydetail.place}}</p>
               <v-divider class="info-divider mt-2"></v-divider>

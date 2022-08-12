@@ -193,6 +193,18 @@ export default {
       this.$store.dispatch('removeToken', "")
       this.$store.dispatch('removeName', "")
       sessionStorage.setItem('accessToken', "")
+
+      axios({
+          url: drf.accounts.logout(),
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },
+      })
+      .catch(err =>{
+          console.log("에러")
+          console.log(err.status)
+      })
     },
     // 유저 정보 모두 가져와서 문제 많이 푼 횟수로 3개 가져오기
     // sidebarPopularUser() {

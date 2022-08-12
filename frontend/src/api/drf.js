@@ -17,6 +17,7 @@ export default {
   accounts: {
     login: () => HOST + USER +'login/',
     join: () => HOST + USER + 'join/',
+    logout: () => HOST + USER + 'logout/',
   },
   api: HOST,
   study : {
@@ -36,4 +37,5 @@ export default {
   solving: {
     SOLVING
   }
+
 }
