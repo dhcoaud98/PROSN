@@ -1,4 +1,4 @@
-package com.ssafy.prosn.converter;
+package com.ssafy.prosn.cj.converter;
 
 import javax.persistence.AttributeConverter;
 

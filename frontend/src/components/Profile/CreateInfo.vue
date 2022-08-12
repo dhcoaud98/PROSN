@@ -83,6 +83,7 @@ export default {
     cancel () {
       this.$router.push({ path: 'profile' })
     },
+
     createInformation() {
       // console.log('토큰 = ', this.accessToken)
       axios({

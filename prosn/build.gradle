@@ -29,6 +29,13 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
+	//JSON객체 파싱
+	implementation 'com.google.code.gson:gson:2.8.5'
+
+	// JSTL
+	implementation 'javax.servlet:jstl'
+	// JASPER
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 
 	//Querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa'

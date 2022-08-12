@@ -1,15 +1,14 @@
 package com.ssafy.prosn.service;
 
 import com.ssafy.prosn.domain.profile.note.WrongAnswer;
-import com.ssafy.prosn.dto.NoteResponseDto;
-import com.ssafy.prosn.dto.WrongAnswerNoteDetailResponseDto;
-import com.ssafy.prosn.dto.WrongAnswerRequestDto;
-import com.ssafy.prosn.dto.WrongNoteRequestDto;
+import com.ssafy.prosn.dto.*;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 /**
  * created by seongmin on 2022/07/29
+ * updated by seongmin on 2022/08/06
  */
 public interface WrongAnswerService {
 
@@ -19,6 +18,7 @@ public interface WrongAnswerService {
 
     void delete(Long id, Long uid);
 
-    List<NoteResponseDto> getNote(Long uid);
+    NoteResponseDto getNote(Long uid, Pageable pageable, boolean isWrite);
+    NoteResponseDto getNoteByTag(Long uid, Pageable pageable, boolean isWrite, String tag);
     WrongAnswerNoteDetailResponseDto getNoteDetail(Long id, Long uid);
 }

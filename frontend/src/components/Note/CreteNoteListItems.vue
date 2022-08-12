@@ -84,21 +84,34 @@
         <v-row class="mx-2 my-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold font-parent-mid-l mb-0">틀린 이유</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea maxlength="150" no-resize counter required dense rows="3" class="font-parent-mid"></v-textarea>
+            <v-textarea 
+            maxlength="150" 
+            no-resize counter required dense 
+            rows="3" 
+            class="font-parent-mid"
+            v-model="credentials.reason"></v-textarea>
           </v-col>
         </v-row>
         <!-- 추가로 공부할 것 -->
         <v-row class="mx-2 my-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold font-parent-mid-l mb-0">추가로 공부할 것</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea maxlength="150" no-resize counter required dense rows="3" class="font-parent-mid"></v-textarea>
+            <v-textarea maxlength="150" 
+            no-resize counter required dense 
+            rows="3" 
+            class="font-parent-mid"
+            v-model="credentials.studyContent"></v-textarea>
           </v-col>
         </v-row>
         <!-- 메모 -->
         <v-row class="mx-2 my-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold font-parent-mid-l mb-0">메모</p></v-col>
           <v-col class="col-12 pa-0">
-            <v-textarea maxlength="150" no-resize counter required dense rows="3" class="font-parent-mid"></v-textarea>
+            <v-textarea maxlength="150" 
+            no-resize counter required dense 
+            rows="3" 
+            class="font-parent-mid"
+            v-model="credentials.memo"></v-textarea>
           </v-col>
         </v-row>
         <!-- 저장히기 -->
@@ -116,6 +129,11 @@ import axios from 'axios'
 export default {
   data(){
     return {
+      credentials: {
+        reason: '',
+        studyContent: '',
+        memo: '',
+      }
     }
   },
   props: {

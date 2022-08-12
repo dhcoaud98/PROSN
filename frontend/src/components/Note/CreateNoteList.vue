@@ -67,7 +67,8 @@ export default {
         realAnswer: 4,
       }
     }
-  }
+  },
+ 
 }
 </script>
 

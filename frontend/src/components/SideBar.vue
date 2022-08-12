@@ -1,32 +1,38 @@
 <template>
   <!-- 채명왈 : lg 사이즈 이하에서는 사이드바가 보이지 않음! -->
-  <v-container fluid class="bg-grey">
-    <v-navigation-drawer right class="mt-1 ml-3 d-md-none d-md-flex">
+  <v-container fluid class="bg-grey pa-0">
+    <v-navigation-drawer right class="mt-1 ml-3 d-md-none d-md-flex" width="100%">
       <v-row>
         <!-- 채명왈 : login이랑 logout 나중에 router로 연결하면 됨 -->
-        <v-col col="6" class="d-flex justify-center">{{ userName }}</v-col>
-        
         <v-col col="6" class="d-flex justify-center">
           <li style="list-style: none;" v-if="!isLoggedIn">
-            <router-link to="/login" class="text-decoration-none black--text"><v-btn rounded class="pink white--text">login</v-btn></router-link>
+            <router-link to="/signup" class="text-decoration-none black--text"><v-btn rounded-sm color="#a384ff" style="width: 120%;" text>signup</v-btn></router-link>
           </li>
+          <!-- 08.07 오채명 : 후에 유저 이름을 클릭하면 유저의 프로필로 넘어갈 수 있도록 함. -->
           <li style="list-style: none;" v-if="isLoggedIn">
-            <v-btn rounded class="text-decoration-none black--text pink white--text" @click="logout">logout</v-btn>
+            <router-link to="/profile" class="text-decoration-none black--text"><v-btn rounded-sm color="#a384ff" style="width: 120%;" text>{{ userName }}</v-btn></router-link>
           </li>
         </v-col>
         
+        <v-col col="6" class="d-flex justify-center">
+          <li style="list-style: none;" v-if="!isLoggedIn">
+            <router-link to="/login" class="text-decoration-none black--text"><v-btn rounded-sm style="width: 120%;" color="#a384ff" text>login</v-btn></router-link>
+          </li>
+          <li style="list-style: none;" v-if="isLoggedIn">
+            <v-btn rounded-sm class="text-decoration-none" style="width: 120%;" color="#a384ff" @click="logout" text>logout</v-btn>
+          </li>
+        </v-col>
       </v-row>
 
       <v-row class="pa-0 ma-0">
-        <v-col class="px-0">
-          <!-- 문제 길이 해결하기!-->
+        <v-col class="px-0 pb-0">
           <search-bar></search-bar>
         </v-col>
       </v-row> 
 
       <!-- 1. 오늘의 인기 문제 -->
       <!-- icon 찾기 -->
-      <v-card class="mx-auto mb-5" height ="280px" color="#FCE4EC">
+      <v-card class="mx-auto mb-5 rounded-xl" height ="280px" color="#FCE4EC">
         <v-card-text>
           <p class="text-h6 text--primary d-flex justify-center mb-0">{{nowDate}} 인기 문제</p>
           <p class="text-right ma-0 mb-2">{{nowDate}} {{nowTime}} 실시간</p>
@@ -50,8 +56,8 @@
       </v-card>
 
       <!-- 2. 오늘의 유저 -->
-      <v-card class="mx-auto mb-5" height ="330px" color="#EDE7F6">
-        <v-card-text>
+      <v-card class="mx-auto mb-5 rounded-xl" height ="330px" color="#EDE7F6">
+        <v-card-text class="pb-0">
           <p class="text-h6 text--primary d-flex justify-center mb-0 color--#f3f3f3">{{nowDate}} 유저 랭킹</p>
           <p class="text-right">{{nowDate}} {{nowTime}} 실시간</p>
           <v-row>
@@ -81,7 +87,10 @@
       </v-card>
     </v-navigation-drawer>
   </v-container>
+
 </template>
+
+
 
 <script>
 import SearchBar from './SearchBar.vue';
@@ -97,6 +106,7 @@ export default {
       timer: null,
       nowDate: '',
       nowTime: '',
+      // inputData: null,
       items: [
         { avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', name: '채명', total: 538  },
         { avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', name: '지민', total: 621  },
@@ -106,6 +116,9 @@ export default {
   },
   computed: {
     ...mapGetters(['userName','isLoggedIn',]),
+    isSearched() {
+      return this.$store.getters['problem/isSearched']
+    }
   },
   mounted () {
     this.timer = setInterval(() => {
@@ -129,13 +142,36 @@ export default {
     logout () {
       console.log("logout click");
       this.$store.dispatch('removeToken', "")
-      
       this.$store.dispatch('removeName', "")
       sessionStorage.setItem('accessToken', "")
-    }
+    },
+    // 유저 정보 모두 가져와서 문제 많이 푼 횟수로 3개 가져오기
+    // sidebarPopularUser() {
+    //     axios({
+    //             url: drf.accounts.login(),
+    //             method: 'post',
+    //             data: this.credentials
+    //         })
+    //         .then(res => {
+    //             console.log("res = ",res);
+    //             console.log("accessToken = ",res.data.accessToken);
+    //             let grantType = res.data.grantType.replace(res.data.grantType.charAt(0), res.data.grantType.charAt(0).toUpperCase());
+    //             console.log("grantType:", grantType);
+    //             this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken)
+    //             this.$store.dispatch('saveName', res.data.name)
+    //             this.$router.push({ path: '/'})
+    //         })
+    //         .catch(err =>{
+    //             console.log("에러")
+    //             console.log(err)
+    //         })
+    //   },
   }
 }
 </script>
 
 <style>
+.btn {
+  color: aqua;
+}
 </style>

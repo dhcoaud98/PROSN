@@ -1,6 +1,6 @@
 package com.ssafy.prosn.domain.profile.note;
 
-import com.ssafy.prosn.converter.BooleanToYNConverter;
+import com.ssafy.prosn.cj.converter.BooleanToYNConverter;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.post.Problem;
 import com.ssafy.prosn.domain.user.User;

@@ -124,7 +124,7 @@ export default {
 			// console.log('토큰 = ', this.accessToken);
 			this.credentials.answer = this.credentials.ex1;
 			axios({
-				url: `${drf.api}post/problem`,
+				url: drf.postFeed.problem(),
 				method: 'post',
 				headers: {
 					Authorization: this.accessToken,
@@ -133,6 +133,7 @@ export default {
 			})
 				.then((res) => {
 					console.log('res = ', res);
+          this.$router.push({ path: 'profile' })
 				})
 				.catch((err) => {
 					console.log('에러');

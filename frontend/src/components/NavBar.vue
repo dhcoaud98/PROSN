@@ -12,7 +12,7 @@
           <v-list-item-content>
             <v-list-item-title>
               <router-link to="/">
-                <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5" id="mainPage"></v-img>
+                <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5" id="mainPage" @click="searchCleard()"></v-img>
               </router-link>
             </v-list-item-title>
           </v-list-item-content>
@@ -29,7 +29,7 @@
                 그래서 app.vue가 created될 때 vuex에서 state를 가져와서 띄운다.
                -->
               <router-link :to="`/${item.urlName}`" class="text-decoration-none black--text">
-                <v-list-item-title class="left-line ml-5 mb-0 py-5 pl-5" :id="item.urlName">{{ item.text }}</v-list-item-title>
+                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="item.urlName">{{ item.text }}</v-list-item-title>
               </router-link>
             </v-list-item-content>
           </v-list-item>
@@ -117,7 +117,9 @@ export default {
     }
   },
   methods: {
-    
+    searchCleard: function(event) {
+            this.$store.dispatch('problem/searchKeyword', "")
+    },
   },
   
 }
