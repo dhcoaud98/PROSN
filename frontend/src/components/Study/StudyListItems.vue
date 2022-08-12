@@ -1,31 +1,43 @@
 <template>
-    <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
-    <v-row class="color-FAF0F3 feed-width mx-auto border-a-10">
-      <v-col cols="12">
-        <v-card class="px-5" color="#FAF0F3">
-          <v-row>
-            <!-- 문제 대표 이미지 -->
-            <!-- <v-col cols="1" class="pb-2 pt-5"><v-icon large color="black darken-2">mdi-group</v-icon></v-col> -->
-            <!-- 문제 태그, 문제 제목 --> 
-            <v-col cols="10">
-              <v-col cols="12" class="pa-0 mb-1">
-                <h4>8/19 넥슨 기술 면접 스터디원 구함</h4>
-              </v-col>
-              <v-col cols="12" class="problem_title pa-0 pt-1">
-                2/5
-              </v-col>
-            </v-col>
-            <v-col cols="2" class="problem_detail">
-              <p type="button" @click="openModal">자세히 ></p>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
+  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8">
+    <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
+    <v-card-title class="pa-0 bg-gradation">
+      <v-container class="pa-0">
+        <!-- 스터디 제목 / 현재인원수와 총인원수 -->
+        <v-row class="d-flex justify-space-between ma-3">
+          <!-- 제목 -->
+          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
+            {{ study.title }}
+          </div>
+          <!-- 좋아요 싫어요 정보 -->
+          <div class="d-flex me-3">
+            <v-icon class="me-2">mdi-account-check-outline</v-icon>
+            <div class="me-3 grey--text">{{ study.currentPerson }}</div><div>/ {{ study.maxPerson }}</div>
+          </div>
+        </v-row>
+      </v-container>
+    </v-card-title>
 
-      <!-- 08.04 모달 (오채명) -->
-      <study-modal @close="closeModal" v-if="this.modal">
-      </study-modal>
-    </v-row>
+    <!-- 카드 본문 -->
+    <v-card-text>
+      <v-row class="ma-4 mb-2 d-flex justify-space-between">
+        <!-- 출제자 -->
+          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Leader</div>
+        <!-- 모달 띄우기 버튼 -->
+          <!-- 화면 사이즈 md 이상 -->
+          <v-btn @click="openModal" text large rounded height="45px" class="d-none d-md-flex">
+            <div class="show-up-btn font-weight-regular">SHOW UP</div>
+          </v-btn>
+          <!-- 화면 사이즈 md 이하 -->
+          <v-btn @click="openModal" text large rounded height="45px" class="d-md-none mt-3" width="100%">
+            <div class="show-up-btn font-weight-regular">SHOW UP</div>
+          </v-btn>
+      </v-row>
+    </v-card-text>
+
+    <!-- 모달 -->
+    <study-modal @close="closeModal" v-if="this.modal" :study="study"></study-modal>
+  </v-card>
 </template>
 
 <script>
@@ -33,18 +45,23 @@ import StudyModal from "@/components/Study/StudyModal.vue"
 
 export default {
   name: 'StudyListItems',
-  components: {
-    StudyModal,
-  },
   data() {
     return {
       modal: false,
+      pageId: 0,
     }
+  },
+  props: {
+    study: Object,
+  },
+  components: {
+    StudyModal,
   },
   methods: {
     openModal() {
       this.modal = true
       console.log(openModal)
+      console.log(this.study.id)
     },
     closeModal() {
       this.modal = false
@@ -55,7 +72,8 @@ export default {
         this.message = ''
         this.closeModal()
     }
-  }
+  },
+
 }
 </script>
 

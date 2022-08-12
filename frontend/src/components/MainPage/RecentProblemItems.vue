@@ -1,85 +1,67 @@
 <template>
-  <!-- 피드 하나하나 디자인 하고 그 자리에 받아온 데이터 띄우기 -->
-  <div class="my-3 pa-5 w-100">
-    <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
-    <div class="color-FAF0F3 mx-auto border-a-10">
-        <!-- 카드 클릭시 모달 오픈 -->
-        <v-container class="px-5" @click="openModal">
-            <!-- 첫번째 v-row: 프사, 사용자 이름, 사용자 등급, 팔로우 버튼 -->
-            <v-row class="align-center justify-space-between">
-                <div class="d-flex align-center mx-2 my-4">
-                    <!-- profile 뒤에 개인 username 붙이기 0802 임지민 -->
-                    <router-link to="/profile">
-                        <span class="material-icons mr-2 font-parent-lar text-decoration-none black--text pt-2">
-                            account_circle
-                        </span>
-                    </router-link>
-                    <span class="font-weight-bold font-parent-mid">jimin4661</span>
-                    <span class="ml-2 tmp-border py-1 font-weight-bold font-parent-sml">PROSN</span>
-                </div>
-                
-                <!-- 크기가 작아지면 버튼 크기도 작아지게; 부모 크기 상속받도록? -->
-                <button type="button" class="pa-2 border-a-10 color-D9D9D9 font-weight-bold font-parent-mid">팔로우</button>
-            </v-row>
+  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card ma-8">
+    <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
+    <v-card-title class="pa-0 bg-gradation">
+      <v-container class="pa-0">
+        <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
+        <v-row class="d-flex justify-space-between ma-3">
+          <!-- 제목 -->
+          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
+            {{mainProb.title}}
+          </div>
+          <!-- 좋아요 싫어요 정보 -->
+          <div class="d-flex me-3">
+            <v-icon class="me-2">thumb_up_off_alt</v-icon>
+            <div class="me-3">{{ mainProb.numOfLikes }}</div>
+            <v-icon class="me-2">thumb_down_off_alt</v-icon>
+            <div class="me-3">{{ mainProb.numOfDislikes }}</div>
+          </div>
+        </v-row>
+      </v-container>
+    </v-card-title>
 
-            <!-- 두번째 row: 본문 -->
-            <v-row class="white border-a-10 mb-4">
-                <!-- 카테고리 태그 -->
-                <v-row class="col-12 mt-2 ml-2">
-                    <!-- 0801 임지민
-                        카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" 
-                        나중에 for문으로 돌리기
-                    -->
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#네트워크</span>
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#알고리즘</span>
-                    <span class="category-tag text-center pa-1 d-inline-block mr-2 font-parent-sml">#CS</span>
-                </v-row>
-                <!-- 0801 임지민
-                    본문 
-                    - 1~2줄만 보여주고 나머지는 text-overflow: ellipsis 처리하기
-                -->
-                <v-row class="px-4 mb-4">
-                    <p class="px-4 mb-4 ">
-                        여기는 문제 칸입니다.
-                    </p>
-                </v-row>
-            </v-row>
+    <!-- 카드 본문 -->
+    <v-card-text>
+      <v-row>
+        <!-- v-for문 사용해서 태그 띄우기 -->
+        <div class="mt-5">
+          <v-chip small color="#926DFF" class="white--text ms-3">알고리즘</v-chip>
+          <v-chip small color="#926DFF" class="white--text ms-3">네트워크</v-chip>
+        </div>
+      </v-row>
 
-            <!-- 
-                세번째 row: 좋아요, 싫어요, 스크랩 
-                - 클릭하면 색이 바뀌도록 처리
-            -->
-            <v-row class="justify-end mb-3">
-                    <span class="material-icons mr-4" @click="changeLikeStatus" id="upIcon">
-                        {{upText}}
-                    </span>
-                    <span class="material-icons mr-4" @click="changeHateStatus" id="downIcon">
-                        {{downText}}
-                    </span>
-                    <span class="material-icons mr-4" @click="changeScrapStatus" id="scrapIcon">
-                        {{scrapText}}
-                    </span>
-            </v-row>
-        </v-container>
+      <!-- 내용 -->
+      <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
+        <div class="mb-4" style="font-size: 1.1em">
+          {{ mainProb }}
+        </div>
+      </v-row>
 
-        <problem-modal @close="closeModal" v-if="modal">
-            <!-- ProblemModal.vue의 슬롯에 해당하는 부분 -->
-            <!-- <v-card-text slot="btns" class="d-flex justify-space-between">
-                <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
-                <v-btn @click="closeModal" text class="font-weight-bold">뒤로가기</v-btn>
-            </v-card-text>         -->
-        </problem-modal>
-    </div>
-  </div>
+      <v-row class="ma-4 mb-2 d-flex justify-space-between">
+        <!-- 출제자 -->
+          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{ mainProb.writerName }}</div>
+        <!-- 모달 띄우기 버튼 -->
+          <!-- 화면 사이즈 md 이상 -->
+          <v-btn @click="openModal" text large rounded height="45px" class="d-none d-md-flex">
+            <div class="show-up-btn font-weight-regular">SHOW UP</div>
+          </v-btn>
+          <!-- 화면 사이즈 md 이하 -->
+          <v-btn @click="openModal" text large rounded height="45px" class="d-md-none mt-3" width="100%">
+            <div class="show-up-btn font-weight-regular">SHOW UP</div>
+          </v-btn>
+      </v-row>
+
+    </v-card-text>
+
+    <!-- 모달 -->
+    <problem-modal @close="closeModal" v-if="modal" :mainProb="mainProb"></problem-modal>
+  </v-card>
 </template>
 
 <script>
 import ProblemModal from '@/components/ProblemModal/ProblemModal.vue'
 
 export default {
-    components: {
-        ProblemModal,
-    },
     data() {
         return {
             upText: 'thumb_up_off_alt',
@@ -87,6 +69,12 @@ export default {
             scrapText: 'bookmark_border',
             modal: false,
         }
+    },
+    components: {
+        ProblemModal,
+    },
+    props: {
+        mainProb: Object,
     },
     methods: {
         changeLikeStatus() {

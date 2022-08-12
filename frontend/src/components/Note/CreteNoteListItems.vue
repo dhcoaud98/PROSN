@@ -79,7 +79,7 @@
 
     <!-- col 2: 오답노트 양식 -->
     <v-col cols="6" class="pl-3 left-border-grey">
-      <v-form class="pl-3">
+      <v-form class="pl-3" @submit.prevent="submitNote">
         <!-- 틀린 이유 -->
         <v-row class="mx-2 my-2">
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold font-parent-mid-l mb-0">틀린 이유</p></v-col>
@@ -116,7 +116,7 @@
         </v-row>
         <!-- 저장히기 -->
         <v-row class="justify-end mt-5">
-          <v-btn outlined rounded small @submit.prevent="submitNote">저장하기</v-btn>
+          <v-btn type="submit" outlined rounded small>저장하기</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -125,11 +125,14 @@
 
 <script>
 import axios from 'axios'
+import drf from '@/api/drf.js'
+import { mapGetters } from 'vuex'
 
 export default {
   data(){
     return {
       credentials: {
+        id: 1,
         reason: '',
         studyContent: '',
         memo: '',
@@ -138,6 +141,9 @@ export default {
   },
   props: {
     problem: Object,
+  },
+  computed: {
+    ...mapGetters(['accessToken', 'userName'])
   },
   methods :{
     selectMyAnswer() {
@@ -159,19 +165,22 @@ export default {
     },
     submitNote() {
       axios({
-          url: drf.note.wronganswer(),
-          method: 'post',
-          data: this.credentials
+          url: drf.wrongAnswer.wrongAnswer(),
+          method: 'patch',
+          headers: {
+            Authorization: this.accessToken,
+          },
+          data: this.credentials,
       })
       .then(res => {
           console.log("res = ",res);
-          const token = res.data.key
+          // const token = res.data.key
           // dispatch('saveToken', token)
           // dispatch('fetchCurrentUser')
       
       })
       .catch(err =>{
-          console.log("에러")
+          // console.log("에러")
           console.log(err)
         })
     }

@@ -13,9 +13,13 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12">
-        <h3>여기가 본문이지롱</h3>
-      </v-col>
+      <v-card outlined class="mx-3 mb-2 pa-3 overflow-y-auto" max-height="500px" width="100%">
+        <v-card-text>
+          <div>
+            아<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>제발좀 되라 좀 제발
+          </div>                
+        </v-card-text>
+      </v-card>
     </v-row>
 
     <v-row>
@@ -25,11 +29,11 @@
           <!-- 출제자 정보 -->
           <v-col>
             <div>출제자 | </div>
-            
             <div>출제일 | </div>
           </v-col>
+
           <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-          <v-col>
+          <v-col class="col-12 col-lg-6 col-xl-3">
             <!-- 좋아요 버튼 -->
             <v-btn class="ms-2" icon color="blue lighten-2">
               <v-icon>mdi-thumb-up</v-icon>

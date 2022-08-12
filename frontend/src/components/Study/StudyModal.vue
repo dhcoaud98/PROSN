@@ -6,48 +6,33 @@
           <!-- <slot/> -->
           <v-container class="study-content">
           <v-row>
+
             <!-- 제목 -->
             <v-col cols="12">
-              <v-icon class="mb-3 ml-2">mdi-group</v-icon>
-              <span class="ml-4" style="font-size:X-large;color:#512DA8;">8/19 넥슨 기술 면접 구합니다.</span>
+              <span class="ml-4" style="font-size:X-large;color:#512DA8;">{{studydetail.title}}</span>
             </v-col>
-            
+
             <!-- 중간 정보 -->
             <v-col cols="12">
               <v-divider class="info-divider mb-2"></v-divider>
-              <p class="ma-0 px-2" style="color:#512DA8">현재원/총원 : 2/5명</p>
-              <p class="ma-0 px-2">마감일 : 2022년 08월 05일 까지</p>
-              <p class="ma-0 px-2">온/오프 : 오프라인 매주 일요일 1시 강남역</p>
+              <p class="ma-0 px-2" style="color:#512DA8">현재원 / 총원 : {{studydetail.currentPerson}} / {{studydetail.maxPerson}} </p>
+              <p class="ma-0 px-2">마감일 : {{studydetail.expiredDate}}</p>
+              <p class="ma-0 px-2">장소 : {{studydetail.place}}</p>
               <v-divider class="info-divider mt-2"></v-divider>
             </v-col>
+
+            <!-- 태그 -->
+            <div class="pl-3" v-for="(tag, idx) in studydetail.tags" :key="idx">
+              <span class="category-tag text-center pa-1">{{ tag.type }}</span>
+            </div>
+
+            <!-- 메인 정보 -->
             <v-col cols="12">
               <v-container class="study-detail-info">
-                  <!-- <v-virtual-scroll height="300" item-height="64"> -->
-                    <v-row>
-                      <p>
-                        [소개] 
-                        8월 19일 있는 넥슨 기술 면접 스터디원을 모집합니다.
-                      </p>
-                      <p>
-                        [규칙]
-                        시간 약속을 잘 지킵니다.
-                        주어진 과제는 반드시 해야합니다.
-                        성실하게 임해주셨으면 좋겠습니다.
-                      </p>
-                      <p>
-                        [기타]
-                        강남역 10번 출구 OO카페에서 매주 1시 ~ 4시까지 진행될 예정입니다.
-                        카페 사용료에 대한 금액은 개인이 준비해주시면 됩니다.
-                      </p>
-                      <p style="color:red;"> 
-                        [상세]
-                        카카오톡 오픈 채팅방 이름 : 8/19 넥슨 기술 면접 스터디원
-                        카카오톡 오픈 채팅방 비번 : *5454
-                      </p>
-                    </v-row>
-                  <!-- </v-virtual-scroll> -->
+                <v-row>
+                  {{ studydetail.mainText }}
+                </v-row>
               </v-container>
-              
             </v-col>
 
             <!-- 버튼 -->
@@ -65,12 +50,40 @@
 </template>  
 
 <script>
+import drf from '@/api/drf'
+import axios from 'axios'
+import { mapGetters } from "vuex"
+
 export default {
   name: 'StudyModal',
   data() {
     return {
       modal: false,
+      studyId: 0,
+      studydetail: [],
     }
+  },
+  props: {
+    study: Object,
+  },
+  created() {
+    this.studyId = this.study.id
+    console.log("study id = ",this.studyId)
+    // console.log(`${drf.api.study()+this.pageId}`)
+
+    // 스터디 모달에 들어왔기 때문에 api/study/{studyid}에 해당하는 detail study 정보 가져오기
+    axios({
+      url: drf.study.study() + `${this.studyId}`,
+      methods: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      // console.log("studydetail =" , res.data)
+      this.studydetail = res.data
+      console.log(this.studydetail)
+    })
   },
   methods: {
     openModal() {
@@ -86,6 +99,9 @@ export default {
         this.message = ''
         this.closeModal()
     },
+  },
+  computed: {
+    ...mapGetters(['accessToken']),
   }
 }
 
@@ -144,5 +160,15 @@ export default {
     opacity: 0;
     transform: translateY(-20px);
   }
+}
+.category-tag {
+  border-radius: 20px;
+  border: 1px solid #A384FF;
+  background-color: #A384FF;
+  font-size: 5px;
+  color: white;
+  font-weight: bold;
+  height: 25px;
+  margin: 1px;
 }
 </style>

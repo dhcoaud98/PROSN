@@ -223,14 +223,17 @@ export default {
             })
             .then(res => {
                 console.log("res = ",res);
-                const token = res.data.key
+                // 0810 오채명 : 회원가입은 grantType이 없기 때문에 axios할 때 넘겨주면 안됩니다.
+                // 회원가입이 완료되면 바로 로그인을 시켜주기 위함
+                this.$store.dispatch('saveToken', res.data.accessToken)
+                this.$store.dispatch('saveName', res.data.name)
+                
+                // 회원가입이 완료되면 메인 페이지로 이동
                 this.$router.push({ path: '/'})
-                // dispatch('saveToken', token)
-                // dispatch('fetchCurrentUser')
             
             })
             .catch(err =>{
-                console.log("에러")
+                // console.log("에러")
                 console.log(err)
             })
         }

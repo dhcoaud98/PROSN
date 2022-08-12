@@ -31,7 +31,7 @@
 
           <!-- 로그인 버튼 -->
           <v-col cols="3">
-            <v-btn type="submit" color="#A384FF" class="white--text my-0 mx-5 py-5" height="100%" width="100%" @click="event()">로그인</v-btn>
+            <v-btn type="submit" color="#A384FF" class="white--text my-0 mx-5 py-5" height="100%" width="100%">로그인</v-btn>
           </v-col>
         </v-row>
       </v-form>
@@ -125,10 +125,12 @@ import {mapState, mapActions } from 'vuex'
             .then(res => {
                 console.log("res = ",res);
                 console.log("accessToken = ",res.data.accessToken);
+                console.log("refreshToken = ",res.data.refreshToken);
                 let grantType = res.data.grantType.replace(res.data.grantType.charAt(0), res.data.grantType.charAt(0).toUpperCase());
                 console.log("grantType:", grantType);
-                this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken)
+                this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken, res.data.refreshToken)
                 this.$store.dispatch('saveName', res.data.name)
+                this.$store.dispatch('saveId', res.data.id)
                 this.$router.push({ path: '/'})
                 // const token = res.data.key
                 // dispatch('saveToken', token)

@@ -1,6 +1,6 @@
 <template>
     <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
-    <v-div class="color-FAF0F3 feed-width mx-auto border-a-10">
+    <v-container class="color-FAF0F3 feed-width mx-auto border-a-10">
       <v-col cols="12">
         <v-card class="px-5" color="#FAF0F3">
           <v-row>
@@ -19,7 +19,7 @@
           </v-row>
         </v-card>
       </v-col>
-    </v-div>
+    </v-container>
 
 </template>
 
