@@ -33,7 +33,7 @@
       <!-- 내용 -->
       <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
-          {{ mainProb }}
+          {{ probdetail.mainText }}
         </div>
       </v-row>
 
@@ -54,11 +54,13 @@
     </v-card-text>
 
     <!-- 모달 -->
-    <problem-modal @close="closeModal" v-if="modal" :mainProb="mainProb"></problem-modal>
+    <problem-modal @close="closeModal" v-if="modal" :mainProb="mainProb" :probdetail="probdetail"></problem-modal>
   </v-card>
 </template>
 
 <script>
+import drf from '@/api/drf'
+import axios from 'axios'
 import ProblemModal from '@/components/ProblemModal/ProblemModal.vue'
 
 export default {
@@ -68,13 +70,37 @@ export default {
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
             modal: false,
+            probId: 0,
+            probdetail: [],
         }
     },
     components: {
-        ProblemModal,
+      ProblemModal,
     },
     props: {
-        mainProb: Object,
+      mainProb: Object,
+    },
+    // 0811 : 엑시오스 통신 코드
+    created() {
+      console.log("problem = ", this.mainProb.id)
+      this.probId = this.mainProb.id
+
+      axios({
+        url: drf.api + 'post' + `/${this.probId}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },      
+      })
+      .then(res => {
+        console.log(res.data)
+        this.probdetail = res.data
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })
+    
     },
     methods: {
         changeLikeStatus() {

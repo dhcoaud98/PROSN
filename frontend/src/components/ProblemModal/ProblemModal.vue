@@ -18,7 +18,7 @@
               <!-- 문제 제목 -->
               <!-- {{ problem.pk }}. {{ problem.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold">
-                <p class="font-parent-lar mb-0">{{probdetail.title}}</p> 
+                <p class="font-parent-lar mb-0">{{mainProb.title}}</p> 
                 <div class="pl-3 d-inline-block mb-4" v-for="(tag, idx) in probdetail.tags" :key="idx">
                   <span class="category-tag text-center pa-1">#{{ tag }}</span>
                 </div>
@@ -130,7 +130,7 @@ export default {
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
       probId: 0,
-      probdetail: {},
+      probdetail: [],
       examples: [],
       credentials: {
         pid: '',
@@ -141,11 +141,11 @@ export default {
   },
   props: {
     mainProb: Object,
+    probdetail: Object,
   },
   computed: {
     ...mapGetters(['accessToken'])
   },
-  // 0811 : 엑시오스 통신 코드
   created() {
     console.log("problem = ", this.mainProb.id)
     this.probId = this.mainProb.id
@@ -159,8 +159,8 @@ export default {
       },      
     })
     .then(res => {
-      console.log(res.data)
-      this.probdetail = res.data
+      // console.log(res.data)
+      // this.probdetail = res.data
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
       // const noteDetail = this.noteDetail
@@ -176,7 +176,7 @@ export default {
       console.log("에러")
       console.log(err)
     })
-   
+  
   },
   methods: {
     changeLikeStatus() {
