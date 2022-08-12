@@ -9,22 +9,21 @@
     <v-row class="justify-center mt-10 mx-5 mb-0">
       <!-- 뱃지, 이름 -->
       <v-container class="pa-0 mx-0">
-        <v-row>
+        <v-row class="d-flex justify-space-between align-end">
           <div class="d-flex">
             <div><v-chip color="orange lighten-2" class="white--text font-weight-bold mx-3">P R O S N</v-chip></div>
             <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">아무개</h2><h3 class="grey--text">님</h3></div>
           </div>
-
+          
+          <!-- 팔로우 팔로워 정보 -->
+          <!-- 베스트는 이거 누르면 명단 볼수있는건데 이거는 최후순위 -->
           <div class="d-flex">
+            <h4 class="grey--text text--darken-2 me-3">팔로워 0명</h4>
+            <h4 class="grey--text text--darken-2">팔로잉 0명</h4>
           </div>
         </v-row>
-              <!-- <v-col cols="4" class="text-center py-3 ma-0 px-0 font-weight-bold bg-pink">문제 풀이</v-col>
-              <v-col cols="4" class="text-center py-3 ma-0 px-0 font-weight-bold bg-pink">문제 제출</v-col>
-              <v-col cols="4" class="text-center py-3 ma-0 px-0 font-weight-bold bg-pink">정답률</v-col>
-              <v-col cols="4" class="text-center px-0 py-3 ma-0 dark--text">500 문제</v-col>
-              <v-col cols="4" class="text-center px-0 py-3 ma-0 dark--text">300 문제</v-col>
-              <v-col cols="4" class="text-center px-0 py-3 ma-0 dark--text">68 %</v-col> -->
-
+     
+        <!-- 글쓰기 -->
         <v-row class="pa-0"> 
           <v-col class="pa-0 px-2">
             <v-btn text rounded class="pa-0 dark--text" @click="event1()" color="#512DA8" width="100%">
@@ -36,11 +35,9 @@
               <v-icon color="#A384FF" class="me-2">info</v-icon><h3>INFORMATION +</h3>
             </v-btn>
           </v-col>
-
         </v-row>
       </v-container>
     </v-row>
-
   
     <!-- 2. 프로필 하단 -->
     <v-row class="profile_tab d-flex justify-center mt-5 mx-5 mb-0">
