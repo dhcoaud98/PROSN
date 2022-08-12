@@ -11,7 +11,7 @@
               <!-- <slot name="btns">
               </slot>               -->
               <v-card-text class="d-flex justify-space-between align-center px-0">
-                <v-btn @click="event()" text class="font-weight-bold pr-0 pl-3" small>자세히</v-btn>
+                <v-btn @click="event(probdetail.id)" text class="font-weight-bold pr-0 pl-3" small>자세히</v-btn>
                 <v-btn @click="$emit('close')" text class="font-weight-bold pa-0">X</v-btn>
               </v-card-text>    
 
@@ -19,14 +19,18 @@
               <!-- {{ problem.pk }}. {{ problem.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold">
                 <p class="font-parent-lar mb-0">{{probdetail.title}}</p> 
-                <div class="pl-3 d-inline-block mb-4" v-for="(tag, idx) in probdetail.tags" :key="idx">
-                  <span class="category-tag text-center pa-1">#{{ tag }}</span>
+                <div class="d-inline-block ms-3">
+                  <v-btn v-if="myCorrectStatus" rounded small outlined color="green">정답</v-btn>
+                  <v-btn v-else rounded small outlined color="red">오답</v-btn>
                 </div>
               </v-card-title>
 
               <!-- 문제 본문 -->
               <v-card-text>
                 <!-- 카테고리 라벨 -->
+                <div class="d-inline-block mb-4" v-for="(tag, idx) in probdetail.tags" :key="idx">
+                  <span class="category-tag text-center pa-1">#{{ tag }}</span>
+                </div>
                 <!-- for문으로 돌리면 될듯 -->
               </v-card-text>
 
@@ -130,37 +134,24 @@ export default {
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
       probId: 0,
-      probdetail: {},
       examples: [],
       credentials: {
         pid: '',
         right: '',
         wrongAnswer: '',
-      }
+      },
+      myCorrectStatus: null,
     }
   },
   props: {
-    mainProb: Object,
+    probdetail: Object,
   },
   computed: {
     ...mapGetters(['accessToken'])
   },
   // 0811 : 엑시오스 통신 코드
+  // recentproblemitems에서 axios 통신하고 prop으로 내려서 보기만 셔플함 0812 암지민
   created() {
-    console.log("problem = ", this.mainProb.id)
-    this.probId = this.mainProb.id
-    this.credentials.pid = this.mainProb.id
-
-    axios({
-      url: drf.api + 'post' + `/${this.probId}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },      
-    })
-    .then(res => {
-      console.log(res.data)
-      this.probdetail = res.data
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
       // const noteDetail = this.noteDetail
@@ -169,15 +160,9 @@ export default {
         // console.log(num);
         // console.log(this.probdetail[`example${num}`])
         this.examples.push({'id': num, 'example': this.probdetail[`example${num}`]})
-        // console.log(this.examples)
       })
-    })
-    .catch(err => {
-      console.log("에러")
-      console.log(err)
-    })
-   
   },
+
   methods: {
     changeLikeStatus() {
         /* 
@@ -244,8 +229,9 @@ export default {
       showReplies.setAttribute("class", "d-none")    
     },
     // 2022.08.04. 라우터 경로 연결
-    event () {
-      this.$router.push({ path: 'problem' })
+    event(pid) {
+      // console.log('pid=', pid)
+      this.$router.push({ path: `problem/${pid}`})
     },
     // goBack () {
     //   this.$router.go(-1)
@@ -260,10 +246,13 @@ export default {
       this.credentials.wrongAnswer = selectedAnswer
       if (selectedAnswer === "1") {
         this.credentials.right = true
+        this.myCorrectStatus = true
         alert('정답입니다.')
       } else {
         this.credentials.right = false
         alert('오답입니다.')
+        this.myCorrectStatus = false
+        this.$router
       }
       // console.log(this.credentials)
       // axios 보내기
