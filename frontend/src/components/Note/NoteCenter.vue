@@ -2,19 +2,15 @@
   <v-container class="ma-0 pa-0">
     <v-row class="d-flex mt-5 ms-5">
       <v-icon large color="#926DFF">sticky_note_2</v-icon>
-      <h2 class="ms-3 dark--text">N O T E</h2>
+      <h2 class="ms-3 dark--text font-weight-regular">N O T E</h2>
     </v-row>  
 
     <!-- row 1. 제목 -->
     <v-row class="mt-10 mx-5 mb-0">
-      <p class="font-parent-lar">
-        <!-- 나중에 유저 이름 받아올 수 있으면 아래 부분 바꿔주기 -->
-        <span class="font-weight-bold">{{userName}}</span>
-        님의 오답노트
-      </p>
-      <!-- <p>{{userId}}</p> -->
-      <!-- <p>{{accessToken}}</p> -->
-      <!-- <p>{{ accessToken }}</p> -->
+      <div class="d-flex">
+        <div><v-chip color="orange lighten-2" class="white--text font-weight-bold mx-3">P R O S N</v-chip></div>
+        <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 오답노트</h3></div>
+      </div>
     </v-row>
 
     <!-- 
