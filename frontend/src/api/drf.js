@@ -18,6 +18,7 @@ export default {
     login: () => HOST + USER +'login/',
     join: () => HOST + USER + 'join/',
     logout: () => HOST + USER + 'logout/',
+    ranking: () => HOST + USER + 'ranking/'
   },
   api: HOST,
   study : {
