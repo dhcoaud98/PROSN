@@ -69,6 +69,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 ))
                 .from(post)
                 .where(post.ptype.eq(PostType.Problem).or(post.ptype.eq(PostType.Workbook)))
+                .orderBy(post.updated.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
