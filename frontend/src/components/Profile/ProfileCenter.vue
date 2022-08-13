@@ -1,0 +1,168 @@
+<template>
+  <v-container class="ma-0 pa-0">
+    <v-row class="d-flex mt-5 ms-5">
+      <v-icon large color="#926DFF">person</v-icon>
+      <h2 class="ms-3 dark--text font-weight-regular">P R O F I L E</h2>
+    </v-row>
+    
+    <!-- 1. 프로필 상단 -->
+    <v-row class="justify-center mt-10 mx-5 mb-0">
+      <!-- 뱃지, 이름 -->
+      <v-container class="pa-0 mx-0">
+        <v-row class="d-flex justify-space-between align-end">
+          <div class="d-flex">
+            <div><v-chip color="orange lighten-2" class="white--text font-weight-bold mx-3">P R O S N</v-chip></div>
+            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 페이지</h3></div>
+          </div>
+          
+          <!-- 팔로우 팔로워 정보 -->
+          <!-- 베스트는 이거 누르면 명단 볼수있는건데 이거는 최후순위 -->
+          <div class="d-flex">
+            <h4 class="grey--text text--darken-2 me-3">팔로워 0명</h4>
+            <h4 class="grey--text text--darken-2">팔로잉 0명</h4>
+          </div>
+        </v-row>
+
+        <v-row class="ps-10">
+          <v-col cols="12" class="detail_text ma-0 pa-0">문제 풀이 500문제</v-col>
+          <v-col cols="12" class="detail_text ma-0 pa-0">문제 제출 300문제</v-col>
+          <v-col cols="12" class="detail_text ma-0 pa-0">정답률 68%</v-col>
+        </v-row>
+
+        <v-row class="pa-0"> 
+          <v-col class="pa-0 px-2">
+            <v-btn text rounded class="pa-0 dark--text" @click="event1()" color="#512DA8" width="100%">
+              <v-icon color="#A384FF" class="me-2">quiz</v-icon><h3>PROBLEM +</h3>
+            </v-btn>
+          </v-col>
+          <v-col class="pa-0 px-2">
+            <v-btn text rounded class="pa-0 font-weight-bold dark--text" @click="event2()" color="#512DA8" width="100%" >
+              <v-icon color="#A384FF" class="me-2">info</v-icon><h3>INFORMATION +</h3>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-row>
+
+    <!-- 2. 프로필 하단 -->
+    <v-row class="profile_tab d-flex justify-center mt-5 mx-5 mb-0">
+      <v-toolbar dark height="45px">
+        <v-tabs v-model="tabs" background-color="#CCA5FE" grow>
+          <v-col class="px-0">
+            <v-tab class="tab--text white--text pa-0" href="#one"><h3 class="font-weight-regular">SOLVING</h3></v-tab>
+          </v-col>
+          <v-col class="px-0">
+            <v-tab class="tab--text white--text pa-0" href="#two"><h3 class="font-weight-regular">SCRAP</h3></v-tab>
+          </v-col>
+          <v-col class="px-0">
+            <v-tab class="tab--text white--text pa-0" href="#three"><h3 class="font-weight-regular">My Post</h3></v-tab>
+          </v-col>
+        </v-tabs>
+      </v-toolbar>
+          
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '1'">
+        <solved-problem-list></solved-problem-list>
+      </v-container>
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '2'">
+        <scrap-post-list></scrap-post-list>
+      </v-container>
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '3'">
+        <my-post-list></my-post-list>
+      </v-container>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import SolvedProblemList from "./SolvedProblemList.vue"
+import ScrapPostList from "./ScrapPostList.vue"
+import MyPostList from "./MyPostList.vue"
+import { mapGetters } from 'vuex'
+
+export default {
+  name: 'ProfileCenter',
+  components: {
+    SolvedProblemList,
+    ScrapPostList,
+    MyPostList,
+  },
+  data () {
+    return {
+      ranking : [
+        {rank_name: 'Prosn', rank_color: 'rgb(142,68,173)', rank_solve_problem: 1000},
+        {rank_name: 'Master', rank_color: 'rgb(231,76,60)', rank_solve_problem: 500},
+        {rank_name: 'Gold', rank_color: 'rgb(255, 215, 0)', rank_solve_problem: 200},
+        {rank_name: 'Silver', rank_color: 'rgb(192, 192, 192)', rank_solve_problem: 100},
+        {rank_name: 'Bronze', rank_color: 'rgb(176, 141, 87)', rank_solve_problem: 50},
+        {rank_name: 'Green', rank_color: 'rgb(0, 128, 0)', rank_solve_problem: 10},
+        {rank_name: 'Seed', rank_color: 'rgb(0, 207, 87)', rank_solve_problem: 0},
+      ],
+      fab: false,
+      hidden: false,
+      tabs: null,
+      pass: '',
+    }
+  },
+  computed: {
+    activeFab () {
+      switch (this.tabs) {
+        case 'one': return { page: '1' }
+        case 'two': return { page: '2' }
+        case 'three': return { page : '3' }
+        default: return {}
+      }
+    },
+    ...mapGetters(['accessToken', 'userId', 'userName'])
+  },
+  methods:{
+    event1 () {
+      this.$router.push({ path: 'createproblem' })
+    },
+    event2 () {
+      this.$router.push({ path: 'createinfo' })
+    }
+  }
+}
+</script>
+
+
+<style>
+.rank_box{
+  border-radius: 10px;
+  border: 1px solid rgb(142, 68, 173);
+  background-color: rgb(142, 68, 173);
+  height: 25px;
+  width: 20px;
+}
+.rank {
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+}
+.v-application--wrap {
+  max-width: none;
+}
+.category-tag {
+  border-radius: 20px;
+  border: 1px solid #A384FF;
+  background-color: #A384FF;
+  font-size: 5px;
+  color: white;
+  font-weight: bold;
+  height: 25px;
+  margin: 1px;
+}
+.detail{
+  border-radius : 5px;
+  border: 1px dashed #000000;
+  height : 100px;
+}
+.detail_text {
+  font-size: 16px;
+  font-weight: 500;
+}
+.tab--text {
+  color: #000000 !important;
+}
+</style>
+
