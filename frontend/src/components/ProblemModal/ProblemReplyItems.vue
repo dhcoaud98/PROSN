@@ -3,6 +3,7 @@
   <v-card elevation="2" class="rounded ma-2 pa-4 mx-1">
     <v-container>
       <v-row>
+        <!-- <p>{{commentList}}</p> -->
         <v-col class="pa-0 mb-3">댓글내용</v-col>
       </v-row>
       <v-row>
@@ -15,7 +16,9 @@
 
 <script>
 export default {
-
+  props: {
+    commentList: Array,
+  }
 }
 </script>
 
