@@ -28,6 +28,7 @@
               <!-- 문제 본문 -->
               <v-card-text>
                 <!-- 카테고리 라벨 -->
+                <!-- {{probdetail}} -->
                 <div class="d-inline-block mb-4" v-for="(tag, idx) in probdetail.tags" :key="idx">
                   <span class="category-tag text-center pa-1">#{{ tag }}</span>
                 </div>
@@ -112,7 +113,7 @@
     
             <!-- 평소에는 안보이는 댓글창 -->
             <v-col width="600" id="show-replies" class="pa-0 d-none">
-              <problem-reply></problem-reply>
+              <problem-reply :pid="probdetail.id"></problem-reply>
             </v-col>
           </v-row>
         </v-container>

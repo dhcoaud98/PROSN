@@ -18,6 +18,7 @@ export default {
 		login: () => HOST + USER + 'login/',
 		join: () => HOST + USER + 'join/',
 		logout: () => HOST + USER + 'logout/',
+    ranking: () => HOST + USER + 'ranking/'
 		reissue: () => HOST + USER + 'reissue/',
 	},
 	api: HOST,
@@ -39,3 +40,4 @@ export default {
 		solving: () => HOST + SOLVING,
 	},
 };
+>>>>>>> frontend/src/api/drf.js
