@@ -60,6 +60,8 @@ public class PostController {
     @GetMapping("/problem")
     public ResponseEntity<?> getAllProblem(Pageable pageable) {
         log.info("문제 전체 조회");
+        log.info("페이징 정렬 = {}", pageable.getSort());
+        log.info("페이징 = {}", pageable);
         ProblemWorkbookResponseDto problemWorkbookResponseDto = postService.showAllProblem(pageable);
         return ResponseEntity.status(OK).body(problemWorkbookResponseDto);
 
