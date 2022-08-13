@@ -11,22 +11,26 @@
               <!-- <slot name="btns">
               </slot>               -->
               <v-card-text class="d-flex justify-space-between align-center px-0">
-                <v-btn @click="event()" text class="font-weight-bold pr-0 pl-3" small>자세히</v-btn>
-                <v-btn @click="$emit('close')" text class="font-weight-bold pa-0">X</v-btn>
+                <v-btn @click="event(probdetail.id)" text class="font-weight-bold pr-0 pl-3" small>자세히</v-btn>
+                <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
               </v-card-text>    
 
               <!-- 문제 제목 -->
               <!-- {{ problem.pk }}. {{ problem.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold">
                 <p class="font-parent-lar mb-0">{{probdetail.title}}</p> 
-                <div class="pl-3 d-inline-block mb-4" v-for="(tag, idx) in probdetail.tags" :key="idx">
-                  <span class="category-tag text-center pa-1">#{{ tag }}</span>
+                <div class="d-inline-block ms-3">
+                  <v-btn v-if="myCorrectStatus" rounded small outlined color="green">정답</v-btn>
+                  <v-btn v-else rounded small outlined color="red">오답</v-btn>
                 </div>
               </v-card-title>
 
               <!-- 문제 본문 -->
               <v-card-text>
                 <!-- 카테고리 라벨 -->
+                <div class="d-inline-block mb-4" v-for="(tag, idx) in probdetail.tags" :key="idx">
+                  <span class="category-tag text-center pa-1">#{{ tag }}</span>
+                </div>
                 <!-- for문으로 돌리면 될듯 -->
               </v-card-text>
 
@@ -79,9 +83,13 @@
                           <v-icon>{{downText}}</v-icon>
                         </v-btn>
                         <!-- 스크랩 버튼 -->
-                        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
+                        <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
                           <v-icon>{{scrapText}}</v-icon>
-                        </v-btn>                    
+                        </v-btn>   
+
+                        <!-- 스크랩 모달 -->
+                        <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
+
                         <!-- 제출 버튼 -->
                         <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
                       </v-col>
@@ -117,35 +125,39 @@
 import drf from '@/api/drf'
 import axios from 'axios'
 import ProblemReply from './ProblemReply.vue'
+import Scrap from '@/components/Scrap/Scrap.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'ProblemModal',
   components: {
-    ProblemReply
+    ProblemReply,
+    Scrap,
   },
   data () {
     return {
+      scrapModal: false,
       upText: 'thumb_up_off_alt',
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
       probId: 0,
-      probdetail: {},
+      probdetail: [],
       examples: [],
       credentials: {
         pid: '',
         right: '',
         wrongAnswer: '',
-      }
+      },
+      myCorrectStatus: null,
     }
   },
   props: {
     mainProb: Object,
+    probdetail: Object,
   },
   computed: {
     ...mapGetters(['accessToken'])
   },
-  // 0811 : 엑시오스 통신 코드
   created() {
     console.log("problem = ", this.mainProb.id)
     this.probId = this.mainProb.id
@@ -159,8 +171,8 @@ export default {
       },      
     })
     .then(res => {
-      console.log(res.data)
-      this.probdetail = res.data
+      // console.log(res.data)
+      // this.probdetail = res.data
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
       // const noteDetail = this.noteDetail
@@ -169,15 +181,15 @@ export default {
         // console.log(num);
         // console.log(this.probdetail[`example${num}`])
         this.examples.push({'id': num, 'example': this.probdetail[`example${num}`]})
-        // console.log(this.examples)
       })
     })
     .catch(err => {
       console.log("에러")
       console.log(err)
     })
-   
+  
   },
+
   methods: {
     changeLikeStatus() {
         /* 
@@ -218,6 +230,14 @@ export default {
             this.scrapText = "bookmark_border"
        }
     },
+    openScrapModal() {
+        this.scrapModal = true
+        console.log('openModal')
+    },
+    closeScrapModal() {
+        this.scrapModal = false
+        console.log('closeModal')
+    },
 
     // 2022.08.03. 댓글보기 버튼 누를 때
     showReplies: function (event) {
@@ -244,8 +264,9 @@ export default {
       showReplies.setAttribute("class", "d-none")    
     },
     // 2022.08.04. 라우터 경로 연결
-    event () {
-      this.$router.push({ path: 'problem' })
+    event(pid) {
+      // console.log('pid=', pid)
+      this.$router.push({ path: `problem/${pid}`})
     },
     // goBack () {
     //   this.$router.go(-1)
@@ -260,10 +281,13 @@ export default {
       this.credentials.wrongAnswer = selectedAnswer
       if (selectedAnswer === "1") {
         this.credentials.right = true
+        this.myCorrectStatus = true
         alert('정답입니다.')
       } else {
         this.credentials.right = false
         alert('오답입니다.')
+        this.myCorrectStatus = false
+        this.$router
       }
       // console.log(this.credentials)
       // axios 보내기

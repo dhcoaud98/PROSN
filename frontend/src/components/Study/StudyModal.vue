@@ -30,7 +30,13 @@
             <v-col cols="12">
               <v-container class="study-detail-info">
                 <v-row>
-                  {{ studydetail.mainText }}
+                  <v-col cols="12">
+                    <h3> Reader : {{ studydetail.masterName }}</h3>
+                  </v-col>
+                  <v-col cols="12">
+                    {{ studydetail.mainText }}
+                  </v-col>
+
                 </v-row>
               </v-container>
             </v-col>

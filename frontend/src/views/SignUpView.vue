@@ -1,154 +1,120 @@
 <template>
-    <v-container class="mt-3">
-        <v-row>
-            <!-- 메인 기둥: 가운데에 얇게 배치하기 위함 -->
-            <v-col offset="3" cols="6" class="white border-a-10">
-                <!-- 로고, signup -->
-                <v-row>
-                    <v-col class="text-center">
-                        <router-link to="/" class="d-inline-block">
-                            <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="80px"></v-img>
-                        </router-link>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <p class="text-center display-1">SIGN UP</p>
-                    </v-col>
-                </v-row>
-                <!-- form -->
-                <v-row>
-                    <v-col>
-                        <v-form
-                            ref="form"
-                            class="col-6 mx-auto"
-                            @submit.prevent="submitSignUp"
-                        >
-                        <!-- 각 text field 내부 속성들은 추후에 수정하기 -->
-
-                            <!-- 아이디 필드 -->
-                            <v-row class="justify-center align-center pa-0">
-                                <v-col cols="8" class="pa-0">
-                                    <v-text-field
-                                    v-model="credentials.userId"
-                                    :rules="idRules"
-                                    :counter="12"
-                                    name="userId"
-                                    label="아이디"
-                                    required
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col class="pa-0 ml-4">
-                                    <v-btn 
-                                    @click="idDoubleCheck" 
-                                    color="#d9d9d9" 
-                                    class="grey--text font-weight-bold pa-0 id-double-check offset-1">
-                                    중복확인
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                            <!-- 
-                                비밀번호 필드
-                                - 힌트: 최소 n자 이상(hint)
-                                - 8자 이상 입력되지 않으면 빨간 텍스트가 뜸
-                                - 눈 모양 아이콘 누르면 작성한 비번이 보였다 안보였다 함
-                            -->
-                            <v-row class="pa-0">
-                                <v-col class="pa-0">
-                                <v-text-field
-                                    v-model="credentials.password"
-                                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                    :rules="[rules.required, rules.min]"    
-                                    :type="show1 ? 'text' : 'password'"
-                                    name="password1"
-                                    label="비밀번호"
-                                    hint="최소 8자 이상 입력하세요"
-                                    counter
-                                    @click:append="show1 = !show1"
-                                ></v-text-field>
-                                </v-col>
-                            </v-row>
-
-                            <!-- 비밀번호 확인 필드-->
-                            <v-row class="pa-0">
-                                <v-col class="pa-0">
-                                <v-text-field
-                                    v-model="credentials.passwordCheck"
-                                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                                    :rules="[rules.required, checkPassword]"    
-                                    :type="show2 ? 'text' : 'password'"
-                                    name="password2"
-                                    label="비밀번호 확인"
-                                    counter
-                                    @click:append="show2 = !show2"
-                                ></v-text-field>
-                                </v-col>
-                            </v-row>
-
-                            <!-- 사용자 이름 필드 -->
-                            <v-row class="pa-0">
-                                <v-col class="pa-0">
-                                    <v-text-field
-                                    v-model="credentials.name"
-                                    :rules="nameRules"
-                                    :counter="8"
-                                    label="사용자 이름"
-                                    name="name"
-                                    required
-                                    ></v-text-field>
-                                </v-col>
-                            </v-row>
-
-                            <v-row class="mb-2 pa-0">
-                                <v-col class="pa-0">
-                                    <v-text-field
-                                    v-model="credentials.email"
-                                    label="이메일"
-                                    name="email"
-                                    :rules="emailRules"
-                                    required
-                                    ></v-text-field>
-                                </v-col>
-                            </v-row>
-                            
-                            <!-- 회원가입 버튼: 유효성 검사 + submit -->
-                            <v-row class="mt-5 mb-1 justify-center pa-0">
-                                <!-- 아래에 submitSignup 메서드를 정의; axios로 db에 사용자 정보를 저장하기 -->
-                                  <v-btn
-                                    :disabled="!valid"
-                                    @click="validate();"     
-                                    type="submit"
-                                    color="#A384FF"
-                                    class="mt-3 mr-4 white--text font-weight-bold"
-                                    >
-                                    회원가입
-                                    </v-btn>
-                            <!-- 취소: 뒤로 가기 -->
-                                <v-btn
-                                color="#A384FF"
-                                class=" mt-3 mr-4 white--text font-weight-bold"
-                                @click="$router.push('/')"
-                                >
-                                취소
-                                </v-btn>
-                            </v-row>
-                        </v-form>
-                    </v-col>
-                </v-row>
-                
-                <!-- 이미 계정이 있으신가요?  -->
-                <v-row>
-                    <v-col>
-                        <p class="text-center">이미 계정이 있으신가요? 
-                            <router-link to="/login" class="font-weight-bold ml-2 hover-login">로그인</router-link>
-                        </p>
-                    </v-col>
-                </v-row>
-            </v-col>
-
+  <!-- 2022.07.22 로그인 화면 구성요소들 (남성은) -->
+  <!-- 0805 임지민 
+    - 로고, 서비스 설명 부분 grey lighten-4 처리   
+    - 가운데 정렬보다 왼쪽 정렬이 깔끔한 것 같아서 바꿨는 데 제 소견일 뿐 화면 보고 이전이 나오면 바꿔도 됩니당
+    - prosn 로고가 큰 것 같아 사이즈 조금 작게 수정함   
+    - 로고에 홈화면 연결   
+  -->
+  <v-container class="d-flex align-center grey lighten-4 px-0" height="100%">
+    <v-row class="d-flex justify-center px-0">
+      <!-- 회원가입 -->
+      <v-col class="col-12 col-sm-10 col-md-6 rounded-lg d-flex flex-column align-center justify-center white pa-0 mt-3">
+        <v-row class="mt-4">
+          <v-col class="text-center">
+            <router-link to="/" class="d-inline-block">
+              <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="80px"></v-img>
+            </router-link>
+          </v-col>
         </v-row>
-    </v-container>
 
+        <div class="mt-8">
+          <p class="font-parent-lar display-1">S I G N U P</p>
+        </div>
+
+        <!-- 정보작성 -->
+        <v-row class="px-0 ma-0 mb-10">
+          <v-col class="mx-5 pa-0">
+            <v-container class="mt-5 px-0" width="100%">
+              <v-form ref="form" class="ma-0 pa-0" @submit.prevent="submitSignUp">
+                
+                <!-- 각 text field 내부 속성들은 추후에 수정하기 -->
+
+                <!-- 아이디 필드 -->
+                <v-row no-gutters>
+                  <v-col cols="12" md="9" class="ma-0 pa-0">
+                    <v-text-field v-model="credentials.userId" :rules="idRules" :counter="12" name="userId" label="아이디" required ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="3" class="ma-0 pa-0">
+                    <v-btn @click="idDoubleCheck" color="#d9d9d9" class="rounded-xl grey--text mt-3 id-double-check" width="100%">
+                      <p class="ma-0 black--text">중복확인</p>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+
+                <!-- 
+                    비밀번호 필드
+                    - 힌트: 최소 n자 이상(hint)
+                    - 8자 이상 입력되지 않으면 빨간 텍스트가 뜸
+                    - 눈 모양 아이콘 누르면 작성한 비번이 보였다 안보였다 함
+                -->
+                <v-row class="pa-0">
+                  <v-col class="pa-0">
+                    <v-text-field v-model="credentials.password" 
+                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
+                        :rules="[rules.required, rules.min]" 
+                        :type="show1 ? 'text' : 'password'" 
+                        name="password1" label="비밀번호" hint="최소 8자 이상 입력하세요" 
+                        counter 
+                        @click:append="show1 = !show1"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <!-- 비밀번호 확인 필드-->
+                <v-row class="pa-0">
+                  <v-col class="pa-0">
+                    <v-text-field
+                        v-model="credentials.passwordCheck"
+                        :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[rules.required, checkPassword]"    
+                        :type="show2 ? 'text' : 'password'"
+                        name="password2"
+                        label="비밀번호 확인"
+                        counter
+                        @click:append="show2 = !show2"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <!-- 사용자 이름 필드 -->
+                <v-row class="pa-0">
+                  <v-col class="pa-0">
+                    <v-text-field v-model="credentials.name" :rules="nameRules" :counter="8" label="사용자 이름" name="name" required></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row class="mb-2 pa-0">
+                  <v-col class="pa-0">
+                    <v-text-field v-model="credentials.email" label="이메일" name="email" :rules="emailRules" required></v-text-field>
+                  </v-col>
+                </v-row>
+                            
+                <!-- 회원가입 버튼: 유효성 검사 + submit -->
+                <v-row class="mt-5 mb-1 justify-center pa-0">
+                  <!-- 아래에 submitSignup 메서드를 정의; axios로 db에 사용자 정보를 저장하기 -->
+                  <v-col cols="12" class="pa-0">
+                    <v-btn rounded :disabled="!valid" @click="validate();" type="submit" class="col-12 my-2 d-flex justify-space-between" height="45px">
+                      <img src="@/assets/prosn_logo_sm.png" alt="..." class="signin-logo">
+                      <p class="pa-0 ma-0 font-weight-medium signin-text purple--text text--lighten-2">JOIN US</p>
+                      <div class="pa-2"></div>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-container>
+          </v-col>
+        </v-row>
+
+        <!-- 이미 계정이 있으신가요?  -->
+        <v-row class="mt-0 mb-4">
+          <v-col cols="12" class=" d-flex justify-center pa-0">
+            <p>이미 계정이 있으신가요?<router-link to="/login" class="purple--text text--lighten-2 text-decoration-none hover-login ml-3 font-weight-bold black--text">로그인</router-link></p>
+        </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -263,5 +229,12 @@ export default {
     }
     a:-webkit-any-link {
         text-decoration: none;
+    }
+    .signin-logo {
+        height: 25px;
+        width: 25px;
+    }
+    .signin-text {
+        font-size: 1.2rem;
     }
 </style>

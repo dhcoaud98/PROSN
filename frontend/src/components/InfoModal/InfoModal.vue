@@ -13,36 +13,16 @@
                 <v-btn @click="$emit('close')" text class="font-weight-bold">뒤로가기</v-btn>
               </v-card-text>
 
-
-              <!-- 
-                created: "2022-08-10T10:44:07"
-                dtype: "Information"
-                id: 3
-                numOfDislikes: 0
-                numOfLikes: 0
-                tags: Array(1)
-                0: "NW"
-                length: 1
-                __ob__: Observer {value: Array(1), shallow: false, mock: false, dep: Dep, vmCount: 0}
-                [[Prototype]]: Array
-                title: "df"
-                updated: "2022-08-10T10:44:07"
-                views: 0
-                writer: Object
-                id: (...)
-                name: "홍길동"
-              -->
-
               <!-- 정보 제목 -->
               <!-- {{ info.pk }}. {{ info.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold black--text">
-                <h2>{{ info.id }}. {{info.title}}</h2> 
+                <h2>{{ infodetail.id }}. {{ info.title }}</h2> 
               </v-card-title>
 
               <!-- 정보 본문 -->
               <v-card-text>
                 <!-- 카테고리 라벨 -->
-                <div class="pl-3" style="display:inline;" v-for="(tag, idx) in info.tags" :key="idx">
+                <div class="pl-3" style="display:inline;" v-for="(tag, idx) in infodetail.tags" :key="idx">
                   <span class="category-tag text-center pa-1">{{ tag }}</span>
                 </div>
               </v-card-text>
@@ -55,7 +35,7 @@
                         <!-- <v-virtual-scroll height="300"> -->
                         <v-card-text>
                           <div>
-                            아<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>제발
+                            {{ infodetail.mainText }}
                           </div>                
                         </v-card-text>
                       </v-card>
@@ -64,18 +44,18 @@
                     <v-row class="d-flex justify-space-between">
                       <!-- 출제자 정보 -->
                       <v-col class="col-12 col-md-8">
-                        <div>출제자 | {{ info.writer.name }}</div>              
+                        <div>출제자 | {{ infodetail.writer.name}}</div>              
                         <div>출제일 | {{ info.created }}</div>
                       </v-col>
                       <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
                       <v-col class="d-flex justify-end col-12 col-md-4">
                         <!-- 좋아요 버튼 -->
                         <v-btn class="ms-2" icon color="blue lighten-2" @click="changeLikeStatus" id="upIcon">
-                          <v-icon>{{upText}}</v-icon>
+                          <v-icon>{{upText}}</v-icon>{{ infodetail.numOfLikes }}
                         </v-btn>
                         <!-- 싫어요 버튼 -->
                         <v-btn class="ms-2" icon color="red lighten-2" @click="changeHateStatus" id="downIcon">
-                          <v-icon>{{downText}}</v-icon>
+                          <v-icon>{{downText}}</v-icon>{{ infodetail.numOfDislikes }}
                         </v-btn>
                         <!-- 스크랩 버튼 -->
                         <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
@@ -108,8 +88,8 @@
 </template>
 
 <script>
-import drf from '@/api/drf'
-import axios from 'axios'
+// import drf from '@/api/drf'
+// import axios from 'axios'
 import { mapGetters } from "vuex"
 import InfoModalReply from './InfoModalReply.vue'
 
@@ -119,6 +99,7 @@ export default {
     InfoModalReply,
   },
   props: {
+    infodetail: Object,
     info: Object,
   },
   data () {
@@ -126,29 +107,7 @@ export default {
       upText: 'thumb_up_off_alt',
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
-      infoId: 0,
-      infodetail: [],
     }
-  },
-  created() {
-    console.log("info = ",this.info.id)
-    this.infoId = this.info.id
-
-    axios({
-      url: drf.api + 'post' + `/${this.infoId}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-    })
-    .then(res => {
-      console.log("res = ",this.res)
-      this.infodetail = res
-    })
-    .catch(err => {
-      console.log("에러")
-      console.log(err)
-    })
   },
   methods: {
     changeLikeStatus() {

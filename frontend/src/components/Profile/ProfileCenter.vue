@@ -2,20 +2,24 @@
   <v-container class="ma-0 pa-0">
     <v-row class="d-flex mt-5 ms-5">
       <v-icon large color="#926DFF">person</v-icon>
-      <h2 class="ms-3 dark--text">P R O F I L E</h2>
+      <h2 class="ms-3 dark--text font-weight-regular">P R O F I L E</h2>
     </v-row>
     
     <!-- 1. 프로필 상단 -->
     <v-row class="justify-center mt-10 mx-5 mb-0">
       <!-- 뱃지, 이름 -->
       <v-container class="pa-0 mx-0">
-        <v-row>
+        <v-row class="d-flex justify-space-between align-end">
           <div class="d-flex">
             <div><v-chip color="orange lighten-2" class="white--text font-weight-bold mx-3">P R O S N</v-chip></div>
-            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">아무개</h2><h3 class="grey--text">님의 프로필</h3></div>
+            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 페이지</h3></div>
           </div>
-
+          
+          <!-- 팔로우 팔로워 정보 -->
+          <!-- 베스트는 이거 누르면 명단 볼수있는건데 이거는 최후순위 -->
           <div class="d-flex">
+            <h4 class="grey--text text--darken-2 me-3">팔로워 0명</h4>
+            <h4 class="grey--text text--darken-2">팔로잉 0명</h4>
           </div>
         </v-row>
 
@@ -73,7 +77,7 @@
 import SolvedProblemList from "./SolvedProblemList.vue"
 import ScrapPostList from "./ScrapPostList.vue"
 import MyPostList from "./MyPostList.vue"
-
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ProfileCenter',
@@ -108,6 +112,7 @@ export default {
         default: return {}
       }
     },
+    ...mapGetters(['accessToken', 'userId', 'userName'])
   },
   methods:{
     event1 () {
