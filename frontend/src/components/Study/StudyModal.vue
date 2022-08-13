@@ -1,66 +1,69 @@
 <template>
   <v-container class="modal" appear>
     <v-container class="modal modal-overlay" @click.self="$emit('close')">
-      <v-container class="modal-window">
-        <v-container class="modal-content">
+      <v-container class="modal-window pa-0">
+        <v-card class="modal-content rounded-lg pa-4">
           <!-- <slot/> -->
-          <v-container class="study-content">
-          <v-row>
+          <v-card-title class="pb-0">
+            <v-container class="pa-0">
+              <v-row class="d-flex justify-space-between">
+                <h2 class="font-weight-medium grey--text text--darken-2 pt-1">STUDY</h2>
+                <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
+              </v-row>
 
-            <!-- 제목 -->
-            <v-col cols="12">
-              <span class="ml-4" style="font-size:X-large;color:#512DA8;">{{studydetail.title}}</span>
-            </v-col>
+              <v-row class="mt-6 ml-1">
+                <h2 class="purple--text text--darken-4 font-weight-medium">{{studydetail.title}}</h2>
+              </v-row>
 
-            <!-- 중간 정보 -->
-            <v-col cols="12">
-              <v-divider class="info-divider mb-2"></v-divider>
-              <p class="ma-0 px-2" style="color:#512DA8">현재원 / 총원 : {{studydetail.currentPerson}} / {{studydetail.maxPerson}} </p>
+              <v-row>
+                <!-- 내가 만든 스터디일 때 버튼 -->
+                <v-col class="d-flex justify-end pe-0" v-if="currentUser == studydetail.masterId" cols="12">
+                  <v-btn rounded class="ms-2 font-weight-bold" @click="editStudy">스터디 수정하기</v-btn>
+                  <v-btn rounded class="ms-2 font-weight-bold white--text" color="red lighten-1" @click="deletedoSend">스터디 삭제하기</v-btn>
+                </v-col>
+                <!-- 남이 만든 스터디일 때 버튼 -->
+                <v-col class="d-flex justify-end pe-0" v-else cols="12">
+                  <v-btn rounded class="ms-2 font-weight-bold" @click="doSend">스터디 신청하기</v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-title>
+
+          <v-divider color="#A384FF" class="mx-2"></v-divider>
+
+          <v-card-text class="py-2">
+            <div class="mx-2 my-1">
+              <h3 class="ma-0 px-1 font-weight-bold grey--text text--darken-3">현재원 / 총원 : {{studydetail.currentPerson}} / {{studydetail.maxPerson}} </h3>
+              <h3 class="ma-0 px-1 font-weight-bold grey--text text--darken-3">장소 : {{studydetail.place}}</h3>
               <!-- 내가 만든 스터디일 경우 마감일 필드가 안 넘어옴 -->
               <!-- <p class="ma-0 px-2">마감일 : {{studydetail.expiredDate}}</p> -->
-              <p class="ma-0 px-2">장소 : {{studydetail.place}}</p>
-              <v-divider class="info-divider mt-2"></v-divider>
-            </v-col>
+            </div>
+          </v-card-text>
 
-            <!-- 태그 -->
-            <div class="pl-3" v-for="(tag, idx) in studydetail.tags" :key="idx">
-              <span class="category-tag text-center pa-1">{{ tag.type }}</span>
+          <v-divider color="#A384FF" class="mx-2"></v-divider>
+
+          <v-card-text>
+             <div class="d-flex">
+              <div class="pl-2" v-for="(tag, idx) in studydetail.tags" :key="idx">
+                <v-chip small color="#A384FF" class="white--text font-wieght-bold">{{ tag.type }}</v-chip>
+              </div>
             </div>
 
-            <!-- 메인 정보 -->
-            <v-col cols="12">
-              <v-container class="study-detail-info">
-                <v-row>
-                  <v-col cols="12">
-                    <h3> Reader : {{ studydetail.masterName }}</h3>
-                  </v-col>
-                  <v-col cols="12">
-                    {{ studydetail.mainText }}
-                  </v-col>
-                  <v-col v-if="myStudydetail">
-                   {{ myStudydetail}}
-
-                  </v-col>
-
-                </v-row>
-              </v-container>
-            </v-col>
-
-            <!-- 내가 만든 스터디일 때 버튼 -->
-            <v-col v-if="currentUser == studydetail.masterId" cols="12">
-            <button class="button_update" @click="editStudy">스터디 수정하기</button>
-              <button class="button_delete" @click="deletedoSend">스터디 삭제하기</button>
-              <button class="button" @click="$emit('close')">창 닫기</button>
-            </v-col>
-            <!-- 남이 만든 스터디일 대 버튼 -->
-            <v-col v-else cols="12">
-              <button class="button" @click="doSend">스터디 신청하기</button>
-              <button class="button" @click="$emit('close')">창 닫기</button>
-            </v-col>
-          </v-row>
-          
-        </v-container>
-        </v-container>
+            <v-container class="my-4 study-detail-info">
+              <v-row>
+                <v-col cols="12">
+                  <h3> Reader : {{ studydetail.masterName }}</h3>
+                </v-col>
+                <v-col cols="12">
+                  {{ studydetail.mainText }}
+                </v-col>
+                <v-col v-if="myStudydetail">
+                  {{ myStudydetail}}
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+        </v-card>
       </v-container>
     </v-container>
   </v-container>
