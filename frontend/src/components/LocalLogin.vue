@@ -134,7 +134,8 @@ import {mapState, mapActions } from 'vuex'
                 console.log("grantType:", grantType);
                 this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken, res.data.refreshToken)
                 this.$store.dispatch('saveName', res.data.name)
-                this.$store.dispatch('saveId', res.data.id)
+                this.$store.dispatch('saveId', this.credentials.userId) // 아이디 중복확인을 위해 설정하기
+                this.$store.dispatch('currentUser', res.data.id)
                 this.$router.push({ path: '/'})
                 // const token = res.data.key
                 // dispatch('saveToken', token)

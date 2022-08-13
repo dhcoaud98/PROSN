@@ -71,7 +71,10 @@ export default {
         alert("스터디 신청이 완료되었습니다.")
         this.message = ''
         this.closeModal()
-    }
+    },
+    // refresh() {
+    //   this.$emit('refresh')
+    // }
   },
 
 }

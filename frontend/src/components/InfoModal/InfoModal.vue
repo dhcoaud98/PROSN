@@ -45,7 +45,7 @@
                       <!-- 출제자 정보 -->
                       <v-col class="col-12 col-md-8">
                         <div>출제자 | {{ infodetail.writer.name}}</div>              
-                        <div>출제일 | {{ info.created }}</div>
+                        <div>출제일 | {{ info.created.slice(0,10) }}</div>
                       </v-col>
                       <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
                       <v-col class="d-flex justify-end col-12 col-md-4">

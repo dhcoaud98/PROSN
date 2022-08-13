@@ -57,7 +57,7 @@ export default {
       .then(res => {
         this.mainProbs = res.data.content
         console.log("problem = ",this.mainProbs)
-        this.endPage = res.data.totalPages + 1
+        this.endPage = res.data.totalPages
       })
       .catch(err => {
         console.log("에러")

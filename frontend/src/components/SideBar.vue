@@ -193,6 +193,7 @@ export default {
       this.$store.dispatch('removeToken', "")
       this.$store.dispatch('removeName', "")
       sessionStorage.setItem('accessToken', "")
+      sessionStorage.setItem('currentUser', "")
 
       axios({
           url: drf.accounts.logout(),

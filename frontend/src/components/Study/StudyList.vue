@@ -52,8 +52,8 @@ export default {
       this.studys = res.data.content
       console.log("studys = ",this.studys)
       this.endPage = res.data.totalPages
-      console.log("totalPages =",res.data.totalPages)
-      console.log("totalElements =", res.data.totalElements)
+      // console.log("totalPages =",res.data.totalPages)
+      // console.log("totalElements =", res.data.totalElements)
     })
     .cathch(err => {
       console.log("에러")

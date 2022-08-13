@@ -16,6 +16,7 @@
             <v-col cols="12">
               <v-divider class="info-divider mb-2"></v-divider>
               <p class="ma-0 px-2" style="color:#512DA8">현재원 / 총원 : {{studydetail.currentPerson}} / {{studydetail.maxPerson}} </p>
+              <!-- 내가 만든 스터디일 경우 마감일 필드가 안 넘어옴 -->
               <p class="ma-0 px-2">마감일 : {{studydetail.expiredDate}}</p>
               <p class="ma-0 px-2">장소 : {{studydetail.place}}</p>
               <v-divider class="info-divider mt-2"></v-divider>
@@ -41,8 +42,14 @@
               </v-container>
             </v-col>
 
-            <!-- 버튼 -->
-            <v-col cols="12">
+            <!-- 내가 만든 스터디일 때 버튼 -->
+            <v-col v-if="currentUser == studydetail.masterId" cols="12">
+            <button class="button_update" @click="editStudy">스터디 수정하기</button>
+              <button class="button_delete" @click="deletedoSend">스터디 삭제하기</button>
+              <button class="button" @click="$emit('close')">창 닫기</button>
+            </v-col>
+            <!-- 남이 만든 스터디일 대 버튼 -->
+            <v-col v-else cols="12">
               <button class="button" @click="doSend">스터디 신청하기</button>
               <button class="button" @click="$emit('close')">창 닫기</button>
             </v-col>
@@ -88,7 +95,7 @@ export default {
     .then(res => {
       // console.log("studydetail =" , res.data)
       this.studydetail = res.data
-      console.log(this.studydetail)
+      console.log("studydetail =",this.studydetail)
     })
   },
   methods: {
@@ -100,14 +107,83 @@ export default {
       this.modal = false
       console.log(closeModal)
     },
+    
+    // 스터디 신청하기 (0813 오채명) 신청 후 새로고침
     doSend() {
-        alert("스터디 신청이 완료되었습니다.")
-        this.message = ''
-        this.closeModal()
+      axios({
+        url: drf.study.study() + 'me/' + `${this.studyId}`,
+        method: 'post',
+        headers: {
+          Authorization: this.accessToken,
+        },  
+      })
+      .then(res => {
+        console.log("스터디 신청 =", res)
+      })
+      .catch(err =>{
+        console.log("에러")
+        console.log(err)
+      })
+      alert("스터디 신청이 완료되었습니다.")
+      this.$router.go();
     },
+
+    // 스터디 삭제 (0812 오채명) 삭제 후 새로고침
+    deletedoSend() { 
+      const userDecision = confirm('정말로 삭제하시겠습니까?')
+      if (userDecision) {
+      axios({
+        url: drf.api + 'study' + `/${this.studydetail.id}`,
+        method: 'delete',
+        headers: {
+          Authorization: this.accessToken,
+        },        
+      })
+      this.$router.go();
+      }
+    },
+
+    // 스터디 수정하기
+    editStudy () {
+      const userDecision = confirm('스터디를 수정하시겠습니까?')
+      if (userDecision) {
+        this.$router.push({path: '/editstudy',
+        // query: { id: this.study.id,
+        //           title:this.study.title,
+        //           maxPerson: this.study.maxPerson,
+        //           expiredDate:this.studydetail.expiredDate,
+        //           place:this.studydetail.place,
+        //           mainText: this.studydetail.mainText,
+        //           secretText: this.studydetail.secretText,
+        //           tags: this.studydetail.tags}
+                  })
+      }
+      // if (userDecision) {
+      //   axios({
+      //     url: drf.study.study(),
+      //     method: 'put',
+      //     headers: {
+      //       Authorization: this.accessToken,
+      //     },
+      //   })
+      //   .then(res => {
+      //       console.log("res = ",res);
+      //       this.$router.push({path: '/createstudy'})
+      //       // data에 저장해서 띄우기
+      //       // dispatch('saveToken', token)
+      //       // dispatch('fetchCurrentUser')
+      //   })
+      //   .catch(err =>{
+      //       console.log("에러")
+      //       console.log(err)
+      //     })
+      // }
+    },
+
+
   },
   computed: {
-    ...mapGetters(['accessToken']),
+    ...mapGetters(['accessToken', 'currentUser']),
   }
 }
 
@@ -176,5 +252,35 @@ export default {
   font-weight: bold;
   height: 25px;
   margin: 1px;
+}
+.button {
+  background-color:#A384FF;
+  padding-right: 2%;
+  padding-left: 2%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  margin: 1%;
+  color: white;
+  border-radius: 5px;
+}
+.button_update {
+  background-color:green;
+  padding-right: 2%;
+  padding-left: 2%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  margin: 1%;
+  color: white;
+  border-radius: 5px;
+}
+.button_delete {
+  background-color:red;
+  padding-right: 2%;
+  padding-left: 2%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  margin: 1%;
+  color: white;
+  border-radius: 5px;
 }
 </style>

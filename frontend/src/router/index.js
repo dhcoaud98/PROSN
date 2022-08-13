@@ -14,6 +14,7 @@ import Information from '@/components/Information/Information.vue'
 import Problem from '@/components/Problem/Problem.vue'
 import ProblemBook from '@/components/ProblemBook/ProblemBook.vue'
 import NoteDetail from '@/components/Note/NoteDetail.vue'
+import editStudy from '@/components/Study/editStudy.vue'
 
 Vue.use(VueRouter)
 
@@ -89,7 +90,12 @@ const routes = [
     name: 'information',
     component: Information
   },
-  
+  {
+    path: '/editstudy',
+    name: 'editstudy',
+    component: editStudy,
+    props: true,
+  }
 ]
 
 const router = new VueRouter({

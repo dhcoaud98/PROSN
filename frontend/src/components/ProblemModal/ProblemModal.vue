@@ -31,6 +31,7 @@
                 <div class="d-inline-block mb-4" v-for="(tag, idx) in probdetail.tags" :key="idx">
                   <span class="category-tag text-center pa-1">#{{ tag }}</span>
                 </div>
+                
                 <!-- for문으로 돌리면 될듯 -->
               </v-card-text>
 
@@ -73,7 +74,9 @@
                           {{probdetail.writer.name}} 
                         </p>
                       </v-col>
-                      <v-col cols="12" class="pa-0 justify-end d-flex align-center">
+
+                      <!-- 내가 낸 문제인지 아닌지 -->
+                      <v-col v-if="currentUser != probdetail.writer.id" cols="12" class="pa-0 justify-end d-flex align-center">
                         <!-- 좋아요 버튼 -->
                         <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
                           <v-icon>{{upText}}</v-icon>
@@ -89,8 +92,18 @@
                         <!-- 제출 버튼 -->
                         <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
                       </v-col>
+
+                      <v-col v-else cols="12" class="pa-0 justify-end d-flex align-center">
+                        <!-- 스크랩 버튼 -->
+                        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
+                          <v-icon>{{scrapText}}</v-icon>
+                        </v-btn> 
+                        <!-- 수정 -->
+                        <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
+                        <!-- 삭제 -->
+                        <v-btn type="submit" rounded outlined class="ms-1" small @click="deleteprob">삭제</v-btn>
+                      </v-col>
                     </v-row>
-                      <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
                   </v-form>
                 </v-container>
 
@@ -134,7 +147,7 @@ export default {
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
       probId: 0,
-      probdetail: [],
+      // probdetail: [],
       examples: [],
       credentials: {
         pid: '',
@@ -149,7 +162,7 @@ export default {
     probdetail: Object,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   created() {
     console.log("problem = ", this.mainProb.id)
@@ -275,26 +288,60 @@ export default {
         this.$router
       }
       // console.log(this.credentials)
+
       // axios 보내기
       axios({
-      url: drf.solving.solving(),
-      method: 'post',
-      headers: {
-        Authorization: this.accessToken,
-      },
-      data: this.credentials
-    })
-    .then(res => {
-      // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-      console.log(res)
-    })
-    .catch(err => {
-      // console.log(this.accessToken)
-      // console.log(this.userId)
-      console.log(err);
-    })
-    }
+        url: drf.solving.solving(),
+        method: 'post',
+        headers: {
+          Authorization: this.accessToken,
+        },
+        data: this.credentials
+      })
+      .then(res => {
+        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+        console.log(res)
+      })
+      .catch(err => {
+        // console.log(this.accessToken)
+        // console.log(this.userId)
+        console.log(err);
+      })
+    },
+    
+    // 내가 낸 문제 삭제하기(0812 오채명)
+    deleteprob() {
+      const userDecision = confirm('정말로 삭제하시겠습니까?')
+      if (userDecision) {
+        axios({
+          url: drf.api + 'post' + `/${this.probId}`,
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },
+        })
+        .then(res => {
+          console.log("res.data = ",res.data)
+          // console.log("삭제 되었습니다. ", res)
+          this.$router.push('/')
+        })
+        .catch(err =>{
+          console.log("에러")
+          console.log(err)
+        })
+        this.$router.go(); // 새로고침
+      }
+    },
+
+    // 내가 낸 문제 수정하기(0812 오채명)
+    // updateprob() {
+    //   axios({
+    //     url: drf.api + 'post'
+    //   })
+    // }
+    
   }
+  
 }
 </script>
 
