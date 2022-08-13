@@ -67,7 +67,7 @@ public class PostController {
 
     @GetMapping("/information")
     public ResponseEntity<?> getAllInformation(Pageable pageable) {
-        log.info("정보 전체 조회");
+        log.info("정보 전체 조회--------------------------------------------------220814");
         PostResponseDto result = postService.showAllInformation(pageable);
         return ResponseEntity.status(OK).body(result);
     }
