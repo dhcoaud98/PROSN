@@ -92,6 +92,7 @@ public class StudyController {
     public ResponseEntity<?> joinStudy(@PathVariable(value = "studyid") Long studyid) {
         UserResponseDto user = userService.getMyInfoBySecret();
         StudyGroup studyGroup = studyGroupRepository.findById(studyid).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
+        studyService.joinStudy(user.getId(), studyGroup);
         return ResponseEntity.status(CREATED).build();
     }
 
