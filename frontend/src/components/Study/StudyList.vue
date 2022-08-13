@@ -37,7 +37,7 @@ export default {
     const params = {
       page: 0,
       size: 5, 
-      // sort: onUpdated, 'desc'
+      sort: 'updated,DESC'
     } 
     axios({
       url: drf.study.study(),
@@ -55,7 +55,7 @@ export default {
       // console.log("totalPages =",res.data.totalPages)
       // console.log("totalElements =", res.data.totalElements)
     })
-    .cathch(err => {
+    .catch(err => {
       console.log("에러")
       console.log(err)
     })
@@ -67,9 +67,9 @@ export default {
       this.page = Number(event.target.ariaLabel.slice(-1))
 
       const params ={
-        page: this.page - 1 ,
-        size: 5
-        //sort: onUpdated, 'desc'
+        page: this.page -1 ,
+        size: 5,
+        sort: 'updated,DESC'
       }
       axios({
         url: drf.study.study(),

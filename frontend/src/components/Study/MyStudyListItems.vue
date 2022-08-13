@@ -13,25 +13,80 @@
                 <p>{{myStudy.mainText}}</p>
               </v-col>
             </v-col>
-            <v-col cols="2" class="problem_detail">
+            <v-btn @click="openModal" cols="2" class="problem_detail">
               자세히 보기 >
-            </v-col>
+            </v-btn>
           </v-row>
         </v-card>
       </v-col>
+    <study-modal @close="closeModal" v-if="this.modal" :myStudydetail="myStudydetail"></study-modal>
     </div>
-
+    
 </template>
 
 <script>
+import drf from '@/api/drf'
+import axios from 'axios'
+import StudyModal from "@/components/Study/StudyModal.vue"
+import { mapGetters } from "vuex"
+
 export default {
   namd: 'MyStudyListItems',
+  data() {
+    return {
+      modal: false,
+      myStudyId: null,
+      myStudydetail: [],
+    }
+  },
   props: {
     myStudy: Object,
   },
+  components: {
+    StudyModal,
+  },
+  computed: {
+    ...mapGetters(['accessToken']),
+  },
   created() {
-    console.log("my study=", this.myStudy)
-  }
+    // 나의 스터디마다 정보 조회
+    console.log(myStudy)
+    this.myStudyId = myStudy.id
+    console.log("study id = ",this.myStudyId)
+
+    // api/study/{studyid}에 해당하는 detail study 정보 가져오기
+    // axios({
+    //   url: drf.study.study() + `${this.studyId}`,
+    //   methods: 'get',
+    //   headers: {
+    //     Authorization : this.accessToken,
+    //   },
+    // })
+    // .then(res => {
+    //   // console.log("studydetail =" , res.data)
+    //   this.myStudydetail = res.data
+    //   console.log("studydetail =",this.myStudydetail)
+    // })
+  },
+  methods: {
+    openModal() {
+      this.modal = true
+      console.log(openModal)
+      console.log(this.study.id)
+    },
+    closeModal() {
+      this.modal = false
+      console.log('closeModal')
+    },
+    // doSend() {
+    //     alert("스터디 신청이 완료되었습니다.")
+    //     this.message = ''
+    //     this.closeModal()
+    // },
+    // refresh() {
+    //   this.$emit('refresh')
+    // }
+  },
 }
 </script>
 

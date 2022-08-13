@@ -27,7 +27,7 @@ export default {
     return {
       value: null,
       nowPage: 1,
-      endPage: 1,
+      endPage: 0,
       myStudys: [],
       page: 0,
     }
@@ -36,36 +36,61 @@ export default {
     ...mapGetters(['accessToken']),
   },
   created() {
-    console.log("study accessToken",this.accessToken)
     // 0813 오채명
     // 전체 스터디 조회
-    // const params = {
-    //   page: 0,
-    //   size: 5,
-    // }
+    const params = {
+      page: 0,
+      size: 5,
+    }
     axios({
       url: drf.study.study() + 'me',
       method: 'get',
       headers: {
         Authorization : this.accessToken,
       },
-      // params: params
+      params: params
     })
     .then(res => {
       console.log("res=",res.data.content)
       this.myStudys = res.data.content
       this.endPage = res.data.totalPages
-      // console.log("totalPages =",res.data.totalPages)
+      console.log("totalPages =",res.data.totalPages)
     })
-    .cathch(err => {
+    .catch(err => {
       console.log("에러")
       console.log(err)
     })
 
   },
   methods: {
+    // 페이지 네이션 엑시오스
+    handlePage () {
+      console.log("event = ", Number(event.target.ariaLabel.slice(-1)))
+      this.page = Number(event.target.ariaLabel.slice(-1))
 
-  },
+      const params ={
+        page: this.page -1 ,
+        size: 5
+        //sort: onUpdated, 'desc'
+      }
+      axios({
+      url: drf.study.study() + 'me',
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+      params: params
+      })
+      .then(res => {
+        console.log("res=",res.data.content)
+        this.myStudys = res.data.content
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })
+    }
+  }
 }
 </script>
 

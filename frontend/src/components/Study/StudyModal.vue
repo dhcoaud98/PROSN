@@ -17,7 +17,7 @@
               <v-divider class="info-divider mb-2"></v-divider>
               <p class="ma-0 px-2" style="color:#512DA8">현재원 / 총원 : {{studydetail.currentPerson}} / {{studydetail.maxPerson}} </p>
               <!-- 내가 만든 스터디일 경우 마감일 필드가 안 넘어옴 -->
-              <p class="ma-0 px-2">마감일 : {{studydetail.expiredDate}}</p>
+              <!-- <p class="ma-0 px-2">마감일 : {{studydetail.expiredDate}}</p> -->
               <p class="ma-0 px-2">장소 : {{studydetail.place}}</p>
               <v-divider class="info-divider mt-2"></v-divider>
             </v-col>
@@ -36,6 +36,10 @@
                   </v-col>
                   <v-col cols="12">
                     {{ studydetail.mainText }}
+                  </v-col>
+                  <v-col v-if="myStudydetail">
+                   {{ myStudydetail}}
+
                   </v-col>
 
                 </v-row>
@@ -78,13 +82,14 @@ export default {
   },
   props: {
     study: Object,
+    myStudydetail: Object,
   },
   created() {
     this.studyId = this.study.id
     console.log("study id = ",this.studyId)
     // console.log(`${drf.api.study()+this.pageId}`)
 
-    // 스터디 모달에 들어왔기 때문에 api/study/{studyid}에 해당하는 detail study 정보 가져오기
+    //api/study/{studyid}에 해당하는 detail study 정보 가져오기
     axios({
       url: drf.study.study() + `${this.studyId}`,
       methods: 'get',
