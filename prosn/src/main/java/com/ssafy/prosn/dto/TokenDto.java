@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 /**
  * created by seongmin on 2022/07/27
- * updated by seongmin on 2022/07/28
+ * updated by seongmin on 2022/08/11
  */
 @Getter
 @NoArgsConstructor
@@ -16,6 +16,8 @@ public class TokenDto {
     private String grantType;
     private String accessToken;
     private Long tokenExpiresIn;
+    private String refreshToken;
+    private Long refreshTokenExpiresIn;
     private Long id;
     private String name;
 

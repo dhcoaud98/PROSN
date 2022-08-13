@@ -4,6 +4,8 @@ import com.ssafy.prosn.domain.comment.Comment;
 import com.ssafy.prosn.domain.comment.Reply;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.ReplyRequestDto;
+import com.ssafy.prosn.exception.BadRequestException;
+import com.ssafy.prosn.exception.NotAccessUserException;
 import com.ssafy.prosn.repository.comment.CommentRepository;
 import com.ssafy.prosn.repository.comment.ReplyRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
@@ -30,9 +32,9 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     @Transactional
     public Reply write(ReplyRequestDto replyRequestDto, Long uid) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
         Comment comment = commentRepository.findById(replyRequestDto.getCid())
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 댓글입니다."));
+                .orElseThrow(() -> new BadRequestException("유효하지 않은 댓글입니다."));
 
         Reply reply = Reply.builder()
                 .user(user)
@@ -46,8 +48,8 @@ public class ReplyServiceImpl implements ReplyService {
     @Transactional
     public void delete(Long id, Long uid) {
         Optional<Reply> reply = replyRepository.findById(id);
-        reply.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 답글입니다."));
-        if (!reply.get().getUser().getId().equals(uid)) throw new IllegalArgumentException("내가 쓴 답글만 삭제 가능합니다.");
+        reply.orElseThrow(() -> new BadRequestException("유효하지 않은 답글입니다."));
+        if (!reply.get().getUser().getId().equals(uid)) throw new NotAccessUserException("내가 쓴 답글만 삭제 가능합니다.");
 
         replyRepository.deleteById(id);
     }

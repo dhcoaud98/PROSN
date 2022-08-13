@@ -3,6 +3,8 @@ package com.ssafy.prosn.service;
 import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.PostListFolderResponseDto;
+import com.ssafy.prosn.exception.BadRequestException;
+import com.ssafy.prosn.exception.NotAccessUserException;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
 import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/08/04
- * updated by seongmin on 2022/08/05
+ * updated by seongmin on 2022/08/08
  */
 @Service
 @RequiredArgsConstructor
@@ -28,7 +30,7 @@ public class PostListServiceImpl implements PostListService {
 
     @Override
     public List<PostListFolderResponseDto> getPostListFolder(Long uid) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
         List<PostList> postLists = postListRepository.findByUser(user);
         List<PostListFolderResponseDto> result = new ArrayList<>();
         for (PostList postList : postLists) {
@@ -39,8 +41,9 @@ public class PostListServiceImpl implements PostListService {
     }
 
     @Override
+    @Transactional
     public Long make(Long uid, String title) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
         PostList savePostList = postListRepository.save(PostList.builder()
                 .user(user)
                 .title(title).build());
@@ -48,11 +51,12 @@ public class PostListServiceImpl implements PostListService {
     }
 
     @Override
+    @Transactional
     public void delete(Long uid, Long id) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-        PostList postList = postListRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 폴더입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
+        PostList postList = postListRepository.findById(id).orElseThrow(() -> new BadRequestException("유효하지 않은 폴더입니다."));
         if (!postList.getUser().equals(user)) {
-            throw new IllegalStateException("삭제 할 권한이 없습니다.");
+            throw new NotAccessUserException("삭제 할 권한이 없습니다.");
         }
         postListRepository.delete(postList);
     }

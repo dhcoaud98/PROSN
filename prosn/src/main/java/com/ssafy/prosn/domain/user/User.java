@@ -21,6 +21,7 @@ import java.util.List;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "users")
 public abstract class User extends BaseEntity {
 
     @Id

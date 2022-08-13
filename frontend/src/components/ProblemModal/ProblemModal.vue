@@ -283,18 +283,20 @@ export default {
       if (selectedAnswer === "1") {
         this.credentials.right = true
         this.myCorrectStatus = true
+        // alert('정답입니다.')
         this.$swal({
           icon: 'success',
           text: '정답입니다'
         })
       } else {
         this.credentials.right = false
+        // alert('오답입니다.')
         this.$swal({
           icon: 'error',
           text: '오답입니다'
         })
         this.myCorrectStatus = false
-        this.$router
+        // this.$router
       }
       // console.log(this.credentials)
       // axios 보내기
