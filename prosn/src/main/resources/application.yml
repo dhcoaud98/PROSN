@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # 잠깐만 바꿀게
-    url: jdbc:mysql://i7a705.p.ssafy.io:3306/prosn?serverTimezone=UTC&characterEncoding=UTF-8
+#서버DB    url: jdbc:mysql://i7a705.p.ssafy.io:3306/prosn?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/prosn?serverTimezone=UTC&characterEncoding=UTF-8
     username: prosn
     password: prosn705@#
   mvc:
@@ -23,8 +23,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create
-          # 잠깐만 바꿀게
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true;
