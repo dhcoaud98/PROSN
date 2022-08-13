@@ -2,7 +2,6 @@ package com.ssafy.prosn.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.prosn.domain.user.LocalUser;
-import com.ssafy.prosn.domain.user.User;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;

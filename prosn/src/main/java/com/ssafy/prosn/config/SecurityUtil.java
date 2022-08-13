@@ -5,11 +5,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * created by seongmin on 2022/07/27
+ * updated by seongmin on 2022/08/11
  */
 public class SecurityUtil {
     private SecurityUtil() { }
 
-    public static Long getCurrentMemberId() {
+    // SecurityContext 에 유저 정보가 저장되는 시점
+    // Request 가 들어올 때 AuthTokenFilter 의 doFilter 에서 저장장
+
+   public static Long getCurrentMemberId() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || authentication.getName() == null) {

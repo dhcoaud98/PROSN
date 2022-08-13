@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Builder
 @ToString
 public class NoteResponseDto {
     private List<Content> content = new ArrayList<>();

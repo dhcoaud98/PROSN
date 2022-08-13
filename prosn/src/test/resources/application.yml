@@ -1,13 +1,24 @@
 spring:
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MySQL;
+#    url: jdbc:h2:tcp://localhost/~/test;
     username: sa
     password:
     driver-class-name: org.h2.Driver
   mvc:
     path match:
       matching-strategy: ant_path_matcher
-
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: prosnteam
+    password: prosn705@#
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
   jpa:
     hibernate:
       ddl-auto: create

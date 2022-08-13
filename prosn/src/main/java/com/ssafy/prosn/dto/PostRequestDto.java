@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class PostRequestDto {
-//    @NotNull(message = "사용자는 필수 입력 값입니다.")
+    //    @NotNull(message = "사용자는 필수 입력 값입니다.")
 //    private Long uid;
     @NotBlank(message = "제목은 필수 입력 값입니다.")
     private String title;

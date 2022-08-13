@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <!-- 2022.07.25. 회원 로그인정보 입력란 (남성은) -->
-    <!-- 0805 임지민
+	<div>
+		<!-- 2022.07.25. 회원 로그인정보 입력란 (남성은) -->
+		<!-- 0805 임지민
       - 아직 계정이 없으신가요? 와 아이디/비번 찾기 사이에 간격 늘리기
       - 회원가입 hover시 보라색 text와 보라색 underline 뜨도록 수정
       - 회원가입 글자 bold로 바꿈
@@ -84,10 +84,10 @@
 //     },
 //   }
 
-import axios from 'axios'
-import drf from '@/api/drf'
-import {mapState, mapActions } from 'vuex'
-  const accountStore = "accountStore"
+import axios from 'axios';
+import drf from '@/api/drf';
+import { mapState, mapActions } from 'vuex';
+const accountStore = 'accountStore';
 
   export default {
     // 2022.07.25. 아이디 (남성은)
@@ -109,51 +109,56 @@ import {mapState, mapActions } from 'vuex'
       ],
     }),
 
-    // 2022.07.25. 로그인 버튼 (남성은)
-    methods: {
-      validate () {
-        this.$refs.form.validate()
-      },
-      // ...mapActions(['login'])
-      login() {
+	// 2022.07.25. 로그인 버튼 (남성은)
+	methods: {
+		validate() {
+			this.$refs.form.validate();
+		},
+		// ...mapActions(['login'])
+		login() {
+			// axios.post(drf.accounts.login())
+			// .then(({res}) => {
+			//   console.log(res)
+			// })
+			axios({
+				url: drf.accounts.login(),
+				method: 'post',
+				data: this.credentials,
+			})
+				.then((res) => {
+					console.log('res = ', res);
+					console.log('accessToken = ', res.data.accessToken);
+					console.log('refreshToken = ', res.data.refreshToken);
+					console.log('expire : ', res.data.tokenExpiresIn);
+					let grantType = res.data.grantType.replace(
+						res.data.grantType.charAt(0),
+						res.data.grantType.charAt(0).toUpperCase()
+					);
+					console.log('grantType:', grantType);
+					this.$store.dispatch(
+						'saveToken',
+						grantType + ' ' + res.data.accessToken
+					);
+					this.$store.dispatch('saveRefreshToken', res.data.refreshToken);
+					this.$store.dispatch('saveExpiresIn', res.data.tokenExpiresIn);
 
-        // axios.post(drf.accounts.login())
-        // .then(({res}) => {
-        //   console.log(res)
-        // })
-        axios({
-                url: drf.accounts.login(),
-                method: 'post',
-                data: this.credentials
-            })
-            .then(res => {
-                console.log("res = ",res);
-                console.log("accessToken = ",res.data.accessToken);
-                console.log("refreshToken = ",res.data.refreshToken);
-                let grantType = res.data.grantType.replace(res.data.grantType.charAt(0), res.data.grantType.charAt(0).toUpperCase());
-                console.log("grantType:", grantType);
-                this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken, res.data.refreshToken)
-                this.$store.dispatch('saveName', res.data.name)
-                this.$store.dispatch('saveId', res.data.id)
-                this.$router.push({ path: '/'})
-                // const token = res.data.key
-                // dispatch('saveToken', token)
-                // dispaxtch('fetchCurrentUser')
-            
-            })
-            .catch(err =>{
-                console.log("에러")
-                console.log(err)
-            })
-      },
-      // event () {
-      //   this.$router.push({ path: '/' })
-      // }
-    },
-  }
-
+					this.$store.dispatch('saveName', res.data.name);
+					this.$store.dispatch('saveId', res.data.id);
+					this.$router.push({ path: '/' });
+					// const token = res.data.key
+					// dispatch('saveToken', token)
+					// dispaxtch('fetchCurrentUser')
+				})
+				.catch((err) => {
+					console.log('에러');
+					console.log(err);
+				});
+		},
+		// event () {
+		//   this.$router.push({ path: '/' })
+		// }
+	},
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
