@@ -1,13 +1,21 @@
 <template>
   <div>
     <!-- 2022.07.25. 소셜로그인 (남성은) -->
-    <v-container class="px-5">
-      <v-row no-gutters>
-        <v-col cols="12" class="d-flex justify-center"><v-btn color="#EEEEEE" class="col-11 my-2">구글 계정으로 시작하기</v-btn></v-col>
-        <v-col cols="12" class="d-flex justify-center"><v-btn color="#FFEB3B" class="col-11 my-2">카카오 계정으로 시작하기</v-btn></v-col>
-        <v-col cols="12" class="d-flex justify-center"><v-btn color="#2DB400" class="col-11 my-2">네이버 계정으로 시작하기</v-btn></v-col>
-        <v-col cols="12" class="d-flex justify-center ">
-          <a href="" class="black--text">이메일로 시작하기</a>
+    <v-container class="px-0">
+      <v-row>
+        <v-col cols="12" class="d-flex justify-center">
+          <v-btn rounded color="#FFEB3B" class="col-12 my-2 d-flex justify-space-between" height="45px">
+            <img src="@/assets/kakaotalk_logo.png" alt="..." class="social-logo">
+            <p class="pa-0 ma-0 font-weight-bold social-kakao">카카오로 시작</p>
+            <div class="pa-2"></div>
+          </v-btn>
+        </v-col>
+        <v-col cols="12" class="d-flex justify-center">
+          <v-btn rounded color="#EEEEEE" class="col-12 my-2 d-flex justify-space-between" height="45px">
+            <img src="@/assets/google_logo.png" alt="..." class="social-logo">
+            <p class="pa-0 ma-0 font-weight-bold social-google">구글로 시작</p>
+            <div class="pa-2"></div>
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -21,5 +29,16 @@ export default {
 </script>
 
 <style>
-
+.social-kakao {
+  color: #825050;
+  font-size: 1.2rem;
+}
+.social-google {
+  color: #585757;
+  font-size: 1.2rem;
+}
+.social-logo {
+  height: 25px;
+  width: 25px;
+}
 </style>

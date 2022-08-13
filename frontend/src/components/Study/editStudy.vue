@@ -19,7 +19,7 @@
             <p class="font-weight-bold mb-0">스터디 이름</p>
           </v-col>
           <v-col class="col-12 pa-0">
-            <v-text-field label="스터디 이름을 입력하세요 (최대 20자)" 
+            <v-text-field {{ title }}
               maxlength="20" 
               counter required dense
               v-model="credentials.title"></v-text-field>
@@ -34,7 +34,7 @@
             :items="categories" 
             item-text="toUser" 
             item-value="toDB" 
-            label="스터디 주제를 선택하세요 (복수선택 가능)" 
+            {{ tags }}
             required dense chips small-chips multiple
             v-model="credentials.tags"></v-autocomplete>          
           </v-col>
@@ -49,7 +49,7 @@
                 <v-col class="col-12 pa-0">
                   <v-select 
                   :items="numberofpeople" 
-                  label="스터디 최대 인원을 선택하세요" 
+                  {{ maxPerson }}
                   dense 
                   class="pe-md-2"
                   v-model="credentials.maxPerson"></v-select>
@@ -93,7 +93,7 @@
           <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">장소</p></v-col>
           <v-col class="col-12 pa-0">
             <v-text-field 
-            label="스터디 장소를 입력하세요" 
+            {{ place }}
             required dense
             v-model="credentials.place"></v-text-field>
           </v-col>
@@ -105,7 +105,7 @@
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">스터디 소개</p></v-col>
           <v-col class="col-12 pa-0">
             <v-textarea 
-            label="스터디 그룹에 대한 설명을 입력하세요 (최대 250자)" 
+            {{mainText}}
             maxlength="250" 
             rows="4" 
             no-resize counter required dense
@@ -118,7 +118,7 @@
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">상세정보</p></v-col>
           <v-col class="col-12 pa-0">
             <v-textarea 
-            label="스터디 그룹원들에게만 공개할 상세정보를 입력하세요 (최대 250자)" 
+            {{secretText}}
             maxlength="250" rows="4" 
             no-resize counter required dense
             v-model="credentials.secretText"></v-textarea>
@@ -193,8 +193,6 @@ export default {
     cancel () {
       this.$router.push({ path: 'study' })
     },
-
-    // 스터디 생성하기
     submitStudy () {
       axios({
           url: drf.study.study(),
@@ -243,3 +241,5 @@ export default {
     background-color: #EDE7F6;
   }
 </style>
+}
+</script>

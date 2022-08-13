@@ -1,20 +1,22 @@
 <template>
   <v-container>
-    <!-- v-for 사용하기 -->
-    <my-study-list-items></my-study-list-items>
+    <my-study-list-items v-for="(myStudy, idx) in myStudys" :key="idx" :myStudy="myStudy"></my-study-list-items>
     <br>  
-    <v-div class="text-center ">
-      <v-pagination
-        v-model="page"
-        :length="5"
-        color="#A384FF"
-      ></v-pagination>
-    </v-div>
+    <v-pagination
+      v-model="nowPage"
+      :length="endPage"
+      color="#A384FF"
+      circle
+      @input="handlePage()"
+    ></v-pagination>
   </v-container>
 </template>
 
 <script>
+import axios from 'axios'
+import drf from '@/api/drf'
 import MyStudyListItems from "./MyStudyListItems.vue"
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'StudyList',
@@ -23,9 +25,72 @@ export default {
   },
   data () {
     return {
-      page: 1,
+      value: null,
+      nowPage: 1,
+      endPage: 0,
+      myStudys: [],
+      page: 0,
     }
   },
+  computed: {
+    ...mapGetters(['accessToken']),
+  },
+  created() {
+    // 0813 오채명
+    // 전체 스터디 조회
+    const params = {
+      page: 0,
+      size: 5,
+    }
+    axios({
+      url: drf.study.study() + 'me',
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+      params: params
+    })
+    .then(res => {
+      console.log("res=",res.data.content)
+      this.myStudys = res.data.content
+      this.endPage = res.data.totalPages
+      console.log("totalPages =",res.data.totalPages)
+    })
+    .catch(err => {
+      console.log("에러")
+      console.log(err)
+    })
+
+  },
+  methods: {
+    // 페이지 네이션 엑시오스
+    handlePage () {
+      console.log("event = ", Number(event.target.ariaLabel.slice(-1)))
+      this.page = Number(event.target.ariaLabel.slice(-1))
+
+      const params ={
+        page: this.page -1 ,
+        size: 5
+        //sort: onUpdated, 'desc'
+      }
+      axios({
+      url: drf.study.study() + 'me',
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+      params: params
+      })
+      .then(res => {
+        console.log("res=",res.data.content)
+        this.myStudys = res.data.content
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })
+    }
+  }
 }
 </script>
 

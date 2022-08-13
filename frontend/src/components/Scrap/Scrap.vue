@@ -18,15 +18,6 @@
               <v-col cols="12">
                 <!-- 여기에 ScarpList가 들어갈 예정 -->
                 <scrap-list></scrap-list>
-
-                <v-checkbox
-                    v-model="ex4"
-                    label="기본폴더"
-                    color="info"
-                    value=""
-                    hide-details
-                    class="mt-0 font-weight-bold"
-                  ></v-checkbox>
               </v-col>
             </v-row>
           </v-container>
@@ -36,8 +27,22 @@
       <v-divider class="mx-1 my-2"></v-divider>
 
       <v-row class="my-2">
+        <!-- 리스트 만들기 -->
+        <v-col cols="12" class="d-none">
+          <v-form ref="form" @submit.prevent="createScrap" id="create-scrap-form"> 
+            <v-row>
+              <v-col cols="12" lg="8">
+                <v-text-field v-model="credentials.scrapTitle" label="문제 리스트 이름을 입력하세요" maxlength="20" counter required dense></v-text-field>
+              </v-col>
+              <v-col cols="12" lg="4">
+                <v-btn type="submit" width="100%">리스트 생성</v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-col>
+
         <v-col cols="12" class="py-1">
-          <v-btn rounded width="100%">
+          <v-btn rounded width="100%" @click="openCreateScrap">
             새로운 목록 추가
           </v-btn>
         </v-col>
@@ -49,18 +54,32 @@
       </v-row>
     </v-container>
   </v-card>
-
 </template>  
 
 <script>
+import ScrapList from '@/components/Scrap/ScrapList.vue'
+
 export default {
   name: 'Scrap',
 
   data: () => ({
-    //
+    credential: {
+      scrapTitle: '',
+    }
   }),
   components : {
+    ScrapList,
   },
+  methods: {
+    openCrateScrap () {
+      const createScrapForm = document.querySelector("#create-scrap-form")
+      createScrapForm.classList.remove('d-none')
+    },
+    createScrap () {
+      const createScrapForm = document.querySelector("#create-scrap-form")
+      createScrapForm.classList.add('d-none')
+    }
+  }
 }
 </script>
 

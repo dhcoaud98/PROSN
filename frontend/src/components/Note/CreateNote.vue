@@ -2,7 +2,7 @@
   <!-- 전체적인 틀 -->
   <v-container fluid class="white">
     <!-- 문제 정보 -->
-    <p>{{noteDetail}}</p>
+    <v-row>{{noteDetail}}</v-row>
     <v-row class="align-center mx-5 mt-5 color-FAF0F3 border-a-10 px-4">
       <v-col cols="1"><v-icon large color="black darken-2">mdi-group</v-icon></v-col>
         <v-col>
@@ -13,10 +13,7 @@
               </div>
             </v-col>
             <v-col class="pa-0">
-              <span class="font-parent-mid-l font-weight-bold mr-3">{{noteDetail.title}} </span>
-              <span>(
-                <span class="red--text font-weight-bold">5</span>/<span class="font-weight-bold">10</span>
-              )</span>
+              <span class="font-parent-mid-l font-weight-bold mr-3">{{noteDetail.title}}</span>
             </v-col>
           </v-row>
           
@@ -25,18 +22,16 @@
 
     <!-- 문제 부분 -->
     <v-row class="mt-0">
-      <v-col>
-        <note-detail-list :noteDetail="noteDetail"></note-detail-list>
-      </v-col>
+      <create-note-list :noteDetail="noteDetail"></create-note-list>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import NoteDetailList from '@/components/Note/NoteDetailList.vue'
+import CreateNoteList from '@/components/Note/CreateNoteList.vue'
+import { mapGetters } from 'vuex'
 import axios from 'axios'
 import drf from '@/api/drf.js'
-import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -45,22 +40,18 @@ export default {
     }
   },
   components: {
-    NoteDetailList,
-  },
-  props: {
-    
+    CreateNoteList,
   },
   methods : {
     
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['userName', 'accessToken'])
   },
   created() {
     const noteId = this.$route.params.noteId
-    // console.log(noteId)
-
-    axios({
+    // console.log('noteId=', noteId)
+     axios({
       url: drf.wrongAnswer.wrongAnswer() + noteId,
       method: 'get',
       headers: {
@@ -70,12 +61,14 @@ export default {
     .then(res => {
       // console.log(res) //ok
       this.noteDetail = res.data
+      // console.log(this.noteDetail)
 
     })
     .catch(err => {
       console.log(err);
     })
-  },
+
+  }
 }
 </script>
 
