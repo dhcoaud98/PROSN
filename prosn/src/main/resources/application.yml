@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#서버DB    url: jdbc:mysql://i7a705.p.ssafy.io:3306/prosn?serverTimezone=UTC&characterEncoding=UTF-8
-    url: jdbc:mysql://localhost:3306/prosn?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://i7a705.p.ssafy.io:3306/prosn?serverTimezone=UTC&characterEncoding=UTF-8
+    # url: jdbc:mysql://localhost:3306/prosn?serverTimezone=UTC&characterEncoding=UTF-8
     username: prosn
     password: prosn705@#
   mvc:
@@ -19,6 +19,9 @@ spring:
           auth: true
           ssl:
             enable: true
+  redis:
+    host: 3.34.133.181
+    port: 6379
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -36,6 +39,3 @@ server.error.include-message: always
 jwt:
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
 
-redis:
-  host: 3.34.133.181
-  port: 6379
