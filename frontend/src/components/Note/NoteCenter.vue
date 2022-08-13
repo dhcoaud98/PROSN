@@ -20,9 +20,9 @@
     -->
     <v-row class="bottom-border-grey pb-5 mr-2 mx-5 mb-0">
       <v-chip-group column mandatory active-class="clicked-chip">
-        <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('전체')" id="whole" small>#전체</v-chip>
+        <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('whole','전체')" id="whole" small>#전체</v-chip>
         <div v-for="category in categories" :key="category.toDB">
-          <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toDB)" small>
+          <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toDB, category.toUser)" small>
             #{{category.toUser}}</v-chip>
         </div>
       </v-chip-group>
@@ -31,27 +31,25 @@
     <!-- row 3: 선택한 카테고리 -->
     <v-row class="mt-2 mr-0 mx-5">
       <v-col class="bottom-border-grey">
-        <p class="font-parent-lar font-weight-bold mb-1">#{{ selected }}</p>
+        <p class="font-parent-lar font-weight-bold mb-1">#{{ selectedUser }}</p>
       </v-col>
     </v-row>
 
     <!-- row4. note list -->
     <v-row class="ml-2 mx-5">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mt-3 mx-5">작성 전 문제</p>
-      <note-list :beforeProbs="beforeProbs"></note-list>
+      <note-list :selectedDB="selectedDB"></note-list>
     </v-row>
     <hr class="my-5 border-grey mx-5">
     <v-row class="ml-2">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mx-5">이미 작성한 문제</p>
-      <note-list :afterProbs="afterProbs"></note-list>
+      <note-list :selectedDB="selectedDB"></note-list>
     </v-row>
   </v-container>
 </template>
 
 <script>
 import NoteList from '@/components/Note/NoteList.vue'
-import axios from 'axios'
-import drf from '@/api/drf.js'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -60,7 +58,8 @@ export default {
   },
   data() {
     return {
-      selected : '전체',
+      selectedUser : '전체',
+      selectedDB: 'whole',
       categories: [
         {toDB:"NW", toUser: "네트워크"},
         {toDB:"OS", toUser: "운영체제"},
@@ -74,86 +73,20 @@ export default {
         {toDB:"SC", toUser: "보안"},
         {toDB:"ETC", toUser: "기타"},
       ],
-      beforeProbs : [],
-      afterProbs: [],
+      
     }
   },
   methods: {
-    selectCategory(categoryName) {
-      this.selected = categoryName
-      const isWriteParams = ['true', 'false']
-      isWriteParams.forEach(oneParam => {
-        const params = {
-          tag: categoryName,
-          isWrite: oneParam
-        }
-        axios({
-          url: drf.api + 'wrongAnswer/' + 'tag',
-          method: 'get',
-          headers: {
-            Authorization: this.accessToken,
-          },
-          params: params,
-        })
-        .then(res => {
-          // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-          // console.log(res.data.content)
-          if (oneParam === 'false'){
-            this.beforeProbs = res.data.content
-            console.log('before=', this.beforeProbs)
-          } else {
-            this.afterProbs = res.data.content
-            console.log('after=',this.afterProbs)
-          }
-          // console.log('in'); //ok
-        })
-        .catch(err => {
-          // console.log(this.accessToken)
-          // console.log(this.userId)
-          console.log(err);
-        })
-
-      })
+    selectCategory(toDB, toUser) {
+      // console.log('emit= ', toDB)
+      this.selectedDB = toDB
+      this.selectedUser = toUser
     }
   },
   computed: {
     ...mapGetters(['accessToken', 'userId', 'userName'])
   },
   created() {
-    const isWriteParams = ['true', 'false']
-
-    isWriteParams.forEach(oneParam => {
-      const params = {
-          // pageable: 0,
-          isWrite: oneParam,
-          // sort: onUpdated, 'desc'
-        } 
-      axios({
-        url: drf.api + 'wrongAnswer/' + 'all',
-        method: 'get',
-        headers: {
-          Authorization: this.accessToken,
-        },
-        params: params,
-      })
-      .then(res => {
-        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-        // console.log(res.data.content)
-        if (oneParam === 'false'){
-          this.beforeProbs = res.data.content
-          console.log('before=', this.beforeProbs)
-        } else {
-          this.afterProbs = res.data.content
-          console.log('after=',this.afterProbs)
-        }
-        // console.log('in'); //ok
-      })
-      .catch(err => {
-        // console.log(this.accessToken)
-        // console.log(this.userId)
-        console.log(err);
-      })
-    })
   },
 }
 </script>
