@@ -15,6 +15,7 @@ const accountStore = {
 	},
 	getters: {
 		isLoggedIn: (state) => !!state.accessToken,
+		currentUser: state => state.currentUser,
 		authError: (state) => state.authError,
 		userName: (state) => state.userName,
 		accessToken: (state) => state.accessToken,
@@ -22,6 +23,7 @@ const accountStore = {
 		expire: (state) => state.expire,
 	},
 	mutations: {
+		SET_CURRENT_USER: (state, user) => state.currentUser = user,
 		SET_TOKEN: (state, accessToken) => {
 			console.log('mutations accessToekn = ', accessToken);
 			state.accessToken = accessToken;

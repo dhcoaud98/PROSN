@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <my-study-list-items v-for="(study, idx) in studys" :key="idx" :study="study"></my-study-list-items>
+    <my-study-list-items v-for="(myStudy, idx) in myStudys" :key="idx" :myStudy="myStudy"></my-study-list-items>
     <br>  
     <v-pagination
       v-model="nowPage"
@@ -16,6 +16,7 @@
 import axios from 'axios'
 import drf from '@/api/drf'
 import MyStudyListItems from "./MyStudyListItems.vue"
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'StudyList',
@@ -26,35 +27,70 @@ export default {
     return {
       value: null,
       nowPage: 1,
-      endPage: 4,
+      endPage: 0,
       myStudys: [],
       page: 0,
     }
   },
-  // created() {
-  //   // 0811 오채명
-  //   // 나의 스터디 조회하기
-  //   const params = {
-  //     page: 0,
-  //     size: 5,
-  //   }
-  //   axios({
-  //     url: drf.study.study() + 'me',
-  //     method: 'get',
-  //     headers: {
-  //       Authorization : this.accessToken,
-  //     },
-  //     params: params
-  //   })
-  //   .then(res => {
-  //     console.log(res.data)
-  //     this.myStudys = res.data
-  //   })
-
-  // },
-  methods: {
+  computed: {
+    ...mapGetters(['accessToken']),
+  },
+  created() {
+    // 0813 오채명
+    // 전체 스터디 조회
+    const params = {
+      page: 0,
+      size: 5,
+    }
+    axios({
+      url: drf.study.study() + 'me',
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+      params: params
+    })
+    .then(res => {
+      console.log("res=",res.data.content)
+      this.myStudys = res.data.content
+      this.endPage = res.data.totalPages
+      console.log("totalPages =",res.data.totalPages)
+    })
+    .catch(err => {
+      console.log("에러")
+      console.log(err)
+    })
 
   },
+  methods: {
+    // 페이지 네이션 엑시오스
+    handlePage () {
+      console.log("event = ", Number(event.target.ariaLabel.slice(-1)))
+      this.page = Number(event.target.ariaLabel.slice(-1))
+
+      const params ={
+        page: this.page -1 ,
+        size: 5
+        //sort: onUpdated, 'desc'
+      }
+      axios({
+      url: drf.study.study() + 'me',
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+      params: params
+      })
+      .then(res => {
+        console.log("res=",res.data.content)
+        this.myStudys = res.data.content
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })
+    }
+  }
 }
 </script>
 

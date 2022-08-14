@@ -1,7 +1,7 @@
 <template>
   <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8">
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
-    <v-card-title class="pa-0 bg-gradation">
+    <v-card-title class="pa-0 purple-gradation">
       <v-container class="pa-0">
         <!-- 스터디 제목 / 현재인원수와 총인원수 -->
         <v-row class="d-flex justify-space-between ma-3">
@@ -71,7 +71,10 @@ export default {
         alert("스터디 신청이 완료되었습니다.")
         this.message = ''
         this.closeModal()
-    }
+    },
+    // refresh() {
+    //   this.$emit('refresh')
+    // }
   },
 
 }
@@ -124,5 +127,8 @@ export default {
 .study-detail-info {
   background-color: #EDE7F6;
   height: 100%;
+}
+.purple-gradation{
+  background: linear-gradient(to right, #F2E6F6, #E7C0F4);
 }
 </style>
