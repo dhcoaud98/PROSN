@@ -1,9 +1,9 @@
 <template>
-  <v-container fluid class="pa-0 pt-10 mt-0">
+  <v-container fluid class="pa-0 pt-0 pt-md-10 mt-0">
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row v-if="!isSearched">
       <!-- col 1: 메인 피드 부분 -->
-      <v-col cols="12" md="7" lg="8" class="mt-2 white pt-0 px-0 rounded-lg">
+      <v-col cols="12" md="7" lg="8" class="mt-0 mt-md-2 white pt-0 px-0 rounded-lg">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
         <v-row class="d-flex mt-8 ms-8">
           <img src="@/assets/prosn_logo_sm.png" alt="..." class="small-logo">
