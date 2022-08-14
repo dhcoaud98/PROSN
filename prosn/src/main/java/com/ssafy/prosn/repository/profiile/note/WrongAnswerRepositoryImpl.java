@@ -61,6 +61,9 @@ public class WrongAnswerRepositoryImpl implements WrongAnswerRepositoryCustom {
     }
 
     private Predicate tagContains(String tag) {
+        if (tag.equals("")) {
+            tag = null;
+        }
         return tag != null ? postTag.tag.code.contains(tag) : null;
     }
 }

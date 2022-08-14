@@ -1,8 +1,11 @@
 package com.ssafy.prosn.service;
 
+import com.ssafy.prosn.domain.comment.Comment;
 import com.ssafy.prosn.domain.post.*;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.*;
+import com.ssafy.prosn.exception.BadRequestException;
+import com.ssafy.prosn.exception.NotAccessUserException;
 import com.ssafy.prosn.repository.post.InformationRepository;
 import com.ssafy.prosn.repository.post.LikeDislikeRepository;
 import com.ssafy.prosn.repository.post.PostRepository;
@@ -14,17 +17,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/08/01
+ * updated by seongmin on 2022/08/10
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -39,12 +42,12 @@ public class PostServiceImpl implements PostService {
     private final LikeDislikeRepository likeDislikeRepository;
     private final ProblemRepository problemRepository;
     private final InformationRepository informationRepository;
+    private final SolvingService solvingService;
 
     @Override
     @Transactional
     public Post writeProblem(ProblemRequestDto problemDto, Long uid) {
-        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
         Problem problem = Problem.builder()
                 .user(user)
                 .title(problemDto.getTitle())
@@ -62,8 +65,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post writeInformation(InformationRequestDto informationDto, Long uid) {
-        // 토큰에서 로그인 한 사용자 id 가져옴. 이렇게 하면 테스트는 어떻게..?
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
         Information information = Information.builder()
                 .user(user)
                 .mainText(informationDto.getMainText())
@@ -78,9 +80,9 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void delete(Long id, Long uid) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+        Post post = postRepository.findById(id).orElseThrow(() -> new BadRequestException("유효하지 않은 게시글입니다."));
         if (!post.getUser().getId().equals(uid))
-            throw new IllegalArgumentException("내가 쓴 게시글만 삭제 가능합니다.");
+            throw new NotAccessUserException("내가 쓴 게시글만 삭제 가능합니다.");
 
         post.remove();
     }
@@ -92,12 +94,14 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostDetailResponseDto showProblemDetail(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+        log.info("요기id = {}", id);
+        Post post = postRepository.findById(id).orElseThrow(() -> new BadRequestException("유효하지 않은 게시글입니다."));
         log.info("post type = {}", post.getClass());
         if (post instanceof Problem) {
             log.info("문제 디테일");
             Problem problem = (Problem) post;
-            if (problem.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
+            if (problem.isDeleted()) throw new BadRequestException("삭제된 게시글입니다.");
+            RateDto rate = solvingService.getRate(problem.getId());
             return ProblemDetailResponseDto.builder()
                     .title(problem.getTitle())
                     .user(new UserResponseDto(problem.getUser().getId(), problem.getUser().getName()))
@@ -108,48 +112,51 @@ public class PostServiceImpl implements PostService {
                     .example2(problem.getExample2())
                     .example3(problem.getExample3())
                     .example4(problem.getExample4())
-                    .comments(problem.getComments())
-                    .numOfLikes(getNumOfLikes(problem))
-                    .numOfDislikes(getNumOfDislikes(problem))
+                    .comments(getComments(problem))
+                    .numOfLikes(problem.getNumOfLikes())
+                    .numOfDislikes(problem.getNumOfDislikes())
                     .views(problem.getViews())
                     .tags(getTags(problem))
-                    .type(PostType.PROBLEM)
+                    .type(problem.getPtype())
+                    .correctRate(rate.getCorrectRate())
+                    .submitCnt(rate.getSubmitCount())
                     .build();
         } else if (post instanceof Information) {
             log.info("정보 디테일");
             Information information = (Information) post;
-            if (information.isDeleted()) throw new IllegalArgumentException("삭제된 게시글입니다.");
+            if (information.isDeleted()) throw new BadRequestException("삭제된 게시글입니다.");
 
             return InformationDetailResponseDto.builder()
                     .id(information.getId())
                     .user(new UserResponseDto(information.getUser().getId(), information.getUser().getName()))
                     .mainText(information.getMainText())
-                    .comments(information.getComments())
-                    .numOfDislikes(getNumOfDislikes(information))
-                    .numOfLikes(getNumOfLikes(information))
+                    .comments(getComments(information))
+                    .numOfDislikes(information.getNumOfDislikes())
+                    .numOfLikes(information.getNumOfLikes())
                     .tags(getTags(information))
                     .views(information.getViews())
-                    .type(PostType.INFORMATION)
+                    .type(PostType.Information)
                     .build();
         } else {
-            log.info("그외(문제집) 디테일");
-            return null;
+            log.info("문제집 디테일");
+            Workbook workbook = (Workbook) post;
+            return new InformationDetailResponseDto(
+                    workbook.getId(),
+                    workbook.getTitle(),
+                    workbook.getNumOfLikes(),
+                    workbook.getNumOfDislikes(),
+                    getComments(workbook),
+                    workbook.getViews(),
+                    new UserResponseDto(workbook.getUser().getId(), workbook.getUser().getName()),
+                    getTags(workbook),
+                    null,
+                    PostType.Workbook
+            );
         }
     }
 
     @Override
     public PostResponseDto showAllPost(Pageable pageable) {
-//        List<Post> posts = postRepository.findAll();
-//        List<PostAllResponseDto> result = new ArrayList<>();
-//        posts.forEach(post -> {
-//            result.add(new PostAllResponseDto(post.getId(),
-//                    new UserResponseDto(post.getUser().getId(),
-//                            post.getUser().getName()),
-//                    post.getTitle(),
-//                    post.getViews(),
-//                    getNumOfLikes(post),
-//                    getNumOfDislikes(post)));
-//        });
         Page<Post> posts = postRepository.findByIsDeleted(false, pageable);
         PostResponseDto result = new PostResponseDto();
         result.addPost(posts.getContent(), posts.getTotalPages(), posts.getTotalElements());
@@ -157,11 +164,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDto showAllProblem(Pageable pageable) {
-        Page<Problem> problems = problemRepository.findByIsDeleted(false, pageable);
-        PostResponseDto result = new PostResponseDto();
-        result.addPost(problems.getContent(), problems.getTotalPages(), problems.getTotalElements());
-        return result;
+    public ProblemWorkbookResponseDto showAllProblem(Pageable pageable) {
+        Page<ProblemDto> problemWorkbook = postRepository.getProblemWorkbook(false, pageable);
+        return ProblemWorkbookResponseDto.of(problemWorkbook.getContent(), problemWorkbook.getTotalPages(), problemWorkbook.getTotalElements());
     }
 
     @Override
@@ -175,60 +180,97 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void likeDislikeClick(LikeDisLikeRequestDto dto, Long uid) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-        Post post = postRepository.findById(dto.getPid()).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 게시글입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
+        Post post = postRepository.findById(dto.getPid()).orElseThrow(() -> new BadRequestException("유효하지 않은 게시글입니다."));
 
         Optional<LikeDislike> result = likeDislikeRepository.findByPostAndUser(post, user);
-        if (result.isPresent()) {
+        if (result.isPresent()) { // 이미 눌렀던 경우
             if (result.get().isType() == dto.isType()) { // 예전에 누른거랑 같은버튼 누른 경우 삭제
+                post.decreaseLikeDislike(dto.isType());
                 likeDislikeRepository.delete(result.get());
             } else { // 예전에 누른거랑 반대버튼 누른 경우 체인지 좋<->싫
                 result.get().change();
+                // 누른거 증가. 안누른거 감소
+                post.increaseLikeDislike(dto.isType());
+                post.decreaseLikeDislike(!dto.isType());
             }
-        } else {
+        } else { // 처음 누르는 경우
+            post.increaseLikeDislike(dto.isType());
             likeDislikeRepository.save(new LikeDislike(user, post, dto.isType()));
         }
     }
 
+//    @Override
+//    public List<PostAllResponseDto> searchPost(PostSearchRequestDto dto) {
+//        List<PostTag> postTags = postRepository.searchPost(dto.getTitle(), dto.getCode(), dto.getDtype());
+//        List<PostAllResponseDto> result = new ArrayList<>();
+//        for (PostTag postTag : postTags) {
+//            PostAllResponseDto post = new PostAllResponseDto(
+//                    postTag.getPost().getId(),
+//                    new UserResponseDto(postTag.getPost().getUser().getId(), postTag.getPost().getUser().getName()),
+//                    postTag.getPost().getTitle(),
+//                    postTag.getPost().getViews(),
+//                    postTag.getPost().getNumOfLikes(),
+//                    postTag.getPost().getNumOfDislikes());
+//            result.add(post);
+//        }
+//        return result;
+//    }
+
     @Override
-    public List<PostAllResponseDto> searchPost(PostSearchRequestDto dto) {
-        List<PostTag> postTags = postRepository.searchPost(dto.getTitle(), dto.getCode());
-        List<PostAllResponseDto> result = new ArrayList<>();
-        for (PostTag postTag : postTags) {
-            PostAllResponseDto post = new PostAllResponseDto(
-                    postTag.getPost().getId(),
-                    new UserResponseDto(postTag.getPost().getUser().getId(), postTag.getPost().getUser().getName()),
-                    postTag.getPost().getTitle(),
-                    postTag.getPost().getViews(),
-                    postTag.getPost().getNumOfLikes(),
-                    postTag.getPost().getNumOfDislikes());
-            result.add(post);
+    public ProblemWorkbookResponseDto search(Pageable pageable, String title, String code, PostType dtype) {
+        Page<ProblemDto> problemDtos = postRepository.searchPost(false, pageable, title, code, dtype);
+
+        return ProblemWorkbookResponseDto.of(problemDtos.getContent(), problemDtos.getTotalPages(), problemDtos.getTotalElements());
+    }
+
+    @Override
+    @Transactional
+    public int updateViews(Long id) {
+        return postRepository.updateViews(id);
+    }
+
+    @Override
+    public List<PopularityProblemResponseDto> popularProblem() {
+        List<PopularityProblemResponseDto> result = new ArrayList<>();
+
+        List<PopularityProblemDto> popularityProblemDtos = problemRepository.popularProblem();
+        for (PopularityProblemDto popularityProblemDto : popularityProblemDtos) {
+            log.info("인기문제 제목 = {}",popularityProblemDto.getTitle());
+        }
+        for (PopularityProblemDto popularityProblemDto : popularityProblemDtos) {
+            result.add(new PopularityProblemResponseDto(popularityProblemDto, solvingService.getRate(popularityProblemDto.getId())));
         }
         return result;
     }
 
-    private List<Tag> getTags(Post post) {
+    private List<String> getTags(Post post) {
         List<PostTag> postTagByPost = postTagRepository.findPostTagByPost(post);
-        List<Tag> tags = new ArrayList<>();
-        postTagByPost.forEach(postTag -> {
-            tags.add(postTag.getTag());
-        });
-        return tags;
+        return postTagByPost.stream().map(postTag -> postTag.getTag().getCode()).collect(Collectors.toList());
     }
 
-    private Long getNumOfLikes(Post post) {
-        return likeDislikeRepository.countByPostAndType(post, true);
+    private List<CommentDto> getComments(Post post) {
+        List<Comment> comments = post.getComments();
+        List<CommentDto> result = new ArrayList<>();
+        for (Comment comment : comments) {
+            result.add(CommentDto.of(comment));
+        }
+        return result;
     }
 
-    private Long getNumOfDislikes(Post post) {
-        return likeDislikeRepository.countByPostAndType(post, false);
-    }
+//    private Long getNumOfLikes(Post post) {
+//        return likeDislikeRepository.countByPostAndType(post, true);
+//    }
+//
+//    private Long getNumOfDislikes(Post post) {
+//        return likeDislikeRepository.countByPostAndType(post, false);
+//    }
 
     private void savePost(PostRequestDto postDto, Post post) {
         postRepository.save(post);
         postDto.getTags().forEach(code -> {
             Optional<Tag> tag = tagRepository.findByCode(code);
-            tag.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 태그입니다."));
+            tag.orElseThrow(() -> new BadRequestException("유효하지 않은 태그입니다."));
             post.addPostTag(new PostTag(post, tag.get()));
 
 //            postTagRepository.save(new PostTag(post, tag.get()));

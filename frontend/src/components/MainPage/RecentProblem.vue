@@ -1,24 +1,28 @@
 <template>
-  <div>
-    <v-row class="pa-0 ma-0" rounded>
-      <v-col cols="12" class="pa-0">
-        <recent-problem-items v-for="(mainProb, idx) in mainProbs" :key="idx" :mainProb="mainProb"></recent-problem-items>
-        <v-pagination
-          v-model="nowPage"
-          :length="endPage"
-          color="#A384FF"
-          circle
-          @input="handlePage()"
-        ></v-pagination>
-      </v-col>
-    </v-row>
-  </div>
+	<div>
+		<v-row class="pa-0 ma-0" rounded>
+			<v-col cols="12" class="pa-0">
+				<recent-problem-items
+					v-for="(mainProb, idx) in mainProbs"
+					:key="idx"
+					:mainProb="mainProb"
+				></recent-problem-items>
+				<v-pagination
+					v-model="nowPage"
+					:length="endPage"
+					color="#A384FF"
+					circle
+					@input="handlePage()"
+				></v-pagination>
+			</v-col>
+		</v-row>
+	</div>
 </template>
 
 <script>
-import axios from 'axios'
-import drf from '@/api/drf'
-import RecentProblemItems from '../MainPage/RecentProblemItems.vue'
+import axios from 'axios';
+import drf from '@/api/drf';
+import RecentProblemItems from '../MainPage/RecentProblemItems.vue';
 
 export default {
     data() {
@@ -96,8 +100,32 @@ export default {
     }
 }
 
+			const params = {
+				page: this.page - 1,
+				size: 4,
+				//sort: onUpdated, 'desc'
+			};
+			axios({
+				// url: drf.api +'post',
+				url: drf.api + 'post' + '/problem',
+				method: 'get',
+				headers: {
+					Authorization: this.accessToken,
+				},
+				params: params,
+			})
+				.then((res) => {
+					console.log('넘어온 data = ', res.data.content);
+					this.mainProbs = res.data.content;
+					console.log('현재 data =', this.mainProbs);
+				})
+				.catch((err) => {
+					console.log('에러');
+					console.log(err);
+				});
+		},
+	},
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

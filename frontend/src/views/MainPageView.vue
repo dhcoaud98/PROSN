@@ -14,7 +14,7 @@
         <v-toolbar dark class="mt-10 mx-4">
           <v-tabs background-color="#CCA5FE" grow>
             <v-tab class="pa-0" @click="changeToProblemFeed" id="problemTab">
-              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">Probelm / Book</p>
+              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">Problem / Book</p>
             </v-tab>
               
             <v-tab class="pa-0" @click="changeToInfoFeed" id="infoTab">
@@ -56,6 +56,9 @@ import info from '../components/MainPage/info.vue'
 import SideBar from '@/components/SideBar.vue'
 // import problem from '@/store/modules/problem'
 import SearchResultView from '@/views/SearchResultView.vue'
+import InfiniteLoading from 'vue-infinite-loading'
+import axios from 'axios'
+import drf from '@/api/drf.js'
 
 export default {
   name: 'MainPageView',
@@ -73,6 +76,7 @@ export default {
     info,
     SideBar,
     SearchResultView,
+    InfiniteLoading,
   },
   computed : {
     isSearched() {
@@ -110,10 +114,9 @@ export default {
         this.infoFeedClass = 'd-flex'
     },
   },
-  created: {
-    getInfos () {
+  created() {
       axios({
-        url: drf.post.information(),
+        url: drf.postFeed.information(),
         method: 'get',
       })
       .then(res => {
@@ -122,10 +125,10 @@ export default {
       .catch(err => {
         console.log(err);
       })
-    },
-    getProbs () {
+
+    
       axios({
-        url: drf.post.problem(),
+        url: drf.postFeed.problem(),
         method: 'get',
       })
       .then(res => {
@@ -135,7 +138,6 @@ export default {
         console.log(err);
       })
     },
-  }
 }
 </script>
 

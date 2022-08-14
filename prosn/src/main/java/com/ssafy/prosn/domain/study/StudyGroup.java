@@ -1,5 +1,6 @@
 package com.ssafy.prosn.domain.study;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.prosn.domain.BaseEntity;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.StudyGroupRequestDto;
@@ -11,16 +12,16 @@ import java.time.LocalDate;
 
 /**
  * created by yeomyeong on 2022/07/25
- * updated by yeomyeong on 2022/08/02
+ * updated by seongmin on 2022/08/11
  */
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class StudyGroup extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -31,7 +32,6 @@ public class StudyGroup extends BaseEntity {
     private LocalDate expiredDate;
     private int maxPerson;
 
-    @ColumnDefault("0")
     private int currentPerson;
 
     @Builder
@@ -43,6 +43,7 @@ public class StudyGroup extends BaseEntity {
         this.place = place;
         this.expiredDate = expiredDate;
         this.maxPerson = maxPerson;
+        this.currentPerson = 1;
     }
     public StudyGroup update(StudyGroupRequestDto newData) {
         this.expiredDate = newData.getExpiredDate();

@@ -181,7 +181,7 @@ class PostServiceImplTest {
                 .build();
 
         Post post = postService.writeProblem(problemDto, uid);
-        postService.likeDislikeClick(new LikeDisLikeRequestDto(uid, post.getId(), true),uid);
+        postService.likeDislikeClick(new LikeDisLikeRequestDto(post.getId(), true),uid);
         LikeDislike like = likeDislikeRepository.findByPostAndUser(post, userRepository.findById(uid).get()).get();
         assertThat(like.isType()).isTrue();
     }

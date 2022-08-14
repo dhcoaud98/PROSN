@@ -22,7 +22,7 @@ public class ProblemWorkbook extends BaseEntity {
     @JoinColumn(name = "problem_id")
     private Problem problem;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "workbook_id")
     private Workbook workbook;
 

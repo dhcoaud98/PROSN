@@ -8,6 +8,7 @@ import com.ssafy.prosn.domain.profile.scrap.PostList;
 import com.ssafy.prosn.domain.profile.scrap.Scrap;
 import com.ssafy.prosn.domain.user.User;
 import com.ssafy.prosn.dto.PostResponseDto;
+import com.ssafy.prosn.exception.BadRequestException;
 import com.ssafy.prosn.repository.post.ProblemWorkbookRepository;
 import com.ssafy.prosn.repository.post.WorkbookRepository;
 import com.ssafy.prosn.repository.profiile.scrap.PostListRepository;
@@ -41,8 +42,8 @@ public class WorkbookServiceImpl implements WorkbookService {
     @Override
     @Transactional
     public Workbook save(Long pid, Long uid, String title) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-        PostList postList = postListRepository.findById(pid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 폴더입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
+        PostList postList = postListRepository.findById(pid).orElseThrow(() -> new BadRequestException("유효하지 않은 폴더입니다."));
         List<Scrap> scraps = scrapRepository.findByPostList(postList);
         Workbook workbook = Workbook.builder()
                 .title(title)
@@ -71,8 +72,8 @@ public class WorkbookServiceImpl implements WorkbookService {
     @Override
     @Transactional
     public Workbook update(Long uid, Long wid, String title) {
-        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-        Workbook workbook = workbookRepository.findById(wid).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 문제집입니다."));
+        User user = userRepository.findById(uid).orElseThrow(() -> new BadRequestException("유효하지 않은 사용자입니다."));
+        Workbook workbook = workbookRepository.findById(wid).orElseThrow(() -> new BadRequestException("유효하지 않은 문제집입니다."));
         workbook.renameTitle(title);
         return workbook;
     }
