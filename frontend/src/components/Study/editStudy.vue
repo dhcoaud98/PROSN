@@ -145,7 +145,7 @@
 import axios from 'axios';
 import drf from '@/api/drf';
 import { mapGetters } from 'vuex';
-import Token from '@/components/Token.js'
+
 
 export default {
   name: 'CreateProblem',
