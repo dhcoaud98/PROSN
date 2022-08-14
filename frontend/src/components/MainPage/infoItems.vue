@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card ma-8">
+  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card ma-3 ma-md-8">
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
     <v-card-title class="pa-0 bg-gradation">
       <v-container class="pa-0">

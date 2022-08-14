@@ -1,17 +1,33 @@
 <template>
   <!-- <v-app :class="bgColor" @resize="selectBgColor"> -->
   <v-app :class="bgColor" @resize="selectBgColor">
-    <v-container>
+    <v-container class="px-0 px-md-3">
       <!-- sm 이하일 때 로고 나오도록 -->
-      <v-row id="sm-logo" class= "d-flex d-md-none pb-0 justify-space-between px-5">
-        <v-col class="d-flex d-md-none pb-0">
+      <v-row id="sm-logo" class= "d-flex d-md-none pb-0 mt-3 justify-space-between px-5">
+        <div>
           <router-link to="/">
             <v-img src="./assets/prosn_logo.png" max-width="150px" max-height="50px"></v-img>
           </router-link>
-        </v-col>
-        <v-col class="d-flex d-md-none">
-          <search-bar></search-bar>
-        </v-col>
+        </div>
+        <div class="d-flex">
+          <v-col class="justify-center pa-0">
+            <li style="list-style: none;" v-if="!isLoggedIn">
+              <router-link to="/signup"><v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text>signup</v-btn></router-link>
+            </li>
+            <li style="list-style: none;" v-if="isLoggedIn">
+              <router-link to="/profile"><v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text>{{ userName }}</v-btn></router-link>
+            </li>
+          </v-col>
+      
+          <v-col class="justify-center pa-0">
+            <li style="list-style: none;" v-if="!isLoggedIn">
+              <router-link to="/login"><v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text>login</v-btn></router-link>
+            </li>
+            <li style="list-style: none;" v-if="isLoggedIn">
+              <v-btn class="pa-0" rounded-sm color="#a384ff" width="100%" text @click="logout">logout</v-btn>
+            </li>
+          </v-col>
+        </div>
       </v-row>
 
       <v-row class="mt-0">
@@ -19,7 +35,7 @@
           <nav-bar id="navBarTag" :class="navDisplay"></nav-bar>
         </v-col>
 
-        <v-col class="pt-0">
+        <v-col class="pt-0 px-0 px-md-3">
           <!-- url이 변경됨에 따라 계속 바뀌는 위치(0729 임지민) -->
           <!-- router/index.js에서 정의한 components의 컴포넌트를 띄워줌(0801 임지민) -->
           <router-view></router-view>
@@ -46,8 +62,7 @@ import NavBar from '@/components/NavBar.vue'
 import BottomNavBar from '@/components/BottomNavBar.vue'
 import SideBar from '@/components/SideBar.vue'
 import MainPageView from '@/views/MainPageView.vue'
-import SearchBar from '@/components/SearchBar.vue'
-// import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 
 export default {
@@ -65,7 +80,9 @@ export default {
     BottomNavBar,
     SideBar,
     MainPageView,
-    SearchBar,
+  },
+  computed: {
+    ...mapGetters(['userName','isLoggedIn',]),
   },
   watch: {
     /* 0805 임지민

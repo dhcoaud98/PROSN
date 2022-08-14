@@ -1,34 +1,21 @@
 <template>
-  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card ma-8">
+  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card ma-3 ma-md-8">
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
     <v-card-title class="pa-0 bg-gradation">
       <v-container class="pa-0">
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
         <v-row class="d-flex justify-space-between ma-3">
           <!-- 제목 -->
-          <v-col class="pa-0" cols="6">
-            <v-row class="align-center">
-              <p class="my-0 ms-5 dark--text font-weight-bold pa-0" style="font-size: 1em; color: #585757;">
-                {{mainProb.title}}
-              </p>
-              <div v-for="tag in mainProb.tags" :key="tag" class="ms-2 mb-3">
-                <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#{{tag}}</span>
-              </div>
-            </v-row>
-          </v-col>
-          <v-col class="py-0">
-            <v-row class="justify-end py-1">
-              <div>
-                <v-icon class="me-2">thumb_up_off_alt</v-icon>
-                <span class="me-3">{{ mainProb.numOfLikes }}</span>
-              </div>
-              <div>
-                <v-icon class="me-2">thumb_down_off_alt</v-icon>
-                <span class="me-3">{{ mainProb.numOfDislikes }}</span>
-              </div>
-            </v-row>
-          </v-col>
+          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
+            {{mainProb.title}}
+          </div>
           <!-- 좋아요 싫어요 정보 -->
+          <div>
+            <v-icon class="me-2">thumb_up_off_alt</v-icon>
+            <div class="me-3">{{ mainProb.numOfLikes }}</div>
+            <v-icon class="me-2">thumb_down_off_alt</v-icon>
+            <div class="me-3">{{ mainProb.numOfDislikes }}</div>
+          </div>
         </v-row>
       </v-container>
     </v-card-title>
@@ -36,6 +23,10 @@
     <!-- 카드 본문 -->
     <v-card-text>
       <v-row>
+        <!-- v-for문 사용해서 태그 띄우기 -->
+        <div class="mt-5" v-for="tag in mainProb.tags" :key="tag">
+          <v-chip small color="#926DFF" class="white--text ms-3">#{{tag}}</v-chip>
+        </div>
       </v-row>
 
       <!-- 내용 -->
