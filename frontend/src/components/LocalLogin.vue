@@ -33,6 +33,9 @@
             <v-btn :disabled="!valid" type="submit" color="#CCA5FE" class="rounded-xl white--text my-0 py-3 mt-3" height="80%" width="100%"><h3>로그인</h3></v-btn>
           </v-col>
         </v-row>
+        <v-row class="mt-0 py-0 px-1">
+          <p class="font-parent-mid red--text font-weight-bold">{{warningText}}</p>
+        </v-row>
       </v-form>
 
       <!-- 회원가입/아이디찾기/비밀번호찾기 --> 
@@ -107,6 +110,7 @@ const accountStore = 'accountStore';
           v => !!v || '아이디는 필수 입력값입니다.',
           v => (v && v.length <= 12) || '아이디는 12자 이하로 입력하세요',
       ],
+      warningText: null,
     }),
 
    // 2022.07.25. 로그인 버튼 (남성은)
@@ -126,10 +130,10 @@ const accountStore = 'accountStore';
             data: this.credentials,
          })
             .then((res) => {
-               console.log('res = ', res);
-               console.log('accessToken = ', res.data.accessToken);
-               console.log('refreshToken = ', res.data.refreshToken);
-               console.log('expire : ', res.data.tokenExpiresIn);
+               console.log('res = ', res.data);
+              //  console.log('accessToken = ', res.data.accessToken);
+              //  console.log('refreshToken = ', res.data.refreshToken);
+              //  console.log('expire : ', res.data.tokenExpiresIn);
                let grantType = res.data.grantType.replace(
                   res.data.grantType.charAt(0),
                   res.data.grantType.charAt(0).toUpperCase()
@@ -150,8 +154,15 @@ const accountStore = 'accountStore';
                // dispaxtch('fetchCurrentUser')
             })
             .catch((err) => {
-               console.log('에러');
-               console.log(err);
+              //  console.log('에러');
+              // 아이디, 비번을 잘못 입력하면 로그인창 하단에 경고메시지 띄우기 0814 임지민
+               if (err.request.status === 401){
+                this.warningText = '아이디 혹은 비밀번호를 확인해주세요'
+                // console.log(this.warningText)
+               };
+              //  if (err.)
+               // 401뜨면 alert창 띄워주기 0814 임지민
+               
             });
       },
       // event () {

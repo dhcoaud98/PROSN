@@ -20,13 +20,13 @@
       </v-container>
     </v-card-title>
 
+        <!-- <p>{{info}}</p> -->
     <!-- 카드 본문 -->
     <v-card-text>
       <v-row>
         <!-- v-for문 사용해서 태그 띄우기 -->
-        <div class="mt-5">
-          <v-chip small color="#926DFF" class="white--text ms-3">알고리즘</v-chip>
-          <v-chip small color="#926DFF" class="white--text ms-3">네트워크</v-chip>
+        <div class="mt-5" v-for="tag in info.tags" :key="tag">
+          <v-chip small color="#926DFF" class="white--text ms-3">#{{tag}}</v-chip>
         </div>
       </v-row>
 

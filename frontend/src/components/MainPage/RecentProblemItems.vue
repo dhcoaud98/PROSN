@@ -69,14 +69,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 import axios from 'axios'
->>>>>>> b5c1495607371b2d6c27caa38a2a938158d50f88
-=======
-import axios from 'axios'
->>>>>>> 77803793128a76374d9683793a4215950eecf846
 import ProblemModal from '@/components/ProblemModal/ProblemModal.vue'
 import drf from '@/api/drf.js'
 import {mapGetters} from 'vuex'

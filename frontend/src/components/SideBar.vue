@@ -243,6 +243,7 @@ export default {
   },
   created() {
     // 인기 문제 0813 임지민
+    
     axios({
       url: drf.postFeed.problem() + 'ranking/',
       method: 'get',
@@ -251,7 +252,7 @@ export default {
       },
     })
       .then((res) => {
-        // console.log('res sidebar= ', res);
+        console.log('res sidebar= ', res);
         this.popularProbs = res.data
         // console.log(this.popularProbs)
         // this.$router.push({ path: 'profile' })

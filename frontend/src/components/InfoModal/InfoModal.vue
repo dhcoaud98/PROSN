@@ -16,14 +16,15 @@
               <!-- 정보 제목 -->
               <!-- {{ info.pk }}. {{ info.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold black--text">
-                <h2>{{ infodetail.id }}. {{ info.title }}</h2> 
+                <h2>{{ info.title }}</h2> 
               </v-card-title>
 
               <!-- 정보 본문 -->
+              <!-- <p>{{ info }}</p> -->
               <v-card-text>
                 <!-- 카테고리 라벨 -->
                 <div class="pl-3" style="display:inline;" v-for="(tag, idx) in infodetail.tags" :key="idx">
-                  <span class="category-tag text-center pa-1">{{ tag }}</span>
+                  <span class="category-tag text-center pa-1">#{{ tag }}</span>
                 </div>
               </v-card-text>
 
@@ -78,7 +79,7 @@
 
             <!-- 평소에는 안보이는 댓글창 -->
             <v-col width="600" id="show-replies" class="pa-0 d-none">
-              <info-modal-reply></info-modal-reply>
+              <info-modal-reply :pid="info.id"></info-modal-reply>
             </v-col>
           </v-row>
         </v-container>
@@ -175,7 +176,7 @@ export default {
     },
     // 2022.08.04. 라우터 경로 연결
     event () {
-      this.$router.push({ path: 'information' })
+      this.$router.push({ path: `information/${this.info.id}` })
     },
     onScroll () {
         this.scrollInvoked++
