@@ -11,11 +11,20 @@
                 <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
               </v-row>
 
-              <v-row class="mt-6 ml-1">
+              <v-row class="mt-6 ml-1" v-if="myStudydetail">
+                <h2 class="purple--text text--darken-4 font-weight-medium">{{myStudydetail.title}}</h2>
+              </v-row>
+              <v-row class="mt-6 ml-1" v-else>
                 <h2 class="purple--text text--darken-4 font-weight-medium">{{studydetail.title}}</h2>
               </v-row>
 
-              <v-row>
+              <v-row v-if="myStudydetail">
+                <v-col class="d-flex justify-end pe-0" cols="12">
+                  <v-btn rounded class="ms-2 font-weight-bold" @click="deleteStudy">스터디 탈퇴하기</v-btn>
+                </v-col>
+              </v-row>
+
+              <v-row v-else>
                 <!-- 내가 만든 스터디일 때 버튼 -->
                 <v-col class="d-flex justify-end pe-0" v-if="currentUser == studydetail.masterId" cols="12">
                   <v-btn rounded class="ms-2 font-weight-bold" @click="editStudy">스터디 수정하기</v-btn>
@@ -31,7 +40,15 @@
 
           <v-divider color="#A384FF" class="mx-2"></v-divider>
 
-          <v-card-text class="py-2">
+          <v-card-text class="py-2" v-if="myStudydetail">
+            <div class="mx-2 my-1">
+              <h3 class="ma-0 px-1 font-weight-bold grey--text text--darken-3">현재원 / 총원 : {{myStudydetail.currentPerson}} / {{myStudydetail.maxPerson}} </h3>
+              <h3 class="ma-0 px-1 font-weight-bold grey--text text--darken-3">장소 : {{myStudydetail.place}}</h3>
+              <!-- 내가 만든 스터디일 경우 마감일 필드가 안 넘어옴 -->
+              <!-- <p class="ma-0 px-2">마감일 : {{myStudydetail.expiredDate}}</p> -->
+            </div>
+          </v-card-text>
+          <v-card-text class="py-2" v-else>
             <div class="mx-2 my-1">
               <h3 class="ma-0 px-1 font-weight-bold grey--text text--darken-3">현재원 / 총원 : {{studydetail.currentPerson}} / {{studydetail.maxPerson}} </h3>
               <h3 class="ma-0 px-1 font-weight-bold grey--text text--darken-3">장소 : {{studydetail.place}}</h3>
@@ -43,7 +60,12 @@
           <v-divider color="#A384FF" class="mx-2"></v-divider>
 
           <v-card-text>
-             <div class="d-flex">
+            <div class="d-flex" v-if="myStudydetail">
+              <div class="pl-2" v-for="(tag, idx) in myStudydetail.tags" :key="idx">
+                <v-chip small color="#A384FF" class="white--text font-wieght-bold">{{ tag.type }}</v-chip>
+              </div>
+            </div>
+            <div class="d-flex" v-else>
               <div class="pl-2" v-for="(tag, idx) in studydetail.tags" :key="idx">
                 <v-chip small color="#A384FF" class="white--text font-wieght-bold">{{ tag.type }}</v-chip>
               </div>
@@ -51,14 +73,17 @@
 
             <v-container class="my-4 study-detail-info">
               <v-row>
-                <v-col cols="12">
+                <v-col cols="12" v-if="myStudydetail">
+                  <h3> Reader : {{ myStudydetail.masterName }}</h3>
+                </v-col>
+                <v-col cols="12" v-else>
                   <h3> Reader : {{ studydetail.masterName }}</h3>
                 </v-col>
-                <v-col cols="12">
-                  {{ studydetail.mainText }}
-                </v-col>
                 <v-col v-if="myStudydetail">
-                  {{ myStudydetail}}
+                  {{ myStudydetail.mainText }}
+                </v-col>
+                <v-col cols="12" v-else>
+                  {{ studydetail.mainText }}
                 </v-col>
               </v-row>
             </v-container>
@@ -90,7 +115,6 @@ export default {
   created() {
     this.studyId = this.study.id
     console.log("study id = ",this.studyId)
-    // console.log(`${drf.api.study()+this.pageId}`)
 
     //api/study/{studyid}에 해당하는 detail study 정보 가져오기
     axios({
@@ -140,14 +164,29 @@ export default {
     deletedoSend() { 
       const userDecision = confirm('정말로 삭제하시겠습니까?')
       if (userDecision) {
-      axios({
-        url: drf.api + 'study' + `/${this.studydetail.id}`,
-        method: 'delete',
-        headers: {
-          Authorization: this.accessToken,
-        },        
-      })
-      this.$router.go();
+        axios({
+          url: drf.api + 'study' + `/${this.studydetail.id}`,
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },        
+        })
+        this.$router.go();
+      }
+    },
+
+    // 나의 스터디 탈퇴 (0815 오채명) 삭제 후 새로고침
+    deleteStudy () {
+      const userDecision = confirm('정말로 탈퇴하시겠습니까?')
+      if (userDecision) {
+        axios({
+          url: drf.study.study() + 'me' + `/${this.myStudydetail.id}`,
+          method: 'delete',
+          headers: {
+            Authorization : this.accessToken,
+          },
+        })
+        this.$router.go();  
       }
     },
 

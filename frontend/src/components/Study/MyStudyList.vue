@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mt-5">
     <my-study-list-items v-for="(myStudy, idx) in myStudys" :key="idx" :myStudy="myStudy"></my-study-list-items>
     <br>  
     <v-pagination
@@ -19,7 +19,7 @@ import MyStudyListItems from "./MyStudyListItems.vue"
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'StudyList',
+  name: 'MyStudyList',
   components: {
     MyStudyListItems,
   },
@@ -42,6 +42,8 @@ export default {
       page: 0,
       size: 5,
     }
+    console.log('내 스터디 확인하기~')
+
     axios({
       url: drf.study.study() + 'me',
       method: 'get',
@@ -51,7 +53,7 @@ export default {
       params: params
     })
     .then(res => {
-      console.log("res=",res.data.content)
+      console.log("res1=",res.data.content)
       this.myStudys = res.data.content
       this.endPage = res.data.totalPages
       console.log("totalPages =",res.data.totalPages)
@@ -67,7 +69,7 @@ export default {
     handlePage () {
       console.log("event = ", Number(event.target.ariaLabel.slice(-1)))
       this.page = Number(event.target.ariaLabel.slice(-1))
-
+      
       const params ={
         page: this.page -1 ,
         size: 5
@@ -82,7 +84,7 @@ export default {
       params: params
       })
       .then(res => {
-        console.log("res=",res.data.content)
+        console.log("res2=",res.data.content)
         this.myStudys = res.data.content
       })
       .catch(err => {

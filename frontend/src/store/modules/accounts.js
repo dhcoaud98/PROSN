@@ -12,6 +12,7 @@ const accountStore = {
       authError: null,
       refreshToken: sessionStorage.getItem('reToken') || '',
       expire: '',
+      currentUser: null,
    },
    getters: {
       isLoggedIn: (state) => !!state.accessToken,
@@ -77,6 +78,10 @@ const accountStore = {
          console.log('current username =', userName); //ok
 
          // localStorage.setItem('userName', userName)
+      },
+      saveId({commit}, Id) {
+         commit('SET_CURRENT_USER', Id);
+         console.log('current userId = ', Id)
       },
       async reIssue({ commit }) {
          const accessToken = this.getters.accessToken;

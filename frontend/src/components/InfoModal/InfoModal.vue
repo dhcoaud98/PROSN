@@ -47,8 +47,9 @@
                         <div>출제자 | {{ infodetail.writer.name}}</div>              
                         <div>출제일 | {{ info.created.slice(0,10) }}</div>
                       </v-col>
-                      <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-                      <v-col class="d-flex justify-end col-12 col-md-4">
+
+                      <!-- 남이 작성한 정보일 경우 -->
+                      <v-col v-if="currentUser != infodetail.writer.id" class="d-flex justify-end col-12 col-md-4">
                         <!-- 좋아요 버튼 -->
                         <v-btn class="ms-2" icon color="blue lighten-2" @click="changeLikeStatus" id="upIcon">
                           <v-icon>{{upText}}</v-icon>{{ infodetail.numOfLikes }}
@@ -61,6 +62,14 @@
                         <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
                           <v-icon>{{scrapText}}</v-icon>
                         </v-btn>                    
+                      </v-col>
+
+                      <!-- 내가 작성한 정보일 경우 -->
+                      <v-col v-else class="d-flex justify-end col-12 col-md-4">
+                        <!-- 수정 버튼 -->
+                        <v-btn class="ms-2" rounded outlined small color="green" @click="editInfo">수정</v-btn>
+                        <!-- 삭제 버튼 -->
+                        <v-btn class="ms-2" rounded outlined small color="red" @click="deleteInfo">삭제</v-btn>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -88,8 +97,8 @@
 </template>
 
 <script>
-// import drf from '@/api/drf'
-// import axios from 'axios'
+import drf from '@/api/drf'
+import axios from 'axios'
 import { mapGetters } from "vuex"
 import InfoModalReply from './InfoModalReply.vue'
 
@@ -180,12 +189,36 @@ export default {
     onScroll () {
         this.scrollInvoked++
       },
-    // goBack () {
-    //   this.$router.go(-1)
-    // }
+    // 0815 삭제 버튼
+    deleteInfo () {
+      const userDecision = confirm('정말로 삭제하시겠습니까?')
+      if (userDecision) {
+        axios({
+          url: drf.api + 'post' + `/${this.infodetail.id}`,
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },
+        })
+        .then(res => {
+          console.log("res.data = ",res.data)
+          // console.log("삭제 되었습니다. ", res)
+          this.$router.push('/')
+        }) 
+        .catch(err =>{
+          console.log("에러")
+          console.log(err)
+        })
+        this.$router.go(); // 새로고침      
+      }
+    },
+    // 0815 수정
+    editInfo () {
+      console.log('수정')
+    }
   },
   computed: {
-    ...mapGetters(['accessToken']),
+    ...mapGetters(['accessToken','currentUser']),
   }
 }
 </script>
