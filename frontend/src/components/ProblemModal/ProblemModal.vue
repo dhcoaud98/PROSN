@@ -125,8 +125,9 @@
             <v-divider id="show-divider" class="my-5 d-none" vertical></v-divider>
     
             <!-- 평소에는 안보이는 댓글창 -->
-            <v-col width="600" id="show-replies" class="pa-0 d-none">
-              <problem-reply :pid="probdetail.id"></problem-reply>
+            <v-col id="show-replies" class="pa-0 d-none" style="height: 200px; width: 600px;">
+              <!-- <p>{{probdetail}}</p> -->
+              <problem-reply :pid="probdetail.id" :commentList="commentList"></problem-reply>
             </v-col>
           </v-row>
         </v-container>
@@ -163,6 +164,7 @@ export default {
         wrongAnswer: '',
       },
       myCorrectStatus: null,
+      commentList: null,
     }
   },
   props: {
@@ -187,6 +189,7 @@ export default {
     .then(res => {
       // console.log(res.data)
       // this.probdetail = res.data
+      this.commentList = this.probdetail.comments
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
       // const noteDetail = this.noteDetail
@@ -264,6 +267,7 @@ export default {
       noShowRepliesBtn.setAttribute("class", "font-weight-bold mt-2 v-btn v-btn--text theme--light v-size--default")
       showDivider.setAttribute("class", "my-5 v-divider v-divider--vertical theme--light")
       showReplies.setAttribute("class", "pa-0 col col-6 info-modal-white")
+      // console.log(this.probdetail.comments)
     },
     // 2022.08.03. 댓글접기 버튼 누를 때
     noShowReplies: function (event) {

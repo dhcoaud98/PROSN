@@ -1,7 +1,7 @@
 <template>
   <v-card-text>
     <!-- 2022.08.03.댓글창 -->
-    <v-container fluid class="rounded-lg replies" >
+    <v-container class="rounded-lg replies">
       <!-- 댓글창제목 -->
       <v-row class="ma-1">
         <v-col cols="12">
@@ -16,13 +16,14 @@
       <!-- 여기서 for문 돌려서 ProblemReplyItems 하나씩 띄우기 -->
       <v-row>
         <v-col class="pa-0">
+          <!-- <p>hi</p> -->
           <problem-reply-items :commentList="commentList"></problem-reply-items>
         </v-col>
       </v-row>
     </v-container>
 
     <!-- 댓글 입력란 -->
-    <v-container fluid class="rounded-lg replies mt-3">
+    <v-container class="rounded-lg replies mt-3">
       <!-- {{credentials}} -->
       <v-form @submit.prevent="submitComment">
         <v-textarea 
@@ -54,11 +55,12 @@ export default {
         pid: this.pid,
         mainText: ''
       },
-      commentList: [],
+      commentList: this.commentList,
     }
   },
   props: {
-    pid: Number
+    pid: Number,
+    commentList: Array,
   },
   components: {
     ProblemReplyItems,
@@ -81,6 +83,20 @@ export default {
 					console.log('res = ', res.data);
           // this.commentList.push(this.credentials)
           // this.$router.push({ path: 'profile' })
+
+          // 댓글을 조회하기 위한 axios 0814 임지민
+           axios({
+            url: drf.api + 'post' + `/${this.pid}`,
+            methods: 'get',
+            headers: {
+              Authorization : this.accessToken,
+            },      
+          })
+          .then(res => { 
+            console.log('댓글 가져오기')
+            this.commentList = res.data.comments
+            // console.log(this.commentList)
+          })
 				})
 				.catch((err) => {
 					console.log('에러');
@@ -89,6 +105,7 @@ export default {
     }
   },
   created() {
+    console.log(this.commentList);
     // axios({
     //   url: drf.api + 'comment/',
     //   method: 'get',
@@ -111,5 +128,8 @@ export default {
 <style>
   .replies {
     background-color: #f5f5f5;
+  }
+  .h-300 {
+    height: 300px;
   }
 </style>
