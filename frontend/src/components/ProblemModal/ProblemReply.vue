@@ -1,11 +1,31 @@
 <template>
   <v-card-text>
+    <!-- 댓글 입력란 -->
+    <v-container class="rounded-lg replies mt-3">
+      <!-- {{credentials}} -->
+      <v-form @submit.prevent="submitComment">
+        <v-row>
+          <v-textarea 
+          background-color="#f5f5f5" 
+          rows="1" 
+          placeholder="댓글을 작성해주세요" 
+          no-resize dense
+          v-model="credentials.mainText"
+          class="mr-5"
+          id="commentArea"></v-textarea>
+          <v-btn type="submit" color="#A384FF" outlined rounded>
+            댓글달기
+          </v-btn>
+        </v-row>
+      </v-form>
+
+    </v-container>
     <!-- 2022.08.03.댓글창 -->
     <v-container class="rounded-lg replies">
       <!-- 댓글창제목 -->
       <v-row class="ma-1">
         <v-col cols="12">
-          <h2>댓글</h2>
+          <h2>댓글 ({{commentList.length}})</h2>
         </v-col>
       </v-row>
 
@@ -17,27 +37,11 @@
       <v-row>
         <v-col class="pa-0">
           <!-- <p>hi</p> -->
-          <problem-reply-items :commentList="commentList"></problem-reply-items>
+          <problem-reply-items :commentList="commentList" :pid="credentials.pid"></problem-reply-items>
         </v-col>
       </v-row>
     </v-container>
 
-    <!-- 댓글 입력란 -->
-    <v-container class="rounded-lg replies mt-3">
-      <!-- {{credentials}} -->
-      <v-form @submit.prevent="submitComment">
-        <v-textarea 
-        background-color="#f5f5f5" 
-        rows="1" 
-        placeholder="댓글을 작성해주세요" 
-        no-resize dense
-        v-model="credentials.mainText"></v-textarea>
-        <v-btn type="submit" color="#A384FF" text>
-          댓글달기
-        </v-btn>
-      </v-form>
-
-    </v-container>
   </v-card-text>
 </template>
 
@@ -96,11 +100,16 @@ export default {
             console.log('댓글 가져오기')
             this.commentList = res.data.comments
             // console.log(this.commentList)
+
+            // 작성 완료되면 댓글 입력란 비우기 0814 임지민
+            const commentArea = document.querySelector('#commentArea')
+            commentArea.value = ''
           })
 				})
 				.catch((err) => {
 					console.log('에러');
 					console.log(err);
+          console.log(this.pid)
 				});
     }
   },

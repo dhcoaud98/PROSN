@@ -189,7 +189,7 @@ export default {
     .then(res => {
       // console.log(res.data)
       // this.probdetail = res.data
-      this.commentList = this.probdetail.comments
+      this.commentList = this.probdetail.comments.reverse()
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
       // const noteDetail = this.noteDetail

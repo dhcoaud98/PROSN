@@ -73,7 +73,8 @@
     <v-row>
       <!-- 댓글보기 -->
       <v-col cols="12" class="pa-0">
-        <problem-reply></problem-reply>
+        <!-- <p>{{probDetail.id}}</p> -->
+        <problem-reply :pid="probDetail.id" :commentList="commentList"></problem-reply>
       </v-col>           
     </v-row>  
   </v-container>
@@ -100,6 +101,7 @@ export default {
         wrongAnswer: '',
       },
       myCorrectStatus: null,
+      commentList: [],
     }
   },
   components: {
@@ -203,9 +205,10 @@ export default {
       },
     })
     .then(res => {
-      // console.log(res) //ok
+      console.log(res) //ok
       this.probDetail = res.data
-      // console.log(this.probDetail)
+      this.commentList = res.data.comments.reverse()
+      // console.log(res.data.comments)
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
       // const noteDetail = this.noteDetail

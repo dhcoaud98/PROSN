@@ -7,9 +7,16 @@
           <!-- <p>{{commentList}}</p> -->
           <v-col class=" mb-3">{{comment.mainText}}</v-col>
         </v-row>
-        <v-row class="justify-space-between">
-          <v-col cols="3" class="align-end secondary--text text--lighten-3 pt-1">{{comment.user.name}}</v-col>
-          <v-col cols="5" class="align-end secondary--text text--lighten-3 pt-1">{{comment.created}}</v-col>
+        <v-row class="justify-space-between" v-if="userId===comment.user.id">
+          <v-col cols="3" lg="3" class="align-end secondary--text text--lighten-3 pt-1">{{comment.user.name}}</v-col>
+          <div class="d-flex col-4">
+            <v-col class="align-end secondary--text text--lighten-3 pt-1">{{comment.created}}</v-col>
+            <v-btn @click="deleteComment(comment.id)">삭제</v-btn>
+          </div>
+        </v-row>
+        <v-row class="justify-space-between" v-else>
+          <v-col cols="3" lg="3" class="align-end secondary--text text--lighten-3 pt-1">{{comment.user.name}}</v-col>
+          <v-col cols="5" lg="3" class="align-end secondary--text text--lighten-3 pt-1">{{comment.created}}</v-col>
         </v-row>
       </div>
     </v-container>
@@ -17,10 +24,47 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import axios from 'axios'
+import drf from '@/api/drf.js'
+
 export default {
+  data() {
+    return {
+
+    }
+  },
   props: {
     commentList: Array,
-  }
+    pid: Number,
+  },
+  computed: {
+    ...mapGetters(['userId', 'accessToken']),
+  },
+  methods: {
+    deleteComment(commentId) {
+      const check = confirm('정말 삭제하시겠습니까?')
+      if (check) {
+        axios({
+          url: drf.api + 'comment/' + `${commentId}`,
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },
+        })
+          .then((res) => {
+            // console.log(this.credentials);
+            console.log('res = ', res);
+            console.log(this.pid)
+            this.$router.go()
+            // this.$router.push({path: `/problem/${this.pid}`})
+          })
+          .catch(err => {
+            console.log('댓삭 에러= ', err)
+          })
+        }
+      }
+    },
 }
 </script>
 

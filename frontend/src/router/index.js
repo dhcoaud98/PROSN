@@ -86,7 +86,7 @@ const routes = [
     component: ProblemBook
   },
   {
-    path: '/information',
+    path: '/information/:cid',
     name: 'information',
     component: Information
   },

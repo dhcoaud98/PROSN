@@ -130,10 +130,10 @@ const accountStore = 'accountStore';
             data: this.credentials,
          })
             .then((res) => {
-               console.log('res = ', res);
-               console.log('accessToken = ', res.data.accessToken);
-               console.log('refreshToken = ', res.data.refreshToken);
-               console.log('expire : ', res.data.tokenExpiresIn);
+               console.log('res = ', res.data);
+              //  console.log('accessToken = ', res.data.accessToken);
+              //  console.log('refreshToken = ', res.data.refreshToken);
+              //  console.log('expire : ', res.data.tokenExpiresIn);
                let grantType = res.data.grantType.replace(
                   res.data.grantType.charAt(0),
                   res.data.grantType.charAt(0).toUpperCase()
