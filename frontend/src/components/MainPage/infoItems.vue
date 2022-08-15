@@ -10,7 +10,7 @@
             {{info.title}}
           </div>
           <!-- 좋아요 싫어요 정보 -->
-          <div class="d-flex me-3">
+          <div class="d-flex mx-4">
             <v-icon class="me-2">thumb_up_off_alt</v-icon>
             <div class="me-3">{{ info.numOfLikes }}</div>
             <v-icon class="me-2">thumb_down_off_alt</v-icon>

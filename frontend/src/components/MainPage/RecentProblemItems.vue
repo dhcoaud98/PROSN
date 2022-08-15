@@ -10,7 +10,7 @@
             {{mainProb.title}}
           </div>
           <!-- 좋아요 싫어요 정보 -->
-          <div class="d-flex me-3">
+          <div class="d-flex mx-4">
             <v-icon class="me-2">thumb_up_off_alt</v-icon>
             <div class="me-3">{{ mainProb.numOfLikes }}</div>
             <v-icon class="me-2">thumb_down_off_alt</v-icon>
@@ -33,7 +33,7 @@
       <!-- textoverflow 지정해 놓기 0812 임지민 -->
       <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
-          {{ mainProb.mainText }}{{mainProb}}
+          {{ mainProb.mainText }}
           <!-- {{ probdetail}} -->
         </div>
       </v-row>

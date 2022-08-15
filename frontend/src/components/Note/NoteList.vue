@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <!-- 
       v-for 사용하기 
       - note center에서 어떤 것이 선택됐는 지 toDB 받아와서 그것에 맞게 쿼리 보내기
@@ -10,7 +10,7 @@
      -->
      <v-row>
       <!-- {{afterProbs}} -->
-      <v-col>
+      <v-col class="pa-0">
         <note-list-items :beforeProbs="beforeProbs" :afterProbs="afterProbs"></note-list-items>
       </v-col>
      </v-row>

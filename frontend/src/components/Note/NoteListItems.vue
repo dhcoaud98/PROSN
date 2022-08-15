@@ -2,7 +2,7 @@
   <div>
     <!-- 작성 전 문제 0808 임지민 -->
     <div v-for="beforeProb in beforeProbs" :key="beforeProb.id" class="mb-2">
-      <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8">
+      <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8 ">
         <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
         <v-card-title class="pa-0 yellow-bg-gradation">
           <v-container class="pa-0">
@@ -43,7 +43,7 @@
 
     <!-- 작성 후 문제 0808 임지민 -->
     <div v-for="afterProb in afterProbs" :key="afterProb.id" class="mb-2">
-      <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8">
+      <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8 me-3">
         <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
         <v-card-title class="pa-0 yellow-bg-gradation">
           <v-container class="pa-0">
