@@ -91,7 +91,7 @@ const routes = [
     component: Information
   },
   {
-    path: '/editstudy',
+    path: '/editstudy/:sid',
     name: 'editstudy',
     component: editStudy,
     props: true,
