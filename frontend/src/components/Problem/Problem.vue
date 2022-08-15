@@ -343,7 +343,7 @@ export default {
           console.log("에러")
           console.log(err)
         })
-        // this.$router.go(); // 새로고침
+        this.$router.go(); // 새로고침
       }
     },
   },
