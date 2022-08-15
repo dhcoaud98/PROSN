@@ -1,23 +1,31 @@
 <template>
   <!-- 2022.07.26 댓글창 (남성은) -->
   <!-- <v-card elevation="2" class="rounded ma-2 pa-4 mx-1"> -->
-    <v-container class="white mt-2 border-a-10 h-300 overflow-auto">
+    <v-container class="mt-2 border-a-10 h-300 overflow-auto px-0">
       <div v-for="comment in commentList" :key="comment.id" >
-        <v-row class="grey lighten-4 border-a-10">
-          <!-- <p>{{commentList}}</p> -->
-          <v-col class=" mb-3">{{comment.mainText}}</v-col>
-        </v-row>
-        <v-row class="justify-space-between" v-if="userId===comment.user.id">
-          <v-col cols="4" lg="3" class="align-end secondary--text text--lighten-3 pt-1">{{comment.user.name}}</v-col>
-          <div class="d-flex col-8">
-            <v-col class="align-end secondary--text text--lighten-3 pt-1">{{comment.created}}</v-col>
-            <v-btn @click="deleteComment(comment.id)" small>삭제</v-btn>
-          </div>
-        </v-row>
-        <v-row class="justify-space-between" v-else>
-          <v-col cols="3" lg="3" class="align-end secondary--text text--lighten-3 pt-1">{{comment.user.name}}</v-col>
-          <v-col cols="5" lg="3" class="align-end secondary--text text--lighten-3 pt-1">{{comment.created}}</v-col>
-        </v-row>
+        <div id="grey-reply" rounded class="mb-2">
+          <v-row class="border-a-10">
+            <!-- <p>{{commentList}}</p> -->
+            <v-col>{{comment.mainText}}</v-col>
+          </v-row>
+
+          <v-row class="justify-space-between" v-if="userId===comment.user.id">
+            <v-col class="pt-0 d-flex">
+              <div cols="3" lg="3" class="align-end secondary--text text--lighten-3">{{comment.user.name}}</div>
+              <div class="align-end secondary--text text--lighten-3 ms-4">{{comment.created}}</div>
+            </v-col>
+            <v-col class="d-flex col-4">
+              <v-btn @click="deleteComment(comment.id)" text color="#a384ff">삭제</v-btn>
+            </v-col>  
+          </v-row>
+
+          <v-row v-else>
+            <v-col class="pt-0 d-flex">
+              <div cols="3" lg="3" class="align-end secondary--text text--lighten-3">{{comment.user.name}}</div>
+              <div cols="5" lg="3" class="align-end secondary--text text--lighten-3 ms-4">{{comment.created}}</div>
+            </v-col>
+          </v-row>
+        </div>
       </div>
     </v-container>
   <!-- </v-card> -->

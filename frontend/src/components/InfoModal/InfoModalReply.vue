@@ -1,7 +1,7 @@
 <template>
-  <v-card-text>
+  <v-card-text class="px-1 py-3">
     <!-- 댓글 입력란 -->
-    <v-container class="rounded-lg replies mt-3">
+    <v-container class="rounded-lg replies my-3">
       <!-- {{credentials}} -->
       <v-form @submit.prevent="submitComment">
         <v-row>
