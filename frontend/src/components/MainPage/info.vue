@@ -41,36 +41,70 @@ export default {
 		infoItems,
 	},
 	computed: {
-		...mapGetters(['accessToken'])
+		...mapGetters(['accessToken']),
+		isSearched() {
+			return this.$store.getters['problem/isSearched']
+		},
+		inputChange() {
+			return this.$store.getters['problem/inputChange']
+		},
 	},
 	created() {
-		// 0810 오채명 : 밑에 코드 절때로 건들이지 말기
 		// 페이지 렌더링 될 때 첫번 째 엑시오스
-		const params = {
-			page: 0,
-			size: 5,
-			sort: 'updated,DESC',
-		};
-		axios({
-			// 0808 오채명 : 모든 게시글, 문제 가져올 때 확인하려고 위의 주소로 했는데, 밑에꺼로 해야함
-			url: drf.api + 'post' + '/information',
-			method: 'get',
-			headers: {
-				Authorization: this.accessToken,
-			},
-			params: params,
-			//page=0&size=3&sort=updated,desc
-		})
-			.then((res) => {
-				this.infos = res.data.content;
-				console.log('infos = ', this.infos);
-				// console.log(res.data.totalPages)
-				this.endPage = res.data.totalPages;
+		if(this.isSearched){
+			const params = {
+				title: '',
+				page: 0,
+				size: 5,
+				sort: 'updated,DESC',
+			};
+			axios({
+				// 0808 오채명 : 모든 게시글, 문제 가져올 때 확인하려고 위의 주소로 했는데, 밑에꺼로 해야함
+				url: drf.api + 'post' + '/information',
+				method: 'get',
+				headers: {
+					Authorization: this.accessToken,
+				},
+				params: params,
+				//page=0&size=3&sort=updated,desc
 			})
-			.catch((err) => {
-				console.log('에러');
-				console.log(err);
-			});
+				.then((res) => {
+					this.infos = res.data.content;
+					console.log('infos = ', this.infos);
+					// console.log(res.data.totalPages)
+					this.endPage = res.data.totalPages;
+				})
+				.catch((err) => {
+					console.log('에러');
+					console.log(err);
+				})
+		} else {
+			const params = {
+				page: 0,
+				size: 5,
+				sort: 'updated,DESC',
+			};
+			axios({
+				// 0808 오채명 : 모든 게시글, 문제 가져올 때 확인하려고 위의 주소로 했는데, 밑에꺼로 해야함
+				url: drf.api + 'post' + '/information',
+				method: 'get',
+				headers: {
+					Authorization: this.accessToken,
+				},
+				params: params,
+				//page=0&size=3&sort=updated,desc
+			})
+				.then((res) => {
+					this.infos = res.data.content;
+					console.log('infos = ', this.infos);
+					// console.log(res.data.totalPages)
+					this.endPage = res.data.totalPages;
+				})
+				.catch((err) => {
+					console.log('에러');
+					console.log(err);
+				})
+		}
 	},
 	methods: {
 		handlePage() {
