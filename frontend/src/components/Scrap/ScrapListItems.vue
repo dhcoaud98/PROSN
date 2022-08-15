@@ -10,10 +10,13 @@
         name="folders"
       ></v-radio>
     </v-col>
-    <v-col cols="2" class="mr-2 pa-0">
+    <v-col cols="5" class="mr-2 pa-0">
+      <v-btn small class="mr-2" @click="openModal">이동</v-btn>
       <v-btn small @click="deleteFolder(scrapFolder.id)">삭제</v-btn>
     </v-col>
     <!-- <p>hi</p> -->
+    <scrap-post-modal @close="closeModal" v-if="modal" :lid="scrapFolder.id" :scrapFolder="scrapFolder"></scrap-post-modal>
+
   </v-row>
 </template>
 
@@ -21,10 +24,19 @@
 import drf from '@/api/drf'
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import ScrapPostModal from '@/components/Profile/ScrapPostModal.vue'
 
 
 export default {
   name: 'ScrapListItems',
+  data(){
+    return {
+      modal: false,
+    }
+  },
+  components: {
+    ScrapPostModal
+  },
   props: {
     scrapFolder: Object,
     getScrapFolders: Function,
@@ -62,7 +74,15 @@ export default {
     emitFolderId(lid) {
       this.$emit('checkedFolder', lid)
       // console.log(lid);
-    }
+    },
+    openModal() {
+        this.modal = true
+        console.log('openModal')
+    },
+    closeModal() {
+        this.modal = false
+        console.log('closeModal')
+    },
   },
 }
 </script>

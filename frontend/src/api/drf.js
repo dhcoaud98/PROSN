@@ -44,6 +44,7 @@ export default {
 		solving: () => HOST + SOLVING,
 	},
 	scrap: {
+		scrap: () => HOST + SCRAP,
 		folder: () => HOST + SCRAP + 'folder/'
 	
 	}

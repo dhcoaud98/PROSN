@@ -181,10 +181,20 @@ export default {
       }
       })
       .then(res => {
-        // console.log('문제 스크랩 =', res); // ok
+        console.log('문제 스크랩 =', res); // ok
+        this.$swal({
+          icon: 'success',
+          text: '문제 스크랩이 완료되었습니다.'
+        })
       })
       .catch(err => {
         console.log('문제 스크랩 에러= ', err); 
+        if( err.status === 400) {
+          this.$swal({
+            icon: 'error',
+            text: '이미 해당 폴더로 스크랩된 문제입니다.'
+          })
+        }
       })
     }
 
