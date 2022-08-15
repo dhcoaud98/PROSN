@@ -29,8 +29,9 @@
       <v-col>
         <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ infoDetail.writer.name }}</div>
       </v-col>
-      <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-      <v-col cols="8" class="pa-0 justify-end d-flex align-center">
+
+      <!-- 버튼: 남이 작성한 정보 -->
+      <v-col v-if="currentUser != infoDetail.writer.id" cols="8" class="pa-0 justify-end d-flex align-center">
         <!-- 좋아요 버튼 -->
         <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
           <v-icon>{{upText}}</v-icon>
@@ -45,6 +46,16 @@
         </v-btn>    
         <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>                    
       </v-col>   
+
+      <!-- 내가 작성한 정보 -->
+      <v-col v-else cols="8" class="pa-0 justify-end d-flex align-center">
+        <!-- 스크랩 버튼 -->
+        <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
+          <v-icon>{{scrapText}}</v-icon>
+        </v-btn> 
+        <!-- 삭제 -->
+        <v-btn type="submit" color="red" rounded outlined class="ms-1" large @click="deleteinfo">삭제</v-btn>
+      </v-col>
     </v-row>             
 
     <v-divider color="#A384FF" cla ss="mt-3"></v-divider>
@@ -80,7 +91,7 @@ export default {
     Scrap,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods: {
     // 2022.08.04. 라우터 경로 연결
@@ -94,6 +105,30 @@ export default {
     closeScrapModal() {
         this.scrapModal = false
         console.log('closeModal')
+    },
+
+    // 내가 작성한 정보 삭제하기(0815 오채명)
+    deleteprob() {
+      const userDecision = confirm('정말로 삭제하시겠습니까?')
+      if (userDecision) {
+        axios({
+          url: drf.api + 'post' + `/${this.infoDetail.id}`,
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },
+        })
+        .then(res => {
+          console.log("res.data = ",res.data)
+          // console.log("삭제 되었습니다. ", res)
+          this.$router.push('/')
+        })
+        .catch(err =>{
+          console.log("에러")
+          console.log(err)
+        })
+        // this.$router.go(); // 새로고침
+      }
     },
   },
   created() {
