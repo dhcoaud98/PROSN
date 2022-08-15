@@ -47,9 +47,10 @@ export default {
       size: 4,
       sort: 'updated,DESC',
     }
+    const profileOwnerId = location.href.slice(30)
     // 유저의 포스트 조회
     axios({
-      url: drf.api + 'user/' + 'post/' + `${this.currentUser}`,
+      url: drf.api + 'user/' + 'post/' + `${profileOwnerId}`,
       method: 'get',
       headers: {
         Authorization : this.accessToken,

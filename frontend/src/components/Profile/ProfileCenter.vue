@@ -159,8 +159,8 @@ export default {
       },
     })
     .then(res => {
-      console.log('프로필 주인', res.data)
-      console.log('지금 프로필 보는사람', this.currentUser)
+      // console.log('프로필 주인', res.data)
+      // console.log('지금 프로필 보는사람', this.currentUser)
       this.userInfo = res.data
       // 뱃지 컬러랑 문구 정하기
       if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 10 ) {
