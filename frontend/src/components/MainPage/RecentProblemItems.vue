@@ -95,7 +95,7 @@ export default {
         },      
       })
       .then(res => {
-        console.log(res.data)
+        console.log("problem data를 확인할꺼야 =",res.data)
         this.probdetail = res.data
       })
       .catch(err => {

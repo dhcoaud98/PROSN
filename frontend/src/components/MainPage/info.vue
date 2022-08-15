@@ -48,11 +48,10 @@ export default {
 		// 페이지 렌더링 될 때 첫번 째 엑시오스
 		const params = {
 			page: 0,
-			size: 4,
+			size: 5,
 			sort: 'updated,DESC',
 		};
 		axios({
-			// url:drf.api+'post',
 			// 0808 오채명 : 모든 게시글, 문제 가져올 때 확인하려고 위의 주소로 했는데, 밑에꺼로 해야함
 			url: drf.api + 'post' + '/information',
 			method: 'get',
@@ -80,11 +79,10 @@ export default {
 
 			const params = {
 				page: this.page - 1,
-				size: 4,
-				//sort: onUpdated, 'desc'
+				size: 5,
+				sort: 'updated,DESC',
 			};
 			axios({
-				// url: drf.api +'post',
 				url: drf.api + 'post' + '/information',
 				method: 'get',
 				headers: {
