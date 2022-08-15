@@ -161,27 +161,7 @@ export default {
         //   this.$router.push({ path: 'problem' })
         // },
     },
-    created() {
-      const probId = this.mainProb.id
 
-      axios({
-      url: drf.api + 'post' + `/${probId}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },      
-    })
-    .then(res => {
-      console.log(res.data)
-      this.probdetail = res.data
-      console.log('probdetail=', this.probdetail)
-    })
-    .catch(err => {
-      console.log("에러")
-      console.log(err)
-    })
-
-    },
 }
 </script>
 
