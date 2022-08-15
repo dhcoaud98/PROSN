@@ -164,10 +164,18 @@ export default {
       if (selectedAnswer === "1") {
         this.credentials.right = true
         this.myCorrectStatus = true
-        alert('정답입니다.')
+        // alert('정답입니다.')
+        this.$swal({
+          icon: 'success',
+          text: '정답입니다'
+        })
       } else {
         this.credentials.right = false
-        alert('오답입니다.')
+        // alert('오답입니다.')
+        this.$swal({
+          icon: 'warning',
+          text: '오답입니다.'
+        })
         this.myCorrectStatus = false
         this.$router
       }
@@ -207,7 +215,13 @@ export default {
     .then(res => {
       console.log(res) //ok
       this.probDetail = res.data
-      this.commentList = res.data.comments.reverse()
+
+      // 댓글이 있는 경우에만 0815 임지민
+      if (res.data.comments){
+        this.commentList = res.data.comments.reverse()
+        this.commentLength = this.commentList.length
+      } 
+
       // console.log(res.data.comments)
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
