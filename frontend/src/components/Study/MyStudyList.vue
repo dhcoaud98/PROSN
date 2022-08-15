@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-5">
+  <v-container class="mt-5 px-0 px-md-3">
     <my-study-list-items v-for="(myStudy, idx) in myStudys" :key="idx" :myStudy="myStudy"></my-study-list-items>
     <br>  
     <v-pagination

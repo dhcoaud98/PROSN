@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-5">
+  <v-container class="mt-5 px-0 px-md-3">
     <!-- v-for 사용하기 -->
     <my-post-list-items 
       v-for="(userPost, idx) in userPosts"
