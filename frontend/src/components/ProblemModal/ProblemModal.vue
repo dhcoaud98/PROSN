@@ -76,7 +76,7 @@
                         </p>
                       </v-col>
 
-                      <!-- 내가 낸 문제인지 아닌지 -->
+                      <!-- 내가 낸 문제가 아닐 경우 -->
                       <v-col v-if="currentUser != probdetail.writer.id" cols="12" class="pa-0 justify-end d-flex align-center">
                         <!-- 좋아요 버튼 -->
                         <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
@@ -98,6 +98,7 @@
                         <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
                       </v-col>
 
+                      <!-- 내가 낸 문제 일 경우 -->
                       <v-col v-else cols="12" class="pa-0 justify-end d-flex align-center">
                         <!-- 스크랩 버튼 -->
                         <v-btn class="ms-1" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
@@ -106,7 +107,7 @@
                         <!-- 수정 -->
                         <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
                         <!-- 삭제 -->
-                        <v-btn type="submit" rounded outlined class="ms-1" small @click="deleteprob">삭제</v-btn>
+                        <v-btn type="submit" color="red" rounded outlined class="ms-1" small @click="deleteprob">삭제</v-btn>
                       </v-col>
                     </v-row>
                   </v-form>
