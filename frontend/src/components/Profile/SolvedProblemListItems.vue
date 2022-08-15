@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     showUp () {
-      this.$router.push({ path: `problem/${this.userSolving.postId}` })
+      this.$router.push({ path: `../problem/${this.userSolving.postId}` })
     },
   }
 }

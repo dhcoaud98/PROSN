@@ -2,8 +2,7 @@
   <!-- 2022.08.04 정보 페이지 -->
   <v-container>
     <v-row class="d-flex justify-space-between">
-      {{infoDetail}}
-      <h2>{{ infoDetail.title }}</h2> 
+      <h2>{{ infoDetail }}</h2> 
       <v-btn @click="goBack()" text class="font-weight-bold">뒤로가기</v-btn>
     </v-row>
 
@@ -146,7 +145,7 @@ export default {
       },
     })
     .then(res => {
-      console.log(res) //ok
+      console.log('res:', res) //ok
       this.infoDetail = res.data
       this.commentList = res.data.comments.reverse()
 

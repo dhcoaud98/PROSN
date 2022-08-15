@@ -33,7 +33,7 @@
       <!-- textoverflow 지정해 놓기 0812 임지민 -->
       <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
-          {{ mainProb.mainText }}
+          {{ mainProb.mainText }}{{mainProb}}
           <!-- {{ probdetail}} -->
         </div>
       </v-row>
