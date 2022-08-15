@@ -20,7 +20,8 @@
               </v-card-title>
 
               <!-- 정보 본문 -->
-              <!-- <p>{{ info }}</p> -->
+              <!-- <p>{{ infodetail }}</p> -->
+              <!-- <p>{{ infodetail}}</p> -->
               <v-card-text class="d-flex">
                 <!-- 카테고리 라벨 -->
                 <div class="mt-5" v-for="(tag, idx) in infodetail.tags" :key="idx">
@@ -89,7 +90,7 @@
               <v-card-text class="pa-0">
                 <div>
                   <!-- 이부분에 인포 댓글만 연결해주면 끝남 -->
-                  <info-modal-reply :cid="infodetail.id"></info-modal-reply>
+                  <info-modal-reply :cid="infodetail.id" :commentList="commentList"></info-modal-reply>
 
                   <v-divider class="mx-1"></v-divider>
 
@@ -129,6 +130,7 @@ export default {
       upText: 'thumb_up_off_alt',
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
+      commentList: [],
     }
   },
   methods: {
@@ -231,7 +233,33 @@ export default {
   },
   computed: {
     ...mapGetters(['accessToken','currentUser']),
-  }
+  },
+  created() {
+    // console.log("problem id를 확인해볼까 = ", this.mainProb.id)
+    // this.probId = this.info.id
+    // this.credentials.pid = this.mainProb.id
+
+    axios({
+      url: drf.api + 'post' + `/${this.infodetail.id}`,
+      methods: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },      
+    })
+    .then(res => {
+      console.log(res.data)
+      // this.probdetail = res.data
+      if (res.data.comments){
+        this.commentList = res.data.comments.reverse()
+      }
+      // console.log(this.commentList)
+    })
+    .catch(err => {
+      console.log("info modal 에러")
+      console.log(err)
+    })
+  
+  },
 }
 </script>
 

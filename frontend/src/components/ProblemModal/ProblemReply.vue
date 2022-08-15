@@ -25,7 +25,7 @@
       <!-- 댓글창제목 -->
       <v-row class="ma-1">
         <v-col cols="12">
-          <h2>댓글</h2>
+          <h2>댓글 ({{commentLength}})</h2>
         </v-col>
       </v-row>
 
@@ -59,6 +59,7 @@ export default {
         pid: this.pid,
         mainText: ''
       },
+      commentLength: 0,
     }
   },
   props: {
@@ -98,6 +99,7 @@ export default {
           .then(res => { 
             console.log('댓글 가져오기')
             this.commentList = res.data.comments
+            this.commentLength = this.commentList.length
             // console.log(this.commentList)
 
             // 작성 완료되면 댓글 입력란 비우기 0814 임지민
@@ -114,21 +116,9 @@ export default {
   },
   created() {
     console.log(this.commentList);
-    // axios({
-    //   url: drf.api + 'comment/',
-    //   method: 'get',
-    //   headers: {
-    //     Authorization: this.accessToken,
-    //   },
-    // })
-    //   .then((res) => {
-    //     console.log('res get = ', res);
-    //     // this.$router.push({ path: 'profile' })
-    //   })
-    //   .catch((err) => {
-    //     console.log('에러 get');
-    //     console.log(err);
-    //   });
+    if (this.commentList) {
+      this.commentLength = this.commentList.length
+    } 
   }
 }
 </script>
