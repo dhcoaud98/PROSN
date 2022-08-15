@@ -169,11 +169,12 @@ export default {
       },
       myCorrectStatus: null,
       commentList: null,
+      probdetail: []
     }
   },
   props: {
     mainProb: Object,
-    probdetail: Object,
+    // probdetail: Object,
   },
   computed: {
     ...mapGetters(['accessToken', 'currentUser'])
@@ -192,7 +193,7 @@ export default {
     })
     .then(res => {
       // console.log(res.data)
-      // this.probdetail = res.data
+      this.probdetail = res.data
       if (res.data.comments){
         this.commentList = res.data.comments.reverse()
       }
