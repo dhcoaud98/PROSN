@@ -1,6 +1,5 @@
 <template>
   <v-checkbox
-    v-model="ex4"
     label="어쩌구 스크랩북"
     color="info"
     value=""

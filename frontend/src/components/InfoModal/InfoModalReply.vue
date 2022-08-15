@@ -31,10 +31,12 @@
       </v-form>
 
     </v-container>
-  </v-card-text></template>
+  </v-card-text>
+</template>
 
 <script>
 import InfoModalReplyItems from './InfoModalReplyItems.vue'
+
 export default {
   components: { 
     InfoModalReplyItems ,

@@ -1,33 +1,109 @@
 <template>
-    <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
-    <v-div class="color-FAF0F3 feed-width mx-auto border-a-10">
-      <v-col cols="12">
-        <v-card class="px-5" color="#FAF0F3">
-          <v-row>
-            <!-- 문제 대표 이미지 -->
-            <v-col cols="1" class="pb-2 pt-5"><v-icon large color="black darken-2">mdi-group</v-icon></v-col>
-            <!-- 문제 태그, 문제 제목 --> 
-            <v-col cols="9" class="pl-5">
-              <v-col cols="12" class="pa-0 mb-1">
-                <h4>8/19 넥슨 기술 면접 스터디원 구함</h4>
-              </v-col>
-              <v-col cols="12" class="problem_title pa-0 pt-1">
-                인원 : 오채명, 남성은, 임지민, 박성은, 정여명, 고유라
-              </v-col>
-            </v-col>
-            <v-col cols="2" class="problem_detail">
-              자세히 보기 >
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-div>
+  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8" v-if="currentUser == myStudydetail.masterId">
+    <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
+    <v-card-title class="pa-0 purple-gradation">
+      <v-container class="pa-0">
+        <!-- 스터디 제목 / 현재인원수와 총인원수 -->
+        <v-row class="d-flex justify-space-between ma-3">
+          <!-- 제목 -->
+          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
+            {{ myStudy.title }}
+          </div>
+          <!-- 좋아요 싫어요 정보 -->
+          <div class="d-flex me-3">
+            <v-icon class="me-2">mdi-account-check-outline</v-icon>
+            <div class="me-3 grey--text"></div><div>{{ myStudydetail.currentPerson }} / {{ myStudydetail.maxPerson }} </div>
+          </div>
+        </v-row>
+      </v-container>
+    </v-card-title>
 
+    <!-- 카드 본문 -->
+    <v-card-text>
+      <v-row class="ma-4 mb-2 d-flex justify-space-between">
+        <!-- 출제자 -->
+          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Leader. {{ myStudydetail.masterName }}</div>
+        <!-- 모달 띄우기 버튼 -->
+          <!-- 화면 사이즈 md 이상 -->
+          <v-btn @click="openModal" text large rounded height="45px" class="d-none d-md-flex">
+            <div class="show-up-btn font-weight-regular">SHOW UP</div>
+          </v-btn>
+          <!-- 화면 사이즈 md 이하 -->
+          <v-btn @click="openModal" text large rounded height="45px" class="d-md-none mt-3" width="100%">
+            <div class="show-up-btn font-weight-regular">SHOW UP</div>
+          </v-btn>
+      </v-row>
+    </v-card-text>
+
+    <!-- 모달 -->
+    <study-modal @close="closeModal" v-if="this.modal" :myStudydetail="myStudydetail"></study-modal>
+  </v-card>
 </template>
 
 <script>
-export default {
+import drf from '@/api/drf'
+import axios from 'axios'
+import StudyModal from "@/components/Study/StudyModal.vue"
+import { mapGetters } from "vuex"
 
+export default {
+  namd: 'MyStudyListItems',
+  data() {
+    return {
+      modal: false,
+      myStudyId: null,
+      myStudydetail: [],
+    }
+  },
+  props: {
+    myStudy: Object,
+  },
+  components: {
+    StudyModal,
+  },
+  computed: {
+    ...mapGetters(['accessToken', 'currentUser']),
+  },
+  created() {
+    // 나의 스터디마다 정보 조회
+    console.log("왜?")
+    console.log("확인", this.myStudy)
+    this.myStudyId = this.myStudy.id
+    console.log("study id = ",this.myStudyId)
+
+    // api/study/{studyid}에 해당하는 detail study 정보 가져오기
+    axios({
+      url: drf.study.study() + `${this.myStudyId}`,
+      methods: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      // console.log("studydetail =" , res.data)
+      this.myStudydetail = res.data
+      console.log("studydetail =",this.myStudydetail)
+    })
+  },
+  methods: {
+    openModal() {
+      this.modal = true
+      console.log(openModal)
+      console.log(this.study.id)
+    },
+    closeModal() {
+      this.modal = false
+      console.log('closeModal')
+    },
+    // doSend() {
+    //     alert("스터디 신청이 완료되었습니다.")
+    //     this.message = ''
+    //     this.closeModal()
+    // },
+    // refresh() {
+    //   this.$emit('refresh')
+    // }
+  },
 }
 </script>
 

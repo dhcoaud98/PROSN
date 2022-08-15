@@ -1,80 +1,60 @@
 <template>
-  <v-container class="mt-5 mx-2 mb-0">
+  <v-container class="ma-0 pa-0">
+    <v-row class="d-flex mt-5 ms-5">
+      <v-icon large color="#926DFF">groups</v-icon>
+      <h2 class="ms-3 dark--text font-weight-regular">S T U D Y</h2>
+    </v-row>    
 
-    <v-row>
-        <!-- 1. 프로필 상단 -->
-        <v-row class="justify-center mt-10 mx-5 mb-0 ">
-          <!-- 뱃지, 이름 -->
-          <v-col cols="3" class="rank_box d-flex justify-center py-0">
-            <p class="font-weight-bold text-grey ma-0">Prosn</p>
-          </v-col>
-          <v-col cols="8" class="pa-0 pl-3">
-            <p class="font-weight-bold text-grey ma-0">오채명</p>
-          </v-col>
-          <v-col cols="1" class="pa-0">
-            <!-- <v-img src="@/assets/account-multiple-plus.png" sm class="ma-0" id="mainPage" type="button" @click="event()"></v-img> -->
-            <!-- <v-icon type="button" @click="event()"></v-icon> -->
-            <span class="material-icons" type="button" @click="event()" style="color:#A384FF">group_add</span>
+    <!-- 1. 프로필 상단 -->
+    <v-row class="justify-center mt-10 mx-5 mb-0">
+      <!-- 뱃지, 이름 -->
+      <v-container class="pa-0 mx-0">
+        <v-row>
+          <div class="d-flex">
+            <div><v-chip color="orange lighten-2" class="white--text font-weight-bold mx-3">P R O S N</v-chip></div>
+            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 스터디</h3></div>
+          </div>
 
-          </v-col>
-
-          <v-col cols="3">
-            <v-avatar size="100px" class="d-flex justify-center ml-3">
-              <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
-            </v-avatar>
-          </v-col>
-
-          <v-col cols="9">
-            <v-container class="">
-              <p class="detail_text ma-0">문제 풀이 500문제</p>
-              <p class="detail_text ma-0">문제 제출 300문제</p>
-              <p class="detail_text ma-0">정답률 68%</p>
-            </v-container>
-          </v-col>
-          
-          <v-col cols="12" class="pl-0">
-              <!-- lg 사이즈 이하에서는 태그 사라짐 -->
-              <!-- 카테고리 개수 따라서 col바뀌도록 바인딩하기 :class="col-n 이런 식" -->
-              <span class="category-tag text-center pa-1">#알고리즘</span>
-              <span class="category-tag pa-1">#최고</span>
-              <span class="category-tag pa-1">#CS</span>
-              <span class="category-tag pa-1">#어려워</span>
-              <span class="category-tag pa-1">#배고파</span>
-          </v-col>
-
+          <div class="d-flex">
+          </div>
         </v-row>
 
-        <!-- 2. 프로필 하단 -->
-        <v-row class="profile_tab d-flex justify-center mt-10 mx-5 mb-0">
-          <v-toolbar dark tabs flat color="#ffffff" class="toolbar" height="45px">
-            <template>
-              <v-tabs v-model="tabs">
-                <v-col>
-                  <v-tab class="pa-0 tab--text" href="#one">스터디 구하기</v-tab>
-                </v-col>
-                <v-col>
-                  <v-tab class="pa-0 tab--text" href="#two">나의 스터디</v-tab>
-                </v-col>
-                <v-tabs-slider color="#A384FF"></v-tabs-slider>
-              </v-tabs>
-            </template>
-          </v-toolbar>
-        
-          <!-- <v-card-text class="d-flex ma-0">
-            <v-tabs-items v-model="tabs">
-              <v-tab-item v-for="content in ['one', 'two', 'three']" :key="content" :value="content">
-              </v-tab-item>
-            </v-tabs-items>
-          </v-card-text> -->
-          
-          <v-container class="ma-0 pa-0" v-if="activeFab.page === '1'">
-            <study-list></study-list>
-          </v-container>
-          <v-container class="ma-0 pa-0" v-if="activeFab.page === '2'">
-            <my-study-list></my-study-list>
-          </v-container>
-
+        <v-row class="ps-10">
+          <v-col cols="12" class="detail_text ma-0 pa-0">문제 풀이 500문제</v-col>
+          <v-col cols="12" class="detail_text ma-0 pa-0">문제 제출 300문제</v-col>
+          <v-col cols="12" class="detail_text ma-0 pa-0">정답률 68%</v-col>
         </v-row>
+
+        <v-row class="pa-0"> 
+          <v-col class="pa-0 px-2">
+            <v-btn text rounded class="pa-0 dark--text" @click="event()" color="#512DA8" width="100%">
+              <v-icon color="#A384FF" class="me-2">group_add</v-icon><h3>MAKE STUDY +</h3>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-row>
+
+    <!-- 2. 프로필 하단 -->
+    <v-row class="d-flex justify-center mt-5 mx-5 mb-0">
+      <v-toolbar dark height="45px">
+        <v-tabs v-model="tabs" background-color="#CCA5FE" grow> 
+          <v-col class="px-0">
+            <v-tab class="tab--text white--text pa-0" href="#one"><h3 class="font-weight-regular">STUDIES</h3></v-tab>
+          </v-col>
+          <v-col class="px-0">
+            <v-tab class="tab--text white--text pa-0" href="#two"><h3 class="font-weight-regular">MY STUDY</h3></v-tab>
+          </v-col>
+          <v-tabs-slider color="#A384FF"></v-tabs-slider>
+        </v-tabs>
+      </v-toolbar>
+      
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '1'">
+        <study-list></study-list>
+      </v-container>
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '2'">
+        <my-study-list></my-study-list>
+      </v-container>
     </v-row>
   </v-container>
 </template>
@@ -83,6 +63,7 @@
 import StudyList from "./StudyList.vue"
 import MyStudyList from "./MyStudyList.vue"
 import router from "@/router"
+import { mapGetters } from 'vuex'
 
 
 export default {
@@ -116,6 +97,7 @@ export default {
         default: return {}
       }
     },
+    ...mapGetters(['accessToken', 'userId', 'userName'])
   },
   methods:{
     event () {

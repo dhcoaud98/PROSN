@@ -88,18 +88,19 @@ public class StudyController {
     }
 
     //가입
-    @PostMapping("/me")
-    public ResponseEntity<?> joinStudy(@RequestBody Map<String, String> req) {
+    @PostMapping("/me/{studyid}")
+    public ResponseEntity<?> joinStudy(@PathVariable(value = "studyid") Long studyid) {
         UserResponseDto user = userService.getMyInfoBySecret();
-        StudyGroup studyGroup = studyGroupRepository.findById(Long.parseLong(req.get("id"))).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
+        StudyGroup studyGroup = studyGroupRepository.findById(studyid).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
+        studyService.joinStudy(user.getId(), studyGroup);
         return ResponseEntity.status(CREATED).build();
     }
 
     //탈퇴
-    @DeleteMapping("me")
-    public ResponseEntity<?> removeStudy(@RequestBody Map<String, String> req) {
+    @DeleteMapping("/me/{studyid}")
+    public ResponseEntity<?> removeStudy(@PathVariable(value = "studyid") Long studyid) {
         UserResponseDto user = userService.getMyInfoBySecret();
-        StudyGroup studyGroup = studyGroupRepository.findById(Long.parseLong(req.get("id"))).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
+        StudyGroup studyGroup = studyGroupRepository.findById(studyid).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
         studyService.removeStudy(user.getId(), studyGroup);
         return ResponseEntity.status(OK).build();
     }
