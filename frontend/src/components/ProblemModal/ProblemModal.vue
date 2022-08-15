@@ -107,9 +107,11 @@
                         <!-- 내가 낸 문제 일 경우 -->
                         <v-col v-else cols="12" class="pa-0 justify-end d-flex align-center">
                           <!-- 스크랩 버튼 -->
-                          <v-btn class="ms-1" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
+                          <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
                             <v-icon>{{scrapText}}</v-icon>
-                          </v-btn> 
+                          </v-btn>
+                          
+                          <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
                           <!-- 수정 -->
                           <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
                           <!-- 삭제 -->

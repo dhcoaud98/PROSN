@@ -7,6 +7,7 @@
         <v-row class=" border-a-10">
           <v-col>{{comment.mainText}}</v-col>
         </v-row>
+
         <v-row class="justify-space-between" v-if="userId===comment.user.id">
           <v-col class="pt-0 d-flex">
             <div cols="3" lg="3" class="align-end secondary--text text--lighten-3">{{comment.user.name}}</div>
@@ -16,6 +17,7 @@
             <v-btn @click="deleteComment(comment.id)" text color="#a384ff">삭제</v-btn>
           </v-col>
         </v-row>
+        
         <v-row v-else>
           <v-col class="pt-0 d-flex">
             <div cols="3" lg="3" class="align-end secondary--text text--lighten-3">{{comment.user.name}}</div>

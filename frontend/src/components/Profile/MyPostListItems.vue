@@ -14,8 +14,6 @@
             <v-icon color="#8094FF" class="me-2">mdi-circle</v-icon>
             <p class="mb-0">P R O B L E M</p>
           </div>
-          <!-- <div>PROBLEM</div>
-          <div>BOOK</div> -->
         </v-row>
 
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
@@ -48,13 +46,11 @@
 
       <v-row class="mx-4 d-flex justify-space-between">
         <!-- 문제 또는 정보 버튼 -->
-        <v-btn v-if="userPost.ptype === `Information`" @click="openModal" large rounded height="45px" class="mt-3" width="100%" elevation="0">
+        <v-btn v-if="userPost.ptype === `Information`" @click='showUpInfo()' large rounded height="45px" class="mt-3" width="100%" elevation="0">
           <div class="show-up-btn font-weight-regular">SHOW UP</div>
-          <problem-modal @close="closeModal" v-if="modal" :userPost="userPost"></problem-modal>
         </v-btn>
-        <v-btn v-if="userPost.ptype === `Problem`" @click="openModal" large rounded height="45px" class="mt-3" width="100%" elevation="0">
+        <v-btn v-if="userPost.ptype === `Problem`" @click='showUpProb()' large rounded height="45px" class="mt-3" width="100%" elevation="0">
           <div class="show-up-btn font-weight-regular">SHOW UP</div>
-          <info-modal @close="closeModal" v-if="modal" :userPost="userPost"></info-modal>
         </v-btn>
       </v-row>
     </v-card-text>
@@ -109,6 +105,12 @@ export default {
     closeModal() {
       this.modal = false
       console.log('closeModal')
+    },
+    showUpInfo () {
+      this.$router.push({ path: `problem/${this.userPost.id}` })
+    },
+    showUpProb () {
+      this.$router.push({ path: `information/${this.userPost.id}` })
     },
   }
 }

@@ -22,7 +22,7 @@
               <!-- 정보 본문 -->
               <!-- <p>{{ infodetail }}</p> -->
               <!-- <p>{{ infodetail}}</p> -->
-              <v-card-text class="d-flex">
+              <v-card-text class="d-flex pb-0">
                 <!-- 카테고리 라벨 -->
                 <div class="mt-5" v-for="(tag, idx) in infodetail.tags" :key="idx">
                   <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
@@ -31,9 +31,9 @@
 
               <!-- 내용 -->
               <v-card-text class="font-weight-bold">
-                <v-container>
+                <v-container class="px-0">
                   <v-row>
-                    <v-card outlined class="mx-3 mb-2 pa-3 overflow-y-auto" max-height="500px" width="100%">
+                    <v-card outlined class="mb-2 pa-3 overflow-y-auto" max-height="500px" width="100%">
                       <v-card-text>
                         <div>
                           <!-- {{infodetail.id}} -->
@@ -70,7 +70,7 @@
                       <!-- 스크랩 버튼 -->
                       <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
                         <v-icon>{{scrapText}}</v-icon>
-                      </v-btn>                  
+                      </v-btn>                
                       
                       <!-- 스크랩 모달 -->
                       <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
@@ -78,10 +78,15 @@
 
                     <!-- 내가 작성한 정보일 경우 -->
                     <v-col v-else class="d-flex justify-end col-12 col-md-4">
+                      <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
+                        <v-icon>{{scrapText}}</v-icon>
+                      </v-btn>                                    
+                      <!-- 스크랩 모달 -->
+                      <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
                       <!-- 수정 버튼 -->
-                      <v-btn class="ms-2" rounded outlined small color="green" @click="editInfo">수정</v-btn>
+                      <v-btn class="ms-2 mt-1 font-weight-bold" rounded outlined small @click="editInfo">수정</v-btn>
                       <!-- 삭제 버튼 -->
-                      <v-btn class="ms-2" rounded outlined small color="red" @click="deleteInfo">삭제</v-btn>
+                      <v-btn class="ms-2 mt-1 font-weight-bold" rounded outlined small color="red" @click="deleteInfo">삭제</v-btn>
                     </v-col>
                   </v-row>
                 </v-container>
