@@ -7,13 +7,13 @@
 					:key="idx"
 					:info="info"
 				></info-items>
-				<v-pagination
+				<!-- <v-pagination
 					v-model="nowPage"
 					:length="endPage"
 					color="#A384FF"
 					circle
 					@input="handlePage()"
-				></v-pagination>
+				></v-pagination> -->
 			</v-col>
 		</v-row>
 	</div>

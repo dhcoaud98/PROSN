@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-0 pt-10">
+  <v-container fluid class="pa-0 pt-0 pt-md-10 mt-0">
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row>
 

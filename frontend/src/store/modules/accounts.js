@@ -9,6 +9,7 @@ const accountStore = {
    state: {
       accessToken: sessionStorage.getItem('token') || '',
       userName: '',
+      userId: null,
       authError: null,
       refreshToken: sessionStorage.getItem('reToken') || '',
       expire: '',
@@ -19,6 +20,7 @@ const accountStore = {
       currentUser: state => state.currentUser,
       authError: (state) => state.authError,
       userName: (state) => state.userName,
+      userId: (state) => state.userId,
       accessToken: (state) => state.accessToken,
       refreshToken: (state) => state.refreshToken,
       expire: (state) => state.expire,
@@ -26,23 +28,24 @@ const accountStore = {
    mutations: {
       SET_CURRENT_USER: (state, user) => state.currentUser = user,
       SET_TOKEN: (state, accessToken) => {
-         console.log('mutations accessToekn = ', accessToken);
+         // console.log('mutations accessToken = ', accessToken);
          state.accessToken = accessToken;
       },
       SET_AUTH_ERROR: (state, error) => (state.authError = error),
       SET_USER_NAME: (state, userName) => (state.userName = userName),
+      SET_USER_ID: (state, userId) => (state.userId = userId),
       SET_REFRESH_TOKEN: (state, refreshToken) => {
-         console.log('mutations refreshToekn = ', refreshToken);
+         // console.log('mutations refreshToekn = ', refreshToken);
          state.refreshToken = refreshToken;
       },
       SET_EXPIRE: (state, expire) => {
-         console.log('mutation expire : ', expire);
+         // console.log('mutation expire : ', expire);
          state.expire = expire;
       },
    },
    actions: {
       saveToken({ commit }, accessToken) {
-         console.log('accessToken save : ', accessToken);
+         // console.log('accessToken save : ', accessToken);
 
          /* 
       state.token 추가 
@@ -54,11 +57,11 @@ const accountStore = {
          // commit('SET_CURRENT_USER', accessToken)
       },
       saveRefreshToken({ commit }, refreshToken) {
-         console.log('refreshToken save : ', refreshToken);
+         // console.log('refreshToken save : ', refreshToken);
          commit('SET_REFRESH_TOKEN', refreshToken);
       },
       saveExpiresIn({ commit }, expiresIn) {
-         console.log('action expireIn : ', expiresIn);
+         // console.log('action expireIn : ', expiresIn);
          commit('SET_EXPIRE', expiresIn);
       },
       removeToken({ commit }) {
@@ -75,7 +78,7 @@ const accountStore = {
       },
       saveName({ commit }, userName) {
          commit('SET_USER_NAME', userName);
-         console.log('current username =', userName); //ok
+         // console.log('current username =', userName); //ok
 
          // localStorage.setItem('userName', userName)
       },

@@ -1,7 +1,27 @@
 <template>
   <v-card-text>
+    <!-- 댓글 입력란 -->
+    <v-container class="rounded-lg replies mt-3">
+      <!-- {{credentials}} -->
+      <v-form @submit.prevent="submitComment">
+        <v-row>
+          <v-textarea 
+          background-color="#f5f5f5" 
+          rows="1" 
+          placeholder="댓글을 작성해주세요" 
+          no-resize dense
+          v-model="credentials.mainText"
+          class="mr-5"
+          id="commentArea"></v-textarea>
+          <v-btn type="submit" color="#A384FF" outlined rounded>
+            댓글달기
+          </v-btn>
+        </v-row>
+      </v-form>
+
+    </v-container>
     <!-- 2022.08.03.댓글창 -->
-    <v-container fluid class="rounded-lg replies" >
+    <v-container class="rounded-lg replies">
       <!-- 댓글창제목 -->
       <v-row class="ma-1">
         <v-col cols="12">
@@ -15,37 +35,110 @@
       <!-- 추후에 더미 데이터 넣고 버추얼스크롤 넣어서 확인하기-->
       <!-- 여기서 for문 돌려서 ProblemReplyItems 하나씩 띄우기 -->
       <v-row>
-        <v-col>
-          <info-modal-reply-items></info-modal-reply-items>
+        <v-col class="pa-0">
+          <!-- <p>hi</p> -->
+          <info-modal-reply-items :commentList="commentList" :pid="credentials.pid"></info-modal-reply-items>
         </v-col>
       </v-row>
     </v-container>
 
-    <!-- 댓글 입력란 -->
-    <v-container fluid class="rounded-lg replies mt-3">
-      <v-form>
-        <v-textarea background-color="#f5f5f5" rows="1" placeholder="댓글을 작성해주세요" no-resize dense></v-textarea>
-        <v-btn type="submit" color="#A384FF" text>
-          댓글달기
-        </v-btn>
-      </v-form>
-
-    </v-container>
   </v-card-text>
 </template>
 
 <script>
-import InfoModalReplyItems from './InfoModalReplyItems.vue'
+import InfoModalReplyItems from '@/components/InfoModal/InfoModalReplyItems.vue'
+import { mapGetters } from 'vuex';
+import axios from 'axios'
+import drf from '@/api/drf.js'
 
 export default {
-  components: { 
-    InfoModalReplyItems ,
+  name: 'ProblemReply',
+  data() {
+    return {
+      credentials: {
+        pid: this.pid,
+        mainText: ''
+      },
+      commentList: this.commentList,
+    }
   },
+  props: {
+    pid: Number,
+    commentList: Array,
+  },
+  components: {
+    InfoModalReplyItems
+  },
+  computed: {
+    ...mapGetters(['accessToken'])
+  },
+  methods: {
+    submitComment() {
+      axios({
+				url: drf.api + 'comment/',
+				method: 'post',
+				headers: {
+					Authorization: this.accessToken,
+				},
+				data: this.credentials,
+			})
+				.then((res) => {
+          // console.log(this.credentials);
+					console.log('res = ', res.data);
+          // this.commentList.push(this.credentials)
+          // this.$router.push({ path: 'profile' })
+
+          // 댓글을 조회하기 위한 axios 0814 임지민
+           axios({
+            url: drf.api + 'post' + `/${this.pid}`,
+            methods: 'get',
+            headers: {
+              Authorization : this.accessToken,
+            },      
+          })
+          .then(res => { 
+            console.log('댓글 가져오기')
+            this.commentList = res.data.comments
+            // console.log(this.commentList)
+
+            // 작성 완료되면 댓글 입력란 비우기 0814 임지민
+            const commentArea = document.querySelector('#commentArea')
+            commentArea.value = ''
+          })
+				})
+				.catch((err) => {
+					console.log('에러');
+					console.log(err);
+          console.log(this.pid)
+				});
+    }
+  },
+  created() {
+    console.log(this.commentList);
+    // axios({
+    //   url: drf.api + 'comment/',
+    //   method: 'get',
+    //   headers: {
+    //     Authorization: this.accessToken,
+    //   },
+    // })
+    //   .then((res) => {
+    //     console.log('res get = ', res);
+    //     // this.$router.push({ path: 'profile' })
+    //   })
+    //   .catch((err) => {
+    //     console.log('에러 get');
+    //     console.log(err);
+    //   });
+  }
 }
 </script>
 
 <style>
   .replies {
     background-color: #f5f5f5;
+  }
+  .h-300 {
+    height: 300px;
   }
 </style>
