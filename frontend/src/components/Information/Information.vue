@@ -51,7 +51,7 @@
     <v-row>
       <!-- 댓글 -->
       <v-col cols="12" class="pa-0">
-        <info-modal-reply :commentList="commentList"></info-modal-reply>
+        <info-modal-reply :commentList="commentList" :cid="infoDetail.id"></info-modal-reply>
       </v-col>           
     </v-row>  
   </v-container>

@@ -37,7 +37,7 @@
       <v-row>
         <v-col class="pa-0">
           <!-- <p>hi</p> -->
-          <info-modal-reply-items :commentList="commentList" :pid="credentials.pid"></info-modal-reply-items>
+          <info-modal-reply-items :commentList="commentList" :cid="credentials.cid"></info-modal-reply-items>
         </v-col>
       </v-row>
     </v-container>
@@ -52,18 +52,17 @@ import axios from 'axios'
 import drf from '@/api/drf.js'
 
 export default {
-  name: 'ProblemReply',
+  name: 'InfoModalReply',
   data() {
     return {
       credentials: {
-        pid: this.pid,
+        pid: this.cid,
         mainText: ''
       },
-      commentList: this.commentList,
     }
   },
   props: {
-    pid: Number,
+    cid: Number,
     commentList: Array,
   },
   components: {
@@ -74,6 +73,7 @@ export default {
   },
   methods: {
     submitComment() {
+      console.log(this.credentials);
       axios({
 				url: drf.api + 'comment/',
 				method: 'post',
@@ -90,7 +90,7 @@ export default {
 
           // 댓글을 조회하기 위한 axios 0814 임지민
            axios({
-            url: drf.api + 'post' + `/${this.pid}`,
+            url: drf.api + 'post' + `/${this.cid}`,
             methods: 'get',
             headers: {
               Authorization : this.accessToken,
@@ -109,12 +109,12 @@ export default {
 				.catch((err) => {
 					console.log('에러');
 					console.log(err);
-          console.log(this.pid)
+          console.log(this.cid)
 				});
     }
   },
   created() {
-    console.log(this.commentList);
+    // console.log(this.commentList);
     // axios({
     //   url: drf.api + 'comment/',
     //   method: 'get',

@@ -35,6 +35,7 @@
                     <v-card outlined class="mx-3 mb-2 pa-3 overflow-y-auto" max-height="500px" width="100%">
                       <v-card-text>
                         <div>
+                          <!-- {{infodetail.id}} -->
                           {{ infodetail.mainText }}
                         </div>                
                       </v-card-text>
@@ -88,7 +89,7 @@
               <v-card-text class="pa-0">
                 <div>
                   <!-- 이부분에 인포 댓글만 연결해주면 끝남 -->
-                  <info-modal-reply></info-modal-reply>
+                  <info-modal-reply :cid="infodetail.id"></info-modal-reply>
 
                   <v-divider class="mx-1"></v-divider>
 

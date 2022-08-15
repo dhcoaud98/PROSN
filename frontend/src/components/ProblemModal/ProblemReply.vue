@@ -25,7 +25,7 @@
       <!-- 댓글창제목 -->
       <v-row class="ma-1">
         <v-col cols="12">
-          <h2>댓글 ({{commentList.length}})</h2>
+          <h2>댓글</h2>
         </v-col>
       </v-row>
 
@@ -59,7 +59,6 @@ export default {
         pid: this.pid,
         mainText: ''
       },
-      commentList: this.commentList,
     }
   },
   props: {
