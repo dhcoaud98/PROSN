@@ -38,12 +38,14 @@
     <!-- row4. note list -->
     <v-row class="ml-2 mx-5">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mt-3 mx-5">작성 전 문제</p>
-      <note-list :selectedDB="selectedDB"></note-list>
+      <!-- <p>hi</p> -->
+      <!-- <p>{{ beforeProbs }} </p> -->
+      <note-list :selectedDB="selectedDB" :beforeProbs="beforeProbs"></note-list>
     </v-row>
     <hr class="my-5 border-grey mx-5">
     <v-row class="ml-2">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mx-5">이미 작성한 문제</p>
-      <note-list :selectedDB="selectedDB"></note-list>
+      <note-list :selectedDB="selectedDB" :afterProbs="afterProbs"></note-list>
     </v-row>
   </v-container>
 </template>
@@ -51,6 +53,8 @@
 <script>
 import NoteList from '@/components/Note/NoteList.vue'
 import { mapGetters } from 'vuex'
+import axios from 'axios'
+import drf from '@/api/drf.js'
 
 export default {
   components: {
@@ -73,20 +77,102 @@ export default {
         {toDB:"SC", toUser: "보안"},
         {toDB:"ETC", toUser: "기타"},
       ],
-      
+      beforeProbs: [],
+      afterProbs: [],
     }
   },
-  methods: {
+   methods: {
     selectCategory(toDB, toUser) {
-      // console.log('emit= ', toDB)
-      this.selectedDB = toDB
       this.selectedUser = toUser
+      if (toDB == 'whole') {
+        this.wholeNote()
+      } else {
+        this.tagNote(toDB)
+      }
     }
   },
   computed: {
     ...mapGetters(['accessToken', 'userId', 'userName'])
   },
+  methods: {
+    wholeNote () {
+      const isWriteParams = ['true', 'false']
+  
+      isWriteParams.forEach(oneParam => {
+        const params = {
+            // pageable: 0,
+            isWrite: oneParam,
+            // sort: onUpdated, 'desc'
+          } 
+        axios({
+          url: drf.api + 'wrongAnswer/' + 'all',
+          method: 'get',
+          headers: {
+            Authorization: this.accessToken,
+          },
+          params: params,
+        })
+        .then(res => {
+          // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+          // console.log(res.data.content)
+          if (oneParam === 'false'){
+            this.beforeProbs = res.data.content
+            console.log('before=', this.beforeProbs)
+          } else {
+            this.afterProbs = res.data.content
+            console.log('after=',this.afterProbs)
+          }
+          // console.log('in'); //ok
+        })
+        .catch(err => {
+          // console.log(this.accessToken)
+          // console.log(this.userId)
+          console.log(err);
+        })
+      })
+    },
+    tagNote(toDB) {
+    // console.log('toDB= ', toDB);
+    const isWriteParams = ['true', 'false']
+    isWriteParams.forEach(oneParam => {
+      const params = {
+        page: this.page,
+        size: 3,
+        tag: toDB,
+        isWrite: oneParam
+      }
+      axios({
+        url: drf.api + 'wrongAnswer/' + 'tag',
+        method: 'get',
+        headers: {
+          Authorization: this.accessToken,
+        },
+        params: params,
+      })
+      .then(res => {
+        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+        // console.log(res.data)
+        if (oneParam === 'false'){
+          this.beforeProbs = res.data.content
+          // console.log('tagbefore');
+          // console.log('tagbefore=', this.beforeProbs)
+        } else {
+          this.afterProbs = res.data.content
+          // console.log('tagafter');
+          // console.log('tagafter=',this.afterProbs)
+        }
+        // console.log('in'); //ok
+       })
+      .catch(err => {
+        // console.log(this.accessToken)
+        // console.log(this.userId)
+        console.log(err);
+      })
+    })
+    },
+  },
   created() {
+    this.wholeNote()
   },
 }
 </script>

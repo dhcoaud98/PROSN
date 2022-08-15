@@ -5,8 +5,8 @@
   <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
     <!-- 작성 전 문제 0808 임지민 -->
     <!-- beforeProb에 문제 아이디가 조회가 가능하면 이를 이용해 문제에 접근해서 태그, 제목, 문제 수 등을 출력해오자 -->
-    
-    <div v-for="beforeProb in beforeProbs" :key="beforeProb.id">
+    <!-- <p>{{beforeProbs}}</p> -->
+    <div v-for="beforeProb in beforeProbs" :key="beforeProb.id" class="mb-2">
       <!-- 오답노트 상세보기 페이지로 이동  -->
       <!-- <p>{{beforeProb}}</p> -->
       <!-- <p>hi</p> -->

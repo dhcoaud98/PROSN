@@ -2,7 +2,7 @@
   <!-- 전체적인 틀 -->
   <v-container fluid class="white">
     <!-- 문제 정보 -->
-    <p>{{noteDetail}}</p>
+    <!-- <p>{{noteDetail}}</p> -->
     <v-row class="align-center mx-5 mt-5 color-FAF0F3 border-a-10 px-4">
       <v-col cols="1"><v-icon large color="black darken-2">mdi-group</v-icon></v-col>
         <v-col>
