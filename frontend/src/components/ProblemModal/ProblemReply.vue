@@ -115,7 +115,7 @@ export default {
     }
   },
   created() {
-    console.log(this.commentList);
+    // console.log(this.commentList);
     if (this.commentList) {
       this.commentLength = this.commentList.length
     } 

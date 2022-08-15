@@ -12,6 +12,9 @@ const POSTFEED = 'post/';
 const WRONGANSWER = 'wrongAnswer/';
 // 문제 풀이 현황 관련
 const SOLVING = 'solving/';
+// 스크랩 관련
+const SCRAP = 'scrap/'
+
 
 export default {
 	accounts: {
@@ -40,5 +43,10 @@ export default {
 	solving: {
 		solving: () => HOST + SOLVING,
 	},
+	scrap: {
+		scrap: () => HOST + SCRAP,
+		folder: () => HOST + SCRAP + 'folder/'
+	
+	}
 };
 
