@@ -17,6 +17,7 @@ import static com.ssafy.prosn.domain.post.QPostTag.*;
 
 /**
  * created by seongmin on 2022/07/22
+ * updated by seongmin on 2022/08/15
  */
 public class PostRepositoryImpl implements PostRepositoryCustom {
 
@@ -59,6 +60,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post,
                         post.id,
                         post.title,
+                        post.mainText,
                         post.user.id.as("writerId"),
                         post.user.name.as("writerName"),
                         post.created,

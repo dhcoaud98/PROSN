@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 /**
  * created by seongmin on 2022/07/25
- * updated by seongmin on 2022/08/12
+ * updated by seongmin on 2022/08/15
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -129,6 +129,7 @@ public class PostServiceImpl implements PostService {
             return InformationDetailResponseDto.builder()
                     .id(information.getId())
                     .user(new UserResponseDto(information.getUser().getId(), information.getUser().getName()))
+                    .title(information.getTitle())
                     .mainText(information.getMainText())
                     .comments(getComments(information))
                     .numOfDislikes(information.getNumOfDislikes())
