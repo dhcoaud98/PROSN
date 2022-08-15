@@ -25,7 +25,7 @@
       <v-row>
         <!-- v-for문 사용해서 태그 띄우기 -->
         <div class="mt-5" v-for="tag in mainProb.tags" :key="tag">
-          <v-chip small color="#926DFF" class="white--text ms-3">#{{tag}}</v-chip>
+          <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
         </div>
       </v-row>
 

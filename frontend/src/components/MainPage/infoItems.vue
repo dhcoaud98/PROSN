@@ -26,7 +26,7 @@
       <v-row>
         <!-- v-for문 사용해서 태그 띄우기 -->
         <div class="mt-5" v-for="tag in info.tags" :key="tag">
-          <v-chip small color="#926DFF" class="white--text ms-3">#{{tag}}</v-chip>
+          <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
         </div>
       </v-row>
 
@@ -42,11 +42,11 @@
           <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{info.writer.name}}</div>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
-          <v-btn @click="openModal" text large rounded height="45px" class="d-none d-md-flex">
+          <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
           <!-- 화면 사이즈 md 이하 -->
-          <v-btn @click="openModal" text large rounded height="45px" class="d-md-none mt-3" width="100%">
+          <v-btn @click="openModal" text small rounded height="45px" class="d-md-none mt-3" width="100%">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
       </v-row>

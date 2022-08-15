@@ -30,7 +30,7 @@
                 <!-- 카테고리 라벨 -->
                 <!-- {{probdetail}} -->
                 <div class="mt-5" v-for="(tag, idx) in probdetail.tags" :key="idx">
-                  <v-chip small color="#926DFF" class="white--text ms-3">#{{tag}}</v-chip>
+                  <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
                 </div>  
               </v-card-text>
 
