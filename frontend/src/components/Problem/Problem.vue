@@ -2,6 +2,7 @@
   <v-container>
     <v-row class="justify-space-between mt-5">
       <div class="d-flex mt-5">
+        <!-- <p>{{probDetail}}</p> -->
         <h2>{{ probDetail.title }}</h2>
         <div class="d-inline-block ms-3">
           <v-btn v-if="myCorrectStatus" rounded small outlined color="green">정답</v-btn>
@@ -49,17 +50,25 @@
             <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
             <v-col cols="8" class="pa-0 justify-end d-flex align-center">
               <!-- 좋아요 버튼 -->
-              <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
-                <v-icon>{{upText}}</v-icon>
-              </v-btn>
+              <v-col cols="2">
+                <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
+                  <v-icon>{{upText}}</v-icon>
+                </v-btn>
+                <span>{{probDetail.numOfLikes}}</span>
+              </v-col>
               <!-- 싫어요 버튼 -->
-              <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon" large>
-                <v-icon>{{downText}}</v-icon>
-              </v-btn>
+              <v-col cols="2">
+                <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon" large>
+                  <v-icon>{{downText}}</v-icon>
+                </v-btn>
+                <span>{{probDetail.numOfDislikes}}</span>
+              </v-col>
               <!-- 스크랩 버튼 -->
-              <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon" large>
-                <v-icon>{{scrapText}}</v-icon>
-              </v-btn>                    
+              <v-col cols="2">
+                <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon" large>
+                  <v-icon>{{scrapText}}</v-icon>
+                </v-btn>                    
+              </v-col>
               <!-- 제출 버튼 -->
               <v-btn type="submit" rounded outlined class="ms-1" large>제출</v-btn>
             </v-col>
@@ -134,6 +143,34 @@ export default {
           } else {
             this.upText = "thumb_up_off_alt"
           }
+          // 좋아요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.probDetail.id,
+              type: true
+            }
+          })
+          .then(res => {
+            console.log(res.data);
+            this.probDetail.numOfLikes = res.data.numOfLikes
+            if(res.data.numOfLikes === 1) {
+              this.upText = 'thumb_up'
+            } else {
+              this.upText = 'thumb_up_off_alt'
+            }
+
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
     },
     changeHateStatus() {
         /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
@@ -146,6 +183,29 @@ export default {
        } else {
             this.downText = "thumb_down_off_alt"
        }
+       // 싫어요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.probDetail.id,
+              type: false
+            }
+          })
+          .then(res => {
+            console.log(res.data);
+            this.probDetail.numOfDislikes = res.data.numOfDislikes
+            
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
     },
     changeScrapStatus() {
        if (this.scrapText === "bookmark_border") {
@@ -198,10 +258,9 @@ export default {
       // console.log(this.userId)
       console.log(err);
     })
-    }
   },
-  created() {
-    // console.log('problem ')
+    getProbDetail() {
+      // console.log('problem ')
     const probId = this.$route.params.pid
     // console.log('probid=', probId)
 
@@ -223,6 +282,7 @@ export default {
       } 
 
       // console.log(res.data.comments)
+      if (this.examples.length===0) {
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
       // const noteDetail = this.noteDetail
@@ -232,12 +292,16 @@ export default {
         // console.log(this.probdetail[`example${num}`])
         this.examples.push({'id': num, 'example': this.probDetail[`example${num}`]})
       })
-
+      }
     })
     .catch(err => {
       console.log(err);
     })
-    },
+  },
+  },
+  created() {
+    this.getProbDetail()
+  },
 }
 </script>
 
