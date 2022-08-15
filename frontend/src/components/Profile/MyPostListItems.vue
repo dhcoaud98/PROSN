@@ -14,6 +14,11 @@
             <v-icon color="#8094FF" class="me-2">mdi-circle</v-icon>
             <p class="mb-0">P R O B L E M</p>
           </div>
+          <div v-if="userPost.ptype === `Book`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
+            <v-icon color="#FCEC5A" class="me-2">mdi-circle</v-icon>
+            <p class="mb-0">B O O K</p>
+          </div>
+
         </v-row>
 
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
