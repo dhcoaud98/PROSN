@@ -42,13 +42,15 @@
             </v-col>
           </v-row>
           <!-- 저작권 / 버튼 -->
+
           <v-row class="d-flex justify-space-between">
             <!-- 출제자 정보 -->
             <v-col>
               <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ probDetail.writer.name }}</div>
             </v-col>
-            <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-            <v-col cols="8" class="pa-0 justify-end d-flex align-center">
+
+            <!-- 버튼: 남이 낸 문제 -->
+            <v-col v-if="currentUser != probDetail.writer.id" cols="8" class="pa-0 justify-end d-flex align-center">
               <!-- 좋아요 버튼 -->
               <v-col cols="2">
                 <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
@@ -71,6 +73,17 @@
               <!-- 제출 버튼 -->
               <v-btn type="submit" rounded outlined class="ms-1" large>제출</v-btn>
             </v-col>
+
+            <!-- 내가 낸 문제 -->
+            <v-col v-else cols="8" class="pa-0 justify-end d-flex align-center">
+              <!-- 스크랩 버튼 -->
+              <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
+                <v-icon>{{scrapText}}</v-icon>
+              </v-btn>
+              <!-- 삭제 -->
+              <v-btn type="submit" color="red" rounded outlined class="ms-1" large @click="deleteprob">삭제</v-btn>
+            </v-col>
+
           </v-row>
         </v-form>
       </v-container>
@@ -120,7 +133,7 @@ export default {
     Scrap,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods: {
     // 2022.08.04. 라우터 경로 연결
@@ -253,23 +266,23 @@ export default {
       // console.log(this.credentials)
       // axios 보내기
       axios({
-      url: drf.solving.solving(),
-      method: 'post',
-      headers: {
-        Authorization: this.accessToken,
-      },
-      data: this.credentials
-    })
-    .then(res => {
-      // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-      console.log(res)
-    })
-    .catch(err => {
-      // console.log(this.accessToken)
-      // console.log(this.userId)
-      console.log(err);
-    })
-  },
+        url: drf.solving.solving(),
+        method: 'post',
+        headers: {
+          Authorization: this.accessToken,
+        },
+        data: this.credentials
+      })
+      .then(res => {
+        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+        console.log(res)
+      })
+      .catch(err => {
+        // console.log(this.accessToken)
+        // console.log(this.userId)
+        console.log(err);
+      })
+    },
     getProbDetail() {
       // console.log('problem ')
     const probId = this.$route.params.pid
@@ -294,21 +307,45 @@ export default {
 
       // console.log(res.data.comments)
       if (this.examples.length===0) {
-      const nums  = [1,2,3,4]
-      const shuffled = nums.sort(() => Math.random() - 0.5)
-      // const noteDetail = this.noteDetail
-      // this.shuffledNum = shuffled
-      nums.forEach(num => {
-        // console.log(num);
-        // console.log(this.probdetail[`example${num}`])
-        this.examples.push({'id': num, 'example': this.probDetail[`example${num}`]})
+        const nums  = [1,2,3,4]
+        const shuffled = nums.sort(() => Math.random() - 0.5)
+        // const noteDetail = this.noteDetail
+        // this.shuffledNum = shuffled
+        nums.forEach(num => {
+          // console.log(num);
+          // console.log(this.probdetail[`example${num}`])
+          this.examples.push({'id': num, 'example': this.probDetail[`example${num}`]})
+          })
+        }
       })
+      .catch(err => {
+        console.log(err);
+      })
+    },
+
+    // 내가 낸 문제 삭제하기(0815 오채명)
+    deleteprob() {
+      const userDecision = confirm('정말로 삭제하시겠습니까?')
+      if (userDecision) {
+        axios({
+          url: drf.api + 'post' + `/${this.probDetail.id}`,
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },
+        })
+        .then(res => {
+          console.log("res.data = ",res.data)
+          // console.log("삭제 되었습니다. ", res)
+          this.$router.push('/')
+        })
+        .catch(err =>{
+          console.log("에러")
+          console.log(err)
+        })
+        // this.$router.go(); // 새로고침
       }
-    })
-    .catch(err => {
-      console.log(err);
-    })
-  },
+    },
   },
   created() {
     this.getProbDetail()
