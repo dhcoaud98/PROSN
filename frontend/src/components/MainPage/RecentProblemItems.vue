@@ -33,8 +33,8 @@
       <!-- textoverflow 지정해 놓기 0812 임지민 -->
       <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
-          {{ probdetail.mainText }}
-          <!-- {{ probdetail}} -->
+          <!-- {{ probdetail.mainTex }} -->
+          {{ probdetail}}
         </div>
       </v-row>
 
@@ -55,7 +55,7 @@
     </v-card-text>
 
     <!-- 모달 -->
-    <problem-modal @close="closeModal" v-if="modal" :mainProb="mainProb" :probdetail="probdetail"></problem-modal>
+    <problem-modal @close="closeModal" v-if="modal" :mainProb="mainProb"></problem-modal>
   </v-card>
 </template>
 

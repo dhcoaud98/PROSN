@@ -169,11 +169,12 @@ export default {
       },
       myCorrectStatus: null,
       commentList: null,
+      probdetail: []
     }
   },
   props: {
     mainProb: Object,
-    probdetail: Object,
+    // probdetail: Object,
   },
   computed: {
     ...mapGetters(['accessToken', 'currentUser'])
@@ -191,8 +192,8 @@ export default {
       },      
     })
     .then(res => {
-      // console.log(res.data)
-      // this.probdetail = res.data
+      console.log(res.data)
+      this.probdetail = res.data
       this.commentList = this.probdetail.comments.reverse()
       const nums  = [1,2,3,4]
       const shuffled = nums.sort(() => Math.random() - 0.5)
