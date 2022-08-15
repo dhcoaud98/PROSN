@@ -45,7 +45,7 @@
 
           <v-row class="d-flex justify-space-between">
             <!-- 출제자 정보 -->
-            <v-col>
+            <v-col @click=profileEvent(probDetail.writer.id)>
               <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ probDetail.writer.name }}</div>
             </v-col>
 
@@ -237,6 +237,9 @@ export default {
     closeScrapModal() {
         this.scrapModal = false
         console.log('closeModal')
+    },
+    profileEvent(uid) {
+      this.$router.push({ path: `../profile/${uid}`})
     },
     // 문제 풀기; 문제 푼 후 결과 저장(0811 임지민)
     submitProblem() {

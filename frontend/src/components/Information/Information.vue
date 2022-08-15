@@ -26,7 +26,7 @@
     <!-- 저작권 / 버튼 -->
     <v-row class="d-flex justify-space-between">
       <!-- 출제자 정보 -->
-      <v-col>
+      <v-col @click="profileEvent(infoDetail.writer.id)">
         <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ infoDetail.writer.name }}</div>
       </v-col>
 
@@ -106,7 +106,9 @@ export default {
         this.scrapModal = false
         console.log('closeModal')
     },
-
+    profileEvent(uid) {
+      this.$router.push({ path: `../profile/${uid}`})
+    },    
     // 내가 작성한 정보 삭제하기(0815 오채명)
     deleteprob() {
       const userDecision = confirm('정말로 삭제하시겠습니까?')

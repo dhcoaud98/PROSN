@@ -112,10 +112,10 @@ export default {
       console.log('closeModal')
     },
     showUpInfo () {
-      this.$router.push({ path: `problem/${this.userPost.id}` })
+      this.$router.push({ path: `information/${this.userPost.id}` })
     },
     showUpProb () {
-      this.$router.push({ path: `information/${this.userPost.id}` })
+      this.$router.push({ path: `problem/${this.userPost.id}` })
     },
   }
 }

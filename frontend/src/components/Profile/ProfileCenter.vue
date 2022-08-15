@@ -12,7 +12,7 @@
         <v-row class="d-flex justify-space-between align-end">
          <div class="d-flex">
             <div><v-chip :color="`${this.badgeColor}`" class="white--text font-weight-bold mx-3">{{badge}}</v-chip></div>
-            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 스터디</h3></div>
+            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{ userInfo.name }}</h2><h3 class="grey--text">님의 스터디</h3></div>
           </div>
           
           <!-- 팔로우 팔로워 정보 -->
@@ -24,13 +24,14 @@
         </v-row>
 
         <v-row class="ps-10">
-          <v-col cols="6" class="detail_text ma-0 pa-0">문제 풀이 {{userInfo.problemSolvingCount}} 문제</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">문제 풀이 {{ userInfo.problemSolvingCount }} 문제</v-col>
           <v-col cols="6" class="detail_text ma-0 pa-0">정답률 {{ userInfo.correctRate }}%</v-col>
           <v-col cols="6" class="detail_text ma-0 pa-0">문제/정보 작성 {{ userInfo.writePostCount }}문제</v-col>
           <v-col cols="6" class="detail_text ma-0 pa-0">포인트 {{ userInfo.point }}점</v-col>
         </v-row>
 
-        <v-row class="pa-0"> 
+        <!-- 만약 내 페이지라면 글작성 -->
+        <v-row v-if="currentUser === userInfo.id" class="pa-0"> 
           <v-col class="pa-0 px-2">
             <v-btn text rounded class="pa-0 dark--text" @click="event1()" color="#512DA8" width="100%">
               <v-icon color="#A384FF" class="me-2">quiz</v-icon><h3>PROBLEM +</h3>
@@ -42,11 +43,21 @@
             </v-btn>
           </v-col>
         </v-row>
+
+        <!-- 내 페이지 아니면 팔로우/언팔로우 버튼 -->
+        <v-row v-else class="pa-0"> 
+          <v-col class="pa-0 px-2">
+            <v-btn text rounded class="pa-0 dark--text" color="#512DA8" width="100%">
+              <h3>팔로우</h3>
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-container>
     </v-row>
 
     <!-- 2. 프로필 하단 -->
-    <v-row class="profile_tab d-flex justify-center mt-5 mx-5 mb-0">
+    <!-- 내 프로필일 때 -->
+    <v-row v-if="currentUser === userInfo.id" class="profile_tab d-flex justify-center mt-5 mx-5 mb-0">
       <v-toolbar dark height="45px">
         <v-tabs v-model="tabs" background-color="#CCA5FE" grow>
           <v-col class="px-0">
@@ -71,6 +82,22 @@
         <my-post-list></my-post-list>
       </v-container>
     </v-row>
+
+    <!-- 다른사람 프로필일 때 -->
+    <v-row v-else class="profile_tab d-flex justify-center mt-5 mx-5 mb-0">
+      <v-toolbar dark height="45px">
+        <v-tabs v-model="tabs" background-color="#CCA5FE" grow>
+          <v-col class="px-0">
+            <v-tab class="tab--text white--text pa-0" href="#three"><h3 class="font-weight-regular">{{userInfo.name}}'s Post</h3></v-tab>
+          </v-col>
+        </v-tabs>
+      </v-toolbar>
+
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '3'">
+        <my-post-list></my-post-list>
+      </v-container>
+    </v-row>
+
   </v-container>
 </template>
 
@@ -98,6 +125,7 @@ export default {
       userInfo: {},
       badge: 'S E E D',
       badgeColor: 'rgb(0, 207, 87)',
+      profileOwnerId: ''
     }
   },
   computed: {
@@ -121,15 +149,18 @@ export default {
   },
   created() {
     // 유저정보 확인
+    const profileOwnerId = location.href.slice(30)
+
     axios({
-      url: drf.api + 'user/' + 'info/' + `${this.currentUser}`,
+      url: drf.api + 'user/' + 'info/' + `${profileOwnerId}`,
       method: 'get',
       headers: {
         Authorization : this.accessToken,
       },
     })
     .then(res => {
-      console.log(res.data)
+      console.log('프로필 주인', res.data)
+      console.log('지금 프로필 보는사람', this.currentUser)
       this.userInfo = res.data
       // 뱃지 컬러랑 문구 정하기
       if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 10 ) {

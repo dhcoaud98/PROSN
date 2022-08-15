@@ -2,11 +2,11 @@
 	<div>
 		<v-row class="pa-0 ma-0" rounded>
 			<v-col cols="12" class="pa-0">
-				<info-items
+				<main-book-items
 					v-for="(MainBook, idx) in MainBooks"
 					:key="idx"
 					:MainBook="MainBook"
-				></info-items>
+				></main-book-items>
 				<v-pagination
 					v-model="nowPage"
 					:length="endPage"
@@ -22,7 +22,7 @@
 <script>
 import axios from 'axios';
 import drf from '@/api/drf';
-import infoItems from '@/components/MainPage/infoItems.vue';
+import MainBookItems from '@/components/MainPage/MainBookItems.vue';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -36,7 +36,7 @@ export default {
 		};
 	},
 	components: {
-		infoItems,
+		MainBookItems,
 	},
 	computed: {
 		...mapGetters(['accessToken'])

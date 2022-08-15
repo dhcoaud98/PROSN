@@ -46,7 +46,6 @@
           <v-col class="px-0">
             <v-tab class="tab--text white--text pa-0" href="#two"><h3 class="font-weight-regular">MY STUDY</h3></v-tab>
           </v-col>
-          <v-tabs-slider color="#A384FF"></v-tabs-slider>
         </v-tabs>
       </v-toolbar>
       

@@ -11,12 +11,7 @@
             {{ userSolving.title }}
           </div>
           <!-- 좋아요 싫어요 정보 -->
-          <div class="d-flex me-3">
-            <v-icon class="me-2">thumb_up_off_alt</v-icon>
-            <div class="me-3">30</div>
-            <v-icon class="me-2">thumb_down_off_alt</v-icon>
-            <div class="me-3">4</div>
-          </div>
+
         </v-row>
       </v-container>
     </v-card-title>

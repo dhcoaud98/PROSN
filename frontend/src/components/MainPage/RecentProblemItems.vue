@@ -40,7 +40,7 @@
 
       <v-row class="ma-4 mb-2 d-flex justify-space-between">
         <!-- 출제자 -->
-          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{ mainProb.writerName }}</div>
+          <div @click="profileEvent(mainProb.writerId)" class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{ mainProb.writerName }}</div>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
           <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
@@ -157,6 +157,10 @@ export default {
             this.modal = false
             console.log('closeModal')
         },
+        profileEvent(uid) {
+            this.$router.push({ path: `profile/${uid}`})
+        },
+
         // event () {
         //   this.$router.push({ path: 'problem' })
         // },

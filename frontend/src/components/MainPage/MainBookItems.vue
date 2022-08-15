@@ -1,60 +1,61 @@
 <template>
-  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card ma-3 ma-md-8">
+  <div></div>
+  <!-- <v-card outlined elevation="3" class="rounded-xl purple-outlined-card ma-3 ma-md-8"> -->
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
-    <v-card-title class="pa-0 bg-gradation">
-      <v-container class="pa-0">
+    <!-- <v-card-title class="pa-0 bg-gradation"> -->
+      <!-- <v-container class="pa-0"> -->
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
-        <v-row class="d-flex justify-space-between ma-3">
+        <!-- <v-row class="d-flex justify-space-between ma-3"> -->
           <!-- 제목 -->
-          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
-            {{MainBook.title}}
-          </div>
+          <!-- <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;"> -->
+            <!-- {{MainBook.title}} -->
+          <!-- </div> -->
           <!-- 좋아요 싫어요 정보 -->
-          <div class="d-flex me-3">
-            <v-icon class="me-2">thumb_up_off_alt</v-icon>
-            <div class="me-3">{{ info.numOfLikes }}</div>
-            <v-icon class="me-2">thumb_down_off_alt</v-icon>
-            <div class="me-3">{{ info.numOfDislikes }}</div>
-          </div>
-        </v-row>
-      </v-container>
-    </v-card-title>
+          <!-- <div class="d-flex me-3"> -->
+            <!-- <v-icon class="me-2">thumb_up_off_alt</v-icon> -->
+            <!-- <div class="me-3">{{ info.numOfLikes }}</div> -->
+            <!-- <v-icon class="me-2">thumb_down_off_alt</v-icon> -->
+            <!-- <div class="me-3">{{ info.numOfDislikes }}</div> -->
+          <!-- </div> -->
+        <!-- </v-row> -->
+      <!-- </v-container> -->
+    <!-- </v-card-title> -->
 
         <!-- <p>{{info}}</p> -->
     <!-- 카드 본문 -->
-    <v-card-text>
-      <v-row>
+    <!-- <v-card-text> -->
+      <!-- <v-row> -->
         <!-- v-for문 사용해서 태그 띄우기 -->
-        <div class="mt-5" v-for="tag in MainBook.tags" :key="tag">
-          <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
-        </div>
-      </v-row>
+        <!-- <div class="mt-5" v-for="tag in MainBook.tags" :key="tag"> -->
+          <!-- <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip> -->
+        <!-- </div> -->
+      <!-- </v-row> -->
 
       <!-- 내용 -->
-      <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
-        <div class="mb-4" style="font-size: 1.1em">
-          {{ mainText }}
-        </div>
-      </v-row>
+      <!-- <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium"> -->
+        <!-- <div class="mb-4" style="font-size: 1.1em"> -->
+          <!-- {{ mainText }} -->
+        <!-- </div> -->
+      <!-- </v-row> -->
 
-      <v-row class="ma-4 mb-2 d-flex justify-space-between">
+      <!-- <v-row class="ma-4 mb-2 d-flex justify-space-between"> -->
         <!-- 출제자 -->
-          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By.</div>
+          <!-- <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By.</div> -->
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
-          <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
-            <div class="show-up-btn font-weight-regular">SHOW UP</div>
-          </v-btn>
+          <!-- <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
+            <div class="show-up-btn font-weight-regular">SHOW UP</div> -->
+          <!-- </v-btn> -->
           <!-- 화면 사이즈 md 이하 -->
-          <v-btn @click="openModal" text small rounded height="45px" class="d-md-none mt-3" width="100%">
-            <div class="show-up-btn font-weight-regular">SHOW UP</div>
-          </v-btn>
-      </v-row>
-    </v-card-text>
+          <!-- <v-btn @click="openModal" text small rounded height="45px" class="d-md-none mt-3" width="100%"> -->
+            <!-- <div class="show-up-btn font-weight-regular">SHOW UP</div> -->
+          <!-- </v-btn> -->
+      <!-- </v-row> -->
+    <!-- </v-card-text> -->
 
     <!-- 모달 -->
     <!-- <info-modal @close="closeModal" v-if="modal" :infodetail="infodetail" :info="info"></info-modal> -->
-  </v-card>
+  <!-- </v-card> -->
 </template>
 
 <script>
@@ -63,8 +64,8 @@
 // import InfoModal from '@/components/InfoModal/InfoModal.vue'
 
 export default {
-    data() {
-        return {
+      data() {
+          return {
             upText: 'thumb_up_off_alt',
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
@@ -74,32 +75,30 @@ export default {
         }
     },
     props: {
-      info: Object,
     },
     components: {
-      InfoModal,
     },
-    // created() {
-    //   console.log("MainBook = ",this.MainBook.id)
-    //   this.MainBookId = this.this.MainBook.id
+    created() {
+      console.log("MainBook = ",this.MainBook.id)
+      this.MainBookId = this.this.MainBook.id
 
-    //   axios({
-    //     url: drf.api + 'post' + `/${this.infoId}`,
-    //     methods: 'get',
-    //     headers: {
-    //       Authorization : this.accessToken,
-    //     },
-    //   })
-    //   .then(res => {
-    //     console.log("res = ",res.data)
-    //     this.infodetail = res.data
-    //     // console.log("infodetail = ", this.infodetail)
-    //   })
-    //   .catch(err => {
-    //     console.log("에러")
-    //     console.log(err)
-    //   })
-    // },
+      axios({
+        url: drf.api + 'post' + `/${this.MainBookId}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+      })
+      .then(res => {
+        console.log("res = ",res.data)
+        this.MainBookdetail = res.data
+        // console.log("infodetail = ", this.infodetail)
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })
+    },
     methods: {
         changeLikeStatus() {
             /* 

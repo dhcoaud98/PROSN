@@ -166,9 +166,6 @@ export default {
       nowTime: '',
       // inputData: null,
       items: [
-        { avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', name: '채명', total: 538  },
-        { avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', name: '지민', total: 621  },
-        { avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', name: '성은', total: 524  },
       ],
       popularProbs: null,
       popularUsers: null,

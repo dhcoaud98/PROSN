@@ -67,8 +67,8 @@
                       <!-- 저작권 / 버튼 -->
                       <v-row>
                         <!-- 출제자 정보 -->
-                        <v-col cols="12" class="pa-0">
-                          <p class="font-parent-mid-l">
+                        <v-col cols="12" class="pa-0" @click=profileEvent(probdetail.writer.id)>
+                          <p class="font-parent-mid-l">                        
                           <span class="grey--text mr-2 mb-1">created by.</span>
                             {{probdetail.writer.name}} 
                           </p>
@@ -306,7 +306,9 @@ export default {
       // console.log('pid=', pid)
       this.$router.push({ path: `problem/${pid}`})
     },
-
+    profileEvent(uid) {
+      this.$router.push({ path: `profile/${uid}`})
+    },
     // 문제 풀기; 문제 푼 후 결과 저장(0811 임지민)
     submitProblem() {
       // 문제 맞는 지 틀린 지 먼저 확인하고

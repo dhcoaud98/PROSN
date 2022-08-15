@@ -56,7 +56,7 @@ const routes = [
   },
   // 회원가입, 로그인 구현 후 username 받을 수 있으면 path 뒤에 /:username 붙이기(1/3 0729임지민)
   {
-    path: '/profile',
+    path: '/profile/:uid',
     name: 'profile',
     component: ProfilePageView
   },

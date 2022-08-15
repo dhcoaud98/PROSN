@@ -46,7 +46,7 @@
                   <v-row class="d-flex justify-space-between">
                     <!-- 출제자 정보 -->
                     <v-col class="col-12 col-md-8">
-                      <div>출제자 | {{ infodetail.writer.name}}</div>              
+                      <div @click="profileEvent(infodetail.writer.id)">출제자 | {{ infodetail.writer.name}}</div>              
                       <div>출제일 | {{ info.created.slice(0,10) }}</div>
                     </v-col>
 
@@ -252,6 +252,9 @@ export default {
     event () {
       this.$router.push({ path: `information/${this.info.id}` })
     },
+    profileEvent(uid) {
+      this.$router.push({ path: `profile/${uid}`})
+    },    
     onScroll () {
         this.scrollInvoked++
       },
