@@ -19,7 +19,7 @@
               <!-- {{ problem.pk }}. {{ problem.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold">
                 <p class="font-parent-lar mb-0">{{probdetail.title}}</p> 
-                <div class="d-inline-block ms-3">
+                <div class="ms-3" id="correctStatus" v-if="showCorrectStatus">
                   <v-chip v-if="myCorrectStatus" rounded small outlined color="green" class="px-1"><v-icon color="green" small>mdi-circle</v-icon>정답</v-chip>
                   <v-chip v-else rounded small outlined color="red" class="px-1"><v-icon color="red" small>mdi-circle</v-icon>오답</v-chip>
                 </div>
@@ -98,7 +98,7 @@
                           </v-col>
 
                           <!-- 스크랩 모달 -->
-                          <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
+                          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
 
                           <!-- 제출 버튼 -->
                           <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
@@ -177,6 +177,7 @@ export default {
         right: '',
         wrongAnswer: '',
       },
+      showCorrectStatus: false,
       myCorrectStatus: null,
       commentList: null,
       probdetail: []
@@ -198,7 +199,7 @@ export default {
         bookmark border --> bookmark
         */
         /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
-
+        // console.log(document.querySelector('#correctStatus'));
         if (this.upText === "thumb_up_off_alt") {
           // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
           if (this.downText === "thumb_down") {
@@ -311,17 +312,18 @@ export default {
     submitProblem() {
       // 문제 맞는 지 틀린 지 먼저 확인하고
       // 이게 null이면 답을 선택하라는 alert 창 띄우기
+      // const correctStatus = document.querySelector('#correctStatus')
       const selectedAnswer = document.querySelector('input[name="bogey"]:checked').id
       // console.log(selectedAnswer)
       this.credentials.wrongAnswer = selectedAnswer
       if (selectedAnswer === "1") {
         this.credentials.right = true
-        this.myCorrectStatus = true
-        // alert('정답입니다.')
         this.$swal({
           icon: 'success',
           text: '정답입니다'
         })
+        this.myCorrectStatus = true
+        // alert('정답입니다.')
       } else {
         this.credentials.right = false
         // alert('오답입니다.')
@@ -330,9 +332,10 @@ export default {
           text: '오답입니다'
         })
         this.myCorrectStatus = false
+
         // this.$router
       }
-      // console.log(this.credentials)
+      this.showCorrectStatus = true
 
       // axios 보내기
       axios({
@@ -423,6 +426,7 @@ export default {
   },
   created() {
     this.getProbDetail()
+    
   },
 
   

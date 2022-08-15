@@ -69,7 +69,7 @@
               <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
                 <v-icon>{{scrapText}}</v-icon>
               </v-btn>
-              <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>                    
+              <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probDetail.id"></scrap>                    
               <!-- 제출 버튼 -->
               <v-btn type="submit" rounded outlined class="ms-1" large>제출</v-btn>
             </v-col>

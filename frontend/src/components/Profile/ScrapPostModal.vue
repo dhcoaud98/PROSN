@@ -4,13 +4,14 @@
     <v-container class="modal modal-overlay" @click.self="$emit('close')">
       <v-container class="modal-window pa-0">
         <v-card class="rounded-lg modal-content pa-4">
-
+          <p>{{scrapDetails}}</p>
+          <p>{{ scrapFolder}}</p>
           <!-- 카드 타이틀 -->
           <v-card-title>
             <v-container class="pa-0">
               <!-- 각 개별 리스트의 이름 -->
               <v-row class="d-flex justify-space-between">
-                <h2>리스트의 이름</h2>
+                <h2>{{ scrapFolder.title }} </h2>
                 <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
               </v-row>
 
@@ -19,7 +20,8 @@
                 <v-col class="pa-0 d-flex justify-space-between">
                   <div>
                     <v-btn rounded color="pink lighten-3" class="font-weight-bold white--text">선택항목 삭제</v-btn>
-                    <v-btn rounded color="red lighten-1" class="font-weight-bold white--text ms-3">폴더 삭제</v-btn>
+                    <v-btn rounded color="red lighten-1" class="font-weight-bold white--text ms-3"
+                    @click="deleteFolder(scrapFolder.id)">폴더 삭제</v-btn>
                   </div>
                   <div>
                     <v-btn rounded class="font-weight-bold">문제집 만들기</v-btn>
@@ -33,7 +35,8 @@
 
           <v-card-text class="py-0">
             <v-container class="pa-0">
-              <scrap-modal-list></scrap-modal-list>
+                <!-- {{ scrapDetails }} -->
+              <scrap-modal-list :scrapDetails="scrapDetails.content"></scrap-modal-list>
             </v-container>
           </v-card-text>
 
@@ -54,12 +57,47 @@
 
 <script>
 import ScrapModalList from '@/components/Profile/ScrapModalList.vue'
-
+import drf from '@/api/drf'
+import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ScrapPostModal',
   components: {
     ScrapModalList,
+  },
+  data(){
+    return {
+      scrapDetails: [],
+    }
+  },
+  props: {
+    lid: Number,
+    scrapFolder: Object,
+  },
+  computed: {
+    ...mapGetters(['accessToken'])
+  },
+  created() {
+    // 해당 폴더에 있는 문제 조회 0815 임지민
+    axios({
+      url: drf.scrap.scrap() + `${this.lid}`,
+      method: 'get',
+      headers: {
+        Authorization: this.accessToken,
+      },
+    })
+    .then(res => {
+      // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+      console.log(res)
+      this.scrapDetails = res.data
+
+    })
+    .catch(err => {
+      // console.log(this.accessToken)
+      // console.log(this.userId)
+      console.log(err);
+    })
   }
 }
 </script>
