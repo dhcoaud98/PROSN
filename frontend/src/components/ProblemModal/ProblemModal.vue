@@ -77,17 +77,25 @@
                         <!-- 내가 낸 문제가 아닐 경우 -->
                         <v-col v-if="currentUser != probdetail.writer.id" cols="12" class="pa-0 justify-end d-flex align-center">
                           <!-- 좋아요 버튼 -->
-                          <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
-                            <v-icon>{{upText}}</v-icon>
-                          </v-btn>
+                          <v-col cols="2" class="pa-0">
+                            <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
+                              <v-icon>{{upText}}</v-icon>
+                            </v-btn>
+                            <span>{{probdetail.numOfLikes}}</span>
+                          </v-col>
                           <!-- 싫어요 버튼 -->
-                          <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
-                            <v-icon>{{downText}}</v-icon>
-                          </v-btn>
+                          <v-col cols="2" class="pa-0">
+                            <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
+                              <v-icon>{{downText}}</v-icon>
+                            </v-btn>
+                            <span>{{probdetail.numOfDislikes}}</span>
+                          </v-col>
                           <!-- 스크랩 버튼 -->
-                          <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
-                            <v-icon>{{scrapText}}</v-icon>
-                          </v-btn>   
+                          <v-col cols="2">
+                            <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
+                              <v-icon>{{scrapText}}</v-icon>
+                            </v-btn>   
+                          </v-col>
 
                           <!-- 스크랩 모달 -->
                           <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
@@ -181,41 +189,6 @@ export default {
   computed: {
     ...mapGetters(['accessToken', 'currentUser'])
   },
-  created() {
-    console.log("problem id를 확인해볼까 = ", this.mainProb.id)
-    this.probId = this.mainProb.id
-    this.credentials.pid = this.mainProb.id
-
-    axios({
-      url: drf.api + 'post' + `/${this.probId}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },      
-    })
-    .then(res => {
-      // console.log(res.data)
-      this.probdetail = res.data
-      if (res.data.comments){
-        this.commentList = res.data.comments.reverse()
-      }
-      const nums  = [1,2,3,4]
-      const shuffled = nums.sort(() => Math.random() - 0.5)
-      // const noteDetail = this.noteDetail
-      // this.shuffledNum = shuffled
-      nums.forEach(num => {
-        // console.log(num);
-        // console.log(this.probdetail[`example${num}`])
-        this.examples.push({'id': num, 'example': this.probdetail[`example${num}`]})
-      })
-    })
-    .catch(err => {
-      console.log("에러")
-      console.log(err)
-    })
-  
-  },
-
   methods: {
     changeLikeStatus() {
         /* 
@@ -236,6 +209,31 @@ export default {
           } else {
             this.upText = "thumb_up_off_alt"
           }
+
+        // 좋아요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.probdetail.id,
+              type: true
+            }
+          })
+          .then(res => {
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            this.probdetail.numOfLikes = res.data.numOfLikes
+
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
     },
     changeHateStatus() {
         /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
@@ -248,6 +246,30 @@ export default {
        } else {
             this.downText = "thumb_down_off_alt"
        }
+       // 싫어요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.probdetail.id,
+              type: false
+            }
+          })
+          .then(res => {
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            this.probdetail.numOfDislikes = res.data.numOfDislikes
+
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
     },
     changeScrapStatus() {
        if (this.scrapText === "bookmark_border") {
@@ -362,8 +384,47 @@ export default {
     //     url: drf.api + 'post'
     //   })
     // }
+    getProbDetail() {
+      // console.log("problem id를 확인해볼까 = ", this.mainProb.id)
+      this.probId = this.mainProb.id
+      this.credentials.pid = this.mainProb.id
     
-  }
+      axios({
+        url: drf.api + 'post' + `/${this.probId}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },      
+      })
+      .then(res => {
+        // console.log(res.data)
+        this.probdetail = res.data
+        if (res.data.comments){
+          this.commentList = res.data.comments.reverse()
+        }
+        console.log(this.examples.length);
+        if (this.examples.length===0){
+          const nums  = [1,2,3,4]
+          const shuffled = nums.sort(() => Math.random() - 0.5)
+          // const noteDetail = this.noteDetail
+          // this.shuffledNum = shuffled
+          nums.forEach(num => {
+            // console.log(num);
+            // console.log(this.probdetail[`example${num}`])
+            this.examples.push({'id': num, 'example': this.probdetail[`example${num}`]})
+          })
+        }
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })
+    }
+  },
+  created() {
+    this.getProbDetail()
+  },
+
   
 }
 </script>

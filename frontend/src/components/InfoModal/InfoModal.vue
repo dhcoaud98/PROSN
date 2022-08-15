@@ -53,13 +53,20 @@
                     <!-- 남이 작성한 정보일 경우 -->
                     <v-col v-if="currentUser != infodetail.writer.id" class="pa-0 justify-end d-flex align-center">
                       <!-- 좋아요 버튼 -->
-                      <v-btn class="ms-2" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
-                        <v-icon>{{upText}}</v-icon>
-                      </v-btn>
+                      <v-col cols="3">
+                        <v-btn class="ms-2" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
+                          <v-icon>{{upText}}</v-icon>
+                        </v-btn>
+                        <span>{{infodetail.numOfLikes}}</span>
+                      </v-col>
                       <!-- 싫어요 버튼 -->
-                      <v-btn class="ms-2" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
-                        <v-icon>{{downText}}</v-icon>
-                      </v-btn>
+                      <v-col cols="3">
+                        <v-btn class="ms-2" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
+                          <v-icon>{{downText}}</v-icon>
+                        </v-btn>
+                        <span>{{infodetail.numOfDislikes}}</span>
+                      </v-col>
+
                       <!-- 스크랩 버튼 -->
                       <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
                         <v-icon>{{scrapText}}</v-icon>
@@ -148,16 +155,41 @@ export default {
         */
         /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
 
-        if (this.upText === "thumb_up_off_alt") {
-          // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
-          if (this.downText === "thumb_down") {
-              // console.log(this.downText)
-              this.downText = "thumb_down_off_alt"
-          }
-          this.upText = "thumb_up"
-          } else {
-            this.upText = "thumb_up_off_alt"
-          }
+      if (this.upText === "thumb_up_off_alt") {
+        // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
+        if (this.downText === "thumb_down") {
+            // console.log(this.downText)
+            this.downText = "thumb_down_off_alt"
+        }
+        this.upText = "thumb_up"
+        } else {
+          this.upText = "thumb_up_off_alt"
+        }
+      // 좋아요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.infodetail.id,
+              type: true
+            }
+          })
+          .then(res => {
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            // this.$router.go()
+            this.infodetail.numOfLikes = res.data.numOfLikes
+            // console.log(this.infodetail.numOfLikes);
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
     },
     changeHateStatus() {
         /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
@@ -170,6 +202,29 @@ export default {
        } else {
             this.downText = "thumb_down_off_alt"
        }
+      // 싫어요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.infodetail.id,
+              type: false
+            }
+          })
+          .then(res => {
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            this.infodetail.numOfDislikes = res.data.numOfDislikes
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
     },
     changeScrapStatus() {
        if (this.scrapText === "bookmark_border") {
@@ -235,21 +290,13 @@ export default {
         this.scrapModal = false
         console.log('closeModal')
     },
-  },
-  computed: {
-    ...mapGetters(['accessToken','currentUser']),
-  },
-  created() {
-    // console.log("problem id를 확인해볼까 = ", this.mainProb.id)
-    // this.probId = this.info.id
-    // this.credentials.pid = this.mainProb.id
-
-    axios({
-      url: drf.api + 'post' + `/${this.infodetail.id}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },      
+    getInfoDetail() {
+      axios({
+        url: drf.api + 'post' + `/${this.infodetail.id}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },      
     })
     .then(res => {
       console.log(res.data)
@@ -264,6 +311,17 @@ export default {
       console.log(err)
     })
   
+    }
+  },
+  computed: {
+    ...mapGetters(['accessToken','currentUser']),
+  },
+  created() {
+    // console.log("problem id를 확인해볼까 = ", this.mainProb.id)
+    // this.probId = this.info.id
+    // this.credentials.pid = this.mainProb.id
+    this.getInfoDetail()
+   
   },
 }
 </script>

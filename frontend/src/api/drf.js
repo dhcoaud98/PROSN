@@ -32,6 +32,7 @@ export default {
 	postFeed: {
 		problem: () => HOST + POSTFEED + 'problem/',
 		information: () => HOST + POSTFEED + 'information/',
+		likeordis: () => HOST + POSTFEED +'click/'
 	},
 	wrongAnswer: {
 		wrongAnswer: () => HOST + WRONGANSWER,

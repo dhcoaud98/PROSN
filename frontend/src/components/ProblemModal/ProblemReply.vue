@@ -98,7 +98,7 @@ export default {
           })
           .then(res => { 
             console.log('댓글 가져오기')
-            this.commentList = res.data.comments
+            this.commentList = res.data.comments.reverse()
             this.commentLength = this.commentList.length
             // console.log(this.commentList)
 
