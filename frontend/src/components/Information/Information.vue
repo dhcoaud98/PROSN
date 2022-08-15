@@ -43,7 +43,7 @@
         <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
           <v-icon>{{scrapText}}</v-icon>
         </v-btn>    
-        <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>                    
+        <scrap @close="closeScrapModal" v-if="scrapModal" :pid="infoDetail.id"></scrap>                    
       </v-col>   
     </v-row>             
 

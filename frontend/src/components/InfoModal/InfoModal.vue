@@ -73,7 +73,7 @@
                       </v-btn>                
                       
                       <!-- 스크랩 모달 -->
-                      <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
+                      <scrap @close="closeScrapModal" v-if="scrapModal" :pid="infodetail.id"></scrap>
                     </v-col>
 
                     <!-- 내가 작성한 정보일 경우 -->

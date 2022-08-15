@@ -98,7 +98,7 @@
                           </v-col>
 
                           <!-- 스크랩 모달 -->
-                          <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
+                          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
 
                           <!-- 제출 버튼 -->
                           <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
