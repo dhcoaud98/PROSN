@@ -174,16 +174,12 @@ export default {
   props: {
     mainProb: Object,
     probdetail: Object,
-    myPost: Object,
   },
   computed: {
     ...mapGetters(['accessToken', 'currentUser'])
   },
   created() {
-    if (myPost){
-      this.probdetail = myPost
-    }
-    console.log("problem = ", this.mainProb.id)
+    console.log("problem id를 확인해볼까 = ", this.mainProb.id)
     this.probId = this.mainProb.id
     this.credentials.pid = this.mainProb.id
 

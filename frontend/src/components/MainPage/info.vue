@@ -7,13 +7,13 @@
 					:key="idx"
 					:info="info"
 				></info-items>
-				<!-- <v-pagination
+				<v-pagination
 					v-model="nowPage"
 					:length="endPage"
 					color="#A384FF"
 					circle
 					@input="handlePage()"
-				></v-pagination> -->
+				></v-pagination>
 			</v-col>
 		</v-row>
 	</div>
@@ -65,6 +65,7 @@ export default {
 			.then((res) => {
 				this.infos = res.data.content;
 				console.log('infos = ', this.infos);
+				// console.log(res.data.totalPages)
 				this.endPage = res.data.totalPages;
 			})
 			.catch((err) => {
