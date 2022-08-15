@@ -18,8 +18,8 @@
           <!-- 팔로우 팔로워 정보 -->
           <!-- 베스트는 이거 누르면 명단 볼수있는건데 이거는 최후순위 -->
           <div class="d-flex">
-            <h4 class="grey--text text--darken-2 me-3">팔로워 0명</h4>
-            <h4 class="grey--text text--darken-2">팔로잉 0명</h4>
+            <h4 class="grey--text text--darken-2 me-3">팔로워 {{ userInfo.followerCount }}명</h4>
+            <h4 class="grey--text text--darken-2">팔로잉 {{ userInfo.followingCount }}명</h4>
           </div>
         </v-row>
 
@@ -47,8 +47,9 @@
         <!-- 내 페이지 아니면 팔로우/언팔로우 버튼 -->
         <v-row v-else class="pa-0"> 
           <v-col class="pa-0 px-2">
-            <v-btn text rounded class="pa-0 dark--text" color="#512DA8" width="100%">
-              <h3>팔로우</h3>
+            <v-btn @click="followEvent" text rounded class="pa-0 dark--text" color="#512DA8" width="100%">            
+              <h3 v-if="isFollow">팔로우 취소</h3>
+              <h3 v-else>팔로우</h3>
             </v-btn>
           </v-col>
         </v-row>
@@ -125,7 +126,8 @@ export default {
       userInfo: {},
       badge: 'S E E D',
       badgeColor: 'rgb(0, 207, 87)',
-      profileOwnerId: ''
+      profileOwnerId: '',
+      isFollow: false,
     }
   },
   computed: {
@@ -145,6 +147,25 @@ export default {
     },
     event2 () {
       this.$router.push({ path: 'createinfo' })
+    },
+    followEvent () {
+      axios({
+        url: drf.api + 'user/' + 'following/' + `${this.userInfo.id}`,
+        method: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        }
+      })
+      .then(res => {
+        console.log('성공')
+        console.log(res.data)
+        // console.log("totalPages =",res.data.totalPages)
+        // console.log("totalElements =", res.data.totalElements)
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })    
     }
   },
   created() {
@@ -182,6 +203,27 @@ export default {
         this.badge = "P R O S N"
         this.badgeColor = "rgb(142,68,173)"
       } 
+    })
+
+    axios({
+      url: drf.api + 'user/following',
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      const myFollowingList = res.data.content
+      console.log(this.userInfo.id)
+      myFollowingList.forEach((element) => {
+        // console.log('element', element)
+        // console.log('id', this.userInfo.id)
+        if (element.id == this.userInfo.id) {
+        this.isFollow = true
+      }})
+    })
+    .catch(err => {
+      console.log(err)
     })
   }
 }
