@@ -2,9 +2,9 @@
   <v-container class="mt-5">
     <!-- v-for 사용하기 -->
     <my-post-list-items 
-      v-for="(myPost, idx) in myPosts"
+      v-for="(userPost, idx) in userPosts"
       :key="idx"
-      :myPost="myPost"
+      :userPost="userPost"
     ></my-post-list-items>
     <br>  
     <v-pagination
@@ -30,14 +30,9 @@ export default {
   },
   data() {
     return {
-      // infos: [],
-      // probs: [],
-      myPosts: [],
-      userPost: [],
+      userPosts: [],
       nowPage: 1,
       clickPage: null,
-      endPage1: 0,
-      endPage2: 0,
       endPage: 2,
       value: null,
       page: 0,
@@ -62,81 +57,34 @@ export default {
       params: params
     })
     .then(res => {
-      console.log(res.data)
+      console.log("userPost =",res.data.content)
+      this.userPosts = res.data.content
+      this.endPage = res.data.totalPages
     })
-    axios({
-      url: drf.api + 'user/' + 'info/' + `${this.currentUser}`,
-      method: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-      params: params
-    })
-    .then(res => {
-      console.log(res.data)
-    })
-    // 0815 오채명 : 내가 쓴 모든 게시글 가져오기
-    // const params ={
-    //   page: 0,
-    //   size: 2,
-    //   sort: 'updated,DESC',
-    // }
-    // axios({
-    //   url: drf.api + 'post' + '/information',
-    //   method: 'get',
-    //   headers: {
-    //     Authorization : this.accessToken,
-    //   },
-    //   // params: params
-    // })
-    // .then(res => {
-    //   // 내가 작성한 글이면
-    //   res.data.content.forEach(element => {
-    //     if (element.writer.id === this.currentUser) {
-    //       this.myPosts.push(element)
-    //       // this.endPage1 = res.data.elementPages // 정보에 대한 값 
-    //     }
-    //   })
-
-    // })
-    // .catch(err => {
-    //   console.log("에러")
-    //   console.log(err)
-    // })
-
-    // // 0815 오채명 내가 작성한 문제 가져오기
-    // axios({
-    //   url: drf.api + 'post' + '/problem',
-    //   method: 'get',
-    //   headers: {
-    //     Authorization : this.accessToken,
-    //   },
-    //   // params: params
-    // })
-    // .then(res => {
-    //   // 내가 작성한 문제이면
-    //   res.data.content.forEach(element => {
-    //     // console.log(element)
-    //     if(element.writerId === this.currentUser) {
-    //       this.myPosts.push(element)
-    //       // this.endPage2 = res.data.elementPages // 문제에 대한 값
-    //     }
-    //   })
-    //   console.log("myPosts = ", this.myPosts)
-    // })
-    // .catch(err => {
-    //   console.log("에러")
-    //   console.log(err)
-    // })
+  },
+  methods: {
+		handlePage() {
+			console.log('event = ', Number(event.target.ariaLabel.slice(-1)));
+			this.page = Number(event.target.ariaLabel.slice(-1));
     
-    // 섞어야 함
-    // console.log("myPost = ", myPost)
-    // if ((this.myPost)%4 > 0) {
-    //   this.endPage = parseInt(this.endPage1 + this.endPage2) + 1
-    // } else {
-    //   this.endPage = (this.endPage1 + this.endPage2)/4
-    // }
-    // console.log("myPost =")
+      const params ={
+        page: this.page - 1,
+        size: 4,
+        sort: 'updated,DESC',
+      }
+      axios({
+        url: drf.api + 'user/' + 'post/' + `${this.currentUser}`,
+        method: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+        params: params
+      })
+      .then(res => {
+        console.log("userPost =",res.data.content)
+        this.userPosts = res.data.content
+      })
+    }
   }
 
 }

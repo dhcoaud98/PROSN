@@ -11,7 +11,7 @@
       <v-container class="pa-0 mx-0">
         <v-row class="d-flex justify-space-between align-end">
          <div class="d-flex">
-            <div><v-chip color="orange lighten-2" class="white--text font-weight-bold mx-3">P R O S N</v-chip></div>
+            <div><v-chip :color="`${this.badgeColor}`" class="white--text font-weight-bold mx-3">{{badge}}</v-chip></div>
             <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 스터디</h3></div>
           </div>
           
@@ -91,20 +91,13 @@ export default {
   },
   data () {
     return {
-      ranking : [
-        {rank_name: 'Prosn', rank_color: 'rgb(142,68,173)', rank_solve_problem: 1000},
-        {rank_name: 'Master', rank_color: 'rgb(231,76,60)', rank_solve_problem: 500},
-        {rank_name: 'Gold', rank_color: 'rgb(255, 215, 0)', rank_solve_problem: 200},
-        {rank_name: 'Silver', rank_color: 'rgb(192, 192, 192)', rank_solve_problem: 100},
-        {rank_name: 'Bronze', rank_color: 'rgb(176, 141, 87)', rank_solve_problem: 50},
-        {rank_name: 'Green', rank_color: 'rgb(0, 128, 0)', rank_solve_problem: 10},
-        {rank_name: 'Seed', rank_color: 'rgb(0, 207, 87)', rank_solve_problem: 0},
-      ],
       fab: false,
       hidden: false,
       tabs: null,
       pass: '',
       userInfo: {},
+      badge: 'S E E D',
+      badgeColor: 'rgb(0, 207, 87)',
     }
   },
   computed: {
@@ -138,6 +131,26 @@ export default {
     .then(res => {
       console.log(res.data)
       this.userInfo = res.data
+      // 뱃지 컬러랑 문구 정하기
+      if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 10 ) {
+        this.badge = "G R E E N"
+        this.badgeColor = "rgb(0, 128, 0)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 50) {
+        this.badge = "B R O N Z E"
+        this.badgeColor = "rgb(176, 141, 87)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 100) {
+        this.badge = "S I L V E R"
+        this.badgeColor = "rgb(192, 192, 192)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 200) {
+        this.badge = "G O L D"
+        this.badgeColor = "rgb(255, 215, 0)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 500) {
+        this.badge = "M A S T E R"
+        this.badgeColor = "rgb(231,76,60)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 1000) {
+        this.badge = "P R O S N"
+        this.badgeColor = "rgb(142,68,173)"
+      } 
     })
   }
 }

@@ -6,11 +6,11 @@
 
         <!-- dType에 따라 바뀌는 뱃지 -->
         <v-row class="mt-3 ms-5">
-          <div v-if="probdetail.ptype === `Information`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
+          <div v-if="userPost.ptype === `Information`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
             <v-icon color="#F355F6" class="me-2">mdi-circle</v-icon>
             <p class="mb-0">I N F O</p>
           </div>
-          <div v-if="probdetail.ptype === `Problem`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
+          <div v-if="userPost.ptype === `Problem`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
             <v-icon color="#8094FF" class="me-2">mdi-circle</v-icon>
             <p class="mb-0">P R O B L E M</p>
           </div>
@@ -22,7 +22,7 @@
         <v-row class="d-flex justify-space-between my-1">
           <!-- 제목 -->
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1em; color: #585757;">
-           {{ probdetail.title }}
+           {{ userPost.title }}
           </div>
           <!-- 좋아요 싫어요 정보 -->
           <div class="d-flex me-3">
@@ -41,20 +41,20 @@
     <v-card-text>
       <v-row>
         <!-- v-for문 사용해서 태그 띄우기 -->
-        <div class="mt-5" v-for="tag in myPost.tags" :key="tag">
+        <div class="mt-5" v-for="tag in userPost.tags" :key="tag">
           <v-chip small color="#926DFF" class="white--text ms-3">{{ tag }}</v-chip>
         </div>
       </v-row>
 
       <v-row class="mx-4 d-flex justify-space-between">
         <!-- 문제 또는 정보 버튼 -->
-        <v-btn v-if="probdetail.ptype === `Information`" @click="openModal" large rounded height="45px" class="mt-3" width="100%" elevation="0">
+        <v-btn v-if="userPost.ptype === `Information`" @click="openModal" large rounded height="45px" class="mt-3" width="100%" elevation="0">
           <div class="show-up-btn font-weight-regular">SHOW UP</div>
-          <problem-modal @close="closeModal" v-if="modal" :myPost="myPost"></problem-modal>
+          <problem-modal @close="closeModal" v-if="modal" :userPost="userPost"></problem-modal>
         </v-btn>
-        <v-btn v-if="probdetail.ptype === `Problem`" @click="openModal" large rounded height="45px" class="mt-3" width="100%" elevation="0">
+        <v-btn v-if="userPost.ptype === `Problem`" @click="openModal" large rounded height="45px" class="mt-3" width="100%" elevation="0">
           <div class="show-up-btn font-weight-regular">SHOW UP</div>
-          <info-modal @close="closeModal" v-if="modal" :myPost="myPost"></info-modal>
+          <info-modal @close="closeModal" v-if="modal" :userPost="userPost"></info-modal>
         </v-btn>
       </v-row>
     </v-card-text>
@@ -99,7 +99,7 @@ export default {
     InfoModal,
   },
   props: {
-    myPost: Object,
+    userPost: Object,
   },
   methods: {
     openModal() {
