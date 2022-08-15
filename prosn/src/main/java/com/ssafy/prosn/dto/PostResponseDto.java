@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/08/07
- * updated by seongmin on 2022/08/09
+ * updated by seongmin on 2022/08/15
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +34,7 @@ public class PostResponseDto {
                     post.getPtype(),
                     new UserResponseDto(post.getUser().getId(), post.getUser().getName()),
                     post.getTitle(),
+                    post.getMainText(),
                     post.getViews(),
                     post.getNumOfLikes(),
                     post.getNumOfDislikes(),
@@ -51,6 +52,8 @@ public class PostResponseDto {
         private PostType ptype;
         private UserResponseDto writer;
         private String title;
+
+        private String mainText;
         private Integer views;
         private Long numOfLikes;
         private Long numOfDislikes;
@@ -58,11 +61,12 @@ public class PostResponseDto {
         private LocalDateTime created;
         private LocalDateTime updated;
 
-        public Content(Long id, PostType ptype, UserResponseDto writer, String title, Integer views, Long numOfLikes, Long numOfDislikes, List<String> tags, LocalDateTime created, LocalDateTime updated) {
+        public Content(Long id, PostType ptype, UserResponseDto writer, String title, String mainText, Integer views, Long numOfLikes, Long numOfDislikes, List<String> tags, LocalDateTime created, LocalDateTime updated) {
             this.id = id;
             this.ptype = ptype;
             this.writer = writer;
             this.title = title;
+            this.mainText = mainText;
             this.views = views;
             this.numOfLikes = numOfLikes;
             this.numOfDislikes = numOfDislikes;
@@ -77,6 +81,14 @@ public class PostResponseDto {
 
         public void setId(Long id) {
             this.id = id;
+        }
+
+        public String getMainText() {
+            return mainText;
+        }
+
+        public void setMainText(String mainText) {
+            this.mainText = mainText;
         }
 
         public PostType getPtype() {
