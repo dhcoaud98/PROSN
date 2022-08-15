@@ -2,7 +2,7 @@
   <!-- 모달을 위한 요소들 -->
   <v-container class="scrap-modal" appear>
     <v-container class="scrap-modal scrap-modal-overlay" @click.self="$emit('close')">
-      <v-container class="scrap-modal-window pa-0 mx-0">
+      <v-container class="scrap-modal-window pa-0 mx-0 d-flex justify-center">
 
         <!-- 2022.07.27 스크랩 (남성은) -->
         <v-card width="400" class="rounded-lg scrap-modal-content pa-0">

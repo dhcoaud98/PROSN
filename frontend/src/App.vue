@@ -24,7 +24,7 @@
               <router-link to="/login"><v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text>login</v-btn></router-link>
             </li>
             <li style="list-style: none;" v-if="isLoggedIn">
-              <v-btn class="pa-0" rounded-sm color="#a384ff" width="100%" text @click="logout">logout</v-btn>
+              <v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text @click="logout">logout</v-btn>
             </li>
           </v-col>
         </div>

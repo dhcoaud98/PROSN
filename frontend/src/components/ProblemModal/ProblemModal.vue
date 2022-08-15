@@ -6,8 +6,8 @@
       <v-container class="modal-window pa-0">
         <v-container class="rounded-lg modal-content pa-0">
           <v-row class="d-flex justify-center px-3 problem-modal-white">
-            <!-- 문제부분 (항상 떠있음) -->
-            <v-col width="600" class="pa-0">
+            <!-- 문제부분 (처음에 떠있음) -->
+            <v-col id="modal-content-window" class="pa-0">
               <!-- <slot name="btns">
               </slot>               -->
               <v-card-text class="d-flex justify-space-between align-center px-0">
@@ -20,20 +20,18 @@
               <v-card-title class="font-weight-bold">
                 <p class="font-parent-lar mb-0">{{probdetail.title}}</p> 
                 <div class="d-inline-block ms-3">
-                  <v-btn v-if="myCorrectStatus" rounded small outlined color="green">정답</v-btn>
-                  <v-btn v-else rounded small outlined color="red">오답</v-btn>
+                  <v-chip v-if="myCorrectStatus" rounded small outlined color="green" class="px-1"><v-icon color="green" small>mdi-circle</v-icon>정답</v-chip>
+                  <v-chip v-else rounded small outlined color="red" class="px-1"><v-icon color="red" small>mdi-circle</v-icon>오답</v-chip>
                 </div>
               </v-card-title>
 
               <!-- 문제 본문 -->
-              <v-card-text>
+              <v-card-text class="d-flex">
                 <!-- 카테고리 라벨 -->
                 <!-- {{probdetail}} -->
-                <div class="d-inline-block mb-4" v-for="(tag, idx) in probdetail.tags" :key="idx">
-                  <span class="category-tag text-center pa-1">#{{ tag }}</span>
-                </div>
-                
-                <!-- for문으로 돌리면 될듯 -->
+                <div class="mt-5" v-for="(tag, idx) in probdetail.tags" :key="idx">
+                  <v-chip small color="#926DFF" class="white--text ms-3">#{{tag}}</v-chip>
+                </div>  
               </v-card-text>
 
               <!-- 문제 -->
@@ -66,70 +64,75 @@
                           </div>
                         </v-col>
                       </v-row>
-                    <!-- 저작권 / 버튼 -->
-                    <v-row>
-                      <!-- 출제자 정보 -->
-                      <v-col cols="12" class="pa-0">
-                        <p class="font-parent-mid-l">
-                        <span class="grey--text mr-2 mb-1">created by.</span>
-                          {{probdetail.writer.name}} 
-                        </p>
-                      </v-col>
+                      <!-- 저작권 / 버튼 -->
+                      <v-row>
+                        <!-- 출제자 정보 -->
+                        <v-col cols="12" class="pa-0">
+                          <p class="font-parent-mid-l">
+                          <span class="grey--text mr-2 mb-1">created by.</span>
+                            {{probdetail.writer.name}} 
+                          </p>
+                        </v-col>
 
-                      <!-- 내가 낸 문제가 아닐 경우 -->
-                      <v-col v-if="currentUser != probdetail.writer.id" cols="12" class="pa-0 justify-end d-flex align-center">
-                        <!-- 좋아요 버튼 -->
-                        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
-                          <v-icon>{{upText}}</v-icon>
-                        </v-btn>
-                        <!-- 싫어요 버튼 -->
-                        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
-                          <v-icon>{{downText}}</v-icon>
-                        </v-btn>
-                        <!-- 스크랩 버튼 -->
-                        <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
-                          <v-icon>{{scrapText}}</v-icon>
-                        </v-btn>   
+                        <!-- 내가 낸 문제가 아닐 경우 -->
+                        <v-col v-if="currentUser != probdetail.writer.id" cols="12" class="pa-0 justify-end d-flex align-center">
+                          <!-- 좋아요 버튼 -->
+                          <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
+                            <v-icon>{{upText}}</v-icon>
+                          </v-btn>
+                          <!-- 싫어요 버튼 -->
+                          <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
+                            <v-icon>{{downText}}</v-icon>
+                          </v-btn>
+                          <!-- 스크랩 버튼 -->
+                          <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
+                            <v-icon>{{scrapText}}</v-icon>
+                          </v-btn>   
 
-                        <!-- 스크랩 모달 -->
-                        <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
+                          <!-- 스크랩 모달 -->
+                          <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
 
-                        <!-- 제출 버튼 -->
-                        <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
-                      </v-col>
+                          <!-- 제출 버튼 -->
+                          <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
+                        </v-col>
 
-                      <!-- 내가 낸 문제 일 경우 -->
-                      <v-col v-else cols="12" class="pa-0 justify-end d-flex align-center">
-                        <!-- 스크랩 버튼 -->
-                        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
-                          <v-icon>{{scrapText}}</v-icon>
-                        </v-btn> 
-                        <!-- 수정 -->
-                        <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
-                        <!-- 삭제 -->
-                        <v-btn type="submit" color="red" rounded outlined class="ms-1" small @click="deleteprob">삭제</v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-form>
-                </v-container>
+                        <!-- 내가 낸 문제 일 경우 -->
+                        <v-col v-else cols="12" class="pa-0 justify-end d-flex align-center">
+                          <!-- 스크랩 버튼 -->
+                          <v-btn class="ms-1" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
+                            <v-icon>{{scrapText}}</v-icon>
+                          </v-btn> 
+                          <!-- 수정 -->
+                          <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
+                          <!-- 삭제 -->
+                          <v-btn type="submit" color="red" rounded outlined class="ms-1" small @click="deleteprob">삭제</v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-form>
+                  </v-container>
 
-                <v-divider></v-divider>
+                  <v-divider></v-divider>
 
-                <!-- 댓글보기 -->
-                <v-btn @click="showReplies" id="show-replies-btn" class="font-weight-bold mt-2" text>댓글보기</v-btn>
-                <v-btn @click="noShowReplies" id="no-show-replies-btn" class="d-none font-weight-bold mt-2" text>댓글접기</v-btn>
-              </div>            
-            </v-card-text>
-          </v-col>
-    
-            <!-- 평소에는 안보이는 세로선 -->
-            <v-divider id="show-divider" class="my-5 d-none" vertical></v-divider>
-    
-            <!-- 평소에는 안보이는 댓글창 -->
-            <v-col id="show-replies" class="pa-0 d-none" style="height: 200px; width: 600px;">
-              <!-- <p>{{probdetail}}</p> -->
-              <problem-reply :pid="probdetail.id" :commentList="commentList"></problem-reply>
+                  <!-- 댓글보기 / 본문보기 -->
+                  <v-btn @click="showReplies" class="font-weight-bold mt-2" text>댓글보기</v-btn>
+                </div>            
+              </v-card-text>
+            </v-col>   
+
+            <!-- 댓글부분 (댓글보기 누를시 바뀜 떠있음) -->
+            <v-col id="reply-window" class="d-none">
+              <v-card-text class="pa-0">
+                <div>
+                  <problem-reply :pid="probdetail.id" :commentList="commentList"></problem-reply>
+
+                  <v-divider class="mx-1"></v-divider>
+
+                  <!-- 댓글보기 / 본문보기 -->
+                  <v-btn @click="noShowReplies" class="font-weight-bold mt-2 mb-4" text>본문보기</v-btn>
+                </div>            
+              </v-card-text>
             </v-col>
+                        
           </v-row>
         </v-container>
       </v-container>
@@ -259,37 +262,23 @@ export default {
 
     // 2022.08.03. 댓글보기 버튼 누를 때
     showReplies: function (event) {
-      const showRepliesBtn = document.querySelector("#show-replies-btn")
-      const noShowRepliesBtn = document.querySelector("#no-show-replies-btn")
-      const showDivider = document.querySelector("#show-divider")
-      const showReplies = document.querySelector("#show-replies")
-
-      showRepliesBtn.setAttribute("class", "d-none")
-      noShowRepliesBtn.setAttribute("class", "font-weight-bold mt-2 v-btn v-btn--text theme--light v-size--default")
-      showDivider.setAttribute("class", "my-5 v-divider v-divider--vertical theme--light")
-      showReplies.setAttribute("class", "pa-0 col col-6 info-modal-white")
-      // console.log(this.probdetail.comments)
+      const modalContentWindow = document.querySelector("#modal-content-window")
+      const replyWindow = document.querySelector("#reply-window")
+      modalContentWindow.setAttribute('class', 'd-none')
+      replyWindow.setAttribute('class', 'pa-0 col')
     },
     // 2022.08.03. 댓글접기 버튼 누를 때
     noShowReplies: function (event) {
-      const showRepliesBtn = document.querySelector("#show-replies-btn")
-      const noShowRepliesBtn = document.querySelector("#no-show-replies-btn")
-      const showDivider = document.querySelector("#show-divider")
-      const showReplies = document.querySelector("#show-replies")
-
-      showRepliesBtn.setAttribute("class", "font-weight-bold mt-2 v-btn v-btn--text theme--light v-size--default")
-      noShowRepliesBtn.setAttribute("class", "d-none")
-      showDivider.setAttribute("class", "d-none")
-      showReplies.setAttribute("class", "d-none")    
+      const modalContentWindow = document.querySelector("#modal-content-window")
+      const replyWindow = document.querySelector("#reply-window")
+      modalContentWindow.setAttribute('class', 'pa-0 col')
+      replyWindow.setAttribute('class', 'd-none')    
     },
     // 2022.08.04. 라우터 경로 연결
     event(pid) {
       // console.log('pid=', pid)
       this.$router.push({ path: `problem/${pid}`})
     },
-    // goBack () {
-    //   this.$router.go(-1)
-    // }
 
     // 문제 풀기; 문제 푼 후 결과 저장(0811 임지민)
     submitProblem() {
@@ -377,6 +366,12 @@ export default {
 <style>
 .problem-modal-white {
   background-color: #EDE7F6;
+}
+#modal-content-window {
+  min-width: 450px;
+}
+#reply-window{
+  min-width: 450px;
 }
 </style>
 
