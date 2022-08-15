@@ -79,7 +79,7 @@
     </v-card>
 
     <!-- 2. 오늘의 유저 -->
-    <v-card class="mx-auto mb-5 purple-gradation rounded-xl" height ="auto">
+    <v-card class="mx-auto mb-5 purple-back-gradation rounded-xl" height ="auto">
       <v-card-text class="py-5 px-3">
         <v-container>
         
@@ -299,7 +299,7 @@ export default {
 .pink-gradation {
   background: linear-gradient(#E7C0F4, #F0BBCF);
 }
-.purple-gradation {
+.purple-back-gradation {
   background: linear-gradient(#D4B4FF, #D9DFFF);
 }
 .title-font-size {
