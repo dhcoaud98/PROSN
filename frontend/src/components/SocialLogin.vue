@@ -6,7 +6,7 @@
         <v-col cols="12" class="d-flex justify-center">
           <v-btn rounded color="#FFEB3B" class="col-12 mt-2 d-flex justify-space-between" height="45px">
             <img src="@/assets/kakaotalk_logo.png" alt="..." class="social-logo">
-            <p class="pa-0 ma-0 font-weight-bold social-kakao">Kakao로 시작</p>
+            <p class="pa-0 ma-0 font-weight-bold social-kakao" @click="kakaoLogin()">Kakao로 시작</p>
             <div class="pa-2"></div>
           </v-btn>
         </v-col>
@@ -31,6 +31,32 @@
 
 <script>
 export default {
+    methods: {
+    kakaoLogin() {
+      console.log(window.Kakao)
+      window.Kakao.Auth.login({
+        scope: 'profile_nickname, account_email',
+        success: this.getKakaoAccount,
+      })
+    },
+    getKakaoAccount() {
+      window.Kakao.API.request({
+        url: '/v2/user/me',
+        success: res => {
+          const kakao_account = res.kaka0_account;
+          const nickname = kakao_account.nickname;
+          const email = kakao_account.email;
+          console.log('nickname', nickname)
+          console.log('email', email)
+
+          alert("로그인 성공!");
+        },
+        fail: error => {
+          console.log(error);
+        }
+      })
+    }
+  }
 }
 </script>
 
