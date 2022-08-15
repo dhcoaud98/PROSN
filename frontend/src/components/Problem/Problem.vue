@@ -13,7 +13,7 @@
     <!-- <p>{{probDetail}}</p> -->
     <v-row>
       <div v-for="tag in probDetail.tags" :key="tag" class="ms-2 mb-3">
-        <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#{{tag}}</span>
+        <v-chip color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
       </div>
     </v-row>
 
@@ -57,9 +57,10 @@
                 <v-icon>{{downText}}</v-icon>
               </v-btn>
               <!-- 스크랩 버튼 -->
-              <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon" large>
+              <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
                 <v-icon>{{scrapText}}</v-icon>
-              </v-btn>                    
+              </v-btn>
+              <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>                    
               <!-- 제출 버튼 -->
               <v-btn type="submit" rounded outlined class="ms-1" large>제출</v-btn>
             </v-col>
@@ -85,11 +86,14 @@ import ProblemReply from '@/components/ProblemModal/ProblemReply.vue'
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import drf from '@/api/drf.js'
+import Scrap from '@/components/Scrap/Scrap.vue'
+
 
 export default {
   name: 'Problem',
   data(){
     return {
+      scrapModal: false,
       upText: 'thumb_up_off_alt',
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
@@ -106,6 +110,7 @@ export default {
   },
   components: {
     ProblemReply,
+    Scrap,
   },
   computed: {
     ...mapGetters(['accessToken'])
@@ -153,6 +158,14 @@ export default {
        } else {
             this.scrapText = "bookmark_border"
        }
+    },
+    openScrapModal() {
+        this.scrapModal = true
+        console.log('openModal')
+    },
+    closeScrapModal() {
+        this.scrapModal = false
+        console.log('closeModal')
     },
     // 문제 풀기; 문제 푼 후 결과 저장(0811 임지민)
     submitProblem() {

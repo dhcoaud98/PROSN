@@ -40,9 +40,10 @@
           <v-icon>{{downText}}</v-icon>
         </v-btn>
         <!-- 스크랩 버튼 -->
-        <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon" large>
+        <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
           <v-icon>{{scrapText}}</v-icon>
         </v-btn>    
+        <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>                    
       </v-col>   
     </v-row>             
 
@@ -62,17 +63,21 @@ import InfoModalReply from '@/components/InfoModal/InfoModalReply.vue'
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import drf from '@/api/drf.js'
+import Scrap from '@/components/Scrap/Scrap.vue'
+
 
 export default {
   name: 'Information',
   data() {
     return {
+      scrapModal: false,
       infoDetail: [],
       commentList: []
     }
   },
   components: {
     InfoModalReply,
+    Scrap,
   },
   computed: {
     ...mapGetters(['accessToken'])
@@ -81,7 +86,15 @@ export default {
     // 2022.08.04. 라우터 경로 연결
     goBack () {
       this.$router.go(-1)
-    }
+    },
+    openScrapModal() {
+        this.scrapModal = true
+        console.log('openModal')
+    },
+    closeScrapModal() {
+        this.scrapModal = false
+        console.log('closeModal')
+    },
   },
   created() {
     // console.log('problem ')
