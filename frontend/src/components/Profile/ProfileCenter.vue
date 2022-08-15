@@ -10,9 +10,9 @@
       <!-- 뱃지, 이름 -->
       <v-container class="pa-0 mx-0">
         <v-row class="d-flex justify-space-between align-end">
-          <div class="d-flex">
+         <div class="d-flex">
             <div><v-chip color="orange lighten-2" class="white--text font-weight-bold mx-3">P R O S N</v-chip></div>
-            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 페이지</h3></div>
+            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 스터디</h3></div>
           </div>
           
           <!-- 팔로우 팔로워 정보 -->
@@ -24,9 +24,10 @@
         </v-row>
 
         <v-row class="ps-10">
-          <v-col cols="12" class="detail_text ma-0 pa-0">문제 풀이 500문제</v-col>
-          <v-col cols="12" class="detail_text ma-0 pa-0">문제 제출 300문제</v-col>
-          <v-col cols="12" class="detail_text ma-0 pa-0">정답률 68%</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">문제 풀이 {{userInfo.problemSolvingCount}} 문제</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">정답률 {{ userInfo.correctRate }}%</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">문제/정보 작성 {{ userInfo.writePostCount }}문제</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">포인트 {{ userInfo.point }}점</v-col>
         </v-row>
 
         <v-row class="pa-0"> 
@@ -78,6 +79,8 @@ import SolvedProblemList from "./SolvedProblemList.vue"
 import ScrapPostList from "./ScrapPostList.vue"
 import MyPostList from "./MyPostList.vue"
 import { mapGetters } from 'vuex'
+import axios from 'axios'
+import drf from '@/api/drf'
 
 export default {
   name: 'ProfileCenter',
@@ -101,6 +104,7 @@ export default {
       hidden: false,
       tabs: null,
       pass: '',
+      userInfo: {},
     }
   },
   computed: {
@@ -112,7 +116,7 @@ export default {
         default: return {}
       }
     },
-    ...mapGetters(['accessToken', 'userId', 'userName'])
+    ...mapGetters(['accessToken', 'userId', 'userName', 'currentUser'])
   },
   methods:{
     event1 () {
@@ -121,6 +125,20 @@ export default {
     event2 () {
       this.$router.push({ path: 'createinfo' })
     }
+  },
+  created() {
+    // 유저정보 확인
+    axios({
+      url: drf.api + 'user/' + 'info/' + `${this.currentUser}`,
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      console.log(res.data)
+      this.userInfo = res.data
+    })
   }
 }
 </script>

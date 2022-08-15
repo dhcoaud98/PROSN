@@ -23,6 +23,7 @@
 import axios from 'axios';
 import drf from '@/api/drf';
 import infoItems from '@/components/MainPage/infoItems.vue';
+import { mapGetters } from 'vuex';
 
 export default {
 	data() {
@@ -38,6 +39,9 @@ export default {
 	},
 	components: {
 		infoItems,
+	},
+	computed: {
+		...mapGetters(['accessToken'])
 	},
 	created() {
 		// 0810 오채명 : 밑에 코드 절때로 건들이지 말기

@@ -20,9 +20,10 @@
         </v-row>
 
         <v-row class="ps-10">
-          <v-col cols="12" class="detail_text ma-0 pa-0">문제 풀이 500문제</v-col>
-          <v-col cols="12" class="detail_text ma-0 pa-0">문제 제출 300문제</v-col>
-          <v-col cols="12" class="detail_text ma-0 pa-0">정답률 68%</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">문제 풀이 {{userInfo.problemSolvingCount}} 문제</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">정답률 {{ userInfo.correctRate }}%</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">문제/정보 작성 {{ userInfo.writePostCount }}문제</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">포인트 {{ userInfo.point }}점</v-col>
         </v-row>
 
         <v-row class="pa-0"> 
@@ -64,6 +65,8 @@ import StudyList from "./StudyList.vue"
 import MyStudyList from "./MyStudyList.vue"
 import router from "@/router"
 import { mapGetters } from 'vuex'
+import axios from 'axios'
+import drf from '@/api/drf'
 
 
 export default {
@@ -87,6 +90,8 @@ export default {
       hidden: false,
       tabs: null,
       pass: '',
+      userInfo: {},
+      badge: 'seed',
     }
   },
   computed: {
@@ -97,13 +102,33 @@ export default {
         default: return {}
       }
     },
-    ...mapGetters(['accessToken', 'userId', 'userName'])
+    ...mapGetters(['accessToken', 'userId', 'userName', 'currentUser'])
   },
   methods:{
     event () {
       router.push({ path: 'createstudy' })
     }
-  }
+  },
+  created() {
+    // 유저 정보 확인
+    axios({
+      url: drf.api + 'user/' + 'info/' + `${this.currentUser}`,
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      console.log(res.data)
+      this.userInfo = res.data
+      // 뱃지 컬러랑 문구 정하기
+      if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 10 ) {
+        this.badge = "Green"
+
+      }
+    })
+  },
+
 }
 </script>
 
