@@ -57,29 +57,27 @@
         </v-card-title>
     
         <!-- 카드 본문 -->
-        <v-card-text>
+        <v-card-text class="pb-0">
           <v-row>
             <!-- v-for문 사용해서 태그 띄우기 -->
             <div class="mt-5" v-for="tag in afterProb.tags" :key="tag">
-              <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
+              <v-chip small color="orange" class="white--text ms-3">{{tag}}</v-chip>
             </div>
           </v-row>
     
-          <v-row class="ma-4 mb-2 d-flex justify-space-between">
-            <!-- 출제자 -->
-            <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. 출제자이름</div>
-            <!-- 문제로 이동하기 버튼 -->
-            <router-link :to="`/note/pre/${afterProb.id}`">  
+          <router-link :to="`/note/pre/${afterProb.id}`" width="100%">  
+            <v-row class="ma-2 mb-2 d-flex justify-space-between">
+              <!-- 노트로 이동하기 버튼 -->
               <!-- 화면 사이즈 md 이상 -->
-              <v-btn text large rounded height="45px" class="d-none d-md-flex">
+              <v-btn text large rounded height="45px" class="d-none d-md-flex" width="100%">
                 <div class="note-btn font-weight-regular">NOTE</div>
               </v-btn>
               <!-- 화면 사이즈 md 이하 -->
               <v-btn text large rounded height="45px" class="d-md-none mt-3" width="100%">
                 <div class="note-btn font-weight-regular">NOTE</div>
               </v-btn>
-            </router-link>
-          </v-row>
+            </v-row>
+          </router-link>
         </v-card-text>
       </v-card>
     </div>
