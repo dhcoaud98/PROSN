@@ -7,13 +7,13 @@
 					:key="idx"
 					:mainProb="mainProb"
 				></recent-problem-items>
-				<v-pagination
+				<!-- <v-pagination
 					v-model="nowPage"
 					:length="endPage"
 					color="#A384FF"
 					circle
 					@input="handlePage()"
-				></v-pagination>
+				></v-pagination> -->
 			</v-col>
 		</v-row>
 	</div>
@@ -56,7 +56,7 @@ export default {
       if(this.isSearched){
         const params = {
           title: '',
-          page: 0,
+          page: this.page,
           size: 5, 
           sort: 'updated,DESC',
         } 
@@ -132,6 +132,20 @@ export default {
           console.log("에러")
           console.log(err)
         })
+      },
+      // 인피니트 스크롤 0815 임지민
+      // 정의
+      triggerScroll(e) {
+        const { scrollHeight, scrollTop, clientHeight } = e.target
+        const isAtTheBottom = scrollHeight === scrollTop + clientHeight
+
+        // 일정 지점 아래로 내려오면 함수 실행
+        if (isAtTheBottom) {
+          this.loadScroll()
+        }
+      },
+      // 내려오면 api 호출하여 아래에 더 추가, total값 최대이면 호출 안함
+      loadScroll() {
       }
     }
 }

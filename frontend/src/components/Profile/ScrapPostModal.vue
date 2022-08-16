@@ -4,8 +4,8 @@
     <v-container class="modal modal-overlay" @click.self="$emit('close')">
       <v-container class="modal-window pa-0">
         <v-card class="rounded-lg modal-content pa-4">
-          <p>{{scrapDetails}}</p>
-          <p>{{ scrapFolder}}</p>
+          <!-- <p>{{scrapDetails}}</p> -->
+          <!-- <p>{{ scrapFolder}}</p> -->
           <!-- 카드 타이틀 -->
           <v-card-title>
             <v-container class="pa-0">
@@ -19,7 +19,9 @@
               <v-row class="mt-5">
                 <v-col class="pa-0 d-flex justify-space-between">
                   <div>
-                    <v-btn rounded color="pink lighten-3" class="font-weight-bold white--text">선택항목 삭제</v-btn>
+                    <v-btn rounded color="pink lighten-3" 
+                      class="font-weight-bold white--text"
+                      @click="deleteFromFolder">선택항목 삭제</v-btn>
                     <v-btn rounded color="red lighten-1" class="font-weight-bold white--text ms-3"
                     @click="deleteFolder(scrapFolder.id)">폴더 삭제</v-btn>
                   </div>
@@ -36,7 +38,8 @@
           <v-card-text class="py-0">
             <v-container class="pa-0">
                 <!-- {{ scrapDetails }} -->
-              <scrap-modal-list :scrapDetails="scrapDetails.content"></scrap-modal-list>
+              <scrap-modal-list :scrapDetails="scrapDetails.content" :lid="lid"
+              @re-direct="getFolderDetail"></scrap-modal-list>
             </v-container>
           </v-card-text>
 
@@ -78,26 +81,31 @@ export default {
   computed: {
     ...mapGetters(['accessToken'])
   },
-  created() {
+  methods: {
     // 해당 폴더에 있는 문제 조회 0815 임지민
-    axios({
-      url: drf.scrap.scrap() + `${this.lid}`,
-      method: 'get',
-      headers: {
-        Authorization: this.accessToken,
-      },
-    })
-    .then(res => {
-      // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-      console.log(res)
-      this.scrapDetails = res.data
+    getFolderDetail () {
+      axios({
+        url: drf.scrap.scrap() + `${this.lid}`,
+        method: 'get',
+        headers: {
+          Authorization: this.accessToken,
+        },
+      })
+      .then(res => {
+        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+        console.log(res)
+        this.scrapDetails = res.data
 
-    })
-    .catch(err => {
-      // console.log(this.accessToken)
-      // console.log(this.userId)
-      console.log(err);
-    })
+      })
+      .catch(err => {
+        // console.log(this.accessToken)
+        // console.log(this.userId)
+        console.log(err);
+      })
+    }
+  },
+  created(){
+    this.getFolderDetail()
   }
 }
 </script>

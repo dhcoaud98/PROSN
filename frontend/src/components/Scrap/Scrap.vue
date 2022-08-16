@@ -170,7 +170,7 @@ export default {
     // 문제 스크랩 하기 엑쇼스 0816 임지민
     scrapPost() {
       axios({
-      url: drf.scrap.folder(),
+      url: drf.scrap.scrap(),
       method: 'post',
       headers: {
         Authorization: this.accessToken,
