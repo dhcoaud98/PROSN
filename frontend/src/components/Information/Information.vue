@@ -25,9 +25,18 @@
     <!-- 저작권 / 버튼 -->
     <v-row class="d-flex justify-space-between">
       <!-- 출제자 정보 -->
-      <v-col @click="profileEvent(infoDetail.writer.id)">
-        <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ infoDetail.writer.name }}</div>
+      <v-col class="pa-0" >
+        <span class="grey--text mr-2 mb-1">Created by.
+          <v-btn class="px-0 mb-1 font-weight-bold" plain @click=profileEvent(infoDetail.writer.id)>                        
+            {{infoDetail.writer.name}} 
+          </v-btn>
+        </span>
       </v-col>
+
+
+      <!-- <v-col @click="profileEvent(infoDetail.writer.id)">
+        <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ infoDetail.writer.name }}</div>
+      </v-col> -->
 
       <!-- 버튼: 남이 작성한 정보 -->
       <v-col v-if="currentUser != infoDetail.writer.id" cols="8" class="pa-0 justify-end d-flex align-center">

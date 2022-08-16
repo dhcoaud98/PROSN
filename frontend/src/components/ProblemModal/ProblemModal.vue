@@ -67,15 +67,16 @@
                       <!-- 저작권 / 버튼 -->
                       <v-row>
                         <!-- 출제자 정보 -->
-                        <v-col cols="12" class="pa-0" @click=profileEvent(probdetail.writer.id)>
-                          <p class="font-parent-mid-l">                        
-                          <span class="grey--text mr-2 mb-1">created by.</span>
-                            {{probdetail.writer.name}} 
-                          </p>
+                        <v-col class="pa-0" >
+                          <span class="grey--text mr-2 mb-1">Created by.
+                            <v-btn class="px-0 font-weight-bold" plain @click=profileEvent(probdetail.writer.id)>                        
+                              {{probdetail.writer.name}} 
+                            </v-btn>
+                          </span>
                         </v-col>
 
                         <!-- 내가 낸 문제가 아닐 경우 -->
-                        <v-col v-if="currentUser != probdetail.writer.id" cols="12" class="pa-0 justify-end d-flex align-center">
+                        <v-col v-if="currentUser != probdetail.writer.id" class="pa-0 justify-end d-flex align-center">
                           <!-- 좋아요 버튼 -->
                           <div>
                             <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
@@ -105,7 +106,7 @@
                         </v-col>
 
                         <!-- 내가 낸 문제 일 경우 -->
-                        <v-col v-else cols="12" class="pa-0 justify-end d-flex align-center">
+                        <v-col v-else class="pa-0 justify-end d-flex align-center">
                           <!-- 스크랩 버튼 -->
                           <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
                             <v-icon>{{scrapText}}</v-icon>

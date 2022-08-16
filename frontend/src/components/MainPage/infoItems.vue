@@ -39,7 +39,7 @@
 
       <v-row class="ma-4 mb-2 d-flex justify-space-between">
         <!-- 출제자 -->
-          <div @click="profileEvent(info.writer.id)" class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{info.writer.name}}</div>
+          <v-btn plain @click="profileEvent(info.writer.id)" class="pa-0 me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{info.writer.name}}</v-btn>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
           <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">

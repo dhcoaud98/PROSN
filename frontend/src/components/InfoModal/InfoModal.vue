@@ -9,7 +9,7 @@
             <!-- 정보부분 (처음에 떠있음) -->
             <v-col id="modal-content-window" class="pa-0">            
               <v-card-text class="d-flex justify-space-between align-center px-0">
-                <v-btn @click="event()" text class="font-weight-bold pr-0 pl-3"  small>자세히 보기</v-btn>
+                <v-btn @click="event()" text class="font-weight-bold pr-0 pl-3" small>자세히 보기</v-btn>
                 <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
               </v-card-text>
 
@@ -45,9 +45,12 @@
                   <!-- 저작권 / 버튼 -->
                   <v-row class="d-flex justify-space-between">
                     <!-- 출제자 정보 -->
-                    <v-col class="col-12 col-md-8">
-                      <div @click="profileEvent(infodetail.writer.id)">출제자 | {{ infodetail.writer.name}}</div>              
-                      <div>출제일 | {{ info.created.slice(0,10) }}</div>
+                    <v-col class="pa-0" >
+                      <span class="grey--text mr-2 mb-1">Created by.
+                        <v-btn class="px-0 font-weight-bold" plain @click=profileEvent(infodetail.writer.id)>                        
+                          {{infodetail.writer.name}} 
+                        </v-btn>
+                      </span>
                     </v-col>
 
                     <!-- 남이 작성한 정보일 경우 -->
