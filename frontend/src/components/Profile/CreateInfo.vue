@@ -80,11 +80,11 @@ export default {
       }
     }),
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods: {
     cancel () {
-      this.$router.push({ path: 'profile' })
+      this.$router.push({ path: `../profile/${this.currentUser}` })
     },
     createInformation () {
       // console.log(drf.api)
@@ -99,7 +99,7 @@ export default {
       })
       .then((res) => {
         console.log('res = ', res)
-        this.$router.push({ path: 'profile' })
+        this.$router.push({ path: `../profile/${this.currentUser}` })
       })
       .catch((err) => {
         console.log('에러 = ', err)

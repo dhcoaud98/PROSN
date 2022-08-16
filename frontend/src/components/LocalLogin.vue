@@ -44,8 +44,8 @@
           <p>아직 계정이 없으신가요?<router-link to="/signup" class="purple--text text--lighten-2 text-decoration-none hover-login ml-3 font-weight-bold black--text">회원가입</router-link></p>
         </v-col>
       </v-row>
-      <v-row class="justify-center">
-        <v-col cols="8" class="d-flex justify-space-around pa-0">
+      <v-row>
+        <v-col cols="12" class="d-flex justify-space-around pa-0">
           <a href="" class="black--text">아이디 찾기</a>
           <p>|</p>
           <a href="" class="black--text">비밀번호 찾기</a>

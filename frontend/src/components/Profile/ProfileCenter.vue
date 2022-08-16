@@ -143,10 +143,10 @@ export default {
   },
   methods:{
     event1 () {
-      this.$router.push({ path: 'createproblem' })
+      this.$router.push({ path: '../createproblem' })
     },
     event2 () {
-      this.$router.push({ path: 'createinfo' })
+      this.$router.push({ path: '../createinfo' })
     },
     followEvent () {
       axios({

@@ -154,7 +154,8 @@ export default {
         rules: {
           required: value => !!value || '필수 입력값입니다.',
           min: v => v.length >= 8 || '최소 8자 이상을 입력하세요',
-        }
+        },
+        idDuplicateFlag : false
     }),
 
     methods: {
@@ -175,18 +176,25 @@ export default {
 
         // id 중복확인 (0815 오채명)
         idDoubleCheck () {
-          const params = {
-            uid: this.credentials.userId
-          }
+          // console.log(this.credentials.userId)
           axios({
-            url: drf.api + 'user/' + 'id/' + 'check',
+            url: drf.api + 'user/' + 'id/' + 'check' ,
             method: 'post',
-            params: params,
+            data: {
+              uid : this.credentials.userId
+            }
           })
-          .then(res => {
-            console.log(res)
+          .then(res =>{
+            this.idDuplicateFlag = true;
+            alert('사용가능한 아이디입니다.')
+          })
+          .catch(err =>{
+            if (err.response.status === 409){
+              alert('이미 사용중인 아이디 입니다.')
+            }
           })
         },
+
         validate () {
             this.$refs.form.validate()
         },
@@ -196,26 +204,31 @@ export default {
             // submit했을 때 axios로 db에 사용자 정보를 저장해주면 된다.
             // console.log("클릭")
             // console.log("credentials = ", this.credentials)
-            axios({
+            if(!this.idDuplicateFlag) {
+              alert("아이디 중복 체크를 해주세요.")
+            } else {
+              axios({
                 url: drf.accounts.join(),
                 method: 'post',
                 data: this.credentials
-            })
-            .then(res => {
-                console.log("res = ",res);
-                // 0810 오채명 : 회원가입은 grantType이 없기 때문에 axios할 때 넘겨주면 안됩니다.
-                // 회원가입이 완료되면 바로 로그인을 시켜주기 위함
-                this.$store.dispatch('saveToken', res.data.accessToken)
-                this.$store.dispatch('saveName', res.data.name)
-                
-                // 회원가입이 완료되면 메인 페이지로 이동
-                this.$router.push({ path: '/'})
+              })
+              .then(res => {
+                  console.log("res = ",res);
+                  // 0810 오채명 : 회원가입은 grantType이 없기 때문에 axios할 때 넘겨주면 안됩니다.
+                  // 회원가입이 완료되면 바로 로그인을 시켜주기 위함
+                  this.$store.dispatch('saveToken', res.data.accessToken)
+                  this.$store.dispatch('saveName', res.data.name)
+                  
+                  // 회원가입이 완료되면 메인 페이지로 이동
+                  this.$router.push({ path: '/'})
+              
+              })
+              .catch(err =>{
+                  // console.log("에러")
+                  console.log(err)
+              })
+            }
             
-            })
-            .catch(err =>{
-                // console.log("에러")
-                console.log(err)
-            })
         }
 
     },

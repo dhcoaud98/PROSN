@@ -51,7 +51,7 @@
               <!-- 인기문제; 제출률: 제출 수/조회 수*100 0813 임지민 -->
               <div v-for="(popularProb, idx) in popularProbs" :key="idx" class="mb-3">
                 <v-row class="ps-2">
-                  <p class="title-font-size font-weight-bold mb-0 text-truncate">{{idx + 1}}. {{popularProb.popularityProblem.title}}</p>
+                  <v-btn plain @click="problemEvent()"><p class="title-font-size font-weight-bold mb-0 text-truncate">{{idx + 1}}. {{popularProb.popularityProblem.title}}</p></v-btn>
                 </v-row>    
                 <v-row class="d-flex justify-space-between font-weight-bold mt-1">
                   <div class="circle-background pa-0 d-flex justify-center align-center text-center">
@@ -115,11 +115,11 @@
                   <div v-for="(popularUser, idx) in popularUsers" :key="idx" class="mb-2">
                     <v-row>
                       <!-- 등수 -->
-                      <v-col cols="3" class="pa-0 dark--text text-center font-weight-bold">{{idx+1}}</v-col>
+                      <v-col cols="3" class="align-self-center pa-0 dark--text text-center font-weight-bold">{{idx+1}}</v-col>
                       <!-- 유저이름 -->
-                      <v-col cols="6" class="pa-0 dark--text text-center" @click=profileEvent(popularUser.id)>{{popularUser.name}}</v-col>
+                      <v-col cols="6" class="pa-0 dark--text text-center" @click=profileEvent(popularUser.id)><v-btn plain top class="pa-0">{{popularUser.name}}</v-btn></v-col>
                       <!-- 포인트 -->
-                      <v-col cols="3" class="pa-0 dark--text text-center">{{popularUser.point}}</v-col>
+                      <v-col cols="3" class="align-self-center pa-0 dark--text text-center">{{popularUser.point}}</v-col>
                       <!-- 문제풀이개수 -->
                       <!-- <v-col cols="2" class="pa-0 dark--text text-center">21</v-col>      -->
                     </v-row>    
@@ -183,6 +183,9 @@ export default {
   methods: {
     profileEvent(uid) {
       this.$router.push({ path: `/profile/${uid}`})
+    },
+    problemEvent(pid) {
+      this.$router.push({ path: `/problem/${pid}`})
     },
     setNowTimes() {
       let myDate = new Date()

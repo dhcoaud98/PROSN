@@ -10,8 +10,6 @@
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
             {{ userSolving.title }}
           </div>
-          <!-- 좋아요 싫어요 정보 -->
-
         </v-row>
       </v-container>
     </v-card-title>
