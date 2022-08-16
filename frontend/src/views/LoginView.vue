@@ -39,7 +39,7 @@
 import LocalLogin from '@/components/LocalLogin.vue'
 import SocialLogin from '@/components/SocialLogin.vue'
 import axios from 'axios';
-
+import qs from "qs";
 
 export default {
   name: 'LoginView',
@@ -52,18 +52,57 @@ export default {
   },
   created() {
     const kakaoCode = new URL(window.location.href).searchParams.get("code");
-    console.log("vue에서 출력하는 code =", kakaoCode)
+    console.log("vue에서 출력하는 kakaoCode ==", kakaoCode)
     if (kakaoCode) {
       axios({
-        url: `http://localhost:8080` + '/login/oauth2/code/kakao',
+        url: 'http://localhost:3000/login/oauth2/code/kakao',
         method: 'get',
-        "code" : this.kakaoCode
+        data: qs.stringify({
+          code : this.kakaoCode
+        })
       })
       .then(res =>{
         console.log(res)
       })
       .catch(err => {
-        console.log(err)
+        console.log("에러",err)
+      })
+    }
+
+    const googleCode = new URL(window.location.href).searchParams.get("code");
+    console.log("vue에서 출력하는 googleCode ==", googleCode)
+    if (googleCode) {
+      axios({
+        url: 'http://localhost:3000/auth/google/callback',
+        method: 'get',
+        data: qs.stringify({
+          code : this.googleCode
+        })
+      })
+      .then(res =>{
+        console.log(res)
+      })
+      .catch(err => {
+        console.log("에러",err)
+      })
+    }
+    
+    // 네이버
+    const naverCode = new URL(window.location.href).searchParams.get("code");
+    console.log("vue에서 출력하는 naverCode ==", naverCode)
+    if (naverCode) {
+      axios({
+        url: 'http://localhost:3000/auth/naver/callback',
+        method: 'get',
+        data: qs.stringify({
+          code : this.naverCode
+        })
+      })
+      .then(res =>{
+        console.log(res)
+      })
+      .catch(err => {
+        console.log("에러",err)
       })
     }
   }
