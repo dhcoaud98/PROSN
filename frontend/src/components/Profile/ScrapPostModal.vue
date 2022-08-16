@@ -7,29 +7,44 @@
           <!-- <p>{{scrapDetails}}</p> -->
           <!-- <p>{{ scrapFolder}}</p> -->
           <!-- 카드 타이틀 -->
-          <v-card-title>
+          <v-card-title class="pb-0">
             <v-container class="pa-0">
               <!-- 각 개별 리스트의 이름 -->
               <v-row class="d-flex justify-space-between">
-                <h2>{{ scrapFolder.title }} </h2>
-                <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
+                <v-col>
+                  <h2>{{ fixTitle }} </h2>
+                </v-col>
+                <span class="col-1 pa-0">
+                  <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
+                </span>
               </v-row>
 
-              <!-- 버튼들 -->
-              <v-row class="mt-5">
-                <v-col class="pa-0 d-flex justify-space-between">
-                  <div>
-                    <v-btn rounded color="pink lighten-3" 
-                      class="font-weight-bold white--text"
-                      @click="deleteFromFolder">선택항목 삭제</v-btn>
-                    <v-btn rounded color="red lighten-1" class="font-weight-bold white--text ms-3"
-                    @click="deleteFolder(scrapFolder.id)">폴더 삭제</v-btn>
-                  </div>
-                  <div>
-                    <v-btn rounded class="font-weight-bold">문제집 만들기</v-btn>
-                  </div>
-                </v-col>
-              </v-row>
+              <!-- 문제집 이름을 제출하기 위한 폼 0816 임지민 -->
+                <v-row class="mt-5 justify-end" v-if="beforeClickCreate">
+                  <v-col class="px-0 ml-2" cols="2">
+                    <v-btn 
+                    small outlined rounded 
+                    class="font-weight-bold"
+                    @click="showTitleInput">문제집 만들기</v-btn>
+                  </v-col>
+                </v-row>
+              <v-form v-else @submit.prevent="createBook(scrapFolder.id)">
+                <v-row class="justify-end align-center">
+                  <v-col cols="4">
+                    <!-- <p>{{scrapFolder.title}}</p> -->
+                    <p>{{ credentials.title }}</p>
+                    <v-text-field label="문제집 이름을 입력해주세요"
+                        v-model="credentials.title"
+                        id="bookName"></v-text-field>
+                  </v-col>
+                  <v-col cols="2" class="pa-0 text-end">
+                    <v-btn
+                      small outlined rounded
+                      class="font-weight-bold"
+                      type="submit">만들기</v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
             </v-container>
           </v-card-title>
 
@@ -44,6 +59,15 @@
           </v-card-text>
 
           <v-divider color="#A384FF" class="mx-3"></v-divider>
+
+          <v-row class="justify-end">
+            <v-col cols="2" class="mr-3">
+              <v-btn outlined rounded small
+              color="red lighten-1" 
+              class="font-weight-bold white--text ms-3"
+              @click="deleteFolder(scrapFolder.id)">폴더 삭제</v-btn>
+            </v-col>
+          </v-row>
 
           <v-card-footer class="d-flex-row justify-center">
             <v-container class="pt-5 pb-0">
@@ -72,6 +96,11 @@ export default {
   data(){
     return {
       scrapDetails: [],
+      beforeClickCreate: true,
+      credentials: {
+        pid: this.lid,
+        title: '',
+      }
     }
   },
   props: {
@@ -102,19 +131,96 @@ export default {
         // console.log(this.userId)
         console.log(err);
       })
+    },
+    deleteFolder(lid) {
+      // axios 보내기
+      const check = confirm('정말 삭제하시겠습니까?')
+      if (check) {
+      axios({
+        url: drf.scrap.folder() + lid,
+        method: 'delete',
+        headers: {
+          Authorization: this.accessToken,
+        },
+        data: {
+          id: lid
+        }
+      })
+      .then(res => {
+        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+        console.log('스크랩 폴더 삭제= ', res)
+        this.getScrapFolders()
+      })
+      .catch(err => {
+        // console.log(this.accessToken)
+        // console.log(this.userId)
+        console.log('스크랩 폴더 삭제 에러= ',err);
+      })
+    }
+    },
+    getScrapFolders() {
+      // 내 폴더 목록 조회 0815 임지민
+    axios({
+      url: drf.scrap.folder(),
+      method: 'get',
+      headers: {
+        Authorization: this.accessToken,
+      },
+      })
+      .then(res => {
+        console.log('스크랩 폴더 조회=', res.data);
+        this.scrapFolders = res.data
+      })
+      .catch(err => {
+        console.log('스크랩 폴더 조회 에러', err);
+        if (err.response.status === 400) {
+          this.$swal({
+            icon: 'warning',
+            text: '유효하지 않은 폴더입니다'
+          })
+          this.$router.go()
+        }
+      })
+    },
+    showTitleInput() {
+      this.beforeClickCreate = false
+    },
+    createBook(lid) {
+      // 문제집 추출 0816 임지민
+      console.log(this.credentials, typeof(this.credentials.pid));
+      axios({
+        url: drf.postFeed.workbook(),
+        method: 'post',
+        headers: {
+          Authorization: this.accessToken,
+        },
+        data: this.credentials
+      })
+        .then(res => {
+          // console.log('문제집 추출=', res);
+          // 작성한 문제집으로 넘어갈 방법을 찾자 0816 임지민
+          this.$router.go()
+        })
+        .catch(err => {
+          // console.log('문제집 추출 에러', err)
+        })
     }
   },
   created(){
     this.getFolderDetail()
+    this.fixTitle = this.scrapFolder.title
   }
 }
 </script>
 
 <style>
-
+  
 </style>
 
 <style lang="stylus" scoped>
+.v-label {
+  font-size: 1em !important;
+}
 .modal {
   &.modal-overlay {
     display: flex;

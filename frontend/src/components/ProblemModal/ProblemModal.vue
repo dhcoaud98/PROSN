@@ -29,6 +29,7 @@
               <v-card-text class="d-flex">
                 <!-- 카테고리 라벨 -->
                 <!-- {{probdetail}} -->
+                <!-- {{probdetail.id}} -->
                 <div class="mt-5" v-for="(tag, idx) in probdetail.tags" :key="idx">
                   <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
                 </div>  
@@ -111,7 +112,7 @@
                             <v-icon>{{scrapText}}</v-icon>
                           </v-btn>
                           
-                          <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
+                          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
                           <!-- 수정 -->
                           <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
                           <!-- 삭제 -->

@@ -5,21 +5,21 @@
       <v-row>
         <v-col cols="12" class="d-flex justify-center">
           <v-btn rounded color="#FFEB3B" class="col-12 mt-2 d-flex justify-space-between" height="45px">
-            <img src="@/assets/kakaotalk_logo.png" alt="..." class="social-logo">
+            <!-- <img src="@/assets/kakaotalk_logo.png" alt="..." class="social-logo"> -->
             <p class="pa-0 ma-0 font-weight-bold social-kakao">Kakao로 시작</p>
             <div class="pa-2"></div>
           </v-btn>
         </v-col>
         <v-col cols="12" class="d-flex justify-center">
           <v-btn rounded color="#EEEEEE" class="col-12 d-flex justify-space-between" height="45px">
-            <img src="@/assets/google_logo.png" alt="..." class="social-logo">
+            <!-- <img src="@/assets/google_logo.png" alt="..." class="social-logo"> -->
             <p class="pa-0 ma-0 font-weight-bold social-google">GOOGLE 로 시작</p>
             <div class="pa-2"></div>
           </v-btn>
         </v-col>
         <v-col cols="12" class="d-flex justify-center">
           <v-btn rounded color="#33CA00" class="col-12 mb-2 d-flex justify-space-between" height="45px">
-            <img src="@/assets/naver_logo.png" alt="..." height="40px" width="40px">
+            <!-- <img src="@/assets/naver_logo.png" alt="..." height="40px" width="40px"> -->
             <p class="pa-0 ma-0 font-weight-bold social-naver">NAVER로 시작</p>
             <div class="pa-2"></div>
           </v-btn>
