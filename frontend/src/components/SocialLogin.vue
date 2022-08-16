@@ -4,9 +4,10 @@
     <v-container class="px-0">
       <v-row>
         <v-col cols="12" class="d-flex justify-center">
-          <v-btn rounded color="#FFEB3B" class="col-12 mt-2 d-flex justify-space-between" height="45px">
+          <!-- <router-link to="/login" class="col-12 mt-2 d-flex justify-space-between"></router-link> -->
+          <v-btn rounded color="#FFEB3B" class="col-12 mt-2 d-flex justify-space-between" height="45px" @click="KakaoLogin">
             <img src="@/assets/kakaotalk_logo.png" alt="..." class="social-logo">
-            <p class="pa-0 ma-0 font-weight-bold social-kakao">Kakao로 시작</p>
+            <p class="pa-0 ma-0 font-weight-bold social-kakao">KAKAO 로 시작</p>
             <div class="pa-2"></div>
           </v-btn>
         </v-col>
@@ -30,7 +31,21 @@
 </template>
 
 <script>
+// import axios from 'axios';
+// import drf from '@/api/drf';
+// import { mapGetters } from 'vuex';
+
 export default {
+    name: 'SocialLogin',
+    methods: {
+      KakaoLogin() {
+        console.log('카카오 로그인 시도')
+        window.location.href = "https://kauth.kakao.com/oauth/authorize?client_id=6ed2b72fdabc00402337b642bd55e31c&redirect_uri=http://localhost:3000/login/oauth2/code/kakao&response_type=code"
+      }
+
+    },
+
+
 }
 </script>
 

@@ -38,6 +38,7 @@
 <script>
 import LocalLogin from '@/components/LocalLogin.vue'
 import SocialLogin from '@/components/SocialLogin.vue'
+import axios from 'axios';
 
 
 export default {
@@ -48,6 +49,23 @@ export default {
   components : {
     LocalLogin,
     SocialLogin,
+  },
+  created() {
+    const kakaoCode = new URL(window.location.href).searchParams.get("code");
+    console.log("vue에서 출력하는 code =", kakaoCode)
+    if (kakaoCode) {
+      axios({
+        url: `http://localhost:8080` + '/login/oauth2/code/kakao',
+        method: 'get',
+        "code" : this.kakaoCode
+      })
+      .then(res =>{
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
   }
 };
 </script>

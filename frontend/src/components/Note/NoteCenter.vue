@@ -83,7 +83,7 @@ export default {
       badgeColor: 'rgb(0, 207, 87)',
     }
   },
-   methods: {
+  methods: {
     selectCategory(toDB, toUser) {
       this.selectedUser = toUser
       if (toDB == 'whole') {

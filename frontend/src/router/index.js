@@ -15,6 +15,8 @@ import Problem from '@/components/Problem/Problem.vue'
 import ProblemBook from '@/components/ProblemBook/ProblemBook.vue'
 import NoteDetail from '@/components/Note/NoteDetail.vue'
 import editStudy from '@/components/Study/editStudy.vue'
+import KakaoLogin from '@/components/SocialLogin/KakaoLogin.vue'
+
 
 Vue.use(VueRouter)
 
@@ -95,6 +97,11 @@ const routes = [
     name: 'editstudy',
     component: editStudy,
     props: true,
+  },
+  {
+    path: '/login/oauth2/code/kakao',
+    name: 'KakaoLogin',
+    component: LoginView ,
   }
 ]
 

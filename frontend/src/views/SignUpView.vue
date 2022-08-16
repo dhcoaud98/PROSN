@@ -175,18 +175,21 @@ export default {
 
         // id 중복확인 (0815 오채명)
         idDoubleCheck () {
-          const params = {
-            uid: this.credentials.userId
-          }
+          // console.log(this.credentials.userId)
           axios({
-            url: drf.api + 'user/' + 'id/' + 'check',
+            url: drf.api + 'user/' + 'id/' + 'check' ,
             method: 'post',
-            params: params,
+            data: {
+              uid : this.credentials.userId
+            }
           })
-          .then(res => {
-            console.log(res)
+          .catch(err =>{
+            if (err.response.status === 409){
+              alert('이미 사용중인 아이디 입니다.')
+            }
           })
         },
+
         validate () {
             this.$refs.form.validate()
         },
