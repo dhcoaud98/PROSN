@@ -3,7 +3,7 @@
   <!-- 화면 크기가 xs 이하일 때는 문제와 노트 작성 칸이 세로로 배치되게 수정하기 0805 임지민 -->
   <v-row class="mt-3">
     <!-- col 1: 상위의 createnotelist에서 받아온 문제 출력 -->
-    <v-col cols="6" class="pr-5">
+    <v-col cols="12" md="6" class="px-10 pr-md-5">
       <!-- 문제 보러가기 버튼: 문제 번호 받아와서 연결 -->
       <v-row class="mt-3 mb-5">
         <router-link :to="`/problem/${noteDetail.pid}`" class="text-decoration-none ">
@@ -60,8 +60,10 @@
       </v-row>
     </v-col>
 
+    <v-divider vertical class="d-none d-md-block"></v-divider>
+
     <!-- col 2: 오답노트 양식 -->
-    <v-col cols="6" class="pl-3 left-border-grey">
+    <v-col cols="12" md="6" class="px-3 mt-10 mt-md-0">
       <v-form class="pl-3" @submit.prevent="submitNote">
         <!-- 틀린 이유 -->
         <v-row class="mx-2 my-2">

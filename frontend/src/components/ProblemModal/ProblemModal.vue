@@ -77,25 +77,25 @@
                         <!-- 내가 낸 문제가 아닐 경우 -->
                         <v-col v-if="currentUser != probdetail.writer.id" cols="12" class="pa-0 justify-end d-flex align-center">
                           <!-- 좋아요 버튼 -->
-                          <v-col cols="2" class="pa-0">
+                          <div>
                             <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
                               <v-icon>{{upText}}</v-icon>
                             </v-btn>
                             <span>{{probdetail.numOfLikes}}</span>
-                          </v-col>
+                          </div>
                           <!-- 싫어요 버튼 -->
-                          <v-col cols="2" class="pa-0">
+                          <div>
                             <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
                               <v-icon>{{downText}}</v-icon>
                             </v-btn>
                             <span>{{probdetail.numOfDislikes}}</span>
-                          </v-col>
+                          </div>
                           <!-- 스크랩 버튼 -->
-                          <v-col cols="2">
+                          <div>
                             <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
                               <v-icon>{{scrapText}}</v-icon>
                             </v-btn>   
-                          </v-col>
+                          </div>
 
                           <!-- 스크랩 모달 -->
                           <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>

@@ -53,19 +53,19 @@
                     <!-- 남이 작성한 정보일 경우 -->
                     <v-col v-if="currentUser != infodetail.writer.id" class="pa-0 justify-end d-flex align-center">
                       <!-- 좋아요 버튼 -->
-                      <v-col cols="3">
+                      <div class="d-flex align-center">
                         <v-btn class="ms-2" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
                           <v-icon>{{upText}}</v-icon>
                         </v-btn>
                         <span>{{infodetail.numOfLikes}}</span>
-                      </v-col>
+                      </div>
                       <!-- 싫어요 버튼 -->
-                      <v-col cols="3">
+                      <div class="d-flex align-center">
                         <v-btn class="ms-2" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
                           <v-icon>{{downText}}</v-icon>
                         </v-btn>
                         <span>{{infodetail.numOfDislikes}}</span>
-                      </v-col>
+                      </div>
 
                       <!-- 스크랩 버튼 -->
                       <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">

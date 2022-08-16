@@ -100,13 +100,11 @@
                   <!-- 설명 -->
                   <v-row class="mb-2">
                     <!-- 등수 -->
-                    <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">등수</v-col>
+                    <v-col cols="3" class="pa-0 black--text font-weight-bold text-center">등수</v-col>
                     <!-- 유저이름 -->
-                    <v-col cols="4" class="pa-0 black--text font-weight-bold text-center">유저이름</v-col>
-                    <!-- 등급 -->
-                    <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">등급</v-col>
+                    <v-col cols="6" class="pa-0 black--text font-weight-bold text-center">유저이름</v-col>
                     <!-- 포인트 -->
-                    <v-col cols="4" class="pa-0 black--text font-weight-bold text-center">포인트</v-col>
+                    <v-col cols="3" class="pa-0 black--text font-weight-bold text-center">포인트</v-col>
                     <!-- 문제풀이개수 -->
                     <!-- <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">풀이수</v-col>      -->
                   </v-row>    
@@ -117,15 +115,11 @@
                   <div v-for="(popularUser, idx) in popularUsers" :key="idx" class="mb-2">
                     <v-row>
                       <!-- 등수 -->
-                      <v-col cols="2" class="pa-0 dark--text text-center">{{idx+1}}</v-col>
+                      <v-col cols="3" class="pa-0 dark--text text-center font-weight-bold">{{idx+1}}</v-col>
                       <!-- 유저이름 -->
-                      <v-col cols="4" class="pa-0 dark--text text-center">{{popularUser.name}}</v-col>
-                      <!-- 등급 -->
-                      <v-col cols="2" class="pa-0 dark--text text-center">
-                        <v-chip x-small class="text-center px-2">purple</v-chip>
-                        </v-col>
+                      <v-col cols="6" class="pa-0 dark--text text-center" @click=profileEvent(popularUser.id)>{{popularUser.name}}</v-col>
                       <!-- 포인트 -->
-                      <v-col cols="4" class="pa-0 dark--text text-center">{{popularUser.point}}</v-col>
+                      <v-col cols="3" class="pa-0 dark--text text-center">{{popularUser.point}}</v-col>
                       <!-- 문제풀이개수 -->
                       <!-- <v-col cols="2" class="pa-0 dark--text text-center">21</v-col>      -->
                     </v-row>    
@@ -187,6 +181,9 @@ export default {
 
   },
   methods: {
+    profileEvent(uid) {
+      this.$router.push({ path: `/profile/${uid}`})
+    },
     setNowTimes() {
       let myDate = new Date()
       let mm = myDate.getMonth() + 1

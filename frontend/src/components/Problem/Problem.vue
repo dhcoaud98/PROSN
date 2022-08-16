@@ -52,19 +52,19 @@
             <!-- 버튼: 남이 낸 문제 -->
             <v-col v-if="currentUser != probDetail.writer.id" cols="8" class="pa-0 justify-end d-flex align-center">
               <!-- 좋아요 버튼 -->
-              <v-col cols="2">
+              <div>
                 <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
                   <v-icon>{{upText}}</v-icon>
                 </v-btn>
                 <span>{{probDetail.numOfLikes}}</span>
-              </v-col>
+              </div>
               <!-- 싫어요 버튼 -->
-              <v-col cols="2">
+              <div>
                 <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon" large>
                   <v-icon>{{downText}}</v-icon>
                 </v-btn>
                 <span>{{probDetail.numOfDislikes}}</span>
-              </v-col>
+              </div>
               <!-- 스크랩 버튼 -->
               <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
                 <v-icon>{{scrapText}}</v-icon>
