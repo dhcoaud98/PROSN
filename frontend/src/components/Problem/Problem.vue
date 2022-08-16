@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container mt-5>
     <v-row class="justify-space-between mt-5">
       <div class="d-flex mt-5">
         <!-- <p>{{probDetail}}</p> -->

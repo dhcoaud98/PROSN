@@ -1,8 +1,8 @@
 <template>
   <!-- 2022.08.04 정보 페이지 -->
-  <v-container>
-    <v-row class="d-flex justify-space-between">
-      <h2>{{ infoDetail }}</h2> 
+  <v-container mt-5>
+    <v-row class="mt-5 justify-space-between">
+      <h2>{{ infoDetail.title }}</h2> 
       <v-btn @click="goBack()" text class="font-weight-bold">뒤로가기</v-btn>
     </v-row>
 
