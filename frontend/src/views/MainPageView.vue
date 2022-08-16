@@ -147,6 +147,7 @@ export default {
       if (toDB == 'whole') {
         // this.wholeNote()
         console.log('toDB =',toDB)
+        
       } else {
         // this.tagNote(toDB)
         console.log('toDB =', toDB)
