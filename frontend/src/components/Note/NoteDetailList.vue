@@ -2,11 +2,10 @@
   <!-- 작성 완료된 문제 요소 하나하나 0807 임지민  -->
   <!-- 문제 하나하나 받아오기 -->
   <!-- 화면 크기가 xs 이하일 때는 문제와 노트 작성 칸이 세로로 배치되게 수정하기 0805 임지민 -->
-
   <v-row class="mt-3">
     <!-- <p>{{ shuffledNum }}</p>  ok-->
     <!-- col 1: 상위의 createnotelist에서 받아온 문제 출력 -->
-    <v-col sm="6" cols="12" class="pr-5">
+    <v-col cols="12" class="pr-5">
       <!-- 문제 보러가기 버튼: 문제 번호 받아와서 연결 -->
       <v-row class="mt-3 mb-5">
         <!-- <p>{{noteDetail}}</p> -->

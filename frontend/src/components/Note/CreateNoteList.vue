@@ -1,14 +1,13 @@
 <template>
   <!-- 문제 하나하나 받아오기 -->
   <!-- 화면 크기가 xs 이하일 때는 문제와 노트 작성 칸이 세로로 배치되게 수정하기 0805 임지민 -->
-
   <v-row class="mt-3">
     <!-- col 1: 상위의 createnotelist에서 받아온 문제 출력 -->
     <v-col cols="6" class="pr-5">
       <!-- 문제 보러가기 버튼: 문제 번호 받아와서 연결 -->
       <v-row class="mt-3 mb-5">
         <router-link :to="`/problem/${noteDetail.pid}`" class="text-decoration-none ">
-          <v-chip small outlined color="#a384ff">문제 다시 풀기</v-chip>
+          <v-chip small outlined color="orange darken-4">문제 다시 풀기</v-chip>
         </router-link>
       </v-row>
 
@@ -41,7 +40,7 @@
           <v-btn
             small
             outlined
-            color="#a384ff"
+            color="orange darken-4"
             @click="selectMyAnswer"
           >
             내가 고른 답
@@ -51,7 +50,7 @@
           <v-btn
             small
             outlined
-            color="#a384ff"
+            color="orange darken-4"
             @click="selectRealAnswer"
           >
             정답
@@ -100,7 +99,7 @@
         </v-row>
         <!-- 저장히기 -->
         <v-row class="justify-end mt-5">
-          <v-btn type="submit" outlined rounded small>저장하기</v-btn>
+          <v-btn type="submit" outlined rounded>저장하기</v-btn>
         </v-row>
       </v-form>
     </v-col>
