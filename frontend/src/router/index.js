@@ -95,7 +95,23 @@ const routes = [
     name: 'editstudy',
     component: editStudy,
     props: true,
+  },
+  {
+    path: '/login/oauth2/code/kakao',
+    name: 'KakaoLogin',
+    component: LoginView ,
+  },
+  {
+    path: '/login/oauth2/code/google',
+    name: 'googleLogin',
+    component: LoginView ,
+  },
+  {
+    path: '/login/oauth2/code/naver',
+    name: 'naverLogin',
+    component: LoginView ,
   }
+
 ]
 
 const router = new VueRouter({
