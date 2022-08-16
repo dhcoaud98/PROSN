@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-0 pt-10 mt-0">
+  <v-container fluid class="pa-0 pt-0 pt-md-10 mt-0">
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
     <v-row v-if="!isSearched">
       <!-- col 1: 메인 피드 부분 -->
@@ -11,25 +11,34 @@
         </v-row>    
 
 
-        <v-toolbar dark class="mt-10 mx-4">
+        <v-toolbar dark class="mt-10 mx-4" height="45px">
           <v-tabs background-color="#CCA5FE" grow>
-            <v-tab class="pa-0" @click="changeToProblemFeed" id="problemTab">
-              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">Probelm / Book</p>
-            </v-tab>
-              
-            <v-tab class="pa-0" @click="changeToInfoFeed" id="infoTab">
-              <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">INFORMATION</p>
-            </v-tab>         
+            <v-col class="px-0">
+              <v-tab class="pa-0" @click="changeToProblemFeed">
+                <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">PROBLEM</p>
+              </v-tab>            
+            </v-col>
+            <v-col class="px-0">
+              <v-tab class="pa-0" @click="changeToBookFeed">
+                <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">BOOK</p>
+              </v-tab>         
+            </v-col>
+            <v-col class="px-0">
+              <v-tab class="pa-0" @click="changeToInfoFeed">
+                <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">INFORMATION</p>
+              </v-tab> 
+            </v-col>       
           </v-tabs>
         </v-toolbar>
 
         <!-- row 1-2: 피드 컨텐츠 부분 -->
         <v-row>
-          <!-- 메인 피드 1. -- 문제/문제집 -->
           <v-col>
+            <!-- 메인 피드 1. -- 문제 -->
             <recent-problem id="problemFeed" :class="`${problemFeedClass}`" :mainProbs="mainProbs"></recent-problem>
-      
-            <!-- 메인 피드 2. -- 정보 -->
+            <!-- 메인 피드 2. -- 문제집 -->
+            <main-book id="BookFeed" :class="`${bookFeedClass}`" :mainBooks="mainBooks"></main-book>            
+            <!-- 메인 피드 3. -- 정보 -->
             <info id="infoFeed" :class="`${infoFeedClass}`" :mainInfos="mainInfos"></info>
           </v-col>
         </v-row>
@@ -54,8 +63,11 @@
 import RecentProblem from '../components/MainPage/RecentProblem.vue'
 import info from '../components/MainPage/info.vue'
 import SideBar from '@/components/SideBar.vue'
-// import problem from '@/store/modules/problem'
 import SearchResultView from '@/views/SearchResultView.vue'
+import InfiniteLoading from 'vue-infinite-loading'
+import MainBook from '../components/MainPage/MainBook.vue'
+import axios from 'axios'
+import drf from '@/api/drf.js'
 
 export default {
   name: 'MainPageView',
@@ -63,8 +75,10 @@ export default {
     return {
       feedFlag: 0,
       problemFeedClass: 'd-flex',
+      bookFeedClass: 'd-none',
       infoFeedClass: 'd-none',
-      mainInfos : [],
+      mainInfos :[],
+      mainBooks: [],
       mainProbs: [],
     }
   },
@@ -73,6 +87,8 @@ export default {
     info,
     SideBar,
     SearchResultView,
+    InfiniteLoading,
+    MainBook,
   },
   computed : {
     isSearched() {
@@ -83,37 +99,27 @@ export default {
     changeToProblemFeed() {
       this.feedFlag = 0
       // console.log(this.feedFlag)
-       // 2. 해당 탭에 불 들어오게
-        const problemTab = document.querySelector('#problemTab')
-        const infoTab = document.querySelector('#infoTab')
-        // problemTab.classList.add("clicked-main-tab")
-        // console.log(problemTab.classList)
-        if(infoTab.classList.length >= 5){
-          // infoTab.classList.remove("clicked-main-tab")
-        }
-        this.problemFeedClass ='d-flex'
-        this.infoFeedClass = 'd-none'
+      this.problemFeedClass ='d-flex'
+      this.bookFeedClass = 'd-none'
+      this.infoFeedClass = 'd-none'
     },
-    changeToInfoFeed() {
+    changeToBookFeed() {
       this.feedFlag = 1
       // console.log(this.feedFlag)
-
-      const problemTab = document.querySelector('#problemTab')
-      const infoTab = document.querySelector('#infoTab')
-      // infoTab.classList.add("clicked-main-tab")
-        // console.log(infoTab.classList)
-        if(problemTab.classList.length >= 5){
-          // console.log('hi')
-          // problemTab.classList.remove("clicked-main-tab")
-        }
-        this.problemFeedClass ='d-none'
-        this.infoFeedClass = 'd-flex'
+      this.problemFeedClass ='d-none'
+      this.bookFeedClass = 'd-flex'
+      this.infoFeedClass = 'd-none'
+    },    
+    changeToInfoFeed() {
+      this.feedFlag = 2
+      this.problemFeedClass ='d-none'
+      this.bookFeedClass = 'd-none'
+      this.infoFeedClass = 'd-flex'
     },
   },
-  created: {
-    getInfos () {
+  created() {
       axios({
-        url: drf.post.information(),
+        url: drf.postFeed.information(),
         method: 'get',
       })
       .then(res => {
@@ -122,10 +128,9 @@ export default {
       .catch(err => {
         console.log(err);
       })
-    },
-    getProbs () {
+
       axios({
-        url: drf.post.problem(),
+        url: drf.postFeed.problem(),
         method: 'get',
       })
       .then(res => {
@@ -134,8 +139,18 @@ export default {
       .catch(err => {
         console.log(err);
       })
+
+      axios({
+        url: drf.postFeed.workbook(),
+        mehtod: 'get',
+      })
+      .then(res => {
+        this.mainProbs = res.data.content
+      })
+      .catch(err => {
+        console.log(err);
+      })
     },
-  }
 }
 </script>
 

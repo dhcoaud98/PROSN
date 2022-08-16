@@ -1,7 +1,9 @@
 <template>
-  <v-container>
-    <scrap-modal-list-items></scrap-modal-list-items>
-  </v-container>
+  <v-list>
+    <div v-for="(scrapDetail, idx) in scrapDetails" :key="idx">
+      <scrap-modal-list-items></scrap-modal-list-items>
+    </div>
+  </v-list>
 </template>
 
 <script>
@@ -12,7 +14,11 @@ export default {
   name: 'ScrapModalList',
   components: {
     ScrapModalListItems,
+  },
+  props :{
+    scrapDetails: Array
   }
+
 }
 </script>
 
