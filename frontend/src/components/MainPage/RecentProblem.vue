@@ -7,13 +7,13 @@
 					:key="idx"
 					:mainProb="mainProb"
 				></recent-problem-items>
-				<!-- <v-pagination
+				<v-pagination
 					v-model="nowPage"
 					:length="endPage"
 					color="#A384FF"
 					circle
 					@input="handlePage()"
-				></v-pagination> -->
+				></v-pagination>
 			</v-col>
 		</v-row>
 	</div>
@@ -124,9 +124,9 @@ export default {
           params: params
         })
         .then(res => {
-          console.log("넘어온 data = ", res.data.content)
+          // console.log("넘어온 data = ", res.data.content)
           this.mainProbs = res.data.content
-          console.log("현재 data =" ,this.mainProbs)
+          // console.log("현재 data =" ,this.mainProbs)
         })
         .catch(err => {
           console.log("에러")
