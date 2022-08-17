@@ -70,7 +70,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.numOfDislikes
                 ))
                 .from(post)
-                .where(post.ptype.eq(PostType.Problem).or(post.ptype.eq(PostType.Workbook)))
+                .where(post.ptype.eq(PostType.Problem).or(post.ptype.eq(PostType.Workbook)).and(post.isDeleted.eq(isDeleted)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

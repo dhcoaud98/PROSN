@@ -10,15 +10,16 @@ import com.ssafy.prosn.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 @RestController
@@ -52,21 +53,28 @@ public class OauthController {
 //        return socialLoginResponseDto;
 //    }
 @GetMapping(value = "/kakao")
-public SocialLoginResponseDto kakaoOauthRedirect(@RequestParam String code,
+public SocialLoginResponseDto kakaoOauthRedirect(@RequestParam ("code") String code,
                                  @Value("${spring.security.oauth2.client.registration.kakao.client-id}") String client_id,
-                                 @Value("${spring.security.oauth2.client.registration.kakao.client-secret}") String client_secret,
+//                                 @Value("${spring.security.oauth2.client.registration.kakao.client-secret}") String client_secret,
                                  @Value("${spring.security.oauth2.client.registration.kakao.authorization-grant-type}") String authorization_grant_type,
                                  @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}") String redirect_uri) {
-
+    System.out.println("code=" + code);
     RestTemplate rt = new RestTemplate();
-
+    rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+    rt.setErrorHandler(new DefaultResponseErrorHandler() {
+        @Override
+        public boolean hasError(ClientHttpResponse response) throws IOException {
+            HttpStatus statusCode = response.getStatusCode();
+            return statusCode.series() == HttpStatus.Series.SERVER_ERROR;
+        }
+    });
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
     MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
     params.add("grant_type", authorization_grant_type);
     params.add("client_id", client_id);
-    params.add("client_secret", client_secret);
+//    params.add("client_secret", client_secret);
     params.add("redirect_uri", redirect_uri);
     params.add("code", code);
 
@@ -103,10 +111,12 @@ public SocialLoginResponseDto kakaoOauthRedirect(@RequestParam String code,
     KakaoProfile kakaoProfile = null;
     try {
         kakaoProfile = objectMapper.readValue(profileResponse.getBody(), KakaoProfile.class);
+        System.out.println("oauth controller kakaoProfile: " + kakaoProfile);
     } catch (JsonProcessingException e) {
         e.printStackTrace();
     }
-
+    Long id = kakaoProfile.getId();
+    log.info("id: "+id);
     SocialLoginResponseDto socialLoginResponseDto = SocialLoginResponseDto.builder()
             .oauthId(kakaoProfile.getId())
             .platform(Platform.KAKAO)
@@ -184,7 +194,7 @@ public SocialLoginResponseDto kakaoOauthRedirect(@RequestParam String code,
         
         //google refresh token 안 넘어옴
         SocialLoginResponseDto socialLoginResponseDto = SocialLoginResponseDto.builder()
-                .oauthId(Integer.parseInt(profileParams.get("id")))
+                .oauthId(Long.parseLong(profileParams.get("id")))
                 .platform(Platform.GOOGLE)
                 .email(profileParams.get("email"))
                 .name(profileParams.get("name"))
@@ -257,7 +267,7 @@ public SocialLoginResponseDto kakaoOauthRedirect(@RequestParam String code,
         }
 
         SocialLoginResponseDto socialLoginResponseDto = SocialLoginResponseDto.builder()
-                .oauthId(Integer.parseInt(naverProfile.getResponse().getId()))
+                .oauthId(Long.parseLong(naverProfile.getResponse().getId()))
                 .platform(Platform.NAVER)
                 .email(naverProfile.getResponse().getEmail())
                 .name(naverProfile.getResponse().getName())
