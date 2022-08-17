@@ -9,6 +9,34 @@
         <v-row class="d-flex mt-8 ms-8">
           <img src="@/assets/prosn_logo_sm.png" alt="..." class="small-logo">
           <h2 class="ms-3 dark--text font-weight-regular">F E E D</h2>
+
+          <!-- 피드에 문제, 정보, 스터디 작성을 위한 드롭다운 0817 임지민 -->
+          <v-col class="py-0 text-end pr-5 mr-5">
+            <div class="mr-5">
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                  <v-icon color="#a384ff">mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item
+                    v-for="(item, index) in items"
+                    :key="index"
+                    link
+                  >
+                    <v-list-item-title 
+                      style="color: #A384FF;"
+                      @click="moveToCreate(item.url)">{{ item.title }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </v-col>
         </v-row>    
 
         <!-- 카테고리  --> 
@@ -38,13 +66,8 @@
           <v-tabs background-color="#CCA5FE" grow>
             <v-col class="px-0">
               <v-tab class="pa-0" @click="changeToProblemFeed">
-                <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">PROBLEM</p>
+                <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">PROBLEM/BOOK</p>
               </v-tab>            
-            </v-col>
-            <v-col class="px-0">
-              <v-tab class="pa-0" @click="changeToBookFeed">
-                <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">BOOK</p>
-              </v-tab>         
             </v-col>
             <v-col class="px-0">
               <v-tab class="pa-0" @click="changeToInfoFeed">
@@ -90,7 +113,6 @@ import RecentProblem from '../components/MainPage/RecentProblem.vue'
 import info from '../components/MainPage/info.vue'
 import SideBar from '@/components/SideBar.vue'
 import SearchResultView from '@/views/SearchResultView.vue'
-import InfiniteLoading from 'vue-infinite-loading'
 import MainBook from '../components/MainPage/MainBook.vue'
 import axios from 'axios'
 import drf from '@/api/drf.js'
@@ -100,6 +122,20 @@ export default {
   name: 'MainPageView',
   data(){
     return {
+      items: [
+        { 
+          title: 'PROBLEM +',
+          url: '/createproblem'
+        },
+        { 
+          title: 'INFORMATION +',
+          url: '/createinfo' 
+        },
+        { 
+          title: 'STUDY +',
+          url: '/createstudy'
+        },
+      ],
       selectedUser : '전체',
       selectedDB: 'whole',
       toDB: 'whole',
@@ -136,7 +172,6 @@ export default {
     info,
     SideBar,
     SearchResultView,
-    InfiniteLoading,
     MainBook,
   },
   computed : {
@@ -149,6 +184,9 @@ export default {
     ...mapGetters(['accessToken', 'currentUser'])
   },
   methods : {
+    moveToCreate(url){
+      this.$router.push({ path: url})
+    },
     changeToProblemFeed() {
       this.feedFlag = 0
       // console.log(this.feedFlag)
@@ -156,13 +194,6 @@ export default {
       this.bookFeedClass = 'd-none'
       this.infoFeedClass = 'd-none'
     },
-    changeToBookFeed() {
-      this.feedFlag = 1
-      // console.log(this.feedFlag)
-      this.problemFeedClass ='d-none'
-      this.bookFeedClass = 'd-flex'
-      this.infoFeedClass = 'd-none'
-    },    
     changeToInfoFeed() {
       this.feedFlag = 2
       this.problemFeedClass ='d-none'
@@ -348,6 +379,7 @@ export default {
         mehtod: 'get',
       })
       .then(res => {
+        console.log('문제집 조회 =', res.data)
         this.mainBooks = res.data.content
       })
       .catch(err => {

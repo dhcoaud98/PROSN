@@ -2,6 +2,11 @@
 	<div>
 		<v-row class="pa-0 ma-0" rounded>
 			<v-col cols="12" class="pa-0">
+				<recent-problem-items
+					v-for="(mainProb, idx) in mainProbs"
+					:key="idx"
+					:mainProb="mainProb"
+				></recent-problem-items>
         <div v-if="selectedProb">
           <recent-problem-items 
             v-for="(mainProb, idx) in selectedProb"
@@ -150,20 +155,7 @@ export default {
           })
         }
       },
-      // 인피니트 스크롤 0815 임지민
-      // 정의
-      triggerScroll(e) {
-        const { scrollHeight, scrollTop, clientHeight } = e.target
-        const isAtTheBottom = scrollHeight === scrollTop + clientHeight
-
-        // 일정 지점 아래로 내려오면 함수 실행
-        if (isAtTheBottom) {
-          this.loadScroll()
-        }
-      },
-      // 내려오면 api 호출하여 아래에 더 추가, total값 최대이면 호출 안함
-      loadScroll() {
-      }
+      
     }
 }
 </script>

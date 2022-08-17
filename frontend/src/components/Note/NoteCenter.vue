@@ -40,12 +40,50 @@
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mt-3 mx-5">작성 전 문제</p>
       <!-- <p>hi</p> -->
       <!-- <p>{{ beforeProbs }} </p> -->
-      <note-list :selectedDB="selectedDB" :beforeProbs="beforeProbs"></note-list>
     </v-row>
+    <v-row v-if="noBeforeProbs">
+      <v-col class="text-center">
+        <p>아직 작성 전 오답노트가 없습니다</p>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <note-list :selectedDB="selectedDB" :beforeProbs="beforeProbs"></note-list>
+      </v-col>
+    </v-row>
+    <v-row class="text-center justfy-center">
+      <v-col>
+        <v-pagination
+          v-model="page1"
+          :length="beforeProbs.length/3 + 1"
+          color="#A384FF"
+          class="mt-3"
+        ></v-pagination>
+      </v-col>
+  </v-row>
     <hr class="my-5 border-grey mx-5">
     <v-row class="ml-2">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mx-5">이미 작성한 문제</p>
-      <note-list :selectedDB="selectedDB" :afterProbs="afterProbs"></note-list>
+    </v-row>
+    <v-row v-if="noAfterProbs">
+      <v-col class="text-center">
+        <p>아직 작성 후 오답노트가 없습니다</p>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <note-list :selectedDB="selectedDB" :afterProbs="afterProbs"></note-list>
+      </v-col>
+    </v-row>
+    <v-row class="text-center justfy-center">
+      <v-col>
+        <v-pagination
+          v-model="page2"
+          :length="afterProbs.length/3 + 1"
+          color="#A384FF"
+          class="mt-3"
+        ></v-pagination>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -62,6 +100,10 @@ export default {
   },
   data() {
     return {
+      page1: 1,
+      page2: 1,
+      noBeforeProbs: false,
+      noAfterProbs: false,
       selectedUser : '전체',
       selectedDB: 'whole',
       categories: [
@@ -120,9 +162,17 @@ export default {
           if (oneParam === 'false'){
             this.beforeProbs = res.data.content
             console.log('before=', this.beforeProbs)
+          
+            if (!this.beforeProbs.length) {
+              this.noBeforeProbs = true
+            }
+    
           } else {
             this.afterProbs = res.data.content
             console.log('after=',this.afterProbs)
+            if (!this.afterProbs.length){
+               this.noAfterProbs = true
+              }
           }
           // console.log('in'); //ok
         })
@@ -176,6 +226,7 @@ export default {
   created() {
     this.wholeNote()
 
+    
     // 유저 정보 확인
     axios({
       url: drf.api + 'user/' + 'info/' + `${this.currentUser}`,

@@ -81,6 +81,7 @@
         </v-card-text>
       </v-card>
     </div>
+
   </div>
 </template>
 
@@ -88,7 +89,7 @@
 export default {
   data() {
     return {
-
+      page: 1,
     }
   },
   props: {

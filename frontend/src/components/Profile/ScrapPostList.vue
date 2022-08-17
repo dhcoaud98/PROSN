@@ -1,7 +1,12 @@
 <template>
   <v-container class="mt-5 px-0 px-md-3">
     <!-- v-for 사용하기 -->
-    {{ scrapFolders}}
+    <!-- {{ scrapFolders}} -->
+    <v-row v-if="noScraps">
+      <v-col class="text-center">
+        <p>스크랩한 폴더가 없습니다</p>
+      </v-col>
+    </v-row>
     <div v-for="scrapFolder in scrapFolders" :key="scrapFolder.id">
       <scrap-post-list-items :scrapFolder="scrapFolder"></scrap-post-list-items>
     </div>
@@ -9,7 +14,7 @@
     <v-container class="text-center ">
       <v-pagination
         v-model="page"
-        :length="5"
+        :length="scrapFolders.length/5 + 1"
         color="#A384FF"
       ></v-pagination>
     </v-container>
@@ -32,6 +37,7 @@ export default {
     return {
       page: 1,
       scrapFolders: [],
+      noScraps: false,
     }
   },
   computed: {
@@ -53,6 +59,10 @@ export default {
       .catch(err => {
         console.log('스크랩 폴더 조회 에러', err);
       })
+
+      if (this.scrapFolders.length === 0) {
+        this.noScraps = true
+      }
   }
 }
 </script>
