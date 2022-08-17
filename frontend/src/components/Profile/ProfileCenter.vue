@@ -10,26 +10,28 @@
       <!-- 뱃지, 이름 -->
       <v-container class="pa-0 mx-0">
         <v-row class="d-flex justify-space-between align-end">
-          <div class="d-flex">
-            <div><v-chip color="orange lighten-2" class="white--text font-weight-bold mx-3">P R O S N</v-chip></div>
-            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 페이지</h3></div>
+         <div class="d-flex">
+            <div><v-chip :color="`${this.badgeColor}`" class="white--text font-weight-bold mx-3">{{badge}}</v-chip></div>
+            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{ userInfo.name }}</h2><h3 class="grey--text">님의 스터디</h3></div>
           </div>
           
           <!-- 팔로우 팔로워 정보 -->
           <!-- 베스트는 이거 누르면 명단 볼수있는건데 이거는 최후순위 -->
           <div class="d-flex">
-            <h4 class="grey--text text--darken-2 me-3">팔로워 0명</h4>
-            <h4 class="grey--text text--darken-2">팔로잉 0명</h4>
+            <h4 class="grey--text text--darken-2 me-3">팔로워 {{ userInfo.followerCount }}명</h4>
+            <h4 class="grey--text text--darken-2">팔로잉 {{ userInfo.followingCount }}명</h4>
           </div>
         </v-row>
 
         <v-row class="ps-10">
-          <v-col cols="12" class="detail_text ma-0 pa-0">문제 풀이 500문제</v-col>
-          <v-col cols="12" class="detail_text ma-0 pa-0">문제 제출 300문제</v-col>
-          <v-col cols="12" class="detail_text ma-0 pa-0">정답률 68%</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">문제 풀이 {{ userInfo.problemSolvingCount }} 문제</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">정답률 {{ userInfo.correctRate }}%</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">문제/정보 작성 {{ userInfo.writePostCount }}문제</v-col>
+          <v-col cols="6" class="detail_text ma-0 pa-0">포인트 {{ userInfo.point }}점</v-col>
         </v-row>
 
-        <v-row class="pa-0"> 
+        <!-- 만약 내 페이지라면 글작성 -->
+        <v-row v-if="currentUser === userInfo.id" class="pa-0"> 
           <v-col class="pa-0 px-2">
             <v-btn text rounded class="pa-0 dark--text" @click="event1()" color="#512DA8" width="100%">
               <v-icon color="#A384FF" class="me-2">quiz</v-icon><h3>PROBLEM +</h3>
@@ -41,11 +43,22 @@
             </v-btn>
           </v-col>
         </v-row>
+
+        <!-- 내 페이지 아니면 팔로우/언팔로우 버튼 -->
+        <v-row v-else class="pa-0"> 
+          <v-col class="pa-0 px-2">
+            <v-btn @click="followEvent" text rounded class="pa-0 dark--text" color="#512DA8" width="100%">            
+              <h3 v-if="isFollow">팔로우 취소</h3>
+              <h3 v-else>팔로우</h3>
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-container>
     </v-row>
 
     <!-- 2. 프로필 하단 -->
-    <v-row class="profile_tab d-flex justify-center mt-5 mx-5 mb-0">
+    <!-- 내 프로필일 때 -->
+    <v-row v-if="currentUser === userInfo.id" class="profile_tab d-flex justify-center mt-5 mx-5 mb-0">
       <v-toolbar dark height="45px">
         <v-tabs v-model="tabs" background-color="#CCA5FE" grow>
           <v-col class="px-0">
@@ -70,6 +83,22 @@
         <my-post-list></my-post-list>
       </v-container>
     </v-row>
+
+    <!-- 다른사람 프로필일 때 -->
+    <v-row v-else class="profile_tab d-flex justify-center mt-5 mx-5 mb-0">
+      <v-toolbar dark height="45px">
+        <v-tabs v-model="tabs" background-color="#CCA5FE" grow>
+          <v-col class="px-0">
+            <v-tab class="tab--text white--text pa-0" href="#three"><h3 class="font-weight-regular">{{userInfo.name}}'s Post</h3></v-tab>
+          </v-col>
+        </v-tabs>
+      </v-toolbar>
+
+      <v-container class="ma-0 pa-0" v-if="activeFab.page === '3'">
+        <my-post-list></my-post-list>
+      </v-container>
+    </v-row>
+
   </v-container>
 </template>
 
@@ -78,6 +107,8 @@ import SolvedProblemList from "./SolvedProblemList.vue"
 import ScrapPostList from "./ScrapPostList.vue"
 import MyPostList from "./MyPostList.vue"
 import { mapGetters } from 'vuex'
+import axios from 'axios'
+import drf from '@/api/drf'
 
 export default {
   name: 'ProfileCenter',
@@ -88,19 +119,15 @@ export default {
   },
   data () {
     return {
-      ranking : [
-        {rank_name: 'Prosn', rank_color: 'rgb(142,68,173)', rank_solve_problem: 1000},
-        {rank_name: 'Master', rank_color: 'rgb(231,76,60)', rank_solve_problem: 500},
-        {rank_name: 'Gold', rank_color: 'rgb(255, 215, 0)', rank_solve_problem: 200},
-        {rank_name: 'Silver', rank_color: 'rgb(192, 192, 192)', rank_solve_problem: 100},
-        {rank_name: 'Bronze', rank_color: 'rgb(176, 141, 87)', rank_solve_problem: 50},
-        {rank_name: 'Green', rank_color: 'rgb(0, 128, 0)', rank_solve_problem: 10},
-        {rank_name: 'Seed', rank_color: 'rgb(0, 207, 87)', rank_solve_problem: 0},
-      ],
       fab: false,
       hidden: false,
       tabs: null,
       pass: '',
+      userInfo: {},
+      badge: 'S E E D',
+      badgeColor: 'rgb(0, 207, 87)',
+      profileOwnerId: '',
+      isFollow: false,
     }
   },
   computed: {
@@ -112,7 +139,7 @@ export default {
         default: return {}
       }
     },
-    ...mapGetters(['accessToken', 'userId', 'userName'])
+    ...mapGetters(['accessToken', 'userId', 'userName', 'currentUser'])
   },
   methods:{
     event1 () {
@@ -120,7 +147,84 @@ export default {
     },
     event2 () {
       this.$router.push({ path: 'createinfo' })
+    },
+    followEvent () {
+      axios({
+        url: drf.api + 'user/' + 'following/' + `${this.userInfo.id}`,
+        method: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        }
+      })
+      .then(res => {
+        console.log('성공')
+        console.log(res.data)
+        // console.log("totalPages =",res.data.totalPages)
+        // console.log("totalElements =", res.data.totalElements)
+      })
+      .catch(err => {
+        console.log("에러")
+        console.log(err)
+      })    
     }
+  },
+  created() {
+    // 유저정보 확인
+    const profileOwnerId = location.href.slice(30)
+
+    axios({
+      url: drf.api + 'user/' + 'info/' + `${profileOwnerId}`,
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      // console.log('프로필 주인', res.data)
+      // console.log('지금 프로필 보는사람', this.currentUser)
+      this.userInfo = res.data
+      // 뱃지 컬러랑 문구 정하기
+      if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 10 ) {
+        this.badge = "G R E E N"
+        this.badgeColor = "rgb(0, 128, 0)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 50) {
+        this.badge = "B R O N Z E"
+        this.badgeColor = "rgb(176, 141, 87)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 100) {
+        this.badge = "S I L V E R"
+        this.badgeColor = "rgb(192, 192, 192)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 200) {
+        this.badge = "G O L D"
+        this.badgeColor = "rgb(255, 215, 0)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 500) {
+        this.badge = "M A S T E R"
+        this.badgeColor = "rgb(231,76,60)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 1000) {
+        this.badge = "P R O S N"
+        this.badgeColor = "rgb(142,68,173)"
+      } 
+    })
+
+    axios({
+      url: drf.api + 'user/following',
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      const myFollowingList = res.data.content
+      console.log(this.userInfo.id)
+      myFollowingList.forEach((element) => {
+        // console.log('element', element)
+        // console.log('id', this.userInfo.id)
+        if (element.id == this.userInfo.id) {
+        this.isFollow = true
+      }})
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 }
 </script>

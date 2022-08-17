@@ -17,21 +17,23 @@
         </v-list-item>
 
         <v-list nav>
-          <v-list-item v-for="(item, i) in items" :key="i">
+          <v-list-item>
             <v-list-item-content class="py-0 font-parent-mid">
-              <!-- <네브바만 남기고 오른쪽 영역 갈아끼기> 0729 임지민
-                클릭하면 to 속성 변경-> app.vue에서 해야하는데 컴포넌트 구조가 복잡해서 prop하고 emit하기가 어려울 것 같다.
-                그래서 vuex를 활용해서 특정 요소를 클릭하면 app.vue의 router-view/link의 name/to 속성을 바꾼다.
-                  - 클릭하면 vuex로 fetch해서 요소를 바꾸고
-                그래서 app.vue가 created될 때 vuex에서 state를 가져와서 띄운다.
-               -->
-              <router-link :to="`/${item.urlName}`" class="text-decoration-none black--text">
-                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="item.urlName">{{ item.text }}</v-list-item-title>
-              </router-link>
+              <router-link :to="`/study`" class="text-decoration-none black--text mb-0">
+                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="items[0].urlName">{{ items[0].text }}</v-list-item-title>
+              </router-link>         
+            
+              <router-link :to="`/note`" class="text-decoration-none black--text mb-0">
+                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="items[1].urlName">{{ items[1].text }}</v-list-item-title>
+              </router-link>     
+              
+              <router-link :to="`/profile/${currentUser}`" class="text-decoration-none black--text mb-0">
+                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="items[2].urlName">{{ items[2].text }}</v-list-item-title>
+              </router-link>  
             </v-list-item-content>
           </v-list-item>
         </v-list>
-      </v-navigation-drawer>
+      </v-navigation-drawer>         
     </v-card>
     
   <!-- <v-app class="bg-grey d-none d-sm-flex">
@@ -80,6 +82,7 @@ export default {
   name: 'NavBar',
   data () {
     return {
+      tmp: '',
       loginDisplay: 'd-flex',
       items: [
         { 
@@ -94,13 +97,14 @@ export default {
         },
         { 
           text: 'P R O F I L E',
-          url: 'profile',
+          url: `profile/${this.tmp}`,
           urlName: 'profile',
         },
       ]
     }
   },
   computed: {
+    ...mapGetters(['currentUser'])
   },
   watch: {
     // url이 바뀔 때마다 감시해서 nav바 상태 바꿔주기
@@ -122,7 +126,11 @@ export default {
             this.$store.dispatch('problem/searchKeyword', "")
     },
   },
-  
+  created () {
+    // console.log(`profile/${this.currentUser}`)
+    // console.log(typeof(this.currentUser))
+    this.tmp = this.currentUser
+  }
 }
 </script>
 

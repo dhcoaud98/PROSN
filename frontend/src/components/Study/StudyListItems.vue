@@ -1,6 +1,7 @@
 <template>
   <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8">
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
+    <!-- <p>{{study}}</p> -->
     <v-card-title class="pa-0 purple-gradation">
       <v-container class="pa-0">
         <!-- 스터디 제목 / 현재인원수와 총인원수 -->
@@ -22,7 +23,7 @@
     <v-card-text>
       <v-row class="ma-4 mb-2 d-flex justify-space-between">
         <!-- 출제자 -->
-          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Leader</div>
+          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Leader. {{ master }}</div>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
           <v-btn @click="openModal" text large rounded height="45px" class="d-none d-md-flex">
@@ -36,12 +37,15 @@
     </v-card-text>
 
     <!-- 모달 -->
-    <study-modal @close="closeModal" v-if="this.modal" :study="study"></study-modal>
+    <study-modal @close="closeModal" v-if="this.modal" :study="study" :myStudydetail="myStudydetail"></study-modal>
   </v-card>
 </template>
 
 <script>
 import StudyModal from "@/components/Study/StudyModal.vue"
+import { mapGetters } from 'vuex'
+import drf from '@/api/drf'
+import axios from 'axios'
 
 export default {
   name: 'StudyListItems',
@@ -49,6 +53,8 @@ export default {
     return {
       modal: false,
       pageId: 0,
+      myStudydetail: [],
+      master: '',
     }
   },
   props: {
@@ -56,6 +62,9 @@ export default {
   },
   components: {
     StudyModal,
+  },
+  computed: {
+    ...mapGetters(['currentUser', 'accessToken'])
   },
   methods: {
     openModal() {
@@ -76,7 +85,27 @@ export default {
     //   this.$emit('refresh')
     // }
   },
+  created(){
+    // 나의 스터디마다 정보 조회
+    // console.log("왜?")
+    // console.log("확인 =", this.myStudy)
 
+    // api/study/{studyid}에 해당하는 detail study 정보 가져오기
+    axios({
+      url: drf.study.study() + `${this.study.id}`,
+      methods: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      // console.log("studydetail =" , res.data)
+      this.myStudydetail = res.data
+      this.master = res.data.masterName
+      // console.log(this.master);
+      // console.log("myStudydetail =",this.myStudydetail.masterName)
+    })
+  }
 }
 </script>
 
