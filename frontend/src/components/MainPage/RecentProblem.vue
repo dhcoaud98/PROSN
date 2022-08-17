@@ -2,18 +2,27 @@
 	<div>
 		<v-row class="pa-0 ma-0" rounded>
 			<v-col cols="12" class="pa-0">
-				<recent-problem-items
-					v-for="(mainProb, idx) in mainProbs"
-					:key="idx"
-					:mainProb="mainProb"
-				></recent-problem-items>
-				<!-- <v-pagination
+        <div v-if="selectedProb">
+          <recent-problem-items 
+            v-for="(mainProb, idx) in selectedProb"
+            :key="idx"
+            :mainProb="mainProb"
+          ></recent-problem-items>
+        </div>
+        <div v-else>
+          <recent-problem-items 
+            v-for="(mainProb, idx) in mainProbs"
+            :key="idx"
+            :mainProb="mainProb"
+          ></recent-problem-items>
+        </div>
+				<v-pagination
 					v-model="nowPage"
 					:length="endPage"
 					color="#A384FF"
 					circle
 					@input="handlePage()"
-				></v-pagination> -->
+				></v-pagination>
 			</v-col>
 		</v-row>
 	</div>
@@ -36,10 +45,16 @@ export default {
         endPage: 1,
         value: null,
         page: 0,
+        selectedProb:[],
       }
     },
+    props: {
+      selectedDB: String,
+      selectedProb: Array,
+      mainProbs: Array,
+    },
     components : {
-        RecentProblemItems,
+      RecentProblemItems,
     },
     computed: {
       ...mapGetters(['accessToken']),
@@ -52,34 +67,10 @@ export default {
     },
     created() {
       // 페이지 렌더링 될 때 첫번 째 엑시오스
-      // 검색어가 있을 때랑 없을 때!
-      if(this.isSearched){
-        const params = {
-          title: '',
-          page: this.page,
-          size: 5, 
-          sort: 'updated,DESC',
-        } 
-        axios({
-          url: drf.api + 'post' + '/search',
-          method: 'get',
-          headers: {
-            Authorization : this.accessToken,
-          },
-          params: params
-
-        })
-        .then(res => {
-          this.mainProbs = res.data.content
-          console.log("problem = ",this.mainProbs)
-          this.endPage = res.data.totalPages + 1
-          console.log("totalPage =", res.data)
-        })
-        .catch(err => {
-          console.log("에러")
-          console.log(err)
-        })
-      } else { // 검색어 없을 때
+      // 1. 검색어가 있을 때!
+      if(this.selectedDB != 'whole'){
+        console.log(this.selectedProb)
+      } else { // 2. 검색어 없을 때
         const params = {
           page: 0,
           size: 5, 
@@ -96,7 +87,7 @@ export default {
         .then(res => {
           this.mainProbs = res.data.content
           console.log("problem = ",this.mainProbs)
-          this.endPage = res.data.totalPages + 1
+          this.endPage = res.data.totalPages 
           console.log("totalPage =", res.data)
         })
         .catch(err => {
@@ -109,29 +100,55 @@ export default {
       handlePage() {
         console.log("event page= ", Number(event.target.ariaLabel.slice(-1)))
         this.page = Number(event.target.ariaLabel.slice(-1))
-
-        const params ={
-          page: this.page - 1,
-          size: 5,
-          sort: 'updated,DESC',
+        // 1. 검색어 있을 때
+        if(this.selectedDB != 'whole'){
+          const params = {
+            title : ``,
+            code : this.selectedDB,
+            dtype : 'PROBLEM',
+            page : this.page - 1,
+            size : 5,
+            sort: 'updated,DESC'
+          }
+          axios({
+            url: drf.api + 'post/' + 'search',
+            method: 'get',
+            headers: {
+              Authorization : this.accessToken,
+            },
+            params: params,
+          })
+          .then(res => {
+            console.log("prob 서치 =", res.data.content)
+            this.selectedProb = res.data.content
+          })
+          .catch(err => {
+            console.log("err=",err)
+          })
+        } else { // 2. 검색어 없을 때
+          const params ={
+            page: this.page - 1,
+            size: 5,
+            sort: 'updated,DESC',
+          }
+          axios({
+            url: drf.api + 'post' + '/problem',
+            method: 'get',
+            headers: {
+              Authorization: this.accessToken
+            },
+            params: params
+          })
+          .then(res => {
+            console.log("넘어온 data = ", res.data.content)
+            this.mainProbs = res.data.content
+            console.log("현재 data =" ,this.mainProbs)
+          })
+          .catch(err => {
+            console.log("에러")
+            console.log(err)
+          })
         }
-        axios({
-          url: drf.api + 'post' + '/problem',
-          method: 'get',
-          headers: {
-            Authorization: this.accessToken
-          },
-          params: params
-        })
-        .then(res => {
-          console.log("넘어온 data = ", res.data.content)
-          this.mainProbs = res.data.content
-          console.log("현재 data =" ,this.mainProbs)
-        })
-        .catch(err => {
-          console.log("에러")
-          console.log(err)
-        })
       },
       // 인피니트 스크롤 0815 임지민
       // 정의
