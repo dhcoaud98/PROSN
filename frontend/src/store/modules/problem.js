@@ -7,7 +7,7 @@ export default ({
   namespaced: true,
   state: {
     componentName: '',
-    inputChange: null,
+    inputChange: '',
   },
   getters: {
     // isSearched는 현재 검색창에 단어를 검색했는지를 판별하기 위함!
@@ -16,7 +16,7 @@ export default ({
   },
   mutations: {
     SET_COMPONENT_NAME: (state, componentName) => state.componentName = componentName,
-    SET_SEARCH_WORD: (state, inputChange) => state.inputChange = inputChange
+    SET_SEARCH_WORLD: (state, inputChange) => state.inputChange = inputChange
   },
   actions: {
     changeComponentName ({commit}, componentName) {
@@ -27,8 +27,7 @@ export default ({
     },
     searchKeyword ({commit}, inputChange) {
       console.log('searchKeyword : ', inputChange)
-      commit('SET_SEARCH_WORD', inputChange)
-
+      commit('SET_SEARCH_WORLD', inputChange)
     }
   }
 })

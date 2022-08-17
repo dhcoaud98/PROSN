@@ -44,13 +44,13 @@ export default {
     data() {
       return {
         totalProbs: [],
-        mainProbs: [],
+        // mainProbs: [],
         nowPage: 1,
         clickPage: null,
         endPage: 1,
         value: null,
         page: 0,
-        selectedProb:[],
+        // selectedProb:[],
       }
     },
     props: {
