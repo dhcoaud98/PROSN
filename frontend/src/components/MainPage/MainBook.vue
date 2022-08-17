@@ -2,11 +2,11 @@
 	<div>
 		<v-row class="pa-0 ma-0" rounded>
 			<v-col cols="12" class="pa-0">
-				<search-info-items
-					v-for="(info, idx) in infos"
+				<main-book-items
+					v-for="(MainBook, idx) in MainBooks"
 					:key="idx"
-					:info="info"
-				></search-info-items>
+					:MainBook="MainBook"
+				></main-book-items>
 				<v-pagination
 					v-model="nowPage"
 					:length="endPage"
@@ -22,23 +22,21 @@
 <script>
 import axios from 'axios';
 import drf from '@/api/drf';
-import SearchInfoItems from '@/components/SearchResult/SearchInfoItems.vue';
+import MainBookItems from '@/components/MainPage/MainBookItems.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	data() {
 		return {
 			totalInfos: [],
-			infos: [],
+			MainBooks: [],
 			nowPage: 1,
-			clickPage: null,
 			endPage: 0,
-			value: null,
 			page: 0,
 		};
 	},
 	components: {
-		SearchInfoItems,
+		MainBookItems,
 	},
 	computed: {
 		...mapGetters(['accessToken'])
@@ -53,17 +51,16 @@ export default {
 		};
 		axios({
 			// 0808 오채명 : 모든 게시글, 문제 가져올 때 확인하려고 위의 주소로 했는데, 밑에꺼로 해야함
-			url: drf.api + 'post' + '/information',
+			url: drf.api + 'post' + '/workbook',
 			method: 'get',
 			headers: {
 				Authorization: this.accessToken,
 			},
 			params: params,
-			//page=0&size=3&sort=updated,desc
 		})
 			.then((res) => {
-				this.infos = res.data.content;
-				console.log('infos = ', this.infos);
+				this.MainBooks = res.data.content;
+				console.log('MainBooks = ', this.MainBooks);
 				// console.log(res.data.totalPages)
 				this.endPage = res.data.totalPages;
 			})
@@ -83,7 +80,7 @@ export default {
 				sort: 'updated,DESC',
 			};
 			axios({
-				url: drf.api + 'post' + '/information',
+				url: drf.api + 'post' + '/workbook',
 				method: 'get',
 				headers: {
 					Authorization: this.accessToken,
@@ -92,8 +89,8 @@ export default {
 			})
 				.then((res) => {
 					console.log('넘어온 data = ', res.data.content);
-					this.infos = res.data.content;
-					console.log('현재 data =', this.infos);
+					this.MainBooks = res.data.content;
+					console.log('현재 data =', this.MainBooks);
 				})
 				.catch((err) => {
 					console.log('에러');

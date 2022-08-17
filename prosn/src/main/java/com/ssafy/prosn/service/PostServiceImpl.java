@@ -141,7 +141,8 @@ public class PostServiceImpl implements PostService {
         } else {
             log.info("문제집 디테일");
             Workbook workbook = (Workbook) post;
-            return new InformationDetailResponseDto(
+
+            return new WorkbookDetailResponseDto(
                     workbook.getId(),
                     workbook.getTitle(),
                     workbook.getNumOfLikes(),
@@ -150,7 +151,7 @@ public class PostServiceImpl implements PostService {
                     workbook.getViews(),
                     new UserResponseDto(workbook.getUser().getId(), workbook.getUser().getName()),
                     getTags(workbook),
-                    null,
+                    workbook.getProblemWorkbooks(),
                     PostType.Workbook
             );
         }

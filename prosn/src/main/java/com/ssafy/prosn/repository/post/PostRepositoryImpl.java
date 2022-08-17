@@ -36,6 +36,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post,
                         post.id,
                         post.title,
+                        post.mainText,
                         post.user.id.as("writerId"),
                         post.user.name.as("writerName"),
                         post.created,
@@ -71,6 +72,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 ))
                 .from(post)
                 .where(post.ptype.eq(PostType.Problem).or(post.ptype.eq(PostType.Workbook)).and(post.isDeleted.eq(isDeleted)))
+                .orderBy(post.updated.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

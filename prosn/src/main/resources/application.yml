@@ -58,7 +58,7 @@ spring:
             redirect_uri: http://localhost:8080/login/oauth2/code/google
 
   redis:
-    host: localhost
+    host: i7a705.p.ssafy.io
     port: 6379
 
   jpa:

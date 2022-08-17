@@ -19,10 +19,10 @@
             <p class="font-weight-bold mb-0">스터디 이름</p>
           </v-col>
           <v-col class="col-12 pa-0">
-            <v-text-field {{ title }}
+            <v-text-field
               maxlength="20" 
               counter required dense
-              v-model="credentials.title"></v-text-field>
+              v-model="myStudydetail.title"></v-text-field>
           </v-col>
         </v-row>
 
@@ -31,12 +31,12 @@
           <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">카테고리</p></v-col>
           <v-col class="col-12 pa-0">
             <v-autocomplete 
-            :items="categories" 
+            :items="categories"
+            label="카테고리를 다시 선택해주세요" 
             item-text="toUser" 
             item-value="toDB" 
-            {{ tags }}
             required dense chips small-chips multiple
-            v-model="credentials.tags"></v-autocomplete>          
+            v-model="myStudydetail.tags"></v-autocomplete>          
           </v-col>
         </v-row>
 
@@ -49,10 +49,9 @@
                 <v-col class="col-12 pa-0">
                   <v-select 
                   :items="numberofpeople" 
-                  {{ maxPerson }}
                   dense 
                   class="pe-md-2"
-                  v-model="credentials.maxPerson"></v-select>
+                  v-model="myStudydetail.maxPerson"></v-select>
                 </v-col>
               </v-row>
             </v-container>
@@ -63,6 +62,8 @@
             <v-container class="ps-0 pe-0">
               <v-row>
                 <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">모집 마감일</p></v-col>
+                <!-- <p>{{ myStudydetail }}</p> -->
+                <!-- <p>{{credentials}}</p> -->
                 <v-col class="col-12 pa-0">
                   <v-menu
                     ref="menu"
@@ -74,9 +75,9 @@
                     min-width="auto"
                   >
                     <template v-slot:activator="{ on, attrs }">
-                      <v-text-field v-model="credentials.expiredDate" label="마감일을 선택하세요" readonly v-bind="attrs" v-on="on" dense class="ps-md-2"></v-text-field>
+                      <v-text-field v-model="myStudydetail.expiredDate" label="마감일을 다시 선택해주세요" readonly v-bind="attrs" v-on="on" dense class="ps-md-2"></v-text-field>
                     </template>
-                    <v-date-picker v-model="credentials.expiredDate" color="#A384FF" no-title scrollable :allowed-dates="allowedDates">
+                    <v-date-picker v-model="myStudydetail.expiredDate" color="#A384FF" no-title scrollable :allowed-dates="allowedDates">
                       <v-spacer></v-spacer>
                       <v-btn text color="#A384FF" @click="menu = false">Cancel</v-btn>
                       <v-btn text color="#A384FF" @click="$refs.menu.save(date)">OK</v-btn>
@@ -93,9 +94,8 @@
           <v-col class="col-12 pa-0 mb-2"><p class="mb-0 font-weight-bold">장소</p></v-col>
           <v-col class="col-12 pa-0">
             <v-text-field 
-            {{ place }}
             required dense
-            v-model="credentials.place"></v-text-field>
+            v-model="myStudydetail.place"></v-text-field>
           </v-col>
         </v-row>
 
@@ -105,11 +105,10 @@
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">스터디 소개</p></v-col>
           <v-col class="col-12 pa-0">
             <v-textarea 
-            {{mainText}}
             maxlength="250" 
             rows="4" 
             no-resize counter required dense
-            v-model="credentials.mainText"></v-textarea>
+            v-model="myStudydetail.mainText"></v-textarea>
           </v-col>
         </v-row>
 
@@ -118,10 +117,9 @@
           <v-col class="col-12 pa-0 mb-2"><p class="font-weight-bold mb-0">상세정보</p></v-col>
           <v-col class="col-12 pa-0">
             <v-textarea 
-            {{secretText}}
             maxlength="250" rows="4" 
             no-resize counter required dense
-            v-model="credentials.secretText"></v-textarea>
+            v-model="myStudydetail.secretText"></v-textarea>
           </v-col>
         </v-row>
 
@@ -133,7 +131,7 @@
             <!-- router - 1  -->
             <v-btn large rounded color="#EA4C89" class="white--text font-weight-bold me-5 mt-2 py-5" @click="cancel()">취소하기</v-btn>
             <!-- submit -->
-            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5">등록하기</v-btn>
+            <v-btn large rounded type="submit" color="#A384FF" class="white--text font-weight-bold me-3 mt-2 py-5">수정하기</v-btn>
           </v-col>
         </v-row>
 
@@ -145,7 +143,7 @@
 import axios from 'axios';
 import drf from '@/api/drf';
 import { mapGetters } from 'vuex';
-import Token from '@/components/Token.js'
+
 
 export default {
   name: 'CreateProblem',
@@ -183,7 +181,9 @@ export default {
         mainText: '',
         secretText: '',
         tags: [],
-      }
+      },
+      myStudydetail: []
+
     }),
   methods: {
       // 스터디 마감일 선택시에 당일 기준 전날은 선택 못하도록 하는 메서드
@@ -196,18 +196,22 @@ export default {
     submitStudy () {
       axios({
           url: drf.study.study(),
-          method: 'post',
+          method: 'put',
           headers: {
             Authorization: this.accessToken,
           },
-          data: this.credentials
+          data: this.myStudydetail
       })
       .then(res => {
-          console.log("res = ",res);
+          console.log("스터디 수정res = ",res);
           // const token = res.data.key
           // dispatch('saveToken', token)
           // dispatch('fetchCurrentUser')
-          this.$router.push({ path: 'study' })
+          this.$swal({
+            icon: 'success',
+            text: '스터디 수정이 완료되었습니다'
+          })
+          this.$router.push({name: 'study'})
       
       })
       .catch(err =>{
@@ -224,6 +228,26 @@ export default {
   computed: {
     ...mapGetters(['accessToken', 'refreshToken']),
   },
+  created(){
+    // api/study/{studyid}에 해당하는 detail study 정보 가져오기
+    const sid = this.$route.params.sid
+    // console.log('created sid=', sid);
+    axios({
+      url: drf.study.study() + `${sid}`,
+      methods: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      // console.log("studydetail =" , res.data)
+      this.myStudydetail = res.data
+      this.myStudydetail.tags = []
+      // this.master = res.data.masterName
+      console.log(this.myStudydetail);
+      // console.log("myStudydetail =",this.myStudydetail.masterName)
+    })
+  }
 }
 </script>
 
