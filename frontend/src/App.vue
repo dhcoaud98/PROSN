@@ -1,6 +1,6 @@
 <template>
   <!-- <v-app :class="bgColor" @resize="selectBgColor"> -->
-  <v-app :class="bgColor" @resize="selectBgColor">
+  <v-app :class="bgColor">
     <v-container class="px-0 px-md-3">
       <!-- sm 이하일 때 로고 나오도록 -->
       <v-row id="sm-logo" class= "d-flex d-md-none pb-0 mt-3 justify-space-between px-5">
@@ -24,7 +24,7 @@
               <router-link to="/login"><v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text>login</v-btn></router-link>
             </li>
             <li style="list-style: none;" v-if="isLoggedIn">
-              <v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text @click="logout">logout</v-btn>
+              <v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text>logout</v-btn>
             </li>
           </v-col>
         </div>

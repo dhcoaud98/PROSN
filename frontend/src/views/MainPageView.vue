@@ -34,13 +34,8 @@
           <v-tabs background-color="#CCA5FE" grow>
             <v-col class="px-0">
               <v-tab class="pa-0" @click="changeToProblemFeed">
-                <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">PROBLEM</p>
+                <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">PROBLEM/BOOK</p>
               </v-tab>            
-            </v-col>
-            <v-col class="px-0">
-              <v-tab class="pa-0" @click="changeToBookFeed">
-                <p class="font-weight-regular text-center mb-0" style="font-size: 1.2rem">BOOK</p>
-              </v-tab>         
             </v-col>
             <v-col class="px-0">
               <v-tab class="pa-0" @click="changeToInfoFeed">
@@ -86,7 +81,6 @@ import RecentProblem from '../components/MainPage/RecentProblem.vue'
 import info from '../components/MainPage/info.vue'
 import SideBar from '@/components/SideBar.vue'
 import SearchResultView from '@/views/SearchResultView.vue'
-import InfiniteLoading from 'vue-infinite-loading'
 import MainBook from '../components/MainPage/MainBook.vue'
 import axios from 'axios'
 import drf from '@/api/drf.js'
@@ -130,7 +124,6 @@ export default {
     info,
     SideBar,
     SearchResultView,
-    InfiniteLoading,
     MainBook,
   },
   computed : {
@@ -150,13 +143,6 @@ export default {
       this.bookFeedClass = 'd-none'
       this.infoFeedClass = 'd-none'
     },
-    changeToBookFeed() {
-      this.feedFlag = 1
-      // console.log(this.feedFlag)
-      this.problemFeedClass ='d-none'
-      this.bookFeedClass = 'd-flex'
-      this.infoFeedClass = 'd-none'
-    },    
     changeToInfoFeed() {
       this.feedFlag = 2
       this.problemFeedClass ='d-none'
@@ -338,6 +324,7 @@ export default {
         mehtod: 'get',
       })
       .then(res => {
+        console.log('문제집 조회 =', res.data)
         this.mainBooks = res.data.content
       })
       .catch(err => {
