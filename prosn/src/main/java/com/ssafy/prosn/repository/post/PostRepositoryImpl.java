@@ -36,6 +36,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post,
                         post.id,
                         post.title,
+                        post.mainText,
                         post.user.id.as("writerId"),
                         post.user.name.as("writerName"),
                         post.created,

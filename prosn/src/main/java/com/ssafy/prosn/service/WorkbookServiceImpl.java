@@ -65,6 +65,8 @@ public class WorkbookServiceImpl implements WorkbookService {
     public PostResponseDto showAllWorkbook(Pageable pageable) {
         Page<Workbook> workbooks = workbookRepository.findAll(pageable);
         PostResponseDto result = new PostResponseDto();
+//        List<Workbook> content = workbooks.getContent();
+//        List<ProblemWorkbook> problemWorkbooks = content.get(0).getProblemWorkbooks();
         result.addPost(workbooks.getContent(), workbooks.getTotalPages(), workbooks.getTotalElements());
         return result;
     }
