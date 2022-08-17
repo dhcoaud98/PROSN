@@ -2,7 +2,7 @@
   <!-- 전체적인 틀 -->
   <v-container fluid class="white mt-10">
     <!-- 문제 정보 -->
-    {{ bookDetail }}
+    {{ bookDetails }}
     <v-row class="align-center mx-5 mt-5 border-a-10 px-4 rounded-xl yellow lighten-4">
       <v-col cols="1"><v-icon large color="orange darken-3">mdi-note-edit</v-icon>
       </v-col>
@@ -10,15 +10,8 @@
         <v-row>
           <v-col class="align-center py-1">
             <v-col class="pa-0">
-              <h2 class="font-weight-bold mr-3">{{bookDetail.title}}</h2>
+              <h2 class="font-weight-bold mr-3">{{bookDetails.title}}</h2>
             </v-col>
-          </v-col>
-        </v-row>
-        <v-row class="ma-0">
-          <v-col cols="3" class="pa-0 d-flex">
-            <div v-for="tag in bookDetail.tags" :key="tag.id">
-              <v-chip small color="orange" class="white--text ms-3">{{tag.type}}</v-chip>
-            </div>
           </v-col>
         </v-row>
       </v-col>
@@ -27,7 +20,7 @@
     <!-- 문제 부분 -->
     <v-row class="mt-0">
       <v-col>
-        <note-detail-list :bookDetail="bookDetail"></note-detail-list>
+        <problem-book-list :bookDetails="bookDetails"></problem-book-list>
       </v-col>
     </v-row>
   </v-container>
@@ -42,7 +35,7 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      bookDetail: null,
+      bookDetails: null,
     }
   },
   components: {
@@ -64,7 +57,7 @@ export default {
     })
     .then(res => {
       console.log(res) //ok
-      this.bookDetail = res.data
+      this.bookDetails = res.data
 
     })
     .catch(err => {

@@ -151,19 +151,7 @@ export default {
         thumb down --> thumb down off alt
         bookmark border --> bookmark
         */
-        /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
-
-        if (this.upText === "thumb_up_off_alt") {
-          // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
-          if (this.downText === "thumb_down") {
-              // console.log(this.downText)
-              this.downText = "thumb_down_off_alt"
-          }
-          this.upText = "thumb_up"
-          } else {
-            this.upText = "thumb_up_off_alt"
-          }
-          // 좋아요 엑쇼스 0815 임지민
+       // 좋아요 엑쇼스 0815 임지민
         // axios 보내기
           axios({
             url: drf.postFeed.likeordis(),
@@ -191,18 +179,21 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
+            /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
+    
+            if (this.upText === "thumb_up_off_alt") {
+              // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
+              if (this.downText === "thumb_down") {
+                  // console.log(this.downText)
+                  this.changeHateStatus()
+                  this.downText = "thumb_down_off_alt"
+              }
+              this.upText = "thumb_up"
+              } else {
+                this.upText = "thumb_up_off_alt"
+              }
     },
     changeHateStatus() {
-        /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
-        if (this.downText === "thumb_down_off_alt") {
-            this.downText = "thumb_down"
-            // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
-            if (this.upText === "thumb_up") {
-                this.upText = "thumb_up_off_alt"
-            }
-       } else {
-            this.downText = "thumb_down_off_alt"
-       }
        // 싫어요 엑쇼스 0815 임지민
         // axios 보내기
           axios({
@@ -226,6 +217,17 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
+          /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
+        if (this.downText === "thumb_down_off_alt") {
+            this.downText = "thumb_down"
+            // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
+            if (this.upText === "thumb_up") {
+                this.changeLikeStatus()
+                this.upText = "thumb_up_off_alt"
+            }
+       } else {
+            this.downText = "thumb_down_off_alt"
+       }
     },
     changeScrapStatus() {
        if (this.scrapText === "bookmark_border") {
@@ -268,7 +270,7 @@ export default {
           text: '오답입니다.'
         })
         this.myCorrectStatus = false
-        this.$router
+
       }
       // console.log(this.credentials)
       // axios 보내기
