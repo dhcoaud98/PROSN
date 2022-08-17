@@ -8,15 +8,10 @@
         <v-row class="d-flex justify-space-between ma-3 mt-4">
           <!-- 제목 -->
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
-            문제 제목
+            {{ userSolving.title }}
           </div>
           <!-- 좋아요 싫어요 정보 -->
-          <div class="d-flex me-3">
-            <v-icon class="me-2">thumb_up_off_alt</v-icon>
-            <div class="me-3">30</div>
-            <v-icon class="me-2">thumb_down_off_alt</v-icon>
-            <div class="me-3">4</div>
-          </div>
+
         </v-row>
       </v-container>
     </v-card-title>
@@ -25,22 +20,21 @@
     <v-card-text>
       <v-row>
         <!-- v-for문 사용해서 태그 띄우기 -->
-        <div class="mt-5">
-          <v-chip small color="#926DFF" class="white--text ms-3">알고리즘</v-chip>
-          <v-chip small color="#926DFF" class="white--text ms-3">네트워크</v-chip>
+        <div class="mt-5" v-for="tag in userSolving.tags" :key="tag">
+          <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
         </div>
       </v-row>
-
+    
       <!-- 내용 -->
       <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
-          문제 메인텍스트
+          {{ userSolvingDetail.mainText }}
         </div>
       </v-row>
 
       <v-row class="ma-4 mb-2 d-flex justify-space-between">
         <!-- 출제자 -->
-          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. 출제자이름</div>
+          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{userSolvingDetail.writer.name}}</div>
         <!-- 문제로 이동하기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
           <v-btn @click='showUp()' text large rounded height="45px" class="d-none d-md-flex">
@@ -56,12 +50,46 @@
 </template>
 
 <script>
+import axios from 'axios'
+import drf from '@/api/drf'
+import { mapGetters } from 'vuex';
+
+
 export default {
   name: 'SolvedProblemListItems',
+  data() {
+    return {
+      userSolvingDetail: [],
+    }
+  },
+  props: {
+    userSolving: Object,
+  },
+  computed: {
+    ...mapGetters(['accessToken', 'currentUser'])
+  },
+  created() {
+    const params ={
+      page: 0,
+      size: 4,
+      sort: 'updated,DESC',
+    }
+    axios({
+      url: drf.api + 'post' + `/${this.userSolving.postId}`,
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+      params: params
+    })
+    .then(res => {
+      this.userSolvingDetail = res.data
+      console.log("userSolvingDetail =",res.data)
+    })
+  },
   methods: {
     showUp () {
-      console.log('어쩌구');
-      this.$router.push({ path: 'problem' })
+      this.$router.push({ path: `../problem/${this.userSolving.postId}` })
     },
   }
 }

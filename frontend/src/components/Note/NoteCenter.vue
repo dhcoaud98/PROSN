@@ -2,19 +2,15 @@
   <v-container class="ma-0 pa-0">
     <v-row class="d-flex mt-5 ms-5">
       <v-icon large color="#926DFF">sticky_note_2</v-icon>
-      <h2 class="ms-3 dark--text">N O T E</h2>
+      <h2 class="ms-3 dark--text font-weight-regular">N O T E</h2>
     </v-row>  
 
     <!-- row 1. 제목 -->
     <v-row class="mt-10 mx-5 mb-0">
-      <p class="font-parent-lar">
-        <!-- 나중에 유저 이름 받아올 수 있으면 아래 부분 바꿔주기 -->
-        <span class="font-weight-bold">{{userName}}</span>
-        님의 오답노트
-      </p>
-      <!-- <p>{{userId}}</p> -->
-      <!-- <p>{{accessToken}}</p> -->
-      <!-- <p>{{ accessToken }}</p> -->
+      <div class="d-flex">
+        <div><v-chip :color="`${this.badgeColor}`" class="white--text font-weight-bold mx-3">{{badge}}</v-chip></div>
+        <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{userName}}</h2><h3 class="grey--text">님의 오답노트</h3></div>
+      </div>
     </v-row>
 
     <!-- 
@@ -24,9 +20,9 @@
     -->
     <v-row class="bottom-border-grey pb-5 mr-2 mx-5 mb-0">
       <v-chip-group column mandatory active-class="clicked-chip">
-        <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('전체')" id="whole" small>#전체</v-chip>
+        <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('whole','전체')" id="whole" small>#전체</v-chip>
         <div v-for="category in categories" :key="category.toDB">
-          <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toDB)" small>
+          <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toDB, category.toUser)" small>
             #{{category.toUser}}</v-chip>
         </div>
       </v-chip-group>
@@ -35,28 +31,30 @@
     <!-- row 3: 선택한 카테고리 -->
     <v-row class="mt-2 mr-0 mx-5">
       <v-col class="bottom-border-grey">
-        <p class="font-parent-lar font-weight-bold mb-1">#{{ selected }}</p>
+        <p class="font-parent-lar font-weight-bold mb-1">#{{ selectedUser }}</p>
       </v-col>
     </v-row>
 
     <!-- row4. note list -->
     <v-row class="ml-2 mx-5">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mt-3 mx-5">작성 전 문제</p>
-      <note-list :beforeProbs="beforeProbs"></note-list>
+      <!-- <p>hi</p> -->
+      <!-- <p>{{ beforeProbs }} </p> -->
+      <note-list :selectedDB="selectedDB" :beforeProbs="beforeProbs"></note-list>
     </v-row>
     <hr class="my-5 border-grey mx-5">
     <v-row class="ml-2">
       <p class="font-parent-mid-l font-weight-bold bottom-border-grey mx-5">이미 작성한 문제</p>
-      <note-list :afterProbs="afterProbs"></note-list>
+      <note-list :selectedDB="selectedDB" :afterProbs="afterProbs"></note-list>
     </v-row>
   </v-container>
 </template>
 
 <script>
 import NoteList from '@/components/Note/NoteList.vue'
+import { mapGetters } from 'vuex'
 import axios from 'axios'
 import drf from '@/api/drf.js'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -64,7 +62,8 @@ export default {
   },
   data() {
     return {
-      selected : '전체',
+      selectedUser : '전체',
+      selectedDB: 'whole',
       categories: [
         {toDB:"NW", toUser: "네트워크"},
         {toDB:"OS", toUser: "운영체제"},
@@ -78,21 +77,37 @@ export default {
         {toDB:"SC", toUser: "보안"},
         {toDB:"ETC", toUser: "기타"},
       ],
-      beforeProbs : [],
+      beforeProbs: [],
       afterProbs: [],
+      badge: 'S E E D',
+      badgeColor: 'rgb(0, 207, 87)',
     }
   },
+   methods: {
+    selectCategory(toDB, toUser) {
+      this.selectedUser = toUser
+      if (toDB == 'whole') {
+        this.wholeNote()
+      } else {
+        this.tagNote(toDB)
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['accessToken', 'userId', 'userName', 'currentUser'])
+  },
   methods: {
-    selectCategory(categoryName) {
-      this.selected = categoryName
+    wholeNote () {
       const isWriteParams = ['true', 'false']
+  
       isWriteParams.forEach(oneParam => {
         const params = {
-          tag: categoryName,
-          isWrite: oneParam
-        }
+            // pageable: 0,
+            isWrite: oneParam,
+            // sort: onUpdated, 'desc'
+          } 
         axios({
-          url: drf.api + 'wrongAnswer/' + 'tag',
+          url: drf.api + 'wrongAnswer/' + 'all',
           method: 'get',
           headers: {
             Authorization: this.accessToken,
@@ -116,24 +131,20 @@ export default {
           // console.log(this.userId)
           console.log(err);
         })
-
       })
-    }
-  },
-  computed: {
-    ...mapGetters(['accessToken', 'userId', 'userName'])
-  },
-  created() {
+    },
+    tagNote(toDB) {
+    // console.log('toDB= ', toDB);
     const isWriteParams = ['true', 'false']
-
     isWriteParams.forEach(oneParam => {
       const params = {
-          // pageable: 0,
-          isWrite: oneParam,
-          // sort: onUpdated, 'desc'
-        } 
+        page: this.page,
+        size: 3,
+        tag: toDB,
+        isWrite: oneParam
+      }
       axios({
-        url: drf.api + 'wrongAnswer/' + 'all',
+        url: drf.api + 'wrongAnswer/' + 'tag',
         method: 'get',
         headers: {
           Authorization: this.accessToken,
@@ -142,21 +153,60 @@ export default {
       })
       .then(res => {
         // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-        // console.log(res.data.content)
+        // console.log(res.data)
         if (oneParam === 'false'){
           this.beforeProbs = res.data.content
-          console.log('before=', this.beforeProbs)
+          // console.log('tagbefore');
+          // console.log('tagbefore=', this.beforeProbs)
         } else {
           this.afterProbs = res.data.content
-          console.log('after=',this.afterProbs)
+          // console.log('tagafter');
+          // console.log('tagafter=',this.afterProbs)
         }
         // console.log('in'); //ok
-      })
+       })
       .catch(err => {
         // console.log(this.accessToken)
         // console.log(this.userId)
         console.log(err);
       })
+    })
+    },
+  },
+  created() {
+    this.wholeNote()
+
+    // 유저 정보 확인
+    axios({
+      url: drf.api + 'user/' + 'info/' + `${this.currentUser}`,
+      method: 'get',
+      headers: {
+        Authorization : this.accessToken,
+      },
+    })
+    .then(res => {
+      console.log(res.data)
+      this.userInfo = res.data
+      // 뱃지 컬러랑 문구 정하기
+      if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 10 ) {
+        this.badge = "G R E E N"
+        this.badgeColor = "rgb(0, 128, 0)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 50) {
+        this.badge = "B R O N Z E"
+        this.badgeColor = "rgb(176, 141, 87)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 100) {
+        this.badge = "S I L V E R"
+        this.badgeColor = "rgb(192, 192, 192)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 200) {
+        this.badge = "G O L D"
+        this.badgeColor = "rgb(255, 215, 0)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 500) {
+        this.badge = "M A S T E R"
+        this.badgeColor = "rgb(231,76,60)"
+      } else if (this.userInfo.problemSolvingCount + this.userInfo.writePostCount >= 1000) {
+        this.badge = "P R O S N"
+        this.badgeColor = "rgb(142,68,173)"
+      } 
     })
   },
 }

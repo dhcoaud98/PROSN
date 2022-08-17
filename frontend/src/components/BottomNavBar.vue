@@ -1,19 +1,40 @@
 <template>
   <v-bottom-navigation v-model="icons.value" class="blue-navbar fixed-bottom align-center justify-space-around">
-    <div v-for="icon in icons" :key="icon.text">
-      <!-- url이 같은 상태에서는 상단으로 이동하고, 다른 상태에서는 지정된 url로 이동하기 (0808 임지민 완료)-->
-      <div @click="checkUrl(icon.urlName)">
-          <button type="button" :value="icon.value" class="col-3 pa-0 transparent">
-              <span class="material-icons font-30 text-decoration-none icon-white">
-                  {{ icon.text }}
-              </span>
-          </button>
-      </div>
+    <!-- url이 같은 상태에서는 상단으로 이동하고, 다른 상태에서는 지정된 url로 이동하기 (0808 임지민 완료)-->
+    <div @click="checkUrl('/')">
+      <button type="button" :value="icons[0].value" class="col-3 pa-0 transparent">
+        <span class="material-icons font-30 text-decoration-none icon-white">
+            {{ icons[0].text }}
+        </span>
+      </button>
+    </div>
+    <div @click="checkUrl('/study')">
+      <button type="button" :value="icons[1].value" class="col-3 pa-0 transparent">
+        <span class="material-icons font-30 text-decoration-none icon-white">
+            {{ icons[1].text }}
+        </span>
+      </button>
+    </div>
+    <div @click="checkUrl('/note')">
+      <button type="button" :value="icons[2].value" class="col-3 pa-0 transparent">
+        <span class="material-icons font-30 text-decoration-none icon-white">
+            {{ icons[2].text }}
+        </span>
+      </button>
+    </div>
+    <div @click="checkUrl(`/profile/${currentUser}`)">
+      <button type="button" :value="icons[3].value" class="col-3 pa-0 transparent">
+        <span class="material-icons font-30 text-decoration-none icon-white">
+            {{ icons[3].text }}
+        </span>
+      </button>
     </div>
   </v-bottom-navigation>
 </template>
 ""
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -36,11 +57,14 @@ export default {
         { 
           value: 'nearby',
           text: 'person',
-          urlName: '/profile'
+          urlName: `/profile/${this.currentUser}`
         },
       ],
 
     }
+  },
+  computed: {
+  ...mapGetters(['currentUser'])
   },
   methods : {
     checkUrl(urlName) {
@@ -52,7 +76,7 @@ export default {
           behavior: 'smooth'
         })
       } else {
-        this.$router.push({ path: urlName})
+        this.$router.push({ path: urlName })
       }
     }
   }

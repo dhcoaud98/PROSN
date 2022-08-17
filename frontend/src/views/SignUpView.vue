@@ -163,6 +163,8 @@ export default {
         reset () {
             this.$refs.form.reset()
         },
+
+        // 비밀번호 일치 여부
         checkPassword() {
             if (this.password === this.passwordCheck) {
                 return true
@@ -170,8 +172,20 @@ export default {
                 return '비밀번호가 일치하지 않습니다.'
             }
         },
+
+        // id 중복확인 (0815 오채명)
         idDoubleCheck () {
-            return true
+          const params = {
+            uid: this.credentials.userId
+          }
+          axios({
+            url: drf.api + 'user/' + 'id/' + 'check',
+            method: 'post',
+            params: params,
+          })
+          .then(res => {
+            console.log(res)
+          })
         },
         validate () {
             this.$refs.form.validate()

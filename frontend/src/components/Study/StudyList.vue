@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-5">
+  <v-container class="mt-5 px-0 px-md-3">
     <study-list-items v-for="(study, idx) in studys" :key="idx" :study="study"></study-list-items>
     <br>  
     <v-pagination
@@ -16,6 +16,7 @@
 import axios from 'axios'
 import drf from '@/api/drf'
 import StudyListItems from "./StudyListItems.vue"
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'StudyList',
@@ -30,6 +31,9 @@ export default {
       studys: [],
       page: 0,
     }
+  },
+  computed: {
+    ...mapGetters(['accessToken']),
   },
   created() {
     // 0811 오채명
