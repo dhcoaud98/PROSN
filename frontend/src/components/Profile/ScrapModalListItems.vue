@@ -63,7 +63,8 @@ export default {
     getSelectedProb(pid) {
       this.$emit('get-selected-prob', pid)
       // console.log('scrapmodallistitems= ', pid);
-    }
+    },
+    
   }
 }
 </script>

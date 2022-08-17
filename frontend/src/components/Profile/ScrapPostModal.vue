@@ -7,7 +7,7 @@
           <!-- <p>{{scrapDetails}}</p> -->
           <!-- <p>{{ scrapFolder}}</p> -->
           <!-- 카드 타이틀 -->
-          <v-card-title>
+          <v-card-title class="pb-0">
             <v-container class="pa-0">
               <!-- 각 개별 리스트의 이름 -->
               <v-row class="d-flex justify-space-between">
@@ -38,7 +38,37 @@
                     </v-form>
                   </div>
                 </v-col>
+                <span class="col-1 pa-0">
+                  <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
+                </span>
               </v-row>
+
+              <!-- 문제집 이름을 제출하기 위한 폼 0816 임지민 -->
+                <v-row class="mt-5 justify-end" v-if="beforeClickCreate">
+                  <v-col class="px-0 ml-2" cols="2">
+                    <v-btn 
+                    small outlined rounded 
+                    class="font-weight-bold"
+                    @click="showTitleInput">문제집 만들기</v-btn>
+                  </v-col>
+                </v-row>
+              <v-form v-else @submit.prevent="createBook(scrapFolder.id)">
+                <v-row class="justify-end align-center">
+                  <v-col cols="4">
+                    <!-- <p>{{scrapFolder.title}}</p> -->
+                    <p>{{ credentials.title }}</p>
+                    <v-text-field label="문제집 이름을 입력해주세요"
+                        v-model="credentials.title"
+                        id="bookName"></v-text-field>
+                  </v-col>
+                  <v-col cols="2" class="pa-0 text-end">
+                    <v-btn
+                      small outlined rounded
+                      class="font-weight-bold"
+                      type="submit">만들기</v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
             </v-container>
           </v-card-title>
 
@@ -53,6 +83,15 @@
           </v-card-text>
 
           <v-divider color="#A384FF" class="mx-3"></v-divider>
+
+          <v-row class="justify-end">
+            <v-col cols="2" class="mr-3">
+              <v-btn outlined rounded small
+              color="red lighten-1" 
+              class="font-weight-bold white--text ms-3"
+              @click="deleteFolder(scrapFolder.id)">폴더 삭제</v-btn>
+            </v-col>
+          </v-row>
 
           <v-card-footer class="d-flex-row justify-center">
             <v-container class="pt-5 pb-0">
@@ -199,7 +238,7 @@ export default {
 </script>
 
 <style>
-
+  
 </style>
 
 <style lang="stylus" scoped>
