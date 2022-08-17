@@ -1,7 +1,8 @@
 <template>
   <v-container fluid class="pa-0 pt-0 pt-md-10 mt-0">
     <!-- row 1: 메인 피드와 sidebar 모두를 감싸는 줄 -->
-    <v-row v-if="!isSearched">
+    <!-- <v-row v-if="!isSearched"> -->
+    <v-row>
       <!-- col 1: 메인 피드 부분 -->
       <v-col cols="12" md="7" lg="8" class="mt-2 white pt-0 px-0 rounded-lg">
         <!-- row 1-1: 상단 탭; 문제/문제집, 정보 -->
@@ -24,8 +25,11 @@
             <div v-if="selectedDB != 'whole'" class="result" style="color:#A384FF; display:inline;"> 
               <div v-for="(categorie, idx) in categories" :key="idx">
                 <h2 style="display:inline;" v-if="categorie.toDB === selectedDB">{{categorie.toUser}} <span v-if="selectedDB != 'whole'" class="pt-5">에 대한 검색 결과입니다.</span></h2>
-              </div>
-            </div>
+              </div> 
+          </div> 
+          <div v-if="isSearched" class="result" style="color:#A384FF; display:inline;" > 
+            <h2> {{inputChange}} <span class="pt-5">에 대한 검색 결과입니다.</span></h2>
+          </div>
             
           </div>
         </v-row>
@@ -73,9 +77,9 @@
     </v-row>
 
     <!-- row 2: 메인 피드와 sidebar 모두를 감싸는 줄 (검색 결과가 있을 경우 검색 페이지) -->
-    <v-row v-if="isSearched">
+    <!-- <v-row v-if="isSearched">
       <search-result-view ></search-result-view>
-    </v-row> 
+    </v-row>  -->
   
   </v-container>
       
@@ -99,6 +103,7 @@ export default {
       selectedUser : '전체',
       selectedDB: 'whole',
       toDB: 'whole',
+      toUser: '',
       categories: [
         {toDB:"whole", toUser: "전체"},
         {toDB:"NW", toUser: "네트워크"},
@@ -123,6 +128,7 @@ export default {
       selectedProb: [],
       selectedInfo: [],
       selectedBooks: [],
+      titleSearch: '',
     }
   },
   components : {
@@ -164,14 +170,14 @@ export default {
       this.infoFeedClass = 'd-flex'
     },
 
-    
-    async selectCategory (toDB, toUser) {
+
+    async selectCategory(toDB, toUser) {
       await this.$store.dispatch('reIssue')
       this.selectedProb = []
       this.selectedInfo = []
       this.selectedUser = toUser
       if (this.feedFlag == 0) { // 카테고리로 문제 선택
-        if (toDB == 'whole') {
+        if (toDB == 'whole' && this.titleSearch == '') {
           this.selectedDB =  toDB
           this.selectedProb = []
           console.log("toBD =", toDB)
@@ -199,10 +205,12 @@ export default {
             console.log(err)
           })
         } else {
+          this.selectedProb = []
           console.log('toDB =', toDB)
           this.selectedDB =  toDB
+          this.titleSearch = this.inputChange
           const params = {
-            title : ``,
+            title : `${this.titleSearch}`,
             code : toDB,
             dtype : 'PROBLEM',
             page : 0,
@@ -286,6 +294,8 @@ export default {
     }  
   },
   created() {
+      this.titleSearch = this.inputChange
+
       const params = {
           page: 0,
           size: 5, 

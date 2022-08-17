@@ -38,7 +38,7 @@ export default {
 	data() {
 		return {
 			totalInfos: [],
-			selectedInfo: [],
+			// selectedInfo: [],
 			infos: [],
 			nowPage: 1,
 			clickPage: null,
