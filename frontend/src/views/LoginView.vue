@@ -36,13 +36,18 @@
   </v-container></template>
 
 <script>
+import LocalLogin from '@/components/LocalLogin.vue'
+import SocialLogin from '@/components/SocialLogin.vue'
 
 export default {
   name: 'LoginView',
   data: () => ({
     //
   }),
-
+  components : {
+    LocalLogin,
+    SocialLogin,
+  }
 };
 </script>
 

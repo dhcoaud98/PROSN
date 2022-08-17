@@ -240,7 +240,7 @@ export default {
   },
   created() {
     // 인기 문제 0813 임지민
-    console.log("사이드바 현재 유저 : ", this.oauthId)
+    console.log("사이드바 현재 유저 : ", this.isLoggedIn)
     axios({
       url: drf.postFeed.problem() + 'ranking/',
       method: 'get',

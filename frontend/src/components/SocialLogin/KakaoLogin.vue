@@ -16,6 +16,7 @@ created() {
       })
       .then(res =>{
         console.log(res.data)
+        console.log(res.data.accessToken)
         /*
         accessToken: "EWpduMJ8S1-JROOFJYwtuUSfLBPqwAxP1J8Ou6VdCj102wAAAYKq1JQz"
         email: "dhcoaud98@gmail.com"
@@ -24,13 +25,19 @@ created() {
         platform: "KAKAO"
         refreshToken: "71QJsxvUXvvfdwrb2WUb6g4ZdktUYu4Sebpjuz2pCj102wAAAYKq1JQx"
         */
-        // this.$store.dispatch(
-        //   'saveToken',
-        //   grantType + ' ' + res.data.accessToken
+        // let grantType = res.data.grantType.replace(
+        //   res.data.grantType.charAt(0),
+        //   res.data.grantType.charAt(0).toUpperCase()
         // );
-        // this.$store.dispatch('saveId', res.data.id);
-        // this.$store.dispatch('saveRefreshToken', res.data.refreshToken);
-        // this.$store.dispatch('saveName', res.data.name);
+        this.$store.dispatch(
+          'saveToken',
+           res.data.accessToken
+        );
+        this.$store.dispatch('saveEmail', res.data.email);
+        this.$store.dispatch('saveName', res.data.name);
+        this.$store.dispatch('saveId', res.data.oauthId);
+        this.$store.dispatch('savePlatform', res.data.platform)
+        this.$store.dispatch('saveRefreshToken', res.data.refreshToken);
         this.$router.push({path:"/"})
       })
       .catch(err => {
