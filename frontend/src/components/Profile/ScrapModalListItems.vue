@@ -2,17 +2,15 @@
   <v-container outlined class="pa-0 d-flex flex-row">
     <div class="d-flex justify-space-between scrap-item py-2">
       <div class="d-flex flex-row">
-        <v-checkbox info
+        <!-- <v-checkbox info
         :label="`${idx+1}. ${scrapDetail.title}`"
         class="font-weight-bold"
-        @change="getSelectedProb(scrapDetail.pid)"></v-checkbox>
-        <div class="mt-2 ms-2">
-          <!-- {{ scrapDetail }} -->
-          <!-- <h2>{{ scrapDetail.title }}</h2> -->
-        </div>
+        @change="getSelectedProb(scrapDetail.pid)"></v-checkbox> -->
+
+        <p class="font-weight-bold ms-2 mt-2" style="font-size: 1.2em">{{ idx + 1}}. {{ scrapDetail.title }}</p>
       </div>
-      <div class="d-flex align-end">
-        <v-btn outlined rounded class="red font-weight-bold white--text" small
+      <div class="d-flex align-center">
+        <v-btn outlined rounded class="red font-weight-bold white--text " small
         @click="deleteFromFolder(scrapDetail.pid)">목록에서 삭제</v-btn>
       </div>
     </div>

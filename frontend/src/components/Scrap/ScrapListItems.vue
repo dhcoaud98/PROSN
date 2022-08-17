@@ -15,7 +15,11 @@
       <v-btn small @click="deleteFolder(scrapFolder.id)">삭제</v-btn>
     </v-col>
     <!-- <p>hi</p> -->
-    <scrap-post-modal @close="closeModal" v-if="modal" :lid="scrapFolder.id" :scrapFolder="scrapFolder"></scrap-post-modal>
+    <scrap-post-modal 
+      @close="closeModal" v-if="modal" 
+      :lid="scrapFolder.id" 
+      :scrapFolder="scrapFolder"
+      :getScrapFolders="getScrapFolders"></scrap-post-modal>
 
   </v-row>
 </template>

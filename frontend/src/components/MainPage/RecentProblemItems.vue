@@ -6,6 +6,7 @@
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
         <v-row class="d-flex justify-space-between ma-3">
           <!-- 제목 -->
+          {{ mainProb}}
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
             {{mainProb.title}}
           </div>
@@ -43,11 +44,11 @@
           <v-btn plain @click="profileEvent(mainProb.writerId)" class="pa-0 me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{ mainProb.writerName }}</v-btn>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
-          <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
+          <v-btn @click="openDetail(mainProb.ptype)" text small rounded height="45px" class="d-none d-md-flex">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
           <!-- 화면 사이즈 md 이하 -->
-          <v-btn @click="openModal" text small rounded height="45px" class="d-md-none mt-3" width="100%">
+          <v-btn @click="openDetail(mainProb.ptype)" text small rounded height="45px" class="d-md-none mt-3" width="100%">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
       </v-row>
@@ -108,6 +109,14 @@ export default {
       ...mapGetters(['accessToken'])
     },
     methods: {
+        // 문제, 정보 vs. 문제집 여부에 따라 다른 것 띄우기 0817 임지민
+        openDetail(ptype) {
+          if (ptype === 'Problem' || ptype === "Information"){
+            this.openModal()
+          } else if( ptype === "Workbook") {
+            this.$router.push({path: `/problembook/${this.mainProb.id}`})
+          }
+        },
         changeLikeStatus() {
             /* 
             버튼 클릭하면 색이 바뀌도록

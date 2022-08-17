@@ -19,14 +19,23 @@
               <v-row class="mt-5">
                 <v-col class="pa-0 d-flex justify-space-between">
                   <div>
-                    <v-btn rounded color="pink lighten-3" 
-                      class="font-weight-bold white--text"
-                      @click="deleteFromFolder">선택항목 삭제</v-btn>
                     <v-btn rounded color="red lighten-1" class="font-weight-bold white--text ms-3"
                     @click="deleteFolder(scrapFolder.id)">폴더 삭제</v-btn>
                   </div>
-                  <div>
-                    <v-btn rounded class="font-weight-bold">문제집 만들기</v-btn>
+                  <div v-if="toggleBookInput">
+                    <v-btn 
+                      rounded class="font-weight-bold" 
+                      @click="showBookInput()">문제집 만들기</v-btn>
+                  </div>          
+                  <div v-else>
+                    <v-form @submit.prevent="createBook">
+                      <!-- <p>hi {{credentials.title}}</p> -->
+                      <v-text-field 
+                        label="문제집 이름을 입력해주세요" 
+                        class="d-inline-block"
+                        v-model="credentials.title"></v-text-field>
+                      <v-btn type="submit" rounded class="ml-2">만들기</v-btn>
+                    </v-form>
                   </div>
                 </v-col>
               </v-row>
@@ -72,16 +81,27 @@ export default {
   data(){
     return {
       scrapDetails: [],
+      credentials: {
+        pid: this.scrapFolder.id,
+        title: ''
+      },
+      toggleBookInput: true,
     }
   },
   props: {
     lid: Number,
     scrapFolder: Object,
+    getScrapFolders: Function,
   },
   computed: {
     ...mapGetters(['accessToken'])
   },
   methods: {
+    showBookInput() {
+      // console.log('showbookinput', this.toggleBookInput);
+      this.toggleBookInput = false
+      // console.log('showbookinput change', this.toggleBookInput);
+    },
     // 해당 폴더에 있는 문제 조회 0815 임지민
     getFolderDetail () {
       axios({
@@ -102,11 +122,79 @@ export default {
         // console.log(this.userId)
         console.log(err);
       })
+    },
+     deleteFolder(lid) {
+      // axios 보내기
+      const check = confirm('정말 삭제하시겠습니까?')
+      if (check) {
+      axios({
+        url: drf.scrap.folder() + lid,
+        method: 'delete',
+        headers: {
+          Authorization: this.accessToken,
+        },
+        data: {
+          id: lid
+        }
+      })
+      .then(res => {
+        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+        console.log('스크랩 폴더 삭제= ', res)
+        this.$emit('close')
+      })
+      .catch(err => {
+        // console.log(this.accessToken)
+        // console.log(this.userId)
+        console.log('스크랩 폴더 삭제 에러= ',err);
+        if(err.response.data.message === "could not execute statement; SQL [n/a]; constraint [null]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement"){
+          this.$swal({
+            icon: 'warning',
+            text: '폴더 내 문제를 먼저 삭제한 후 폴더를 삭제해주세요'
+          })
+        }
+
+      })
+    }
+    },
+    // 문제집 만들기
+    createBook() {
+      if(this.credentials.title.trim() === '') {
+        this.$swal({
+          icon: 'warning',
+          text: '문제집 이름을 입력해주세요'
+        })
+      } else {
+        // 엑쇼스
+        axios({
+        url: drf.postFeed.workbook(),
+        method: 'post',
+        headers: {
+          Authorization: this.accessToken,
+        },
+        data: this.credentials
+      })
+      .then(res => {
+        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+        // console.log(res)
+        this.$swal({
+          icon: 'success',
+          text: '문제집 출제가 완료되었습니다'
+        })
+        this.$router.go()
+      })
+      .catch(err => {
+        // console.log(this.accessToken)
+        // console.log(this.userId)
+        console.log(err);
+      })
+
+      }
     }
   },
   created(){
     this.getFolderDetail()
-  }
+  },
+  
 }
 </script>
 
@@ -115,6 +203,9 @@ export default {
 </style>
 
 <style lang="stylus" scoped>
+.v-label, .v-input {
+  font-size: 0.7em;
+}
 .modal {
   &.modal-overlay {
     display: flex;

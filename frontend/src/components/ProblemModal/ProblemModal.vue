@@ -112,7 +112,7 @@
                             <v-icon>{{scrapText}}</v-icon>
                           </v-btn>
                           
-                          <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
+                          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
                           <!-- 수정 -->
                           <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
                           <!-- 삭제 -->

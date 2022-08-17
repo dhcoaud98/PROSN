@@ -3,7 +3,6 @@
   <v-container class="scrap-modal" appear>
     <v-container class="scrap-modal scrap-modal-overlay" @click.self="$emit('close')">
       <v-container class="scrap-modal-window pa-0 mx-0 d-flex justify-center">
-
         <!-- 2022.07.27 스크랩 (남성은) -->
         <v-card width="400" class="rounded-lg scrap-modal-content pa-0">
           <v-container>
@@ -13,7 +12,10 @@
                   <v-icon large>mdi-folder-open</v-icon>
                   <h3 class="ms-2">Scrap</h3>
                 </div>
-                <v-btn @click="$emit('close')" icon><v-icon>mdi-close</v-icon></v-btn>
+                <div>
+                  <v-btn @click="getScrapFolders" icon><v-icon>restart_alt</v-icon></v-btn>
+                  <v-btn @click="$emit('close')" icon><v-icon>mdi-close</v-icon></v-btn>
+                </div>
               </v-col>
             </v-row>
 
