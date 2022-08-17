@@ -86,7 +86,7 @@ const routes = [
     component: Problem
   },
   {
-    path: '/problembook',
+    path: '/problembook/:bid',
     name: 'problembook',
     component: ProblemBook
   },

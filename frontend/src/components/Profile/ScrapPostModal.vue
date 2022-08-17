@@ -11,8 +11,32 @@
             <v-container class="pa-0">
               <!-- 각 개별 리스트의 이름 -->
               <v-row class="d-flex justify-space-between">
-                <v-col>
-                  <h2>{{ fixTitle }} </h2>
+                <h2>{{ scrapFolder.title }} </h2>
+                <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
+              </v-row>
+
+              <!-- 버튼들 -->
+              <v-row class="mt-5">
+                <v-col class="pa-0 d-flex justify-space-between">
+                  <div>
+                    <v-btn rounded color="red lighten-1" class="font-weight-bold white--text ms-3"
+                    @click="deleteFolder(scrapFolder.id)">폴더 삭제</v-btn>
+                  </div>
+                  <div v-if="toggleBookInput">
+                    <v-btn 
+                      rounded class="font-weight-bold" 
+                      @click="showBookInput()">문제집 만들기</v-btn>
+                  </div>          
+                  <div v-else>
+                    <v-form @submit.prevent="createBook">
+                      <!-- <p>hi {{credentials.title}}</p> -->
+                      <v-text-field 
+                        label="문제집 이름을 입력해주세요" 
+                        class="d-inline-block"
+                        v-model="credentials.title"></v-text-field>
+                      <v-btn type="submit" rounded class="ml-2">만들기</v-btn>
+                    </v-form>
+                  </div>
                 </v-col>
                 <span class="col-1 pa-0">
                   <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
@@ -96,21 +120,27 @@ export default {
   data(){
     return {
       scrapDetails: [],
-      beforeClickCreate: true,
       credentials: {
-        pid: this.lid,
-        title: '',
-      }
+        pid: this.scrapFolder.id,
+        title: ''
+      },
+      toggleBookInput: true,
     }
   },
   props: {
     lid: Number,
     scrapFolder: Object,
+    getScrapFolders: Function,
   },
   computed: {
     ...mapGetters(['accessToken'])
   },
   methods: {
+    showBookInput() {
+      // console.log('showbookinput', this.toggleBookInput);
+      this.toggleBookInput = false
+      // console.log('showbookinput change', this.toggleBookInput);
+    },
     // 해당 폴더에 있는 문제 조회 0815 임지민
     getFolderDetail () {
       axios({
@@ -132,7 +162,7 @@ export default {
         console.log(err);
       })
     },
-    deleteFolder(lid) {
+     deleteFolder(lid) {
       // axios 보내기
       const check = confirm('정말 삭제하시겠습니까?')
       if (check) {
@@ -149,46 +179,32 @@ export default {
       .then(res => {
         // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
         console.log('스크랩 폴더 삭제= ', res)
-        this.getScrapFolders()
+        this.$emit('close')
       })
       .catch(err => {
         // console.log(this.accessToken)
         // console.log(this.userId)
         console.log('스크랩 폴더 삭제 에러= ',err);
+        if(err.response.data.message === "could not execute statement; SQL [n/a]; constraint [null]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement"){
+          this.$swal({
+            icon: 'warning',
+            text: '폴더 내 문제를 먼저 삭제한 후 폴더를 삭제해주세요'
+          })
+        }
+
       })
     }
     },
-    getScrapFolders() {
-      // 내 폴더 목록 조회 0815 임지민
-    axios({
-      url: drf.scrap.folder(),
-      method: 'get',
-      headers: {
-        Authorization: this.accessToken,
-      },
-      })
-      .then(res => {
-        console.log('스크랩 폴더 조회=', res.data);
-        this.scrapFolders = res.data
-      })
-      .catch(err => {
-        console.log('스크랩 폴더 조회 에러', err);
-        if (err.response.status === 400) {
-          this.$swal({
-            icon: 'warning',
-            text: '유효하지 않은 폴더입니다'
-          })
-          this.$router.go()
-        }
-      })
-    },
-    showTitleInput() {
-      this.beforeClickCreate = false
-    },
-    createBook(lid) {
-      // 문제집 추출 0816 임지민
-      console.log(this.credentials, typeof(this.credentials.pid));
-      axios({
+    // 문제집 만들기
+    createBook() {
+      if(this.credentials.title.trim() === '') {
+        this.$swal({
+          icon: 'warning',
+          text: '문제집 이름을 입력해주세요'
+        })
+      } else {
+        // 엑쇼스
+        axios({
         url: drf.postFeed.workbook(),
         method: 'post',
         headers: {
@@ -196,20 +212,28 @@ export default {
         },
         data: this.credentials
       })
-        .then(res => {
-          // console.log('문제집 추출=', res);
-          // 작성한 문제집으로 넘어갈 방법을 찾자 0816 임지민
-          this.$router.go()
+      .then(res => {
+        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+        // console.log(res)
+        this.$swal({
+          icon: 'success',
+          text: '문제집 출제가 완료되었습니다'
         })
-        .catch(err => {
-          // console.log('문제집 추출 에러', err)
-        })
+        this.$router.go()
+      })
+      .catch(err => {
+        // console.log(this.accessToken)
+        // console.log(this.userId)
+        console.log(err);
+      })
+
+      }
     }
   },
   created(){
     this.getFolderDetail()
-    this.fixTitle = this.scrapFolder.title
-  }
+  },
+  
 }
 </script>
 
@@ -218,8 +242,8 @@ export default {
 </style>
 
 <style lang="stylus" scoped>
-.v-label {
-  font-size: 1em !important;
+.v-label, .v-input {
+  font-size: 0.7em;
 }
 .modal {
   &.modal-overlay {
