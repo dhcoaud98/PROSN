@@ -29,7 +29,7 @@ spring:
         format_sql: true;
         use_sql_comments: true
   redis:
-    host: 3.34.133.181
+    host: i7a705.p.ssafy.io
     port: 6379
 
 logging.level:
