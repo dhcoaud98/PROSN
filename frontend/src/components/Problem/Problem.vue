@@ -4,7 +4,7 @@
       <div class="d-flex mt-5">
         <!-- <p>{{probDetail}}</p> -->
         <h2>{{ probDetail.title }}</h2>
-        <div class="d-inline-block ms-3">
+        <div class="d-inline-block ms-3" v-if="showCorrectStatus">
           <v-btn v-if="myCorrectStatus" rounded small outlined color="green">정답</v-btn>
           <v-btn v-else rounded small outlined color="red">오답</v-btn>
         </div>
@@ -128,6 +128,7 @@ export default {
         right: '',
         wrongAnswer: '',
       },
+      showCorrectStatus: false,
       myCorrectStatus: null,
       commentList: [],
     }
@@ -272,6 +273,8 @@ export default {
         this.myCorrectStatus = false
 
       }
+      this.showCorrectStatus = true
+
       // console.log(this.credentials)
       // axios 보내기
       axios({

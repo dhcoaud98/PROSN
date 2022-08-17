@@ -6,7 +6,7 @@
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
         <v-row class="d-flex justify-space-between ma-3">
           <!-- 제목 -->
-          {{ mainProb}}
+          <!-- {{ mainProb}} -->
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
             {{mainProb.title}}
           </div>

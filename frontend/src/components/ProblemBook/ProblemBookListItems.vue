@@ -1,43 +1,35 @@
 <template>
-  <!-- 문제 하나하나 받아오기 -->
-  <!-- 화면 크기가 xs 이하일 때는 문제와 노트 작성 칸이 세로로 배치되게 수정하기 0805 임지민 -->
-  <v-container fluid>
-    <v-row class="mt-3">
-        <!-- col 1: 상위의 createnotelist에서 받아온 문제 출력 -->
-        <p>hi {{probDetail}}</p>
-        <v-col class="pr-5">
-            <v-row class="align-center justify-space-between">
-                <!-- 출제자 프사 -->
-                <v-col cols="6" class="pa-0 mr-0">
-                    <router-link to="/profile" class="text-decoration-none black--text">
-                    <div class="d-flex align-center">
-                        <span class="material-icons mr-2 text-decoration-none black--text">
-                            account_circle
-                        </span>
-                        <!-- 출제자 아이디 -->
-                        <span>{{ probDetail.writer.name}}</span>
-                    </div>
-                    </router-link>
-                </v-col>    
-            </v-row>
+  <v-container mt-5>
+    <v-row class="justify-space-between mt-5">
+      <div class="d-flex mt-5">
+        <!-- <p>{{probDetail}}</p> -->
+        <h2>{{ probDetail.title }}</h2>
+        <div class="d-inline-block ms-3" v-if="showCorrectStatus">
+          <v-btn v-if="myCorrectStatus" rounded small outlined color="green">정답</v-btn>
+          <v-btn v-else rounded small outlined color="red">오답</v-btn>
+        </div>
+      </div>
+      <v-btn @click="goBack()" text class="font-weight-bold mt-5">뒤로가기</v-btn>
+    </v-row>
+    <!-- <p>{{probDetail}}</p> -->
+    <v-row>
+      <div v-for="tag in probDetail.tags" :key="tag" class="ms-2 mb-3">
+        <v-chip color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
+      </div>
+    </v-row>
 
-        <hr class="border-grey my-5">
-        <!-- 문제 제목 -->
-        <v-row class="justify-space-between">
-            <p class="font-parent-lar font-weight-bold mt-5">{{ probDetail.title }}</p>
-        </v-row>
+    <v-row>
+      <v-col cols="12">
+        <p class="font-parent-lar black--text my-4">
+          {{ probDetail.mainText }}
+        </p>
+          
+      </v-col>
+    </v-row>
 
-        <!-- 문제 지문 -->
-        <v-row class="grey lighten-4 border-a-10 pa-5">
-            <v-col class="px-0 py-2 font-weight-bold">
-                <p class="font-parent-mid-l">
-                    {{probDetail.mainText}}
-                </p>
-            </v-col>
-        </v-row>
-    
-
-       <!-- 문제보기: 이것도 랜덤으로 for문 돌리기 -->
+    <v-row>
+      <v-container>
+        <!-- 문제보기: 이것도 랜덤으로 for문 돌리기 -->
         <v-form @submit.prevent="submitProblem">
           <v-row>
             <v-col>
@@ -91,18 +83,27 @@
               <!-- 스크랩 버튼 -->
               <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
                 <v-icon>{{scrapText}}</v-icon>
-                <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probDetail.id"></scrap>                    
               </v-btn>
+              <!-- 삭제 -->
+              <v-btn type="submit" color="red" rounded outlined class="ms-1" large @click="deleteprob">삭제</v-btn>
             </v-col>
 
           </v-row>
         </v-form>
-        
-        </v-col>
+      </v-container>
     </v-row>
+
+    <v-divider color="#A384FF" class="mt-3"></v-divider>
+      
+    <v-row>
+      <!-- 댓글보기 -->
+      <v-col cols="12" class="pa-0">
+        <!-- <p>{{probDetail.id}}</p> -->
+        <problem-reply :pid="probDetail.id" :commentList="commentList"></problem-reply>
+      </v-col>           
+    </v-row>  
   </v-container>
 </template>
-
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
@@ -117,7 +118,8 @@ export default {
             downText: 'thumb_down_off_alt',
             scrapText: 'bookmark_border',
             examples: [],
-            myCorrectStatus: [],
+            showCorrectStatus: false,
+            myCorrectStatus: null,
             credentials: {
                 pid: this.probDetail.id,
                 right: '',
@@ -268,6 +270,8 @@ export default {
             })
             this.myCorrectStatus = false
         }
+        this.showCorrectStatus = true
+
         // console.log(this.credentials)
         // axios 보내기
         // console.log('문제 풀이 현황 = ', this.credentials);
