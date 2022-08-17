@@ -10,6 +10,16 @@
           <h2 class="ms-3 dark--text font-weight-regular">F E E D</h2>
         </v-row>    
 
+        <!-- 카테고리 --> 
+        <v-row class="bottom-border-grey pb-5 mr-2 mx-5 mb-0">
+          <v-chip-group column mandatory active-class="clicked-chip">
+            <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('whole','전체')" id="whole" small>#전체</v-chip>
+            <div v-for="category in categories" :key="category.toDB">
+              <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toDB, category.toUser)" small>
+                #{{category.toUser}}</v-chip>
+            </div>
+          </v-chip-group>
+        </v-row>
 
         <v-toolbar dark class="mt-10 mx-4" height="45px">
           <v-tabs background-color="#CCA5FE" grow>
@@ -68,11 +78,27 @@ import InfiniteLoading from 'vue-infinite-loading'
 import MainBook from '../components/MainPage/MainBook.vue'
 import axios from 'axios'
 import drf from '@/api/drf.js'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'MainPageView',
   data(){
     return {
+      selectedUser : '전체',
+      selectedDB: 'whole',
+      categories: [
+        {toDB:"NW", toUser: "네트워크"},
+        {toDB:"OS", toUser: "운영체제"},
+        {toDB:"DS", toUser: "자료구조"},
+        {toDB:"DB", toUser: "데이터베이스"},
+        {toDB:"AL", toUser: "알고리즘"},
+        {toDB:"OOP", toUser: "객체지향"},
+        {toDB:"PL", toUser: "프로그래밍 언어"},
+        {toDB:"CS", toUser: "컴퓨터 구조"},
+        {toDB:"TC", toUser: "기술동향"},
+        {toDB:"SC", toUser: "보안"},
+        {toDB:"ETC", toUser: "기타"},
+      ],
       feedFlag: 0,
       problemFeedClass: 'd-flex',
       bookFeedClass: 'd-none',
@@ -80,6 +106,7 @@ export default {
       mainInfos :[],
       mainBooks: [],
       mainProbs: [],
+      PROBLEM: 'PROBLEM',
     }
   },
   components : {
@@ -93,7 +120,8 @@ export default {
   computed : {
     isSearched() {
       return this.$store.getters['problem/isSearched']
-    }
+    },
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods : {
     changeToProblemFeed() {
@@ -116,6 +144,41 @@ export default {
       this.bookFeedClass = 'd-none'
       this.infoFeedClass = 'd-flex'
     },
+    // 카테고리 선택
+    selectCategory(toDB, toUser) {
+      this.selectedUser = toUser
+      if (toDB == 'whole') {
+        // this.wholeNote()
+        console.log('toDB =',toDB)
+      } else {
+        // this.tagNote(toDB)
+        console.log('toDB =', toDB)
+
+        const params = {
+          title : "AL",
+          code : toDB,
+          dtype : this.PROBLEM,
+          page : 1,
+          size : 5,
+          sort: 'updated,DESC'
+        }
+        axios({
+          url: drf.api + 'post/' + 'search',
+          method: 'get',
+          headers: {
+            Authorization : this.accessToken,
+          },
+          params: params,
+        })
+        .then(res => {
+          console.log("res=", res)
+        })
+        .catch(err => {
+          console.log("err=",err)
+        })
+      }
+    }
+
   },
   created() {
       axios({
