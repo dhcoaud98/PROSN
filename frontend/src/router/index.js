@@ -15,6 +15,11 @@ import Problem from '@/components/Problem/Problem.vue'
 import ProblemBook from '@/components/ProblemBook/ProblemBook.vue'
 import NoteDetail from '@/components/Note/NoteDetail.vue'
 import editStudy from '@/components/Study/editStudy.vue'
+import KakaoLogin from '@/components/SocialLogin/KakaoLogin.vue'
+import GoogleLogin from '@/components/SocialLogin/GoogleLogin.vue'
+import NaverLogin from '@/components/SocialLogin/NaverLogin.vue'
+
+
 
 Vue.use(VueRouter)
 
@@ -99,17 +104,17 @@ const routes = [
   {
     path: '/login/oauth2/code/kakao',
     name: 'KakaoLogin',
-    component: LoginView ,
+    component: KakaoLogin ,
   },
   {
     path: '/login/oauth2/code/google',
     name: 'googleLogin',
-    component: LoginView ,
+    component: GoogleLogin ,
   },
   {
     path: '/login/oauth2/code/naver',
     name: 'naverLogin',
-    component: LoginView ,
+    component: NaverLogin ,
   }
 
 ]

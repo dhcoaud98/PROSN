@@ -78,6 +78,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import MainBook from '../components/MainPage/MainBook.vue'
 import axios from 'axios'
 import drf from '@/api/drf.js'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'MainPageView',
@@ -105,6 +106,7 @@ export default {
       mainInfos :[],
       mainBooks: [],
       mainProbs: [],
+      PROBLEM: 'PROBLEM',
     }
   },
   components : {
@@ -118,7 +120,8 @@ export default {
   computed : {
     isSearched() {
       return this.$store.getters['problem/isSearched']
-    }
+    },
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods : {
     changeToProblemFeed() {
@@ -147,10 +150,32 @@ export default {
       if (toDB == 'whole') {
         // this.wholeNote()
         console.log('toDB =',toDB)
-        
       } else {
         // this.tagNote(toDB)
         console.log('toDB =', toDB)
+
+        const params = {
+          title : "AL",
+          code : toDB,
+          dtype : this.PROBLEM,
+          page : 1,
+          size : 5,
+          sort: 'updated,DESC'
+        }
+        axios({
+          url: drf.api + 'post/' + 'search',
+          method: 'get',
+          headers: {
+            Authorization : this.accessToken,
+          },
+          params: params,
+        })
+        .then(res => {
+          console.log("res=", res)
+        })
+        .catch(err => {
+          console.log("err=",err)
+        })
       }
     }
 
