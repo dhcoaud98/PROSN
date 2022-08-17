@@ -18,7 +18,6 @@
             <v-icon color="#FCEC5A" class="me-2">mdi-circle</v-icon>
             <p class="mb-0">B O O K</p>
           </div>
-
         </v-row>
 
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->

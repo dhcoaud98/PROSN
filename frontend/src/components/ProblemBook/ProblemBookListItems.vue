@@ -9,7 +9,6 @@
           <v-btn v-else rounded small outlined color="red">오답</v-btn>
         </div>
       </div>
-      <v-btn @click="goBack()" text class="font-weight-bold mt-5">뒤로가기</v-btn>
     </v-row>
     <!-- <p>{{probDetail}}</p> -->
     <v-row>

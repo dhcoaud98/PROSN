@@ -16,7 +16,7 @@
               v-model="tab"
               align-with-title
             >
-              <v-tabs-slider color="#A384FF"></v-tabs-slider>
+              <v-tabs-slider color="red lighten-4"></v-tabs-slider>
 
               <!-- 여기에 오답노트 개수 세서 넣어놓기 -->
               <v-tab

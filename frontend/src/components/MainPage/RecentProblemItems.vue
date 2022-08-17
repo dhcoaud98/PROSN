@@ -3,6 +3,18 @@
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
     <v-card-title class="pa-0 bg-gradation">
       <v-container class="pa-0">
+        <!-- 라벨 -->
+        <v-row class="mt-3 ms-5">
+          <div v-if="mainProb.ptype === `Problem`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
+            <v-icon color="#8094FF" class="me-2">mdi-circle</v-icon>
+            <p class="mb-0">P R O B L E M</p>
+          </div>
+          <div v-if="mainProb.ptype === `Workbook`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
+            <v-icon color="#DF6969" class="me-2">mdi-circle</v-icon>
+            <p class="mb-0">B O O K</p>
+          </div>
+        </v-row>
+
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
         <v-row class="d-flex justify-space-between ma-3">
           <!-- 제목 -->
@@ -32,14 +44,14 @@
 
       <!-- 내용 -->
       <!-- textoverflow 지정해 놓기 0812 임지민 -->
-      <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
+      <v-row class="pa-0 ma-0 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
           {{ mainProb.mainText }}
           <!-- {{ probdetail}} -->
         </div>
       </v-row>
 
-      <v-row class="ma-4 mb-2 d-flex justify-space-between">
+      <v-row class="ma-4 my-0 d-flex justify-space-between">
         <!-- 출제자 -->
           <v-btn plain @click="profileEvent(mainProb.writerId)" class="pa-0 me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{ mainProb.writerName }}</v-btn>
         <!-- 모달 띄우기 버튼 -->
