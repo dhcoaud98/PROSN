@@ -12,6 +12,7 @@
                 <div class="d-flex flex-row align-center">
                   <v-icon large>mdi-folder-open</v-icon>
                   <h3 class="ms-2">Scrap</h3>
+                  <!-- <p>hi : {{pid}}</p> -->
                 </div>
                 <v-btn @click="$emit('close')" icon><v-icon>mdi-close</v-icon></v-btn>
               </v-col>
@@ -169,6 +170,7 @@ export default {
 
     // 문제 스크랩 하기 엑쇼스 0816 임지민
     scrapPost() {
+      console.log('문제 스크랩= ', this.pid, this.lid)
       axios({
       url: drf.scrap.scrap(),
       method: 'post',
@@ -201,6 +203,7 @@ export default {
   },
   created() {
     this.getScrapFolders()
+    console.log(this.pid)
   }
 }
 </script>

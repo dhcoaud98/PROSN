@@ -51,7 +51,7 @@ export default {
 		};
 		axios({
 			// 0808 오채명 : 모든 게시글, 문제 가져올 때 확인하려고 위의 주소로 했는데, 밑에꺼로 해야함
-			url: drf.api + 'post' + '/workbook',
+			url: drf.postFeed.workbook(),
 			method: 'get',
 			headers: {
 				Authorization: this.accessToken,
@@ -59,14 +59,15 @@ export default {
 			params: params,
 		})
 			.then((res) => {
-				this.MainBooks = res.data.content;
-				console.log('MainBooks = ', this.MainBooks);
+				console.log('메인 페이지 문제집 탭=', res);
+				// this.MainBooks = res.data.content;
+				// console.log('MainBooks = ', this.MainBooks);
 				// console.log(res.data.totalPages)
-				this.endPage = res.data.totalPages;
+				// this.endPage = res.data.totalPages;
 			})
 			.catch((err) => {
-				console.log('에러');
-				console.log(err);
+				// console.log('에러');
+				console.log('메인 페이지 문제집 탭 에러=', err);
 			});
 	},
 	methods: {

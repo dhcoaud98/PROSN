@@ -208,7 +208,8 @@ export default {
         mehtod: 'get',
       })
       .then(res => {
-        this.mainProbs = res.data.content
+        console.log('문제집 조회 =', res.data)
+        this.mainBooks = res.data.content
       })
       .catch(err => {
         console.log(err);

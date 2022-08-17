@@ -35,7 +35,8 @@ export default {
 	postFeed: {
 		problem: () => HOST + POSTFEED + 'problem/',
 		information: () => HOST + POSTFEED + 'information/',
-		likeordis: () => HOST + POSTFEED +'click/'
+		likeordis: () => HOST + POSTFEED +'click/',
+		workbook: () =>  HOST + POSTFEED + 'workbook/'
 	},
 	wrongAnswer: {
 		wrongAnswer: () => HOST + WRONGANSWER,
