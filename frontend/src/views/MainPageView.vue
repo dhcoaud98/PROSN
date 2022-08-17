@@ -11,7 +11,7 @@
           <h2 class="ms-3 dark--text font-weight-regular">F E E D</h2>
         </v-row>    
 
-        <!-- 카테고리 --> 
+        <!-- 카테고리  --> 
         <v-row class="bottom-border-grey pb-5 mr-2 mx-5 mb-0">
           <v-chip-group column mandatory active-class="clicked-chip">
             <!-- <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('whole','전체')" id="whole" small>#전체</v-chip> -->
