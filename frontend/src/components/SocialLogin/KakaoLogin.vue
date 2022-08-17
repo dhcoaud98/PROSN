@@ -25,10 +25,6 @@ created() {
         platform: "KAKAO"
         refreshToken: "71QJsxvUXvvfdwrb2WUb6g4ZdktUYu4Sebpjuz2pCj102wAAAYKq1JQx"
         */
-        // let grantType = res.data.grantType.replace(
-        //   res.data.grantType.charAt(0),
-        //   res.data.grantType.charAt(0).toUpperCase()
-        // );
         this.$store.dispatch(
           'saveToken',
            res.data.accessToken

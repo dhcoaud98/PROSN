@@ -13,12 +13,21 @@
         <!-- 카테고리 --> 
         <v-row class="bottom-border-grey pb-5 mr-2 mx-5 mb-0">
           <v-chip-group column mandatory active-class="clicked-chip">
-            <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('whole','전체')" id="whole" small>#전체</v-chip>
+            <!-- <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('whole','전체')" id="whole" small>#전체</v-chip> -->
             <div v-for="category in categories" :key="category.toDB">
               <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toDB, category.toUser)" small>
                 #{{category.toUser}}</v-chip>
             </div>
           </v-chip-group>
+          <div v-if="feedFlag === 1"><span class="pt-5">문제집은 검색 기능이 제공되지 않습니다.</span></div>
+          <div v-else>
+            <div v-if="selectedDB != 'whole'" class="result" style="color:#A384FF; display:inline;"> 
+              <div v-for="(categorie, idx) in categories" :key="idx">
+                <h2 style="display:inline;" v-if="categorie.toDB === selectedDB">{{categorie.toUser}} <span v-if="selectedDB != 'whole'" class="pt-5">에 대한 검색 결과입니다.</span></h2>
+              </div>
+            </div>
+            
+          </div>
         </v-row>
 
         <v-toolbar dark class="mt-10 mx-4" height="45px">
@@ -45,11 +54,14 @@
         <v-row>
           <v-col>
             <!-- 메인 피드 1. -- 문제 -->
-            <recent-problem id="problemFeed" :class="`${problemFeedClass}`" :mainProbs="mainProbs"></recent-problem>
+            <recent-problem v-if="selectedDB != 'whole'" id="problemFeed" :class="`${problemFeedClass}`" :selectedDB="selectedDB" :selectedProb="selectedProb"></recent-problem>
+            <recent-problem v-else id="problemFeed" :class="`${problemFeedClass}`" :mainProbs="mainProbs"></recent-problem>
             <!-- 메인 피드 2. -- 문제집 -->
-            <main-book id="BookFeed" :class="`${bookFeedClass}`" :mainBooks="mainBooks"></main-book>            
+            <main-book v-if="selectedDB != 'whole'" id="BookFeed" :class="`${bookFeedClass}`" :selectedBooks="selectedBooks"></main-book>   
+            <main-book v-else id="BookFeed" :class="`${bookFeedClass}`" :mainBooks="mainBooks"></main-book>            
             <!-- 메인 피드 3. -- 정보 -->
-            <info id="infoFeed" :class="`${infoFeedClass}`" :mainInfos="mainInfos"></info>
+            <info v-if="selectedDB != 'whole'" id="infoFeed" :class="`${infoFeedClass}`" :selectedDB="selectedDB" :selectedInfo="selectedInfo" ></info>
+            <info v-else id="infoFeed" :class="`${infoFeedClass}`" :mainInfos="mainInfos"></info>
           </v-col>
         </v-row>
       </v-col>
@@ -86,7 +98,9 @@ export default {
     return {
       selectedUser : '전체',
       selectedDB: 'whole',
+      toDB: 'whole',
       categories: [
+        {toDB:"whole", toUser: "전체"},
         {toDB:"NW", toUser: "네트워크"},
         {toDB:"OS", toUser: "운영체제"},
         {toDB:"DS", toUser: "자료구조"},
@@ -106,7 +120,9 @@ export default {
       mainInfos :[],
       mainBooks: [],
       mainProbs: [],
-      PROBLEM: 'PROBLEM',
+      selectedProb: [],
+      selectedInfo: [],
+      selectedBooks: [],
     }
   },
   components : {
@@ -120,6 +136,9 @@ export default {
   computed : {
     isSearched() {
       return this.$store.getters['problem/isSearched']
+    },
+    inputChange() {
+      return this.$store.getters['problem/inputChange']
     },
     ...mapGetters(['accessToken', 'currentUser'])
   },
@@ -144,43 +163,153 @@ export default {
       this.bookFeedClass = 'd-none'
       this.infoFeedClass = 'd-flex'
     },
-    // 카테고리 선택
-    selectCategory(toDB, toUser) {
-      this.selectedUser = toUser
-      if (toDB == 'whole') {
-        // this.wholeNote()
-        console.log('toDB =',toDB)
-      } else {
-        // this.tagNote(toDB)
-        console.log('toDB =', toDB)
 
-        const params = {
-          title : "AL",
-          code : toDB,
-          dtype : this.PROBLEM,
-          page : 1,
-          size : 5,
-          sort: 'updated,DESC'
+    
+    async selectCategory (toDB, toUser) {
+      await this.$store.dispatch('reIssue')
+      this.selectedProb = []
+      this.selectedInfo = []
+      this.selectedUser = toUser
+      if (this.feedFlag == 0) { // 카테고리로 문제 선택
+        if (toDB == 'whole') {
+          this.selectedDB =  toDB
+          this.selectedProb = []
+          console.log("toBD =", toDB)
+          const params = {
+            page: 0,
+            size: 5, 
+            sort: 'updated,DESC',
+          } 
+          axios({
+            url: drf.api + 'post' + '/problem',
+            method: 'get',
+            headers: {
+              Authorization : this.accessToken,
+            },
+            params: params
+          })
+          .then(res => {
+            this.mainProbs = res.data.content
+            console.log("problem = ",this.mainProbs)
+            this.endPage = res.data.totalPages 
+            // console.log("totalPage =", res.data)
+          })
+          .catch(err => {
+            console.log("에러")
+            console.log(err)
+          })
+        } else {
+          console.log('toDB =', toDB)
+          this.selectedDB =  toDB
+          const params = {
+            title : ``,
+            code : toDB,
+            dtype : 'PROBLEM',
+            page : 0,
+            size : 5,
+            sort: 'updated,DESC'
+          }
+          axios({
+            url: drf.api + 'post/' + 'search',
+            method: 'get',
+            headers: {
+              Authorization : this.accessToken,
+            },
+            params: params,
+          })
+          .then(res => {
+            console.log("prob 서치 =", res.data.content)
+            this.selectedProb = res.data.content
+          })
+          .catch(err => {
+            console.log("err=",err)
+          })
         }
+      } else if (this.feedFlag == 2){ // 카테고리로 정보 검색
+        if (toDB == 'whole') {
+          this.selectedDB =  toDB
+          this.selectedInfo = []
+          console.log("toBD =", toDB)
+          const params = {
+            page: 0,
+            size: 5, 
+            sort: 'updated,DESC',
+          } 
+          axios({
+            url: drf.api + 'post' + '/information',
+            method: 'get',
+            headers: {
+              Authorization : this.accessToken,
+            },
+            params: params
+          })
+          .then(res => {
+            this.mainInfos = res.data.content
+            console.log("info 전체 = ",this.mainInfos)
+            this.endPage = res.data.totalPages 
+            // console.log("totalPage =", res.data)
+          })
+          .catch(err => {
+            console.log("에러")
+            console.log(err)
+          })
+        } else {
+          this.mainInfos = []
+          console.log('toDB =', toDB)
+          this.selectedDB =  toDB
+          const params = {
+            title : ``,
+            code : toDB,
+            dtype : 'INFORMATION',
+            page : 0,
+            size : 5,
+            sort: 'updated,DESC'
+          }
+          axios({
+            url: drf.api + 'post/' + 'search',
+            method: 'get',
+            headers: {
+              Authorization : this.accessToken,
+            },
+            params: params,
+          })
+          .then(res => {
+            console.log(res)
+            console.log("info 서치=", res.data.content)
+            this.selectedInfo = res.data.content
+          })
+          .catch(err => {
+            console.log("err=",err)
+          })
+        }
+      } 
+    }  
+  },
+  created() {
+      const params = {
+          page: 0,
+          size: 5, 
+          sort: 'updated,DESC',
+        } 
         axios({
-          url: drf.api + 'post/' + 'search',
+          url: drf.api + 'post' + '/problem',
           method: 'get',
           headers: {
             Authorization : this.accessToken,
           },
-          params: params,
+          params: params
         })
         .then(res => {
-          console.log("res=", res)
+          this.mainProbs = res.data.content
+          console.log("problem = ",this.mainProbs)
+          this.endPage = res.data.totalPages 
+          console.log("totalPage =", res.data)
         })
         .catch(err => {
-          console.log("err=",err)
+          console.log("에러")
+          console.log(err)
         })
-      }
-    }
-
-  },
-  created() {
+      // 정보
       axios({
         url: drf.postFeed.information(),
         method: 'get',
@@ -192,6 +321,7 @@ export default {
         console.log(err);
       })
 
+      // 문제
       axios({
         url: drf.postFeed.problem(),
         method: 'get',
@@ -208,7 +338,7 @@ export default {
         mehtod: 'get',
       })
       .then(res => {
-        this.mainProbs = res.data.content
+        this.mainBooks = res.data.content
       })
       .catch(err => {
         console.log(err);
