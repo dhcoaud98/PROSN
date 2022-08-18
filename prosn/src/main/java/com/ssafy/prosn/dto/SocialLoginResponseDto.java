@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class SocialLoginResponseDto {
-    private Long oauthId;
+    private String oauthId;
     private Platform platform;
     private String email;
     private String name;

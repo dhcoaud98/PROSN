@@ -8,6 +8,7 @@ public class KakaoProfile {
     public Properties properties;
     public KakaoAccount kakao_account;
 
+    @JsonIgnoreProperties({"msg"})
     public class Properties {
         public String nickname;
 //        public String profile_image;
