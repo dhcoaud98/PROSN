@@ -4,7 +4,7 @@
 
 <script>
 import axios from 'axios';
-
+import drf from '@/api/drf';
 export default {
 created() {
     const naverCode = new URL(window.location.href).searchParams.get("code");
@@ -14,7 +14,8 @@ created() {
     console.log("vue에서 출력하는 naverCode ==", naverCode)
     if (naverCode) {
       axios({
-        url: 'http://localhost:8080/login/oauth2/code/naver' + `?code=${naverCode}` + `&state=${naverState}`,
+        // url: 'http://localhost:8080/login/oauth2/code/naver' + `?code=${naverCode}` + `&state=${naverState}`,
+        url:`${drf.social}login/oauth2/code/naver?code=${naverCode}&state=${naverState}`,
         method: 'get',
       })
       .then(res =>{
