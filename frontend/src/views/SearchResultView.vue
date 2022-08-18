@@ -13,8 +13,8 @@
           <v-col>
             <span class="pt-5">에 대한 결과 입니다.</span>
           </v-col>
-
         </v-row>
+
         <v-divider></v-divider>
 
         <!-- row 1-2: 검색 결과에 대한 상단 탭; 문제/문제집, 정보 -->
@@ -60,20 +60,16 @@
 
 <script>
 import SideBar from '@/components/SideBar.vue'
-import SearchBar from '@/components/SearchBar.vue'
 import RecentProblem from '@/components/MainPage/RecentProblem.vue'
 import Info from '@/components/MainPage/info.vue'
-import MainBook from '../components/MainPage/MainBook.vue'
 // import { mapGetters } from 'vuex';
 
 export default {
   name: 'SearchResultView',
   components: {
     SideBar,
-    SearchBar,
     RecentProblem,
     Info,
-    MainBook,
   },
   data() {
     return {

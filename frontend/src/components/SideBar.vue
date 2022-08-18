@@ -24,15 +24,10 @@
       </v-col>
     </v-row>
 
-    <v-row class="pa-0 ma-0">
-      <v-col class="px-0 pb-0">
-        <search-bar></search-bar>
-      </v-col>
-    </v-row> 
 
     <!-- 1. 오늘의 인기 문제 -->
     <!-- icon 찾기 -->
-    <v-card class="mx-auto mb-5 pink-gradation rounded-xl" height ="auto">
+    <v-card class="mx-auto mt-5 mb-5 pink-gradation rounded-xl" height ="auto">
       <v-card-text class="pa-5">
         <v-container>
         
@@ -51,7 +46,7 @@
               <!-- 인기문제; 제출률: 제출 수/조회 수*100 0813 임지민 -->
               <div v-for="(popularProb, idx) in popularProbs" :key="idx" class="mb-3">
                 <v-row class="ps-2">
-                  <v-btn plain @click="problemEvent(popularProb.popularityProblem.id)"><p class="title-font-size font-weight-bold mb-0 text-truncate">{{idx + 1}}. {{popularProb.popularityProblem.title}}</p></v-btn>
+                  <v-btn plain @click="problemEvent(popularProb.popularityProblem.id)"><p class="title-font-size font-weight-bold mb-0 text-truncate">{{idx + 1}}. {{popularProb.popularityProblem.title.slice(0,10)}}</p></v-btn>
                 </v-row>    
                 <v-row class="d-flex justify-space-between font-weight-bold mt-1">
                   <div class="circle-background pa-0 d-flex justify-center align-center text-center">
@@ -143,7 +138,6 @@
 
 
 <script>
-import SearchBar from './SearchBar.vue';
 import { mapGetters } from 'vuex';
 import axios from 'axios'
 import drf from '@/api/drf.js'
@@ -151,7 +145,6 @@ import drf from '@/api/drf.js'
 export default {
   name: "SideBar",
   components : {
-    SearchBar,
   }, 
   data () {
     return {

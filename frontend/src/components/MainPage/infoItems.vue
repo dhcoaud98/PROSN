@@ -62,6 +62,7 @@
 import drf from '@/api/drf'
 import axios from 'axios'
 import InfoModal from '@/components/InfoModal/InfoModal.vue'
+import { mapGetters } from 'vuex'
 
 export default {
     data() {
@@ -79,6 +80,9 @@ export default {
     },
     components: {
       InfoModal,
+    },
+    computed: {
+      ...mapGetters(['isLoggedIn',]),
     },
     created() {
       console.log("info = ",this.info)
@@ -144,8 +148,16 @@ export default {
            }
         },
         openModal() {
-            this.modal = true
-            console.log('openModal')
+            if (this.isLoggedIn) {            
+              this.modal = true
+              console.log('openModal')
+            } else {
+              this.$swal({
+                icon: 'warning',
+                text: '로그인 후 이용해주세요'
+              })
+              this.$router.push({ path: '/login'})
+            }
         },
         closeModal() {
             this.modal = false

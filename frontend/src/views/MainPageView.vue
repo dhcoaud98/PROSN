@@ -37,15 +37,19 @@
               </v-menu>
             </div>
           </v-col>
-        </v-row>    
-        <v-col cols="12" class="pa-0">
+        </v-row>
+
+        <!-- 검색창 -->
+        <v-col cols="12" class="mt-5 py-0 px-6">
           <v-text-field
-            label="검색어를 입력하세요"
+            label="🔍 검색어를 입력하세요"
             solo
+            rounded
             class="ma-0"
             @keyup.enter="onInputKeyword"
           ></v-text-field>
-      </v-col>
+        </v-col>
+
         <!-- 카테고리  --> 
         <v-row class="bottom-border-grey pb-5 mr-2 mx-5 mb-0">
           <v-chip-group column mandatory active-class="clicked-chip">
@@ -120,11 +124,9 @@ import RecentProblem from '../components/MainPage/RecentProblem.vue'
 import info from '../components/MainPage/info.vue'
 import SideBar from '@/components/SideBar.vue'
 import SearchResultView from '@/views/SearchResultView.vue'
-import MainBook from '../components/MainPage/MainBook.vue'
 import axios from 'axios'
 import drf from '@/api/drf.js'
 import { mapGetters } from 'vuex'
-import SearchBar from '@/components/SearchBar.vue' 
 export default {
   name: 'MainPageView',
   data(){
@@ -180,8 +182,6 @@ export default {
     info,
     SideBar,
     SearchResultView,
-    MainBook,
-    SearchBar
   },
   computed : {
     isSearched() {
@@ -190,7 +190,7 @@ export default {
     inputChange() {
       return this.$store.getters['problem/inputChange']
     },
-    ...mapGetters(['accessToken', 'currentUser', 'inputChange'])
+    ...mapGetters(['accessToken', 'currentUser', 'inputChange', 'isLoggedIn'])
   },
   methods : {
     moveToCreate(url){

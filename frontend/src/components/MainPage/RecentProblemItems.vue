@@ -118,15 +118,23 @@ export default {
     
     },
     computed: {
-      ...mapGetters(['accessToken'])
+      ...mapGetters(['accessToken', 'isLoggedIn'])
     },
     methods: {
         // 문제, 정보 vs. 문제집 여부에 따라 다른 것 띄우기 0817 임지민
         openDetail(ptype) {
-          if (ptype === 'Problem' || ptype === "Information"){
-            this.openModal()
-          } else if( ptype === "Workbook") {
-            this.$router.push({path: `/problembook/${this.mainProb.id}`})
+          if (this.isLoggedIn) {
+            if (ptype === 'Problem' || ptype === "Information"){
+              this.openModal()
+            } else if( ptype === "Workbook") {
+              this.$router.push({path: `/problembook/${this.mainProb.id}`})
+            }
+          } else {
+            this.$swal({
+              icon: 'warning',
+              text: '로그인 후 이용해주세요'
+            })
+            this.$router.push({ path: '/login'})          
           }
         },
         changeLikeStatus() {
@@ -169,10 +177,6 @@ export default {
            } else {
                 this.scrapText = "bookmark_border"
            }
-        },
-        openModal() {
-            this.modal = true
-            console.log('openModal')
         },
         closeModal() {
             this.modal = false

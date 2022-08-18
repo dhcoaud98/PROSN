@@ -24,7 +24,7 @@
               <router-link to="/login"><v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text>login</v-btn></router-link>
             </li>
             <li style="list-style: none;" v-if="isLoggedIn">
-              <v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text>logout</v-btn>
+              <v-btn class="pa-0" x-large rounded-sm color="#a384ff" width="100%" text @click="logout">logout</v-btn>
             </li>
           </v-col>
         </div>
@@ -66,10 +66,7 @@ import { mapGetters } from 'vuex'
 
 
 export default {
-  
-
   name: 'App',
-
   data () {
     return{
       bgColor: 'bg-grey',
@@ -131,6 +128,25 @@ export default {
       },
     },
     methods: {
+      logout () {
+      console.log("logout click");
+      this.$store.dispatch('removeToken', "")
+      this.$store.dispatch('removeName', "")
+      sessionStorage.setItem('accessToken', "")
+      sessionStorage.setItem('currentUser', "")
+
+      axios({
+          url: drf.accounts.logout(),
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },
+      })
+      .catch(err =>{
+          console.log("에러")
+          console.log(err.response.status)
+      })
+    },
       /*selectBgColor(){      
         // sm 이하에서는 배경색 흰색으로 바꾸기
         if (screen.innerWidth < 960){
