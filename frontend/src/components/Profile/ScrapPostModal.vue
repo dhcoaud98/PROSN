@@ -154,8 +154,9 @@ export default {
       })
       .then(res => {
         // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-        console.log('스크랩 폴더 삭제= ', res)
+        // console.log('스크랩 폴더 삭제= ', res)
         this.$emit('close')
+        this.$router.go()
       })
       .catch(err => {
         // console.log(this.accessToken)

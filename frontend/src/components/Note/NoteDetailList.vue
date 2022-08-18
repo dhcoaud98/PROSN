@@ -169,7 +169,7 @@ export default {
       })
       .then(res => {
           console.log("res = ",res);
-          this.$router.push({path: '/note'})
+          this.$router.go()
           // data에 저장해서 띄우기
           // dispatch('saveToken', token)
           // dispatch('fetchCurrentUser')
@@ -194,7 +194,7 @@ export default {
         })
         .then(res => {
             console.log("res.data = ",res.data);
-            this.$router.push('note/')
+            this.$router.push({ path: '/note' })
         })
         .catch(err =>{
             console.log("에러")

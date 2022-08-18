@@ -1,10 +1,10 @@
 <template>
   <v-container class="mt-5 px-0 px-md-3">
     <!-- v-for 사용하기 -->
-    <!-- {{ scrapFolders}} -->
-    <v-row v-if="noScraps">
+    <!-- {{ scrapFolders}} {{ scrapFolders.length}} -->
+    <v-row>
       <v-col class="text-center">
-        <p>스크랩한 폴더가 없습니다</p>
+        <p v-if="!scrapFolders.length">스크랩한 폴더가 없습니다</p>
       </v-col>
     </v-row>
     <div v-for="scrapFolder in scrapFolders" :key="scrapFolder.id">
@@ -37,7 +37,6 @@ export default {
     return {
       page: 1,
       scrapFolders: [],
-      noScraps: false,
     }
   },
   computed: {
@@ -61,10 +60,6 @@ export default {
       .catch(err => {
         console.log('스크랩 폴더 조회 에러', err);
       })
-
-      if (this.scrapFolders.length === 0) {
-        this.noScraps = true
-      }
     }
   },
   created() {
