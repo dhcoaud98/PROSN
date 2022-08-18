@@ -18,7 +18,7 @@
         <v-col cols="12" class="d-flex justify-center" @click="naverLogin()">
           <v-btn id='naver-login' color="#03C75A" class="justify-space-between ps-1 rounded-lg">
             <img src="@/assets/naver_logo.png" alt="naver_logo" id="naver-logo">
-            <img src="@/assets/naver_text.png" alt="naver_text">
+            <img src="@/assets/naver_text.png" alt="naver_text" id="naver-text" class="me-3">
             <div></div>
           </v-btn>
         </v-col>
@@ -67,5 +67,8 @@ export default {
 #naver-logo {
   height: 50px;
   width: 50px;
+}
+#naver-text {
+  height: 20px;
 }
 </style>

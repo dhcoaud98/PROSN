@@ -54,7 +54,8 @@ export default {
       // console.log('캐치했다=', this.lid);
       this.$emit('emit-folder', lid)
     },
-    deleteFolder(lid) {
+    async deleteFolder(lid) {
+      await this.$store.dispatch('reIssue');
       // axios 보내기
       const check = confirm('정말 삭제하시겠습니까?')
       if (check) {
@@ -80,7 +81,8 @@ export default {
       })
     }
     },
-    getScrapFolders() {
+    async getScrapFolders() {
+      await this.$store.dispatch('reIssue');
       // 내 폴더 목록 조회 0815 임지민
     axios({
       url: drf.scrap.folder(),
@@ -92,7 +94,7 @@ export default {
       .then(res => {
         console.log('스크랩 폴더 조회=', res.data);
         this.scrapFolders = res.data
-        this.$route.go()
+        this.$router.go()
       })
       .catch(err => {
         console.log('스크랩 폴더 조회 에러', err);
@@ -101,7 +103,7 @@ export default {
             icon: 'warning',
             text: '유효하지 않은 폴더입니다'
           })
-          this.$route.go()
+          this.$router.go()
         }
       })
     },

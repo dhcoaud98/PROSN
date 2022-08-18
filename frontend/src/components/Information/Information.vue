@@ -55,21 +55,25 @@
             <span>{{infoDetail.numOfDislikes}}</span>
           </div>
           <!-- 스크랩 버튼 -->
-          <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
-            <v-icon>{{scrapText}}</v-icon>
-          </v-btn>
-          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probDetail.id"></scrap>  
-        <scrap @close="closeScrapModal" v-if="scrapModal" :pid="infoDetail.id"></scrap>                    
+          <div v-if="isLoggedIn">
+            <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
+              <v-icon>{{scrapText}}</v-icon>
+            </v-btn>
+            <!-- <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probDetail.id"></scrap> -->
+            <scrap @close="closeScrapModal" v-if="scrapModal" :pid="infoDetail.id"></scrap>                    
+          </div>
       </v-col>   
 
       <!-- 내가 작성한 정보 -->
       <v-col v-else cols="8" class="pa-0 justify-end d-flex align-center">
-        <!-- 스크랩 버튼 -->
-        <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
-          <v-icon>{{scrapText}}</v-icon>
-        </v-btn> 
-        <!-- 삭제 -->
-        <v-btn type="submit" color="red" rounded outlined class="ms-1" large @click="deleteinfo">삭제</v-btn>
+        <div v-if="isLoggedIn">
+          <!-- 스크랩 버튼 -->
+          <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
+            <v-icon>{{scrapText}}</v-icon>
+          </v-btn> 
+          <!-- 삭제 -->
+          <v-btn type="submit" color="red" rounded outlined class="ms-1" large @click="deleteinfo">삭제</v-btn>
+        </div>
       </v-col>
     </v-row>             
 
@@ -109,7 +113,7 @@ export default {
     Scrap,
   },
   computed: {
-    ...mapGetters(['accessToken', 'currentUser'])
+    ...mapGetters(['accessToken', 'currentUser', 'isLoggedIn'])
   },
   methods: {
     // 2022.08.04. 라우터 경로 연결
@@ -128,6 +132,7 @@ export default {
       this.$router.push({ path: `../profile/${uid}`})
     },    
     changeLikeStatus() {
+      if (this.isLoggedIn){
         /* 
         버튼 클릭하면 색이 바뀌도록
         thumb up --> thumb up off alt
@@ -135,7 +140,7 @@ export default {
         bookmark border --> bookmark
         */
         /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
-
+        // console.log(document.querySelector('#correctStatus'));
         if (this.upText === "thumb_up_off_alt") {
           // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
           if (this.downText === "thumb_down") {
@@ -146,7 +151,8 @@ export default {
           } else {
             this.upText = "thumb_up_off_alt"
           }
-          // 좋아요 엑쇼스 0815 임지민
+
+        // 좋아요 엑쇼스 0815 임지민
         // axios 보내기
           axios({
             url: drf.postFeed.likeordis(),
@@ -155,18 +161,14 @@ export default {
               Authorization: this.accessToken,
             },
             data: {
-              pid: this.infoDetail.id,
+              pid: this.probdetail.id,
               type: true
             }
           })
           .then(res => {
-            console.log(res.data);
-            this.infoDetail.numOfLikes = res.data.numOfLikes
-            if(res.data.numOfLikes === 1) {
-              this.upText = 'thumb_up'
-            } else {
-              this.upText = 'thumb_up_off_alt'
-            }
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            this.probdetail.numOfLikes = res.data.numOfLikes
 
           })
           .catch(err => {
@@ -174,8 +176,10 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
+      }
     },
     changeHateStatus() {
+      if (this.isLoggedIn){
         /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
         if (this.downText === "thumb_down_off_alt") {
             this.downText = "thumb_down"
@@ -195,20 +199,22 @@ export default {
               Authorization: this.accessToken,
             },
             data: {
-              pid: this.infoDetail.id,
+              pid: this.probdetail.id,
               type: false
             }
           })
           .then(res => {
-            console.log(res.data);
-            this.infoDetail.numOfDislikes = res.data.numOfDislikes
-            
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            this.probdetail.numOfDislikes = res.data.numOfDislikes
+
           })
           .catch(err => {
             // console.log(this.accessToken)
             // console.log(this.userId)
             console.log(err);
           })
+      }
     },
     changeScrapStatus() {
        if (this.scrapText === "bookmark_border") {

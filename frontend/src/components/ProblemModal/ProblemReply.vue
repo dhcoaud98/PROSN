@@ -1,7 +1,7 @@
 <template>
   <v-card-text class="px-1 py-3">
     <!-- 댓글 입력란 -->
-    <v-container class="rounded-lg replies my-3">
+    <v-container class="rounded-lg replies my-3" v-if="isLoggedIn">
       <!-- {{credentials}} -->
       <v-form @submit.prevent="submitComment">
         <v-row>
@@ -70,10 +70,12 @@ export default {
     ProblemReplyItems,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'isLoggedIn'])
   },
   methods: {
-    submitComment() {
+    async submitComment() {
+      await this.$store.dispatch('reIssue');
+
       axios({
 				url: drf.api + 'comment/',
 				method: 'post',

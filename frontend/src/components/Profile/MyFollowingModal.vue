@@ -52,6 +52,7 @@ export default {
   methods: {
     profileEvent(uid) {
       this.$router.push({ path: `../profile/${uid}`})
+      this.$router.go()
     },  
   },
   created() {

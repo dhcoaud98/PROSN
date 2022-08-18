@@ -1,6 +1,6 @@
 <template>
   <v-row class="justify-space-between mx-0">
-    <v-col class="pa-0">
+    <div class="pa-0">
       <v-radio
         :label="scrapFolder.title"
         color="info"
@@ -9,11 +9,11 @@
         @change="emitFolderId(scrapFolder.id)"
         name="folders"
       ></v-radio>
-    </v-col>
-    <v-col cols="5" class="mr-2 pa-0">
-      <v-btn small class="mr-2" @click="openModal">이동</v-btn>
-      <v-btn small @click="$emit('delete-folder', scrapFolder.id)">삭제</v-btn>
-    </v-col>
+    </div>
+    <div class="mr-2 pa-0 justify-end">
+      <v-btn plain small class="px-0" @click="openModal"><h3 class="purple--text">이동</h3></v-btn>
+      <v-btn plain small class="px-0" @click="$emit('delete-folder', scrapFolder.id)"><h3 class="red--text">삭제</h3></v-btn>
+    </div>
     <!-- <p>hi</p> -->
     <scrap-post-modal 
       @close="closeModal" v-if="modal" 
@@ -53,7 +53,8 @@ export default {
       this.$emit('checkedFolder', lid)
       // console.log(lid);
     },
-    openModal() {
+    async openModal() {
+      await this.$store.dispatch('reIssue');
         this.modal = true
         console.log('openModal')
     },
