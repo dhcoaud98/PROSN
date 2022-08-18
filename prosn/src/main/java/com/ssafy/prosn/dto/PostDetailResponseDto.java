@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import javax.servlet.http.Cookie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class PostDetailResponseDto {
     private UserResponseDto writer;
     private List<String> tags;
     private PostType type;
+    private Cookie cookie;
+
 
     public PostDetailResponseDto(Long id, String title, Long numOfLikes, Long numOfDislikes, List<CommentDto> comments, Integer views, UserResponseDto user, List<String> tags, PostType type) {
         this.id = id;
@@ -37,5 +40,9 @@ public class PostDetailResponseDto {
         this.writer = user;
         this.tags = tags;
         this.type = type;
+    }
+
+    public void setCookie(Cookie cookie) {
+        this.cookie = cookie;
     }
 }

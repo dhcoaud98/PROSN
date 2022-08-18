@@ -86,8 +86,7 @@ export default {
             scrapText: 'bookmark_border',
             modal: false,
             probId: 0,
-            probdetail: [],
-            
+            probdetail: [],            
         }
     },
     components: {

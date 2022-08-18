@@ -1,9 +1,9 @@
 <template>
   <v-card-text class="px-1 py-3">
     <!-- 댓글 입력란 -->
-    <v-container class="rounded-lg replies my-3" v-if="isLoggedIn">
+    <v-container class="rounded-lg replies my-3">
       <!-- {{credentials}} -->
-      <v-form @submit.prevent="submitComment">
+      <v-form @submit.prevent="submitComment" v-if="isLoggedIn">
         <v-row>
           <v-textarea 
           background-color="#f5f5f5" 

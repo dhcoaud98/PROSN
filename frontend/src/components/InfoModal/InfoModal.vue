@@ -14,14 +14,11 @@
               </v-card-text>
 
               <!-- 정보 제목 -->
-              <!-- {{ info.pk }}. {{ info.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold black--text">
                 <h2>{{ info.title }}</h2> 
               </v-card-title>
 
               <!-- 정보 본문 -->
-              <!-- <p>{{ infodetail }}</p> -->
-              <!-- <p>{{ infodetail}}</p> -->
               <v-card-text class="d-flex pb-0">
                 <!-- 카테고리 라벨 -->
                 <div class="mt-5" v-for="(tag, idx) in infodetail.tags" :key="idx">
@@ -36,7 +33,6 @@
                     <v-card outlined class="mb-2 pa-3 overflow-y-auto" max-height="500px" width="100%">
                       <v-card-text>
                         <div>
-                          <!-- {{infodetail.id}} -->
                           {{ infodetail.mainText }}
                         </div>                
                       </v-card-text>
@@ -107,7 +103,6 @@
             <v-col id="reply-window" class="d-none">
               <v-card-text class="pa-0">
                 <div>
-                  <!-- 이부분에 인포 댓글만 연결해주면 끝남 -->
                   <info-modal-reply :cid="infodetail.id" :commentList="commentList"></info-modal-reply>
 
                   <v-divider class="mx-1"></v-divider>
@@ -117,7 +112,6 @@
                 </div>            
               </v-card-text>
             </v-col>
-
           </v-row>
         </v-container>
       </v-container>
@@ -154,13 +148,6 @@ export default {
   methods: {
     changeLikeStatus() {
       if (this.isLoggedIn){
-        /* 
-        버튼 클릭하면 색이 바뀌도록
-        thumb up --> thumb up off alt
-        thumb down --> thumb down off alt
-        bookmark border --> bookmark
-        */
-        
         // 좋아요 엑쇼스 0815 임지민
         // axios 보내기
           axios({
@@ -176,21 +163,15 @@ export default {
           })
           .then(res => {
             // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-            console.log(res)
             this.probdetail.numOfLikes = res.data.numOfLikes
-
           })
           .catch(err => {
-            // console.log(this.accessToken)
-            // console.log(this.userId)
-            console.log(err);
+            console.error(err)
           })
           /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
-        // console.log(document.querySelector('#correctStatus'));
           if (this.upText === "thumb_up_off_alt") {
           // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
           if (this.downText === "thumb_down") {
-              // console.log(this.downText)
               this.changeHateStatus()
               this.downText = "thumb_down_off_alt"
           }
@@ -202,7 +183,6 @@ export default {
     },
     changeHateStatus() {
       if (this.isLoggedIn){
-  
        // 싫어요 엑쇼스 0815 임지민
         // axios 보내기
           axios({
@@ -218,17 +198,13 @@ export default {
           })
           .then(res => {
             // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-            console.log(res)
             this.probdetail.numOfDislikes = res.data.numOfDislikes
-
           })
           .catch(err => {
-            // console.log(this.accessToken)
-            // console.log(this.userId)
-            console.log(err);
+            console.error(err)
           })
-              /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
-        if (this.downText === "thumb_down_off_alt") {
+          /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
+          if (this.downText === "thumb_down_off_alt") {
           this.downText = "thumb_down"
           // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
           if (this.upText === "thumb_up") {
@@ -236,7 +212,7 @@ export default {
             this.upText = "thumb_up_off_alt"
           }
         } else {
-              this.downText = "thumb_down_off_alt"
+          this.downText = "thumb_down_off_alt"
         }
       }
     },
@@ -284,28 +260,23 @@ export default {
           },
         })
         .then(res => {
-          console.log("res.data = ",res.data)
-          // console.log("삭제 되었습니다. ", res)
           this.$router.push('/')
         }) 
         .catch(err =>{
-          console.log("에러")
-          console.log(err)
+          console.error(err)
         })
-        this.$router.go(); // 새로고침      
+        this.$router.go()
       }
     },
     // 0815 수정
-    editInfo () {
-      console.log('수정')
-    },
+    // editInfo () {
+    //   console.log('수정')
+    // },
     openScrapModal() {
       this.scrapModal = true
-      console.log('openModal')
     },
     closeScrapModal() {
         this.scrapModal = false
-        console.log('closeModal')
     },
     getInfoDetail() {
       axios({
@@ -314,31 +285,23 @@ export default {
         headers: {
           Authorization : this.accessToken,
         },      
-    })
-    .then(res => {
-      console.log(res.data)
-      // this.probdetail = res.data
-      if (res.data.comments){
-        this.commentList = res.data.comments.reverse()
-      }
-      // console.log(this.commentList)
-    })
-    .catch(err => {
-      console.log("info modal 에러")
-      console.log(err)
-    })
-  
+      })
+      .then(res => {
+        console.log(res.data)
+        if (res.data.comments){
+          this.commentList = res.data.comments.reverse()
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
     }
   },
   computed: {
     ...mapGetters(['accessToken','currentUser', 'isLoggedIn']),
   },
   created() {
-    // console.log("problem id를 확인해볼까 = ", this.mainProb.id)
-    // this.probId = this.info.id
-    // this.credentials.pid = this.mainProb.id
-    this.getInfoDetail()
-   
+    this.getInfoDetail()   
   },
 }
 </script>

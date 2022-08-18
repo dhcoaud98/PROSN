@@ -220,19 +220,21 @@ export default {
                   this.$store.dispatch('saveName', res.data.name)
                   
                   // 회원가입이 완료되면 메인 페이지로 이동
-                  this.$router.push({ path: '/'})
-              
+                  this.$router.push({ path: '/'})              
               })
               .catch(err =>{
-                  // console.log("에러")
-                  console.log(err)
+                  console.error(err)
+                  if (err.request.status === 400){
+                    this.$swal({
+                      icon: 'error',
+                      text: '비밀번호 형식을 확인해주세요.',
+                  })
+                }
               })
-            }
-            
+            }            
         }
-
     },
-    }
+  }
 </script>
 
 <style>
