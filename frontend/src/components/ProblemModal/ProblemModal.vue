@@ -77,47 +77,50 @@
                         </v-col>
 
                         <!-- 내가 낸 문제가 아닐 경우 -->
-                        <v-col v-if="currentUser != probdetail.writer.id" class="pa-0 justify-end d-flex align-center">
-                          <!-- 좋아요 버튼 -->
-                          <div>
-                            <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
-                              <v-icon>{{upText}}</v-icon>
-                            </v-btn>
-                            <span>{{probdetail.numOfLikes}}</span>
-                          </div>
-                          <!-- 싫어요 버튼 -->
-                          <div>
-                            <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
-                              <v-icon>{{downText}}</v-icon>
-                            </v-btn>
-                            <span>{{probdetail.numOfDislikes}}</span>
-                          </div>
-                          <!-- 스크랩 버튼 -->
-                          <div>
-                            <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
-                              <v-icon>{{scrapText}}</v-icon>
-                            </v-btn>   
-                          </div>
+                          <v-col v-if="currentUser != probdetail.writer.id" class="pa-0 justify-end d-flex align-center">
+                            <!-- 좋아요 버튼 -->
+                            <div>
+                              <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
+                                <v-icon>{{upText}}</v-icon>
+                              </v-btn>
+                              <span>{{probdetail.numOfLikes}}</span>
+                            </div>
+                            <!-- 싫어요 버튼 -->
+                            <div>
+                              <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
+                                <v-icon>{{downText}}</v-icon>
+                              </v-btn>
+                              <span>{{probdetail.numOfDislikes}}</span>
+                            </div>
+                            <!-- 스크랩 버튼 -->
+                          <div v-if="isLoggedIn">
+                            <div>
+                              <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
+                                <v-icon>{{scrapText}}</v-icon>
+                              </v-btn>   
+                            </div>
 
-                          <!-- 스크랩 모달 -->
-                          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
+                            <!-- 스크랩 모달 -->
+                            <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
 
-                          <!-- 제출 버튼 -->
-                          <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
+                            <!-- 제출 버튼 -->
+                            <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
+                          </div>
                         </v-col>
-
                         <!-- 내가 낸 문제 일 경우 -->
                         <v-col v-else class="pa-0 justify-end d-flex align-center">
                           <!-- 스크랩 버튼 -->
-                          <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
-                            <v-icon>{{scrapText}}</v-icon>
-                          </v-btn>
-                          
-                          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
-                          <!-- 수정 -->
-                          <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
-                          <!-- 삭제 -->
-                          <v-btn type="submit" color="red" rounded outlined class="ms-1" small @click="deleteprob">삭제</v-btn>
+                          <div v-if="isLoggedIn">
+                            <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
+                              <v-icon>{{scrapText}}</v-icon>
+                            </v-btn>
+                            
+                            <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
+                            <!-- 수정 -->
+                            <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
+                            <!-- 삭제 -->
+                            <v-btn type="submit" color="red" rounded outlined class="ms-1" small @click="deleteprob">삭제</v-btn>
+                          </div>
                         </v-col>
                       </v-row>
                     </v-form>
@@ -190,10 +193,11 @@ export default {
     // probdetail: Object,
   },
   computed: {
-    ...mapGetters(['accessToken', 'currentUser'])
+    ...mapGetters(['accessToken', 'currentUser', 'isLoggedIn'])
   },
   methods: {
     changeLikeStatus() {
+      if (this.isLoggedIn){
         /* 
         버튼 클릭하면 색이 바뀌도록
         thumb up --> thumb up off alt
@@ -237,8 +241,10 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
+      }
     },
     changeHateStatus() {
+      if (this.isLoggedIn){
         /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
         if (this.downText === "thumb_down_off_alt") {
             this.downText = "thumb_down"
@@ -273,6 +279,7 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
+      }
     },
     changeScrapStatus() {
        if (this.scrapText === "bookmark_border") {
@@ -281,9 +288,12 @@ export default {
             this.scrapText = "bookmark_border"
        }
     },
-    openScrapModal() {
+    async openScrapModal() {
+      await this.$store.dispatch('reIssue');
+        if (this.isLoggedIn){
         this.scrapModal = true
         console.log('openModal')
+        }
     },
     closeScrapModal() {
         this.scrapModal = false

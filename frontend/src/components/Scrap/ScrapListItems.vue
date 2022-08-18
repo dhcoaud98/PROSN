@@ -53,7 +53,8 @@ export default {
       this.$emit('checkedFolder', lid)
       // console.log(lid);
     },
-    openModal() {
+    async openModal() {
+      await this.$store.dispatch('reIssue');
         this.modal = true
         console.log('openModal')
     },

@@ -120,7 +120,8 @@ export default {
     cancel () {
       this.$router.push({ path: `../profile/${this.currentUser}` })
     },
-    createProblem() {
+    async createProblem() {
+      await this.$store.dispatch('reIssue');
 			// console.log('토큰 = ', this.accessToken);
 			this.credentials.answer = this.credentials.ex1;
 			axios({

@@ -43,7 +43,9 @@ export default {
   computed: {
     ...mapGetters(['accessToken'])
   },
-  created() {
+  methods: {
+    async getMyFolderList(){
+      await this.$store.dispatch('reIssue');
      // 내 폴더 목록 조회 0815 임지민
     axios({
       url: drf.scrap.folder(),
@@ -63,6 +65,10 @@ export default {
       if (this.scrapFolders.length === 0) {
         this.noScraps = true
       }
+    }
+  },
+  created() {
+    this.getMyFolderList()
   }
 }
 </script>

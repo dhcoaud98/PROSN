@@ -38,7 +38,8 @@ export default {
     ...mapGetters(['accessToken'])
   },
   methods: {
-    deleteFromFolder(pid) {
+    async deleteFromFolder(pid) {
+      await this.$store.dispatch('reIssue');
       // 폴더에서 문제 삭제하기 0816 임지민
       const check = confirm('정말 "' + this.scrapDetail.title + '" 문제를 폴더에서 삭제하시겠습니까?')
 
