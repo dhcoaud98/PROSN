@@ -2,7 +2,7 @@ package com.ssafy.prosn.oauth;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"error", "error_description"})
+@JsonIgnoreProperties({"error", "error_description", "error_code"})
 public class KakaoOauthParams {
     private String token_type;
     private String access_token;
