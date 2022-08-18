@@ -39,7 +39,7 @@ spring:
             client-secret: 5IAVcnLWNJuhRqjJoNmFi5dGNOsXB4hU
             client-authentication-method: POST
             authorization-grant-type: authorization_code
-            redirect-uri: http://i7a705.p.ssafy.io:8080/login/oauth2/code/kakao
+            redirect-uri: http://i7a705.p.ssafy.io:8081/login/oauth2/code/kakao
             scope:
               - account_email
               - profile_nickname
