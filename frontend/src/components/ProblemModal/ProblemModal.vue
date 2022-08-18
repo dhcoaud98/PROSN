@@ -72,7 +72,7 @@
                         <!-- 출제자 정보 -->
                         <div class="pa-0" >
                           <span class="grey--text mr-2 mb-1">Created by.
-                            <v-btn class="px-0 font-weight-bold" plain @click=profileEvent(probdetail.writer.id)>                        
+                            <v-btn class="px-0 font-weight-bold" plain @click="profileEvent(probdetail.writer.id)">                        
                               {{probdetail.writer.name}} 
                             </v-btn>
                           </span>
