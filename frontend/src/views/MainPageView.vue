@@ -12,7 +12,7 @@
 
           <!-- 피드에 문제, 정보, 스터디 작성을 위한 드롭다운 0817 임지민 -->
           <v-col class="py-0 text-end pr-5 mr-5">
-            <div class="mr-5">
+            <div class="mr-5" v-if="isLoggedIn">
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -181,7 +181,7 @@ export default {
     inputChange() {
       return this.$store.getters['problem/inputChange']
     },
-    ...mapGetters(['accessToken', 'currentUser'])
+    ...mapGetters(['accessToken', 'currentUser', 'isLoggedIn'])
   },
   methods : {
     moveToCreate(url){

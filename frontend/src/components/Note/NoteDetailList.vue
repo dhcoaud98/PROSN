@@ -152,7 +152,8 @@ export default {
       targetRealAnswer.checked=true
       targetRealAnswer.setAttribute("style", "accent-color: green;")
     },
-    editNote() {
+    async editNote() {
+      await this.$store.dispatch('reIssue');
       axios({
           url: drf.wrongAnswer.wrongAnswer(),
           method: 'patch',
@@ -179,7 +180,9 @@ export default {
           console.log(err)
         })
     },
-    deleteNote() {
+    async deleteNote() {
+      await this.$store.dispatch('reIssue');
+
       const userDecision = confirm('정말로 삭제하시겠습니까?')
       if (userDecision) {
         axios({

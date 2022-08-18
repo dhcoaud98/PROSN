@@ -15,7 +15,7 @@
             <v-col class="pa-0">
               <h2 class="font-weight-bold mr-3">{{bookDetails.title}}</h2>
             </v-col>
-            <v-col class="text-end pa-0">
+            <v-col class="text-end pa-0" v-if="isLoggedIn">
               <v-btn plain class="font-weight-bold" v-if="!toggleTitleEdit" @click="showTitleEdit"><h3 class="red--text text--darken-5">제목 수정</h3></v-btn>
               <v-form v-else @submit.prevent="editBookTitle">
                 <v-text-field 
@@ -60,7 +60,7 @@ export default {
     ProblemBookList,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'isLoggedIn'])
   },
   methods: {
     goBack () {
@@ -69,7 +69,9 @@ export default {
     showTitleEdit() {
       this.toggleTitleEdit = true
     },
-    editBookTitle(){
+    async editBookTitle(){
+      await this.$store.dispatch('reIssue');
+
       if(this.credentials.title.trim() === '') {
           this.$swal({
             icon: 'warning',
@@ -100,27 +102,32 @@ export default {
         })
       }
     },
+    async getBookDetails(){
+      await this.$store.dispatch('reIssue');
+
+      const bookId = this.$route.params.bid
+      // console.log(noteId)
+  
+      axios({
+        url: drf.api+'post/' + bookId,
+        method: 'get',
+        headers: {
+          Authorization: this.accessToken,
+        },
+      })
+      .then(res => {
+        console.log(res) //ok
+        this.bookDetails = res.data
+        this.credentials.wid = this.bookDetails.id
+        // console.log('wid 저장되었나여', this.credentials.wid);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    }
   },
   created() {
-    const bookId = this.$route.params.bid
-    // console.log(noteId)
-
-    axios({
-      url: drf.api+'post/' + bookId,
-      method: 'get',
-      headers: {
-        Authorization: this.accessToken,
-      },
-    })
-    .then(res => {
-      console.log(res) //ok
-      this.bookDetails = res.data
-      this.credentials.wid = this.bookDetails.id
-      // console.log('wid 저장되었나여', this.credentials.wid);
-    })
-    .catch(err => {
-      console.log(err);
-    })
+    this.getBookDetails()
   },
 }
 </script>

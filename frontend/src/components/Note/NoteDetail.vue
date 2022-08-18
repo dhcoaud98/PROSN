@@ -50,31 +50,35 @@ export default {
   props: {
     
   },
-  methods : {
-    
-  },
   computed: {
     ...mapGetters(['accessToken'])
   },
+  methods : {
+    async getNoteDetail() {
+      await this.$store.dispatch('reIssue');
+      const noteId = this.$route.params.noteId
+      // console.log(noteId)
+  
+      axios({
+        url: drf.wrongAnswer.wrongAnswer() + noteId,
+        method: 'get',
+        headers: {
+          Authorization: this.accessToken,
+        },
+      })
+      .then(res => {
+        // console.log(res) //ok
+        this.noteDetail = res.data
+  
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
+    }
+  },
   created() {
-    const noteId = this.$route.params.noteId
-    // console.log(noteId)
-
-    axios({
-      url: drf.wrongAnswer.wrongAnswer() + noteId,
-      method: 'get',
-      headers: {
-        Authorization: this.accessToken,
-      },
-    })
-    .then(res => {
-      // console.log(res) //ok
-      this.noteDetail = res.data
-
-    })
-    .catch(err => {
-      console.log(err);
-    })
+    this.getNoteDetail()
   },
 }
 </script>

@@ -142,7 +142,9 @@ export default {
       // console.log('showbookinput change', this.toggleBookInput);
     },
     // 해당 폴더에 있는 문제 조회 0815 임지민
-    getFolderDetail () {
+    async getFolderDetail () {
+      await this.$store.dispatch('reIssue');
+
       axios({
         url: drf.scrap.scrap() + `${this.lid}`,
         method: 'get',
@@ -162,7 +164,9 @@ export default {
         console.log(err);
       })
     },
-     deleteFolder(lid) {
+     async deleteFolder(lid) {
+      await this.$store.dispatch('reIssue');
+      
       // axios 보내기
       const check = confirm('정말 삭제하시겠습니까?')
       if (check) {
@@ -196,7 +200,9 @@ export default {
     }
     },
     // 문제집 만들기
-    createBook() {
+    async createBook() {
+      await this.$store.dispatch('reIssue');
+
       if(this.credentials.title.trim() === '') {
         this.$swal({
           icon: 'warning',

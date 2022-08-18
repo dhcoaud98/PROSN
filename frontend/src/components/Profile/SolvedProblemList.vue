@@ -39,27 +39,31 @@ export default {
     ...mapGetters(['accessToken', 'currentUser'])
   },
   created() {
-    const params ={
-      page: 0,
-      size: 4,
-      sort: 'updated,DESC',
-    }
-    // 유저의 solving problem 조회
-    axios({
-      url: drf.api + 'solving',
-      method: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-      params: params
-    })
-    .then(res => {
-      console.log("userSolvings =", res.data.content)
-      this.userSolvings = res.data.content
-      this.endPage = res.data.totalPages
-    })
+    
   },
   methods: {
+    async getSovledProblem() {
+      await this.$store.dispatch('reIssue');
+      const params ={
+        page: 0,
+        size: 4,
+        sort: 'updated,DESC',
+      }
+      // 유저의 solving problem 조회
+      axios({
+        url: drf.api + 'solving',
+        method: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+        params: params
+      })
+      .then(res => {
+        console.log("userSolvings =", res.data.content)
+        this.userSolvings = res.data.content
+        this.endPage = res.data.totalPages
+      })
+    },
 		handlePage() {
 			console.log('event = ', Number(event.target.ariaLabel.slice(-1)));
 			this.page = Number(event.target.ariaLabel.slice(-1));
