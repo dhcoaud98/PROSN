@@ -278,7 +278,7 @@ export default {
         })
     } else {
         this.credentials.wrongAnswer = selectedAnswer.id
-        if (selectedAnswer === "1") {
+        if (this.credentials.wrongAnswer === "1") {
             this.credentials.right = true
             this.myCorrectStatus = true
             // alert('정답입니다.')

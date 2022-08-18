@@ -2,7 +2,7 @@
   <!-- 2022.07.26 댓글창 (남성은) -->
   <!-- <v-card elevation="2" class="rounded ma-2 pa-4 mx-1"> -->
   <v-container class="mt-2 border-a-10 h-300 overflow-auto px-0">
-    <div v-for="comment in commentList.reverse()" :key="comment.id">
+    <div v-for="comment in commentList" :key="comment.id">
       <div id="grey-reply" rounded class="mb-2">
         <v-row class=" border-a-10">
           <v-col>{{comment.mainText}}</v-col>

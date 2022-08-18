@@ -60,6 +60,7 @@
                           <div v-for="example in examples" :key="example.id" class="my-3">
                             <div class="d-flex">
                               <input type="radio" :value="`보기${example.id}`" :id="example.id" name="bogey">
+                              <!-- name="bogey" -->
                               <label :for="`check${example.id}`" 
                               class="ml-2 font-parent-mid-l">
                               <h3>{{example.example}}</h3></label>
@@ -73,7 +74,7 @@
                         <div class="pa-0" >
                           <span class="grey--text mr-2 mb-1">Created by.
                             <v-btn class="px-0 font-weight-bold" plain @click="profileEvent(probdetail.writer.id)">                        
-                              {{probdetail.writer.name}} 
+                              {{probdetail.writer.name }} 
                             </v-btn>
                           </span>
                         </div>
@@ -166,7 +167,6 @@ import Scrap from '@/components/Scrap/Scrap.vue'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'ProblemModal',
   components: {
     ProblemReply,
     Scrap,
@@ -187,8 +187,10 @@ export default {
       },
       showCorrectStatus: false,
       myCorrectStatus: null,
-      commentList: null,
-      probdetail: []
+      commentList: [],
+      probdetail: {
+        writer: {}
+      },
     }
   },
   props: {
@@ -446,7 +448,6 @@ export default {
   },
   created() {
     this.getProbDetail()
-    
   },
 
   

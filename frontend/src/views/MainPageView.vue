@@ -95,8 +95,8 @@
             <!-- <recent-problem v-if="selectedProb" id="problemFeed" :class="`${problemFeedClass}`" :selectedDB="selectedDB" :selectedProb="selectedProb"></recent-problem> -->
             <recent-problem id="problemFeed" :class="`${problemFeedClass}`" :mainProbs="mainProbs"></recent-problem>
             <!-- 메인 피드 2. -- 문제집 -->
-            <main-book v-if="selectedDB != 'whole'" id="BookFeed" :class="`${bookFeedClass}`" :selectedBooks="selectedBooks"></main-book>   
-            <main-book v-else id="BookFeed" :class="`${bookFeedClass}`" :mainBooks="mainBooks"></main-book>            
+            <!-- <main-book v-if="selectedDB != 'whole'" id="BookFeed" :class="`${bookFeedClass}`" :selectedBooks="selectedBooks"></main-book>   
+            <main-book v-else id="BookFeed" :class="`${bookFeedClass}`" :mainBooks="mainBooks"></main-book>             -->
             <!-- 메인 피드 3. -- 정보 -->
             <info v-if="selectedDB != 'whole'" id="infoFeed" :class="`${infoFeedClass}`" :selectedDB="selectedDB" :selectedInfo="selectedInfo" ></info>
             <info v-else id="infoFeed" :class="`${infoFeedClass}`" :mainInfos="mainInfos"></info>
@@ -190,7 +190,7 @@ export default {
     inputChange() {
       return this.$store.getters['problem/inputChange']
     },
-    ...mapGetters(['accessToken', 'currentUser', 'inputChange', 'isLoggedIn'])
+    ...mapGetters(['accessToken', 'currentUser', 'isLoggedIn'])
   },
   methods : {
     moveToCreate(url){

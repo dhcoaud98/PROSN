@@ -195,8 +195,8 @@ export default {
   },
   created() {
     // 유저정보 확인
-    const profileOwnerId = location.href.slice(30)
-
+    const profileOwnerId = this.$route.params.uid;
+    console.log('프로필', profileOwnerId)
     axios({
       url: drf.api + 'user/' + 'info/' + `${profileOwnerId}`,
       method: 'get',

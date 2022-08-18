@@ -53,7 +53,7 @@ export default {
         size: 4,
         sort: 'updated,DESC',
       }
-      const profileOwnerId = location.href.slice(30)
+      const profileOwnerId = this.$route.params.uid;
       // 유저의 포스트 조회
       axios({
         url: drf.api + 'user/' + 'post/' + `${profileOwnerId}`,
