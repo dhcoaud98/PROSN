@@ -33,15 +33,15 @@ export default {
     methods: {
       KakaoLogin() {
         console.log('카카오 로그인 시도')
-        window.location.href = "https://kauth.kakao.com/oauth/authorize?client_id=6ed2b72fdabc00402337b642bd55e31c&redirect_uri=http://i7a705.p.ssafy.io:8080/login/oauth2/code/kakao&response_type=code"
+        window.location.href = "https://kauth.kakao.com/oauth/authorize?client_id=6ed2b72fdabc00402337b642bd55e31c&redirect_uri=http://i7a705.p.ssafy.io:8081/login/oauth2/code/kakao&response_type=code"
       },
       GoogleLogin () {
         console.log('구글 로그인 시도')
-        window.location.href = "https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=http://i7a705.p.ssafy.io:8080/login/oauth2/code/google/callback&client_id=295331690529-n55t5j7cu200lok9c151d25nrfr2vv6g.apps.googleusercontent.com"
+        window.location.href = "https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&response_type=code&state=state_parameter_passthrough_value&redirect_uri=http://i7a705.p.ssafy.io:8081/login/oauth2/code/google/callback&client_id=295331690529-n55t5j7cu200lok9c151d25nrfr2vv6g.apps.googleusercontent.com"
       },
       naverLogin () {
         console.log('네이버 로그인 시도')
-        window.location.href = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=LwPwQBNyhqiw3dYPZ4Av&state=state&redirect_uri=http://i7a705.p.ssafy.io:8080/login/oauth2/code/naver"
+        window.location.href = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=LwPwQBNyhqiw3dYPZ4Av&state=state&redirect_uri=http://i7a705.p.ssafy.io:8081/login/oauth2/code/naver"
       }
     }
 
