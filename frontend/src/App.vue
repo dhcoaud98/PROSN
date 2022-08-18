@@ -66,6 +66,8 @@ import { mapGetters } from 'vuex'
 
 
 export default {
+  
+
   name: 'App',
 
   data () {
@@ -73,6 +75,7 @@ export default {
       bgColor: 'bg-grey',
       navDisplay: 'd-flex',
       navDisplayCol: 'd-md-flex d-none',
+      currentUrl: window.location.href
     }
   },
   components : {
@@ -85,16 +88,20 @@ export default {
     ...mapGetters(['userName','isLoggedIn',]),
   },
   watch: {
+    // currentUrl () {
+    //   console.log('url changed-----------------------');
+    // },
     /* 0805 임지민
       login, signup일 때는 navbar 안띄움
       아래 created까지 써줘야 새로 고침하면 navbar가 생기는 현상이 사라짐
     */
-    $route(to) {
-      // console.log(to) // 도착지 login
-      // console.log(from) // 출발지 signUp
+    $route(to, from) {
+      console.log(to) // 도착지 login
+      console.log(from) // 출발지 signUp
       // .v-application .d-sm-flex
       // const hiddenClass = document.querySelector('.v-application')
       if(to.name === 'login' || to.name === 'signUp') {
+        // console.log('url changed-----------------------');
         this.navDisplay = 'd-none'
         this.navDisplayCol = 'd-none'
         const smLogo = document.querySelector('#sm-logo')
@@ -105,7 +112,22 @@ export default {
         this.navDisplayCol = 'd-md-flex d-none'
       }
       
-      // 안보일 때는 router-view의 cols를 12로 하기
+      // 로그인이 되어있지 않을 때, note, study를 url로 접근하려하면 막기
+      // if (!this.isLoggedIn) {
+      // const onlyAllowLoggedIn = [
+      //   'study', 'note', 'noteDetail', 'createNote', 'createstudy', 'createproblem', 'createinfo', 'editstudy'
+      // ]
+      // onlyAllowLoggedIn.forEach(urlName => {
+      //   console.log('로그인 해야 들어갈 수 있는 페이지');
+      //   if (to.name === urlName || from.name === urlName) {
+      //     this.$swal({
+      //       icon: 'warning',
+      //       text: '로그인 후 이용해주세요'
+      //     })
+      //     this.$router.push({path: '/login'})
+      //     }
+      //   })
+      // }
       },
     },
     methods: {
@@ -120,18 +142,35 @@ export default {
       }, */
     },
     created() {
+      // console.log('current url', location.href);
       // if($vuetify.breakpoint.sm) {console.log(true)}
-        let currentUrl = location.href
-        if (currentUrl.endsWith('login') || currentUrl.endsWith('signup')) {
-          this.navDisplay = 'd-none'
-          this.navDisplayCol = 'd-none'
-          // 여기 진짜 무슨일이냐 매번
-          const smLogo = document.querySelector('#sm-logo')
-          smLogo.setAttribute('class', 'd-none')
-        } else {
-          this.navDisplay = 'd-flex'
-          this.navDisplayCol = 'd-none d-md-flex'
-        }    
+      let currentUrl = location.href
+      if (currentUrl.endsWith('login') || currentUrl.endsWith('signup')) {
+        this.navDisplay = 'd-none'
+        this.navDisplayCol = 'd-none'
+        // 여기 진짜 무슨일이냐 매번
+        const smLogo = document.querySelector('#sm-logo')
+        smLogo.setAttribute('class', 'd-none')
+      } else {
+        this.navDisplay = 'd-flex'
+        this.navDisplayCol = 'd-none d-md-flex'
+      }
+      // 로그인이 안되어 있을 때 url로 입력해서 접근하는 것 막기
+      // console.log('현재 url type', currentUrl, typeof(currentUrl));
+       const onlyAllowLoggedIn = [
+        'study', 'note', 'createproblem', 'createinfo', 'editstudy'
+      ]
+      onlyAllowLoggedIn.forEach(urlName => {
+        if (currentUrl.includes(urlName)){
+          if (!this.isLoggedIn) {
+            this.$swal({
+              icon: 'warning',
+              text: '로그인 후 이용해주세요'
+            })
+            this.$router.push({path: '/login'})
+          }
+        }
+      })
     },  
   } 
 </script>

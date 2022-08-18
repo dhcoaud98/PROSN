@@ -6,6 +6,7 @@
       - 회원가입 hover시 보라색 text와 보라색 underline 뜨도록 수정
       - 회원가입 글자 bold로 바꿈
      -->
+    
     <v-container class="mt-5">
       <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login" class="ma-0 pa-0">
         <v-row no-gutters>
@@ -157,7 +158,7 @@ const accountStore = 'accountStore';
               //  console.log('에러');
               console.log(err);
               // 아이디, 비번을 잘못 입력하면 로그인창 하단에 경고메시지 띄우기 0814 임지민
-               if (err.request.status === 401){
+               if (err.request.status === 403){
                 this.warningText = '아이디 혹은 비밀번호를 확인해주세요'
                 // console.log(this.warningText)
                };

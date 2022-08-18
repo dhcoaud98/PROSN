@@ -46,31 +46,33 @@ export default {
     CreateNoteList,
   },
   methods : {
-    
+    async createNote(){
+      await this.$store.dispatch('reIssue');
+      const noteId = this.$route.params.noteId
+      // console.log('noteId=', noteId)
+      axios({
+        url: drf.wrongAnswer.wrongAnswer() + noteId,
+        method: 'get',
+        headers: {
+          Authorization: this.accessToken,
+        },
+      })
+      .then(res => {
+        // console.log(res) //ok
+        this.noteDetail = res.data
+        // console.log(this.noteDetail)
+
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    }
   },
   computed: {
     ...mapGetters(['userName', 'accessToken'])
   },
   created() {
-    const noteId = this.$route.params.noteId
-    // console.log('noteId=', noteId)
-     axios({
-      url: drf.wrongAnswer.wrongAnswer() + noteId,
-      method: 'get',
-      headers: {
-        Authorization: this.accessToken,
-      },
-    })
-    .then(res => {
-      // console.log(res) //ok
-      this.noteDetail = res.data
-      // console.log(this.noteDetail)
-
-    })
-    .catch(err => {
-      console.log(err);
-    })
-
+    this.createNote()
   }
 }
 </script>

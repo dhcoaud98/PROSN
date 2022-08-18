@@ -48,7 +48,7 @@
                 <!--  문제가 길어지면 모달이 화면 전체만큼 커져서 크기를 450px로 고정함 0811 임지민 -->
                 <div>
                   <!-- <p>{{probdetail}}</p> -->
-                  <p>{{probdetail.mainText}}</p>
+                  <h3>{{probdetail.mainText}}</h3>
                 </div>
 
                 <div>
@@ -58,26 +58,29 @@
                       <v-row>
                         <v-col>
                           <div v-for="example in examples" :key="example.id" class="my-3">
-                            <input type="radio" :value="`보기${example.id}`" :id="example.id" name="bogey">
-                            <label :for="`check${example.id}`" 
-                            class="ml-2 font-parent-mid-l">
-                            {{example.example}} </label>
+                            <div class="d-flex">
+                              <input type="radio" :value="`보기${example.id}`" :id="example.id" name="bogey">
+                              <label :for="`check${example.id}`" 
+                              class="ml-2 font-parent-mid-l">
+                              <h3>{{example.example}}</h3></label>
+                            </div>                        
                           </div>
                         </v-col>
                       </v-row>
                       <!-- 저작권 / 버튼 -->
-                      <v-row>
+                      <v-row class="justify-space-between">
                         <!-- 출제자 정보 -->
-                        <v-col class="pa-0" >
+                        <div class="pa-0" >
                           <span class="grey--text mr-2 mb-1">Created by.
                             <v-btn class="px-0 font-weight-bold" plain @click=profileEvent(probdetail.writer.id)>                        
                               {{probdetail.writer.name}} 
                             </v-btn>
                           </span>
-                        </v-col>
+                        </div>
 
                         <!-- 내가 낸 문제가 아닐 경우 -->
-                        <v-col v-if="currentUser != probdetail.writer.id" class="pa-0 justify-end d-flex align-center">
+                      
+                        <div v-if="currentUser != probdetail.writer.id" class="pa-0 justify-end d-flex align-center">
                           <!-- 좋아요 버튼 -->
                           <div>
                             <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
@@ -93,32 +96,34 @@
                             <span>{{probdetail.numOfDislikes}}</span>
                           </div>
                           <!-- 스크랩 버튼 -->
-                          <div>
-                            <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
+                          
+                            <div>
+                              <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
                               <v-icon>{{scrapText}}</v-icon>
-                            </v-btn>   
-                          </div>
-
+                              </v-btn>   
+                            </div>
+                          
                           <!-- 스크랩 모달 -->
                           <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
-
                           <!-- 제출 버튼 -->
                           <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
-                        </v-col>
-
+                        </div>
+                        
                         <!-- 내가 낸 문제 일 경우 -->
-                        <v-col v-else class="pa-0 justify-end d-flex align-center">
+                        <div v-else class="pa-0 justify-end d-flex align-center">
                           <!-- 스크랩 버튼 -->
-                          <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
-                            <v-icon>{{scrapText}}</v-icon>
-                          </v-btn>
-                          
-                          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
-                          <!-- 수정 -->
-                          <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
-                          <!-- 삭제 -->
-                          <v-btn type="submit" color="red" rounded outlined class="ms-1" small @click="deleteprob">삭제</v-btn>
-                        </v-col>
+                          <div v-if="isLoggedIn">
+                            <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
+                              <v-icon>{{scrapText}}</v-icon>
+                            </v-btn>
+                            
+                            <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
+                            <!-- 수정 -->
+                            <!-- <v-btn type="submit" rounded outlined class="ms-1" small @click="updateprob">수정</v-btn> -->
+                            <!-- 삭제 -->
+                            <v-btn type="submit" color="red" rounded outlined class="ms-1" small @click="deleteprob">삭제</v-btn>
+                          </div>
+                        </div>
                       </v-row>
                     </v-form>
                   </v-container>
@@ -190,10 +195,11 @@ export default {
     // probdetail: Object,
   },
   computed: {
-    ...mapGetters(['accessToken', 'currentUser'])
+    ...mapGetters(['accessToken', 'currentUser', 'isLoggedIn'])
   },
   methods: {
     changeLikeStatus() {
+      if (this.isLoggedIn){
         /* 
         버튼 클릭하면 색이 바뀌도록
         thumb up --> thumb up off alt
@@ -237,8 +243,10 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
+      }
     },
     changeHateStatus() {
+      if (this.isLoggedIn){
         /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
         if (this.downText === "thumb_down_off_alt") {
             this.downText = "thumb_down"
@@ -273,6 +281,7 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
+      }
     },
     changeScrapStatus() {
        if (this.scrapText === "bookmark_border") {
@@ -281,9 +290,12 @@ export default {
             this.scrapText = "bookmark_border"
        }
     },
-    openScrapModal() {
+    async openScrapModal() {
+      await this.$store.dispatch('reIssue');
+        if (this.isLoggedIn){
         this.scrapModal = true
         console.log('openModal')
+        }
     },
     closeScrapModal() {
         this.scrapModal = false

@@ -15,48 +15,20 @@
                 <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
               </v-row>
 
-              <!-- 버튼들 -->
-              <v-row class="mt-5">
-                <v-col class="pa-0 d-flex justify-space-between">
-                  <div>
-                    <v-btn rounded color="red lighten-1" class="font-weight-bold white--text ms-3"
-                    @click="deleteFolder(scrapFolder.id)">폴더 삭제</v-btn>
-                  </div>
-                  <div v-if="toggleBookInput">
-                    <v-btn 
-                      rounded class="font-weight-bold" 
-                      @click="showBookInput()">문제집 만들기</v-btn>
-                  </div>          
-                  <div v-else>
-                    <v-form @submit.prevent="createBook">
-                      <!-- <p>hi {{credentials.title}}</p> -->
-                      <v-text-field 
-                        label="문제집 이름을 입력해주세요" 
-                        class="d-inline-block"
-                        v-model="credentials.title"></v-text-field>
-                      <v-btn type="submit" rounded class="ml-2">만들기</v-btn>
-                    </v-form>
-                  </div>
-                </v-col>
-                <span class="col-1 pa-0">
-                  <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
-                </span>
-              </v-row>
-
               <!-- 문제집 이름을 제출하기 위한 폼 0816 임지민 -->
-                <v-row class="mt-5 justify-end" v-if="beforeClickCreate">
+                <v-row class="mt-5 justify-end" v-if="toggleBookInput">
                   <v-col class="px-0 ml-2" cols="2">
                     <v-btn 
                     small outlined rounded 
                     class="font-weight-bold"
-                    @click="showTitleInput">문제집 만들기</v-btn>
+                    @click="showBookInput">문제집 만들기</v-btn>
                   </v-col>
                 </v-row>
               <v-form v-else @submit.prevent="createBook(scrapFolder.id)">
                 <v-row class="justify-end align-center">
                   <v-col cols="4">
                     <!-- <p>{{scrapFolder.title}}</p> -->
-                    <p>{{ credentials.title }}</p>
+                    <!-- <p>{{ credentials.title }}</p> -->
                     <v-text-field label="문제집 이름을 입력해주세요"
                         v-model="credentials.title"
                         id="bookName"></v-text-field>
@@ -142,7 +114,9 @@ export default {
       // console.log('showbookinput change', this.toggleBookInput);
     },
     // 해당 폴더에 있는 문제 조회 0815 임지민
-    getFolderDetail () {
+    async getFolderDetail () {
+      await this.$store.dispatch('reIssue');
+
       axios({
         url: drf.scrap.scrap() + `${this.lid}`,
         method: 'get',
@@ -162,7 +136,9 @@ export default {
         console.log(err);
       })
     },
-     deleteFolder(lid) {
+     async deleteFolder(lid) {
+      await this.$store.dispatch('reIssue');
+      
       // axios 보내기
       const check = confirm('정말 삭제하시겠습니까?')
       if (check) {
@@ -196,36 +172,46 @@ export default {
     }
     },
     // 문제집 만들기
-    createBook() {
+    async createBook() {
+      await this.$store.dispatch('reIssue');
+
       if(this.credentials.title.trim() === '') {
         this.$swal({
           icon: 'warning',
           text: '문제집 이름을 입력해주세요'
         })
+        console.log('scrap detail==========', this.scrapDetails.content.length);
       } else {
-        // 엑쇼스
-        axios({
-        url: drf.postFeed.workbook(),
-        method: 'post',
-        headers: {
-          Authorization: this.accessToken,
-        },
-        data: this.credentials
-      })
-      .then(res => {
-        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-        // console.log(res)
-        this.$swal({
-          icon: 'success',
-          text: '문제집 출제가 완료되었습니다'
+        if (this.scrapDetails.content.length) {
+          // 엑쇼스
+          axios({
+          url: drf.postFeed.workbook(),
+          method: 'post',
+          headers: {
+            Authorization: this.accessToken,
+          },
+          data: this.credentials
         })
-        this.$router.go()
-      })
-      .catch(err => {
-        // console.log(this.accessToken)
-        // console.log(this.userId)
-        console.log(err);
-      })
+        .then(res => {
+          // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+          // console.log(res)
+          this.$swal({
+            icon: 'success',
+            text: '문제집 출제가 완료되었습니다'
+          })
+          this.$router.go()
+        })
+        .catch(err => {
+          // console.log(this.accessToken)
+          // console.log(this.userId)
+          console.log(err);
+        })
+        } else {
+          this.$swal({
+            icon : 'warning',
+            text: '출제할 문제가 없습니다.'
+          })
+        }
 
       }
     }

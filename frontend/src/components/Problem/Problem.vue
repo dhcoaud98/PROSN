@@ -237,7 +237,8 @@ export default {
             this.scrapText = "bookmark_border"
        }
     },
-    openScrapModal() {
+    async openScrapModal() {
+      await this.$store.dispatch('reIssue');
         this.scrapModal = true
         console.log('openModal')
     },

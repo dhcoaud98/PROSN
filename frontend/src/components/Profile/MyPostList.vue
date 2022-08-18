@@ -42,28 +42,33 @@ export default {
     ...mapGetters(['accessToken', 'currentUser'])
   },
   created() {
-    const params ={
-      page: 0,
-      size: 4,
-      sort: 'updated,DESC',
-    }
-    const profileOwnerId = location.href.slice(30)
-    // 유저의 포스트 조회
-    axios({
-      url: drf.api + 'user/' + 'post/' + `${profileOwnerId}`,
-      method: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-      params: params
-    })
-    .then(res => {
-      console.log("userPost =",res.data.content)
-      this.userPosts = res.data.content
-      this.endPage = res.data.totalPages
-    })
+    this.getMyPostlist()
   },
   methods: {
+    async getMyPostlist() {
+      await this.$store.dispatch('reIssue');
+
+      const params ={
+        page: 0,
+        size: 4,
+        sort: 'updated,DESC',
+      }
+      const profileOwnerId = location.href.slice(30)
+      // 유저의 포스트 조회
+      axios({
+        url: drf.api + 'user/' + 'post/' + `${profileOwnerId}`,
+        method: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+        params: params
+      })
+      .then(res => {
+        console.log("userPost =",res.data.content)
+        this.userPosts = res.data.content
+        this.endPage = res.data.totalPages
+      })
+    },
 		handlePage() {
 			console.log('event = ', Number(event.target.ariaLabel.slice(-1)));
 			this.page = Number(event.target.ariaLabel.slice(-1));

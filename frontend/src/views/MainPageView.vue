@@ -12,7 +12,7 @@
 
           <!-- 피드에 문제, 정보, 스터디 작성을 위한 드롭다운 0817 임지민 -->
           <v-col class="py-0 text-end pr-5 mr-5">
-            <div class="mr-5">
+            <div class="mr-5" v-if="isLoggedIn">
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -38,13 +38,20 @@
             </div>
           </v-col>
         </v-row>    
-
+        <v-col cols="12" class="pa-0">
+          <v-text-field
+            label="검색어를 입력하세요"
+            solo
+            class="ma-0"
+            @keyup.enter="onInputKeyword"
+          ></v-text-field>
+      </v-col>
         <!-- 카테고리  --> 
         <v-row class="bottom-border-grey pb-5 mr-2 mx-5 mb-0">
           <v-chip-group column mandatory active-class="clicked-chip">
             <!-- <v-chip class="mr-2 my-2 border-grey" @click="selectCategory('whole','전체')" id="whole" small>#전체</v-chip> -->
             <div v-for="category in categories" :key="category.toDB">
-              <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toDB, category.toUser)" small>
+              <v-chip class="mr-2 my-2 border-grey" :id="category.toDB" @click="selectCategory(category.toDB)" small>
                 #{{category.toUser}}</v-chip>
             </div>
           </v-chip-group>
@@ -55,7 +62,7 @@
                 <h2 style="display:inline;" v-if="categorie.toDB === selectedDB">{{categorie.toUser}} <span v-if="selectedDB != 'whole'" class="pt-5">에 대한 검색 결과입니다.</span></h2>
               </div> 
           </div> 
-          <div v-if="isSearched" class="result" style="color:#A384FF; display:inline;" > 
+          <div v-if="isSearched" class="result" style="color:#A384FF; display:inline; "   > 
             <h2> {{inputChange}} <span class="pt-5">에 대한 검색 결과입니다.</span></h2>
           </div>
             
@@ -81,8 +88,8 @@
         <v-row>
           <v-col>
             <!-- 메인 피드 1. -- 문제 -->
-            <recent-problem v-if="selectedDB != 'whole'" id="problemFeed" :class="`${problemFeedClass}`" :selectedDB="selectedDB" :selectedProb="selectedProb"></recent-problem>
-            <recent-problem v-else id="problemFeed" :class="`${problemFeedClass}`" :mainProbs="mainProbs"></recent-problem>
+            <!-- <recent-problem v-if="selectedProb" id="problemFeed" :class="`${problemFeedClass}`" :selectedDB="selectedDB" :selectedProb="selectedProb"></recent-problem> -->
+            <recent-problem id="problemFeed" :class="`${problemFeedClass}`" :mainProbs="mainProbs"></recent-problem>
             <!-- 메인 피드 2. -- 문제집 -->
             <main-book v-if="selectedDB != 'whole'" id="BookFeed" :class="`${bookFeedClass}`" :selectedBooks="selectedBooks"></main-book>   
             <main-book v-else id="BookFeed" :class="`${bookFeedClass}`" :mainBooks="mainBooks"></main-book>            
@@ -117,7 +124,7 @@ import MainBook from '../components/MainPage/MainBook.vue'
 import axios from 'axios'
 import drf from '@/api/drf.js'
 import { mapGetters } from 'vuex'
-
+import SearchBar from '@/components/SearchBar.vue' 
 export default {
   name: 'MainPageView',
   data(){
@@ -136,6 +143,7 @@ export default {
           url: '/createstudy'
         },
       ],
+      searchTitle : "",
       selectedUser : '전체',
       selectedDB: 'whole',
       toDB: 'whole',
@@ -173,6 +181,7 @@ export default {
     SideBar,
     SearchResultView,
     MainBook,
+    SearchBar
   },
   computed : {
     isSearched() {
@@ -181,7 +190,7 @@ export default {
     inputChange() {
       return this.$store.getters['problem/inputChange']
     },
-    ...mapGetters(['accessToken', 'currentUser'])
+    ...mapGetters(['accessToken', 'currentUser', 'inputChange'])
   },
   methods : {
     moveToCreate(url){
@@ -201,17 +210,25 @@ export default {
       this.infoFeedClass = 'd-flex'
     },
 
+    onInputKeyword:  async function(event) {
+      this.searchTitle = event.target.value
+      this.selectCategory(this.toDB)
+    },
 
-    async selectCategory(toDB, toUser) {
-      await this.$store.dispatch('reIssue')
+
+    async selectCategory(toDB) {
+      this.toDB = toDB;
+      console.log("호출 toDB : ", toDB)
+      // await this.$store.dispatch('reIssue')
       this.selectedProb = []
       this.selectedInfo = []
-      this.selectedUser = toUser
+      // this.selectedUser = toUser
       if (this.feedFlag == 0) { // 카테고리로 문제 선택
-        if (toDB == 'whole' && this.titleSearch == '') {
+        console.log("문제만 조회")
+        if ((toDB === 'whole' || toDB === "") && this.searchTitle === '') {
+          console.log("태그가 빈값이나 전체. 검색어 없음. 태그 없음");
           this.selectedDB =  toDB
           this.selectedProb = []
-          console.log("toBD =", toDB)
           const params = {
             page: 0,
             size: 5, 
@@ -236,13 +253,16 @@ export default {
             console.log(err)
           })
         } else {
+          console.log("태그 있거나, 검색있거나, 둘 다 있거나");
           this.selectedProb = []
-          console.log('toDB =', toDB)
           this.selectedDB =  toDB
           this.titleSearch = this.inputChange
+          
+          console.log("title: ", this.searchTitle);
+          console.log("code : ", this.selectedDB);
           const params = {
-            title : `${this.titleSearch}`,
-            code : toDB,
+            title : this.searchTitle,
+            code : this.selectedDB === "whole" ? "" : this.selectedDB,
             dtype : 'Problem',
             page : 0,
             size : 5,
@@ -257,8 +277,10 @@ export default {
             params: params,
           })
           .then(res => {
-            console.log("prob 서치 =", res.data.content)
-            this.selectedProb = res.data.content
+            console.log("prob 서치1 =", res.data.content)
+            // this.selectedProb = null;
+            this.mainProbs = res.data.content
+
           })
           .catch(err => {
             console.log("err=",err)
@@ -268,7 +290,6 @@ export default {
         if (toDB == 'whole') {
           this.selectedDB =  toDB
           this.selectedInfo = []
-          console.log("toBD =", toDB)
           const params = {
             page: 0,
             size: 5, 
@@ -294,7 +315,6 @@ export default {
           })
         } else {
           this.mainInfos = []
-          console.log('toDB =', toDB)
           this.selectedDB =  toDB
           const params = {
             title : ``,
@@ -322,11 +342,12 @@ export default {
           })
         }
       } 
-    }  
-  },
-  created() {
+    },
+    init() {
       this.titleSearch = this.inputChange
-
+      if(this.titleSearch) {
+        this.selectCategory(this.toDB)
+      }
       const params = {
           page: 0,
           size: 5, 
@@ -385,7 +406,11 @@ export default {
       .catch(err => {
         console.log(err);
       })
-    },
+    }  
+  },
+  created() {
+    this.init();
+  },
 }
 </script>
 
