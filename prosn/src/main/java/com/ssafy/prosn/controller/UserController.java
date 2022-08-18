@@ -89,13 +89,15 @@ public class UserController {
     }
 
     @GetMapping("/following")
-    public ResponseEntity<?> followingList(Pageable pageable) {
-        return ResponseEntity.status(OK).body(friendService.getMyFollowing(userService.getMyInfoBySecret().getId(), pageable));
+    public ResponseEntity<?> followingList(Pageable pageable, @RequestParam Long uid) {
+//        return ResponseEntity.status(OK).body(friendService.getMyFollowing(userService.getMyInfoBySecret().getId(), pageable));
+        return ResponseEntity.status(OK).body(friendService.getMyFollowing(uid, pageable));
     }
 
     @GetMapping("/follower")
-    public ResponseEntity<?> followerList(Pageable pageable) {
-        return ResponseEntity.status(OK).body(friendService.getMyFollower(userService.getMyInfoBySecret().getId(), pageable));
+    public ResponseEntity<?> followerList(Pageable pageable, @RequestParam Long uid) {
+//        return ResponseEntity.status(OK).body(friendService.getMyFollower(userService.getMyInfoBySecret().getId(), pageable));
+        return ResponseEntity.status(OK).body(friendService.getMyFollower(uid, pageable));
     }
 
     @GetMapping("/info/{id}")
@@ -112,8 +114,9 @@ public class UserController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<?> logout() {
-        userService.logout(userService.getMyInfoBySecret().getId());
+    public ResponseEntity<?> logout(@RequestParam Long uid) {
+//        userService.logout(userService.getMyInfoBySecret().getId());
+        userService.logout(uid);
         return ResponseEntity.status(OK).build();
     }
 

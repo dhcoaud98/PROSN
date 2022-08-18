@@ -104,6 +104,10 @@ const accountStore = {
          const accessToken = this.getters.accessToken;
          const refreshToken = this.getters.refreshToken;
          const expire = this.getters.expire;
+         if(expire === "" || expire === null || expire === undefined) {
+            console.log("리턴");
+            return;
+         }
          // console.log('accessToken : ', accessToken);
          // console.log('refreshToken : ', refreshToken);
          // console.log('expire : ', expire);

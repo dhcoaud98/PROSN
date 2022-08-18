@@ -31,7 +31,8 @@ created() {
         );
         this.$store.dispatch('saveEmail', res.data.email);
         this.$store.dispatch('saveName', res.data.name);
-        this.$store.dispatch('saveId', res.data.oauthId);
+        // this.$store.dispatch('saveId', res.data.oauthId);
+        this.$store.dispatch('saveId', res.data.id);
         this.$store.dispatch('savePlatform', res.data.platform)
         this.$store.dispatch('saveRefreshToken', res.data.refreshToken);
         this.$router.push({path:"/"})

@@ -39,33 +39,38 @@ public class WrongAnswerController {
 //    }
 
     @PatchMapping
-    public ResponseEntity<?> write(@RequestBody @Valid WrongNoteRequestDto req) {
-        wrongAnswerService.write(req, userService.getMyInfoBySecret().getId());
+    public ResponseEntity<?> write(@RequestBody @Valid WrongNoteRequestDto req, @RequestParam Long uid) {
+//        wrongAnswerService.write(req, userService.getMyInfoBySecret().getId());
+        wrongAnswerService.write(req, uid);
         return ResponseEntity.status(CREATED).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
-        wrongAnswerService.delete(id, userService.getMyInfoBySecret().getId());
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id, @RequestParam Long uid) {
+//        wrongAnswerService.delete(id, userService.getMyInfoBySecret().getId());
+        wrongAnswerService.delete(id, uid);
         return ResponseEntity.status(OK).build();
     }
 
     // 오답노트 전체 조회
     @GetMapping("/all")
-    public ResponseEntity<?> getNote(Pageable pageable, @RequestParam boolean isWrite) {
-        NoteResponseDto result = wrongAnswerService.getNote(userService.getMyInfoBySecret().getId(), pageable, isWrite);
+    public ResponseEntity<?> getNote(Pageable pageable, @RequestParam boolean isWrite, @RequestParam Long uid) {
+//        NoteResponseDto result = wrongAnswerService.getNote(userService.getMyInfoBySecret().getId(), pageable, isWrite);
+        NoteResponseDto result = wrongAnswerService.getNote(uid, pageable, isWrite);
         return ResponseEntity.status(OK).body(result);
     }
 
     @GetMapping("/tag")
-    public ResponseEntity<?> getNoteByTag(Pageable pageable, @RequestParam boolean isWrite, @RequestParam String tag) {
-        NoteResponseDto result = wrongAnswerService.getNoteByTag(userService.getMyInfoBySecret().getId(), pageable, isWrite, tag);
+    public ResponseEntity<?> getNoteByTag(Pageable pageable, @RequestParam boolean isWrite, @RequestParam String tag, @RequestParam Long uid) {
+//        NoteResponseDto result = wrongAnswerService.getNoteByTag(userService.getMyInfoBySecret().getId(), pageable, isWrite, tag);
+        NoteResponseDto result = wrongAnswerService.getNoteByTag(uid, pageable, isWrite, tag);
         return ResponseEntity.status(OK).body(result);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getNoteDetail(@PathVariable(value = "id") Long id) {
-        WrongAnswerNoteDetailResponseDto result = wrongAnswerService.getNoteDetail(id, userService.getMyInfoBySecret().getId());
+    public ResponseEntity<?> getNoteDetail(@PathVariable(value = "id") Long id, @RequestParam Long uid) {
+//        WrongAnswerNoteDetailResponseDto result = wrongAnswerService.getNoteDetail(id, userService.getMyInfoBySecret().getId());
+        WrongAnswerNoteDetailResponseDto result = wrongAnswerService.getNoteDetail(id, uid);
         log.info("result = {}", result);
         return ResponseEntity.status(OK).body(result);
     }

@@ -38,14 +38,16 @@ public class PostController {
 
     private final ProblemRepository problemRepository;
     @PostMapping("/problem")
-    public ResponseEntity<?> writeProblem(@RequestBody @Valid ProblemRequestDto req) {
-        Post post = postService.writeProblem(req, userService.getMyInfoBySecret().getId());
+    public ResponseEntity<?> writeProblem(@RequestBody @Valid ProblemRequestDto req, @RequestParam Long uid) {
+//        Post post = postService.writeProblem(req, userService.getMyInfoBySecret().getId());
+        Post post = postService.writeProblem(req, uid);
         return ResponseEntity.status(CREATED).build();
     }
 
     @PostMapping("/information")
-    public ResponseEntity<?> writeInformation(@RequestBody @Valid InformationRequestDto req) {
-        Post post = postService.writeInformation(req, userService.getMyInfoBySecret().getId());
+    public ResponseEntity<?> writeInformation(@RequestBody @Valid InformationRequestDto req, @RequestParam Long uid) {
+//        Post post = postService.writeInformation(req, userService.getMyInfoBySecret().getId());
+        Post post = postService.writeInformation(req, uid);
         return ResponseEntity.status(CREATED).build();
     }
 
@@ -106,16 +108,18 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable(value = "id") Long id) {
-        log.info("삭제 id = {}", id);
-        postService.delete(id, userService.getMyInfoBySecret().getId());
+    public ResponseEntity<?> deletePost(@PathVariable(value = "id") Long id, @RequestParam Long uid) {
+//        log.info("삭제 id = {}", id);
+//        postService.delete(id, userService.getMyInfoBySecret().getId());
+        postService.delete(id, uid);
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
     @PostMapping("/click")
-    public ResponseEntity<?> likeDisLikeClick(@RequestBody @Valid LikeDisLikeRequestDto req) {
+    public ResponseEntity<?> likeDisLikeClick(@RequestBody @Valid LikeDisLikeRequestDto req, @RequestParam Long uid) {
         log.info("좋아요 싫어요 req = {}", req);
-        LikeDisLikeNumDto result = postService.likeDislikeClick(req, userService.getMyInfoBySecret().getId());
+//        LikeDisLikeNumDto result = postService.likeDislikeClick(req, userService.getMyInfoBySecret().getId());
+        LikeDisLikeNumDto result = postService.likeDislikeClick(req, uid);
         return ResponseEntity.status(OK).body(result);
     }
 
@@ -127,16 +131,22 @@ public class PostController {
     }
 
     @PostMapping("/workbook")
-    public ResponseEntity<?> writeWorkbook(@RequestBody Map<String, String> req) {
+    public ResponseEntity<?> writeWorkbook(@RequestBody Map<String, String> req, @RequestParam Long uid) {
+//        workbookService.save(Long.parseLong(req.get("pid")),
+//                userService.getMyInfoBySecret().getId(),
+//                req.get("title"));
         workbookService.save(Long.parseLong(req.get("pid")),
-                userService.getMyInfoBySecret().getId(),
+                uid,
                 req.get("title"));
         return ResponseEntity.status(CREATED).build();
     }
 
     @PatchMapping("/workbook")
-    public ResponseEntity<?> updateWorkbook(@RequestBody Map<String, String> req) {
-        workbookService.update(userService.getMyInfoBySecret().getId(),
+    public ResponseEntity<?> updateWorkbook(@RequestBody Map<String, String> req, @RequestParam Long uid) {
+//        workbookService.update(userService.getMyInfoBySecret().getId(),
+//                Long.parseLong(req.get("wid")),
+//                req.get("title"));
+        workbookService.update(uid,
                 Long.parseLong(req.get("wid")),
                 req.get("title"));
         return ResponseEntity.status(CREATED).build();

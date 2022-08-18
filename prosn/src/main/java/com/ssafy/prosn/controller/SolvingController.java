@@ -43,9 +43,10 @@ public class SolvingController {
     }
 
     @PostMapping
-    public ResponseEntity<?> problemSolving(@RequestBody @Valid SolvingRequestDto req) {
-        UserResponseDto userInfo = userService.getMyInfoBySecret();
-        solvingService.problemSolving(userInfo.getId(), req);
+    public ResponseEntity<?> problemSolving(@RequestBody @Valid SolvingRequestDto req, @RequestParam Long uid) {
+//        UserResponseDto userInfo = userService.getMyInfoBySecret();
+//        solvingService.problemSolving(userInfo.getId(), req);
+        solvingService.problemSolving(uid, req);
         return ResponseEntity.status(CREATED).build();
     }
 }
