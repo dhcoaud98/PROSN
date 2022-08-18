@@ -193,8 +193,20 @@ export default {
 
     // 스터디 삭제 (0812 오채명) 삭제 후 새로고침
     deletedoSend() { 
-      const userDecision = confirm('정말로 삭제하시겠습니까?')
-      if (userDecision) {
+      this.$swal({
+        icon: 'warning',
+        text: '정말로 삭제하시겠습니까?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '아니요',
+        cancelButtonText: '삭제'
+      }) .then((result) => {
+        if (result.isCancel) {
+          this.$swal(
+            '스터디가 삭제되었습니다.',              
+            'success'
+          )}
         axios({
           url: drf.api + 'study' + `/${this.studydetail.id}`,
           method: 'delete',
@@ -203,13 +215,25 @@ export default {
           },        
         })
         this.$router.go();
-      }
+      })
     },
 
     // 나의 스터디 탈퇴 (0815 오채명) 삭제 후 새로고침
     deleteStudy () {
-      const userDecision = confirm('정말로 탈퇴하시겠습니까?')
-      if (userDecision) {
+      this.$swal({
+        icon: 'warning',
+        text: '정말로 탈퇴하시겠습니까?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '아니요',
+        cancelButtonText: '탈퇴'
+      }) .then((result) => {
+        if (result.isCancel) {
+          this.$swal(
+            '스터디 탈퇴되었습니다.',              
+            'success'
+          )}
         axios({
           url: drf.study.study() + 'me' + `/${this.myStudydetail.id}`,
           method: 'delete',
@@ -218,7 +242,7 @@ export default {
           },
         })
         this.$router.go();  
-      }
+      })
     },
 
     // 스터디 수정하기

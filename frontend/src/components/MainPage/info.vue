@@ -131,7 +131,7 @@ export default {
 				const params = {
 					page: this.page - 1,
 					size: 5,
-					sort: 'updated,DESC',
+					sort: 'created,DESC',
 				};
 				axios({
 					url: drf.api + 'post' + '/information',

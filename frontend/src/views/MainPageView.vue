@@ -232,7 +232,7 @@ export default {
           const params = {
             page: 0,
             size: 5, 
-            sort: 'updated,DESC',
+            sort: 'created,DESC',
           } 
           axios({
             url: drf.api + 'post' + '/problem',
@@ -266,7 +266,7 @@ export default {
             dtype : 'Problem',
             page : 0,
             size : 5,
-            sort: 'updated,DESC'
+            sort: 'created,DESC'
           }
           axios({
             url: drf.api + 'post/' + 'search',
@@ -293,7 +293,7 @@ export default {
           const params = {
             page: 0,
             size: 5, 
-            sort: 'updated,DESC',
+            sort: 'created,DESC',
           } 
           axios({
             url: drf.api + 'post' + '/information',
@@ -322,7 +322,7 @@ export default {
             dtype : 'Information',
             page : 0,
             size : 5,
-            sort: 'updated,DESC'
+            sort: 'created,DESC'
           }
           axios({
             url: drf.api + 'post/' + 'search',
@@ -351,7 +351,7 @@ export default {
       const params = {
           page: 0,
           size: 5, 
-          sort: 'updated,DESC',
+          sort: 'created,DESC',
         } 
         axios({
           url: drf.api + 'post' + '/problem',

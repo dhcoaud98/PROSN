@@ -86,6 +86,7 @@ public class PostController {
                 }
             }
         }
+        PostDetailResponseDto postDetailResponseDto = postService.showProblemDetail(id);
         if (oldCookie != null) {
             log.info("oldCookie.getValue() = {}", oldCookie.getValue());
             if (!oldCookie.getValue().contains("[" + id.toString() + "]")) {
@@ -94,6 +95,7 @@ public class PostController {
                 oldCookie.setPath("/");
                 oldCookie.setMaxAge(60 * 60 * 24);
                 res.addCookie(oldCookie);
+                postDetailResponseDto.setCookie(oldCookie);
             }
         } else {
             postService.updateViews(id);
@@ -101,8 +103,10 @@ public class PostController {
             newCookie.setPath("/");
             newCookie.setMaxAge(60 * 60 * 24);
             res.addCookie(newCookie);
+            postDetailResponseDto.setCookie(newCookie);
         }
-        return ResponseEntity.ok(postService.showProblemDetail(id));
+
+        return ResponseEntity.ok(postDetailResponseDto);
     }
 
     @DeleteMapping("/{id}")
