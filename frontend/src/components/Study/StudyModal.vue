@@ -138,20 +138,7 @@ export default {
     // console.log("study id = ",this.studyId)
     // console.log(this.createdByMe)
     // console.log('현재 = ', this.currentUser);
-
-    //api/study/{studyid}에 해당하는 detail study 정보 가져오기
-    axios({
-      url: drf.study.study() + `${this.myStudydetail.id}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-    })
-    .then(res => {
-      // console.log("studydetail =" , res.data)
-      this.studydetail = res.data
-      console.log("studydetail 모달 =",this.studydetail)
-    })
+    this.getStudyDetail()
 
     if(this.myStudydetail.masterId === this.currentUser){
       // console.log('trueeeee');
@@ -238,6 +225,23 @@ export default {
     editStudy (sid) {
       // console.log('sid=' , sid);
       this.$router.push({path: `editstudy/${sid}`})
+    },
+
+    //api/study/{studyid}에 해당하는 detail study 정보 가져오기
+    async getStudyDetail() {
+      await this.$store.dispatch('reIssue');
+      axios({
+        url: drf.study.study() + `${this.myStudydetail.id}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+      })
+      .then(res => {
+        // console.log("studydetail =" , res.data)
+        this.studydetail = res.data
+        console.log("studydetail 모달 =",this.studydetail)
+      })
     }
 
 

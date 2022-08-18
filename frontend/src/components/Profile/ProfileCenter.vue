@@ -181,8 +181,9 @@ export default {
         }
       })
       .then(res => {
-        console.log('성공')
+        console.log('팔로잉 성공')
         console.log(res.data)
+        this.$router.go()
         // console.log("totalPages =",res.data.totalPages)
         // console.log("totalElements =", res.data.totalElements)
       })

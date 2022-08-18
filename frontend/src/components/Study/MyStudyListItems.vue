@@ -67,23 +67,11 @@ export default {
   created() {
     // 나의 스터디마다 정보 조회
     // console.log("왜?")
-    console.log("확인 =", this.myStudy)
+    // console.log("확인 =", this.myStudy)
     this.myStudyId = this.myStudy.id
-    console.log("study id = ",this.myStudyId)
-
-    // api/study/{studyid}에 해당하는 detail study 정보 가져오기
-    axios({
-      url: drf.study.study() + `${this.myStudyId}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-    })
-    .then(res => {
-      // console.log("studydetail =" , res.data)
-      this.myStudydetail = res.data
-      console.log("myStudydetail =",this.myStudydetail)
-    })
+    // console.log("study id = ",this.myStudyId)
+    this.getMyStudyDetail()
+    
   },
   methods: {
     openModal() {
@@ -95,6 +83,22 @@ export default {
       this.modal = false
       console.log('closeModal')
     },
+    async getMyStudyDetail() {
+      await this.$store.dispatch('reIssue');
+      // api/study/{studyid}에 해당하는 detail study 정보 가져오기
+      axios({
+        url: drf.study.study() + `${this.myStudyId}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+      })
+      .then(res => {
+        // console.log("studydetail =" , res.data)
+        this.myStudydetail = res.data
+        console.log("myStudydetail =",this.myStudydetail)
+      })
+    }
   },
 }
 </script>

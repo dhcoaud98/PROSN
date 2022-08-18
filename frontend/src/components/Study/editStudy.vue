@@ -193,7 +193,9 @@ export default {
     cancel () {
       this.$router.push({ path: 'study' })
     },
-    submitStudy () {
+    async submitStudy () {
+      await this.$store.dispatch('reIssue');
+
       axios({
           url: drf.study.study(),
           method: 'put',
