@@ -39,9 +39,10 @@ public class StudyController {
     //스터디 그룹
     //생성
     @PostMapping
-    public ResponseEntity<?> createStudy(@RequestBody @Valid StudyGroupRequestDto dto) {
-        UserResponseDto user = userService.getMyInfoBySecret();
-        return ResponseEntity.status(OK).body(studyService.create(dto, user.getId()));
+    public ResponseEntity<?> createStudy(@RequestBody @Valid StudyGroupRequestDto dto, @RequestParam Long uid) {
+//        UserResponseDto user = userService.getMyInfoBySecret();
+//        return ResponseEntity.status(OK).body(studyService.create(dto, user.getId()));
+        return ResponseEntity.status(OK).body(studyService.create(dto, uid));
     }
 
     //목록 조회
@@ -53,16 +54,20 @@ public class StudyController {
 
     //상세내용
     @GetMapping("/{studyid}")
-    public ResponseEntity<?> showStudy(@PathVariable(value = "studyid") Long studyid) {
-        UserResponseDto user = userService.getMyInfoBySecret();
-        return ResponseEntity.status(OK).body(studyService.showStudyGroup(user.getId(), studyid));
+    public ResponseEntity<?> showStudy(@PathVariable(value = "studyid") Long studyid, @RequestParam Long uid) {
+//        UserResponseDto user = userService.getMyInfoBySecret();
+//        return ResponseEntity.status(OK).body(studyService.showStudyGroup(user.getId(), studyid));
+        return ResponseEntity.status(OK).body(studyService.showStudyGroup(uid, studyid));
     }
 
     //수정
     @PutMapping
-    public ResponseEntity<?> updateStudy(@RequestBody @Valid StudyGroupRequestDto dto) {
+    public ResponseEntity<?> updateStudy(@RequestBody @Valid StudyGroupRequestDto dto, @RequestParam Long uid) {
         StudyGroup studyGroup = studyGroupRepository.findById(dto.getId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
-        if (!studyGroup.getUser().getId().equals(userService.getMyInfoBySecret().getId())) {
+//        if (!studyGroup.getUser().getId().equals(userService.getMyInfoBySecret().getId())) {
+//            throw new IllegalStateException("스터디를 수정할 권한이 없습니다.");
+//        }
+        if (!studyGroup.getUser().getId().equals(uid)) {
             throw new IllegalStateException("스터디를 수정할 권한이 없습니다.");
         }
         return ResponseEntity.status(OK).body(studyService.update(studyGroup.getId(), dto));
@@ -70,9 +75,12 @@ public class StudyController {
 
     //삭제
     @DeleteMapping("/{studyid}")
-    public ResponseEntity<?> deleteStudy(@PathVariable(value = "studyid") Long studyid) {
+    public ResponseEntity<?> deleteStudy(@PathVariable(value = "studyid") Long studyid, @RequestParam Long uid) {
         StudyGroup studyGroup = studyGroupRepository.findById(studyid).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
-        if (!studyGroup.getUser().getId().equals(userService.getMyInfoBySecret().getId())) {
+//        if (!studyGroup.getUser().getId().equals(userService.getMyInfoBySecret().getId())) {
+//            throw new IllegalStateException("스터디를 삭제할 권한이 없습니다.");
+//        }
+        if (!studyGroup.getUser().getId().equals(uid)) {
             throw new IllegalStateException("스터디를 삭제할 권한이 없습니다.");
         }
         studyService.deleteStudy(studyGroup);
@@ -82,26 +90,29 @@ public class StudyController {
     //내스터디
     //목록 조회
     @GetMapping("/me")
-    public ResponseEntity<?> myStudyGroupList(@PageableDefault(size = 5) Pageable pageable) {
-        UserResponseDto user = userService.getMyInfoBySecret();
-        return ResponseEntity.status(OK).body(userStudyRepository.findByUserId(user.getId(), pageable));
+    public ResponseEntity<?> myStudyGroupList(@PageableDefault(size = 5) Pageable pageable, @RequestParam Long uid) {
+//        UserResponseDto user = userService.getMyInfoBySecret();
+//        return ResponseEntity.status(OK).body(userStudyRepository.findByUserId(user.getId(), pageable));
+        return ResponseEntity.status(OK).body(userStudyRepository.findByUserId(uid, pageable));
     }
 
     //가입
     @PostMapping("/me/{studyid}")
-    public ResponseEntity<?> joinStudy(@PathVariable(value = "studyid") Long studyid) {
-        UserResponseDto user = userService.getMyInfoBySecret();
+    public ResponseEntity<?> joinStudy(@PathVariable(value = "studyid") Long studyid, @RequestParam Long uid) {
+//        UserResponseDto user = userService.getMyInfoBySecret();
         StudyGroup studyGroup = studyGroupRepository.findById(studyid).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
-        studyService.joinStudy(user.getId(), studyGroup);
+//        studyService.joinStudy(user.getId(), studyGroup);
+        studyService.joinStudy(uid, studyGroup);
         return ResponseEntity.status(CREATED).build();
     }
 
     //탈퇴
     @DeleteMapping("/me/{studyid}")
-    public ResponseEntity<?> removeStudy(@PathVariable(value = "studyid") Long studyid) {
-        UserResponseDto user = userService.getMyInfoBySecret();
+    public ResponseEntity<?> removeStudy(@PathVariable(value = "studyid") Long studyid, @RequestParam Long uid) {
+//        UserResponseDto user = userService.getMyInfoBySecret();
         StudyGroup studyGroup = studyGroupRepository.findById(studyid).orElseThrow(() -> new IllegalStateException("존재하지 않는 스터디입니다"));
-        studyService.removeStudy(user.getId(), studyGroup);
+//        studyService.removeStudy(user.getId(), studyGroup);
+        studyService.removeStudy(uid, studyGroup);
         return ResponseEntity.status(OK).build();
     }
 }

@@ -34,16 +34,18 @@ public class ScrapController {
     private final PostListService postListService;
 
     @PostMapping("/folder")
-    public ResponseEntity<?> makeFolder(@RequestBody Map<String, String> req) {
-        UserResponseDto userInfo = userService.getMyInfoBySecret();
-        postListService.make(userInfo.getId(), req.get("title"));
+    public ResponseEntity<?> makeFolder(@RequestBody Map<String, String> req, @RequestParam Long uid) {
+//        UserResponseDto userInfo = userService.getMyInfoBySecret();
+//        postListService.make(userInfo.getId(), req.get("title"));
+        postListService.make(uid, req.get("title"));
         return ResponseEntity.status(CREATED).build();
     }
 
     @DeleteMapping("/folder/{id}")
-    public ResponseEntity<?> deleteFolder(@PathVariable(value = "id") Long id) {
-        UserResponseDto userInfo = userService.getMyInfoBySecret();
-        postListService.delete(userInfo.getId(), id);
+    public ResponseEntity<?> deleteFolder(@PathVariable(value = "id") Long id, @RequestParam Long uid) {
+//        UserResponseDto userInfo = userService.getMyInfoBySecret();
+//        postListService.delete(userInfo.getId(), id);
+        postListService.delete(uid, id);
         return ResponseEntity.status(OK).build();
     }
 
@@ -54,10 +56,11 @@ public class ScrapController {
     }
 
     @PostMapping
-    public ResponseEntity<?> scraps(@RequestBody Map<String,String> req) {
-        log.info("pid = {}", req.get("pid"));
-        UserResponseDto userInfo = userService.getMyInfoBySecret();
-        scrapService.save(Long.parseLong(req.get("pid")), Long.parseLong(req.get("lid")), userInfo.getId());
+    public ResponseEntity<?> scraps(@RequestBody Map<String,String> req, @RequestParam Long uid) {
+//        log.info("pid = {}", req.get("pid"));
+//        UserResponseDto userInfo = userService.getMyInfoBySecret();
+//        scrapService.save(Long.parseLong(req.get("pid")), Long.parseLong(req.get("lid")), userInfo.getId());
+        scrapService.save(Long.parseLong(req.get("pid")), Long.parseLong(req.get("lid")), uid);
         return ResponseEntity.status(CREATED).build();
     }
 
@@ -67,9 +70,10 @@ public class ScrapController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteScrap(@PathVariable(value = "id") Long id) {
-        UserResponseDto userInfo = userService.getMyInfoBySecret();
-        scrapService.delete(userInfo.getId(), id);
+    public ResponseEntity<?> deleteScrap(@PathVariable(value = "id") Long id, @RequestParam Long uid) {
+//        UserResponseDto userInfo = userService.getMyInfoBySecret();
+//        scrapService.delete(userInfo.getId(), id);
+        scrapService.delete(uid, id);
         return ResponseEntity.status(OK).build();
     }
 

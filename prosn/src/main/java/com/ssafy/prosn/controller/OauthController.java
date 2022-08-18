@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Optional;
 
 import static org.hibernate.cfg.AvailableSettings.URL;
 
@@ -134,7 +135,9 @@ public class OauthController {
         log.info("kakao 유저 인포" + socialLoginResponseDto);
 
 
-        if (socialUserRepository.findByOauthId(socialLoginResponseDto.getOauthId()).isPresent()) {
+        Optional<SocialUser> socialUser = socialUserRepository.findByOauthId(socialLoginResponseDto.getOauthId());
+        if (socialUser.isPresent()) {
+            socialLoginResponseDto.setId(socialUser.get().getId());
             return socialLoginResponseDto;
         } else {
             SocialUser user = userRepository.save(SocialUser.builder()
@@ -143,10 +146,12 @@ public class OauthController {
                     .email(socialLoginResponseDto.getEmail())
                     .name(socialLoginResponseDto.getName())
                     .build());
+
+            socialLoginResponseDto.setId(user.getId());
+            return socialLoginResponseDto;
         }
 
 
-        return socialLoginResponseDto;
     }
 
     @GetMapping("/google")

@@ -121,6 +121,9 @@ export default {
       this.$router.push({ path: `../profile/${this.currentUser}` })
     },
     async createProblem() {
+      console.log("access token = ", this.accessToken)
+      console.log("expire= ", this.expire)
+      console.log("currentUser= ", this.currentUser)
       await this.$store.dispatch('reIssue');
 			// console.log('토큰 = ', this.accessToken);
 			this.credentials.answer = this.credentials.ex1;
@@ -130,6 +133,7 @@ export default {
 				headers: {
 					Authorization: this.accessToken,
 				},
+        params: {id : this.currentUser},
 				data: this.credentials,
 			})
 				.then((res) => {
@@ -143,7 +147,7 @@ export default {
 		},
   },
   computed: {
-    ...mapGetters(['accessToken', 'currentUser']),
+    ...mapGetters(['accessToken', 'currentUser', 'expire']),
   },
 }
 </script>

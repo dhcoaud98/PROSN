@@ -25,15 +25,17 @@ public class CommentController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> write(@RequestBody @Valid CommentRequestDto req) {
-        log.info("댓글 작성 req = {}", req);
-        commentService.write(req, userService.getMyInfoBySecret().getId());
+    public ResponseEntity<?> write(@RequestBody @Valid CommentRequestDto req, @RequestParam Long uid) {
+//        log.info("댓글 작성 req = {}", req);
+//        commentService.write(req, userService.getMyInfoBySecret().getId());
+        commentService.write(req, uid);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
-        commentService.delete(id, userService.getMyInfoBySecret().getId());
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id, @RequestParam Long uid) {
+//        commentService.delete(id, userService.getMyInfoBySecret().getId());
+        commentService.delete(id, uid);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
