@@ -1,4 +1,5 @@
-const HOST = 'http://localhost:8080/api/';
+// const HOST = 'http://localhost:8080/api/';
+const HOST = 'http://i7a705.p.ssafy.io:8081/api/';
 
 // 유저 관련
 const USER = 'user/';
