@@ -43,18 +43,18 @@
                     </v-card>
                   </v-row>
                   <!-- 저작권 / 버튼 -->
-                  <v-row class="d-flex justify-space-between">
+                  <v-row class="justify-space-between">
                     <!-- 출제자 정보 -->
-                    <v-col class="pa-0" >
+                    <div class="pa-0" >
                       <span class="grey--text mr-2 mb-1">Created by.
                         <v-btn class="px-0 font-weight-bold" plain @click=profileEvent(infodetail.writer.id)>                        
                           {{infodetail.writer.name}} 
                         </v-btn>
                       </span>
-                    </v-col>
+                    </div>
 
                     <!-- 남이 작성한 정보일 경우 -->
-                    <v-col v-if="currentUser != infodetail.writer.id" class="pa-0 justify-end d-flex align-center">
+                    <div v-if="currentUser != infodetail.writer.id" class="pa-0 justify-end d-flex align-center">
                       <!-- 좋아요 버튼 -->
                       <div class="d-flex align-center">
                         <v-btn class="ms-2" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
@@ -72,27 +72,28 @@
 
                       <!-- 스크랩 버튼 -->
                       <div v-if="isLoggedIn">
-                        <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
+                        <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
                           <v-icon>{{scrapText}}</v-icon>
                         </v-btn>                
-                        
+                      </div>  
                         <!-- 스크랩 모달 -->
+                      <div>
                         <scrap @close="closeScrapModal" v-if="scrapModal" :pid="infodetail.id"></scrap>
                       </div>
-                    </v-col>
+                    </div>
 
                     <!-- 내가 작성한 정보일 경우 -->
-                    <v-col v-else class="d-flex justify-end col-12 col-md-4">
-                      <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
+                    <div v-else class="pa-0 justify-end d-flex align-center">
+                      <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
                         <v-icon>{{scrapText}}</v-icon>
                       </v-btn>                                    
                       <!-- 스크랩 모달 -->
                       <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
                       <!-- 수정 버튼 -->
-                      <v-btn class="ms-2 mt-1 font-weight-bold" rounded outlined small @click="editInfo">수정</v-btn>
+                      <v-btn class="ms-1font-weight-bold" rounded outlined small @click="editInfo">수정</v-btn>
                       <!-- 삭제 버튼 -->
-                      <v-btn class="ms-2 mt-1 font-weight-bold" rounded outlined small color="red" @click="deleteInfo">삭제</v-btn>
-                    </v-col>
+                      <v-btn class="ms-1 font-weight-bold" rounded outlined small color="red" @click="deleteInfo">삭제</v-btn>
+                    </div>
                   </v-row>
                 </v-container>
                 
