@@ -111,12 +111,14 @@ public class OauthController {
                 kakaoRequest1,
                 String.class
         );
+        log.info("profileResponse.toString() ={}", profileResponse.toString());
 
         KakaoProfile kakaoProfile = null;
         try {
             kakaoProfile = objectMapper.readValue(profileResponse.getBody(), KakaoProfile.class);
             System.out.println("oauth controller kakaoProfile: " + kakaoProfile);
         } catch (JsonProcessingException e) {
+            log.info("캐치 : {}", e.getMessage());
             e.printStackTrace();
         }
         Long id = kakaoProfile.getId();

@@ -1,15 +1,17 @@
 package com.ssafy.prosn.oauth;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.ToString;
 
+@JsonIgnoreProperties({"msg", "code"})
+@ToString
 public class KakaoProfile {
     public Long id;
     public String connected_at;
     public Properties properties;
     public KakaoAccount kakao_account;
 
-    @JsonIgnoreProperties({"msg"})
-    public class Properties {
+    public static class Properties {
         public String nickname;
 //        public String profile_image;
 //        public String thumbnail_image;
@@ -39,7 +41,7 @@ public class KakaoProfile {
 //        }
     }
     @JsonIgnoreProperties({"profile_nickname_needs_agreement"})
-    public class KakaoAccount {
+    public static class KakaoAccount {
         public Boolean profile_needs_agreement;
         public Profile profile;
         public Boolean has_email;
