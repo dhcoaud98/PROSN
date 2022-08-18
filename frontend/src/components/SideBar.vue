@@ -24,15 +24,10 @@
       </v-col>
     </v-row>
 
-    <v-row class="pa-0 ma-0">
-      <v-col class="px-0 pb-0">
-        <search-bar></search-bar>
-      </v-col>
-    </v-row> 
 
     <!-- 1. 오늘의 인기 문제 -->
     <!-- icon 찾기 -->
-    <v-card class="mx-auto mb-5 pink-gradation rounded-xl" height ="auto">
+    <v-card class="mx-auto mt-5 mb-5 pink-gradation rounded-xl" height ="auto">
       <v-card-text class="pa-5">
         <v-container>
         
@@ -45,24 +40,28 @@
 
           <!-- 상위 3개문제 -->
           <v-row>
-            <v-container class="px-5 mb-2">
+            <v-container class="px-5">
               <!-- v-for문 돌릴것들 -->
               <!-- 각 추천문제 -->
-              <v-row class="ps-2">
-                <p class="title-font-size font-weight-bold mb-0">No.1 (문제 제목)</p>
-              </v-row>    
-              <v-row class="d-flex justify-space-between font-weight-bold mt-1">
-                <div class="circle-background pa-0 d-flex justify-center align-center text-center">
-                  추천<br>1111
-                </div>
-                <div class="circle-background pa-0 d-flex justify-center align-center text-center">
-                  참여자<br>123명
-                </div>
-                <div class="circle-background pa-0 d-flex justify-center align-center text-center">
-                  정답률<br>50%
-                </div>
-              </v-row>
-              <!-- 여기까지를 v-for문 돌리면 됨 -->
+              <!-- 인기문제; 제출률: 제출 수/조회 수*100 0813 임지민 -->
+              <div v-for="(popularProb, idx) in popularProbs" :key="idx" class="mb-3">
+                <v-row class="ps-2">
+                  <v-btn plain @click="problemEvent(popularProb.popularityProblem.id)"><p class="title-font-size font-weight-bold mb-0 text-truncate">{{idx + 1}}. {{popularProb.popularityProblem.title.slice(0,10)}}</p></v-btn>
+                </v-row>    
+                <v-row class="d-flex justify-space-between font-weight-bold mt-1">
+                  <div class="circle-background pa-0 d-flex justify-center align-center text-center">
+                    추천<br>{{popularProb.popularityProblem.numOfLikes}}
+                  </div>
+                  <div class="circle-background pa-0 d-flex justify-center align-center text-center">
+                    참여자<br>{{popularProb.popularityProblem.submissionNum}}명
+                  </div>
+                  <div class="circle-background pa-0 d-flex justify-center align-center text-center">
+                    제출률<br>{{Math.ceil((popularProb.popularityProblem.submissionNum/popularProb.popularityProblem.views)*100)}}%
+                  </div>
+                </v-row>
+                <!-- 여기까지를 v-for문 돌리면 됨 -->
+
+              </div>
             </v-container>
           </v-row>
 
@@ -75,7 +74,7 @@
     </v-card>
 
     <!-- 2. 오늘의 유저 -->
-    <v-card class="mx-auto mb-5 purple-gradation rounded-xl" height ="auto">
+    <v-card class="mx-auto mb-5 purple-back-gradation rounded-xl" height ="auto">
       <v-card-text class="py-5 px-3">
         <v-container>
         
@@ -94,35 +93,32 @@
               <v-row>
                 <v-container class="pa-0 mb-2">
                   <!-- 설명 -->
-                  <v-row>
+                  <v-row class="mb-2">
                     <!-- 등수 -->
-                    <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">등수</v-col>
+                    <v-col cols="3" class="pa-0 black--text font-weight-bold text-center">등수</v-col>
                     <!-- 유저이름 -->
-                    <v-col cols="3" class="pa-0 black--text font-weight-bold text-center">유저이름</v-col>
-                    <!-- 등급 -->
-                    <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">등급</v-col>
+                    <v-col cols="6" class="pa-0 black--text font-weight-bold text-center">유저이름</v-col>
                     <!-- 포인트 -->
                     <v-col cols="3" class="pa-0 black--text font-weight-bold text-center">포인트</v-col>
                     <!-- 문제풀이개수 -->
-                    <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">풀이수</v-col>     
+                    <!-- <v-col cols="2" class="pa-0 black--text font-weight-bold text-center">풀이수</v-col>      -->
                   </v-row>    
 
                   <!-- v-for문 돌릴것들 -->
                   <!-- 각 유저 -->
-                  <v-row>
-                    <!-- 등수 -->
-                    <v-col cols="2" class="pa-0 dark--text text-center">1</v-col>
-                    <!-- 유저이름 -->
-                    <v-col cols="3" class="pa-0 dark--text text-center">박성민</v-col>
-                    <!-- 등급 -->
-                    <v-col cols="2" class="pa-0 dark--text text-center">
-                      <v-chip x-small class="text-center px-2">purple</v-chip>
-                      </v-col>
-                    <!-- 포인트 -->
-                    <v-col cols="3" class="pa-0 dark--text text-center">2101</v-col>
-                    <!-- 문제풀이개수 -->
-                    <v-col cols="2" class="pa-0 dark--text text-center">21</v-col>     
-                  </v-row>    
+                  <!-- 인기 유저  0813 임지민-->
+                  <div v-for="(popularUser, idx) in popularUsers" :key="idx" class="mb-2">
+                    <v-row>
+                      <!-- 등수 -->
+                      <v-col cols="3" class="align-self-center pa-0 dark--text text-center font-weight-bold">{{idx+1}}</v-col>
+                      <!-- 유저이름 -->
+                      <v-col cols="6" class="pa-0 dark--text text-center" @click=profileEvent(popularUser.id)><v-btn plain top class="pa-0">{{popularUser.name}}</v-btn></v-col>
+                      <!-- 포인트 -->
+                      <v-col cols="3" class="align-self-center pa-0 dark--text text-center">{{popularUser.point}}</v-col>
+                      <!-- 문제풀이개수 -->
+                      <!-- <v-col cols="2" class="pa-0 dark--text text-center">21</v-col>      -->
+                    </v-row>    
+                  </div>
                 </v-container>
               </v-row>
               <!-- 여기까지를 v-for문 돌리면 됨 -->
@@ -142,13 +138,13 @@
 
 
 <script>
-import SearchBar from './SearchBar.vue';
 import { mapGetters } from 'vuex';
+import axios from 'axios'
+import drf from '@/api/drf.js'
 
 export default {
   name: "SideBar",
   components : {
-    SearchBar,
   }, 
   data () {
     return {
@@ -157,10 +153,10 @@ export default {
       nowTime: '',
       // inputData: null,
       items: [
-        { avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', name: '채명', total: 538  },
-        { avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', name: '지민', total: 621  },
-        { avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', name: '성은', total: 524  },
       ],
+      popularProbs: null,
+      popularUsers: null,
+
     }
   },
   computed: {
@@ -178,6 +174,14 @@ export default {
 
   },
   methods: {
+    profileEvent(uid) {
+      this.$router.push({ path: `../profile/${uid}`})
+      this.$router.go()
+    },
+    problemEvent(pid) {
+      this.$router.push({ path: `../problem/${pid}`})
+      this.$router.go()
+    },
     setNowTimes() {
       let myDate = new Date()
       let mm = myDate.getMonth() + 1
@@ -228,6 +232,46 @@ export default {
     //             console.log(err)
     //         })
     //   },
+  },
+  created() {
+    // 인기 문제 0813 임지민
+    console.log("사이드바 현재 유저 : ", this.isLoggedIn)
+    axios({
+      url: drf.postFeed.problem() + 'ranking/',
+      method: 'get',
+      headers: {
+        Authorization: this.accessToken,
+      },
+    })
+      .then((res) => {
+        console.log('res sidebar= ', res);
+        this.popularProbs = res.data
+        // console.log(this.popularProbs)
+        // this.$router.push({ path: 'profile' })
+      })
+      .catch((err) => {
+        console.log('에러');
+        console.log(err);
+      });
+
+    // 인기 유저 0813 임지민
+    axios({
+      url: drf.accounts.ranking(),
+      method: 'get',
+      headers: {
+        Authorization: this.accessToken,
+      },
+    })
+      .then((res) => {
+        // console.log('res sidebar user= ', res);
+        this.popularUsers = res.data
+        // console.log(this.popularUsers)
+        // this.$router.push({ path: 'profile' })
+      })
+      .catch((err) => {
+        console.log('에러');
+        console.log(err);
+      });
   }
 }
 </script>
@@ -247,7 +291,7 @@ export default {
 .pink-gradation {
   background: linear-gradient(#E7C0F4, #F0BBCF);
 }
-.purple-gradation {
+.purple-back-gradation {
   background: linear-gradient(#D4B4FF, #D9DFFF);
 }
 .title-font-size {

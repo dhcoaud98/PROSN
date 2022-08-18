@@ -118,9 +118,10 @@ export default {
     }),
   methods: {
     cancel () {
-      this.$router.push({ path: 'profile' })
+      this.$router.push({ path: `../profile/${this.currentUser}` })
     },
-    createProblem() {
+    async createProblem() {
+      await this.$store.dispatch('reIssue');
 			// console.log('토큰 = ', this.accessToken);
 			this.credentials.answer = this.credentials.ex1;
 			axios({
@@ -133,7 +134,7 @@ export default {
 			})
 				.then((res) => {
 					console.log('res = ', res);
-          this.$router.push({ path: 'profile' })
+          this.$router.push({ path: `../profile/${this.currentUser}` })
 				})
 				.catch((err) => {
 					console.log('에러');
@@ -142,7 +143,7 @@ export default {
 		},
   },
   computed: {
-    ...mapGetters(['accessToken']),
+    ...mapGetters(['accessToken', 'currentUser']),
   },
 }
 </script>

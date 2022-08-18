@@ -2,11 +2,10 @@
   <!-- 작성 완료된 문제 요소 하나하나 0807 임지민  -->
   <!-- 문제 하나하나 받아오기 -->
   <!-- 화면 크기가 xs 이하일 때는 문제와 노트 작성 칸이 세로로 배치되게 수정하기 0805 임지민 -->
-
   <v-row class="mt-3">
     <!-- <p>{{ shuffledNum }}</p>  ok-->
     <!-- col 1: 상위의 createnotelist에서 받아온 문제 출력 -->
-    <v-col sm="6" cols="12" class="pr-5">
+    <v-col cols="12" md="6" class="px-10 pr-md-5">
       <!-- 문제 보러가기 버튼: 문제 번호 받아와서 연결 -->
       <v-row class="mt-3 mb-5">
         <!-- <p>{{noteDetail}}</p> -->
@@ -22,9 +21,7 @@
 
       <!-- 문제 지문 -->
       <v-row>
-        <p class="font-parent-mid-l">
-          {{noteDetail.mainText}}
-        </p>
+        <p class="font-parent-mid-l">{{noteDetail.mainText}}</p>
       </v-row>
 
       <!-- 문제보기: 이것도 랜덤으로 for문 돌리기/ 체크박스로 라디오 묶는거....ㅠ-->
@@ -67,9 +64,11 @@
       </v-row>
     </v-col>
 
+    <v-divider vertical class="d-none d-md-block"></v-divider>
+
     <!-- col 2: 오답노트 양식 -->
     <!-- v-textarea에 v-model이랑 value를 같이 쓰면 value가 적용이 안됨 -->
-    <v-col sm="6" cols="12" class="pl-3 left-border-grey">
+    <v-col cols="12" md="6" class="px-3 mt-10 mt-md-0">
       <v-form class="pl-3" @submit.prevent="editNote">
         <!-- 틀린 이유 -->
         <v-row class="mx-2 my-2">
@@ -153,7 +152,8 @@ export default {
       targetRealAnswer.checked=true
       targetRealAnswer.setAttribute("style", "accent-color: green;")
     },
-    editNote() {
+    async editNote() {
+      await this.$store.dispatch('reIssue');
       axios({
           url: drf.wrongAnswer.wrongAnswer(),
           method: 'patch',
@@ -169,7 +169,7 @@ export default {
       })
       .then(res => {
           console.log("res = ",res);
-          this.$router.push({path: '/note'})
+          this.$router.go()
           // data에 저장해서 띄우기
           // dispatch('saveToken', token)
           // dispatch('fetchCurrentUser')
@@ -180,7 +180,9 @@ export default {
           console.log(err)
         })
     },
-    deleteNote() {
+    async deleteNote() {
+      await this.$store.dispatch('reIssue');
+
       const userDecision = confirm('정말로 삭제하시겠습니까?')
       if (userDecision) {
         axios({
@@ -192,7 +194,7 @@ export default {
         })
         .then(res => {
             console.log("res.data = ",res.data);
-            this.$router.push('note/')
+            this.$router.push({ path: '/note' })
         })
         .catch(err =>{
             console.log("에러")

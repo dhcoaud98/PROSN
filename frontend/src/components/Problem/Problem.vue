@@ -1,9 +1,10 @@
 <template>
-  <v-container>
+  <v-container mt-5>
     <v-row class="justify-space-between mt-5">
       <div class="d-flex mt-5">
+        <!-- <p>{{probDetail}}</p> -->
         <h2>{{ probDetail.title }}</h2>
-        <div class="d-inline-block ms-3">
+        <div class="d-inline-block ms-3" v-if="showCorrectStatus">
           <v-btn v-if="myCorrectStatus" rounded small outlined color="green">정답</v-btn>
           <v-btn v-else rounded small outlined color="red">오답</v-btn>
         </div>
@@ -13,7 +14,7 @@
     <!-- <p>{{probDetail}}</p> -->
     <v-row>
       <div v-for="tag in probDetail.tags" :key="tag" class="ms-2 mb-3">
-        <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#{{tag}}</span>
+        <v-chip color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
       </div>
     </v-row>
 
@@ -41,28 +42,52 @@
             </v-col>
           </v-row>
           <!-- 저작권 / 버튼 -->
+
           <v-row class="d-flex justify-space-between">
             <!-- 출제자 정보 -->
-            <v-col>
-              <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ probDetail.writer.name }}</div>
+            <v-col class="pa-0" >
+              <span class="grey--text mr-2 mb-1">Created by.
+                <v-btn class="px-0 mb-1 font-weight-bold" plain @click=profileEvent(probDetail.writer.id)>                        
+                  {{probDetail.writer.name}} 
+                </v-btn>
+              </span>
             </v-col>
-            <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-            <v-col cols="8" class="pa-0 justify-end d-flex align-center">
+
+            <!-- 버튼: 남이 낸 문제 -->
+            <v-col v-if="currentUser != probDetail.writer.id" cols="8" class="pa-0 justify-end d-flex align-center">
               <!-- 좋아요 버튼 -->
-              <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
-                <v-icon>{{upText}}</v-icon>
-              </v-btn>
+              <div>
+                <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
+                  <v-icon>{{upText}}</v-icon>
+                </v-btn>
+                <span>{{probDetail.numOfLikes}}</span>
+              </div>
               <!-- 싫어요 버튼 -->
-              <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon" large>
-                <v-icon>{{downText}}</v-icon>
-              </v-btn>
+              <div>
+                <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon" large>
+                  <v-icon>{{downText}}</v-icon>
+                </v-btn>
+                <span>{{probDetail.numOfDislikes}}</span>
+              </div>
               <!-- 스크랩 버튼 -->
-              <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon" large>
+              <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
                 <v-icon>{{scrapText}}</v-icon>
-              </v-btn>                    
+              </v-btn>
+              <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probDetail.id"></scrap>                    
               <!-- 제출 버튼 -->
               <v-btn type="submit" rounded outlined class="ms-1" large>제출</v-btn>
             </v-col>
+
+            <!-- 내가 낸 문제 -->
+            <v-col v-else cols="8" class="pa-0 justify-end d-flex align-center">
+              <!-- 스크랩 버튼 -->
+              <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
+                <v-icon>{{scrapText}}</v-icon>
+              </v-btn>
+              <!-- 삭제 -->
+              <v-btn type="submit" color="red" rounded outlined class="ms-1" large @click="deleteprob">삭제</v-btn>
+            </v-col>
+
           </v-row>
         </v-form>
       </v-container>
@@ -73,7 +98,8 @@
     <v-row>
       <!-- 댓글보기 -->
       <v-col cols="12" class="pa-0">
-        <problem-reply></problem-reply>
+        <!-- <p>{{probDetail.id}}</p> -->
+        <problem-reply :pid="probDetail.id" :commentList="commentList"></problem-reply>
       </v-col>           
     </v-row>  
   </v-container>
@@ -84,11 +110,14 @@ import ProblemReply from '@/components/ProblemModal/ProblemReply.vue'
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import drf from '@/api/drf.js'
+import Scrap from '@/components/Scrap/Scrap.vue'
+
 
 export default {
   name: 'Problem',
   data(){
     return {
+      scrapModal: false,
       upText: 'thumb_up_off_alt',
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
@@ -99,14 +128,17 @@ export default {
         right: '',
         wrongAnswer: '',
       },
+      showCorrectStatus: false,
       myCorrectStatus: null,
+      commentList: [],
     }
   },
   components: {
     ProblemReply,
+    Scrap,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods: {
     // 2022.08.04. 라우터 경로 연결
@@ -120,25 +152,78 @@ export default {
         thumb down --> thumb down off alt
         bookmark border --> bookmark
         */
-        /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
+       // 좋아요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.probDetail.id,
+              type: true
+            }
+          })
+          .then(res => {
+            console.log(res.data);
+            this.probDetail.numOfLikes = res.data.numOfLikes
+            if(res.data.numOfLikes === 1) {
+              this.upText = 'thumb_up'
+            } else {
+              this.upText = 'thumb_up_off_alt'
+            }
 
-        if (this.upText === "thumb_up_off_alt") {
-          // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
-          if (this.downText === "thumb_down") {
-              // console.log(this.downText)
-              this.downText = "thumb_down_off_alt"
-          }
-          this.upText = "thumb_up"
-          } else {
-            this.upText = "thumb_up_off_alt"
-          }
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
+            /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
+    
+            if (this.upText === "thumb_up_off_alt") {
+              // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
+              if (this.downText === "thumb_down") {
+                  // console.log(this.downText)
+                  this.changeHateStatus()
+                  this.downText = "thumb_down_off_alt"
+              }
+              this.upText = "thumb_up"
+              } else {
+                this.upText = "thumb_up_off_alt"
+              }
     },
     changeHateStatus() {
-        /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
+       // 싫어요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.probDetail.id,
+              type: false
+            }
+          })
+          .then(res => {
+            console.log(res.data);
+            this.probDetail.numOfDislikes = res.data.numOfDislikes
+            
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
+          /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
         if (this.downText === "thumb_down_off_alt") {
             this.downText = "thumb_down"
             // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
             if (this.upText === "thumb_up") {
+                this.changeLikeStatus()
                 this.upText = "thumb_up_off_alt"
             }
        } else {
@@ -152,6 +237,18 @@ export default {
             this.scrapText = "bookmark_border"
        }
     },
+    async openScrapModal() {
+      await this.$store.dispatch('reIssue');
+        this.scrapModal = true
+        console.log('openModal')
+    },
+    closeScrapModal() {
+        this.scrapModal = false
+        console.log('closeModal')
+    },
+    profileEvent(uid) {
+      this.$router.push({ path: `../profile/${uid}`})
+    },
     // 문제 풀기; 문제 푼 후 결과 저장(0811 임지민)
     submitProblem() {
       // 문제 맞는 지 틀린 지 먼저 확인하고
@@ -162,36 +259,45 @@ export default {
       if (selectedAnswer === "1") {
         this.credentials.right = true
         this.myCorrectStatus = true
-        alert('정답입니다.')
+        // alert('정답입니다.')
+        this.$swal({
+          icon: 'success',
+          text: '정답입니다'
+        })
       } else {
         this.credentials.right = false
-        alert('오답입니다.')
+        // alert('오답입니다.')
+        this.$swal({
+          icon: 'warning',
+          text: '오답입니다.'
+        })
         this.myCorrectStatus = false
-        this.$router
+
       }
+      this.showCorrectStatus = true
+
       // console.log(this.credentials)
       // axios 보내기
       axios({
-      url: drf.solving.solving(),
-      method: 'post',
-      headers: {
-        Authorization: this.accessToken,
-      },
-      data: this.credentials
-    })
-    .then(res => {
-      // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
-      console.log(res)
-    })
-    .catch(err => {
-      // console.log(this.accessToken)
-      // console.log(this.userId)
-      console.log(err);
-    })
-    }
-  },
-  created() {
-    // console.log('problem ')
+        url: drf.solving.solving(),
+        method: 'post',
+        headers: {
+          Authorization: this.accessToken,
+        },
+        data: this.credentials
+      })
+      .then(res => {
+        // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+        console.log(res)
+      })
+      .catch(err => {
+        // console.log(this.accessToken)
+        // console.log(this.userId)
+        console.log(err);
+      })
+    },
+    getProbDetail() {
+      // console.log('problem ')
     const probId = this.$route.params.pid
     // console.log('probid=', probId)
 
@@ -203,24 +309,60 @@ export default {
       },
     })
     .then(res => {
-      // console.log(res) //ok
+      console.log(res) //ok
       this.probDetail = res.data
-      // console.log(this.probDetail)
-      const nums  = [1,2,3,4]
-      const shuffled = nums.sort(() => Math.random() - 0.5)
-      // const noteDetail = this.noteDetail
-      // this.shuffledNum = shuffled
-      nums.forEach(num => {
-        // console.log(num);
-        // console.log(this.probdetail[`example${num}`])
-        this.examples.push({'id': num, 'example': this.probDetail[`example${num}`]})
-      })
 
-    })
-    .catch(err => {
-      console.log(err);
-    })
+      // 댓글이 있는 경우에만 0815 임지민
+      if (res.data.comments){
+        this.commentList = res.data.comments.reverse()
+        this.commentLength = this.commentList.length
+      } 
+
+      // console.log(res.data.comments)
+      if (this.examples.length===0) {
+        const nums  = [1,2,3,4]
+        const shuffled = nums.sort(() => Math.random() - 0.5)
+        // const noteDetail = this.noteDetail
+        // this.shuffledNum = shuffled
+        nums.forEach(num => {
+          // console.log(num);
+          // console.log(this.probdetail[`example${num}`])
+          this.examples.push({'id': num, 'example': this.probDetail[`example${num}`]})
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
     },
+
+    // 내가 낸 문제 삭제하기(0815 오채명)
+    deleteprob() {
+      const userDecision = confirm('정말로 삭제하시겠습니까?')
+      if (userDecision) {
+        axios({
+          url: drf.api + 'post' + `/${this.probDetail.id}`,
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },
+        })
+        .then(res => {
+          console.log("res.data = ",res.data)
+          // console.log("삭제 되었습니다. ", res)
+          this.$router.push('/')
+        })
+        .catch(err =>{
+          console.log("에러")
+          console.log(err)
+        })
+        this.$router.go(); // 새로고침
+      }
+    },
+  },
+  created() {
+    this.getProbDetail()
+  },
 }
 </script>
 

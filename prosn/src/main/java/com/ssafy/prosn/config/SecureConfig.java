@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 public class SecureConfig {
 
     private final JwtUtils jwtUtils;
-    private final AuthEntryPointJwt authEntryPointJwt;
+//    private final AuthEntryPointJwt authEntryPointJwt;
     private final AuthAccessDenieHandler authAccessDenieHandler;
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -49,12 +49,12 @@ public class SecureConfig {
 
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(authEntryPointJwt)
+//                .authenticationEntryPoint(authEntryPointJwt)
                 .accessDeniedHandler(authAccessDenieHandler)
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/**","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
+                .antMatchers("/api/**","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**", "/swagger-ui.html", "/swagger-resources/**", "/login/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

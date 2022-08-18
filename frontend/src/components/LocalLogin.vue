@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <!-- 2022.07.25. 회원 로그인정보 입력란 (남성은) -->
-    <!-- 0805 임지민
+   <div>
+      <!-- 2022.07.25. 회원 로그인정보 입력란 (남성은) -->
+      <!-- 0805 임지민
       - 아직 계정이 없으신가요? 와 아이디/비번 찾기 사이에 간격 늘리기
       - 회원가입 hover시 보라색 text와 보라색 underline 뜨도록 수정
       - 회원가입 글자 bold로 바꿈
      -->
+    
     <v-container class="mt-5">
       <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login" class="ma-0 pa-0">
         <v-row no-gutters>
@@ -32,6 +33,9 @@
           <v-col cols="12" md="3" class="ma-0 px-1">
             <v-btn :disabled="!valid" type="submit" color="#CCA5FE" class="rounded-xl white--text my-0 py-3 mt-3" height="80%" width="100%"><h3>로그인</h3></v-btn>
           </v-col>
+        </v-row>
+        <v-row class="mt-0 py-0 px-1">
+          <p class="font-parent-mid red--text font-weight-bold">{{warningText}}</p>
         </v-row>
       </v-form>
 
@@ -84,10 +88,10 @@
 //     },
 //   }
 
-import axios from 'axios'
-import drf from '@/api/drf'
-import {mapState, mapActions } from 'vuex'
-  const accountStore = "accountStore"
+import axios from 'axios';
+import drf from '@/api/drf';
+import { mapState, mapActions } from 'vuex';
+const accountStore = 'accountStore';
 
   export default {
     // 2022.07.25. 아이디 (남성은)
@@ -107,54 +111,67 @@ import {mapState, mapActions } from 'vuex'
           v => !!v || '아이디는 필수 입력값입니다.',
           v => (v && v.length <= 12) || '아이디는 12자 이하로 입력하세요',
       ],
+      warningText: null,
     }),
 
-    // 2022.07.25. 로그인 버튼 (남성은)
-    methods: {
-      validate () {
-        this.$refs.form.validate()
+   // 2022.07.25. 로그인 버튼 (남성은)
+   methods: {
+      validate() {
+         this.$refs.form.validate();
       },
       // ...mapActions(['login'])
       login() {
+         // axios.post(drf.accounts.login())
+         // .then(({res}) => {
+         //   console.log(res)
+         // })
+         axios({
+            url: drf.accounts.login(),
+            method: 'post',
+            data: this.credentials,
+         })
+            .then((res) => {
+               console.log('res = ', res.data);
+              //  console.log('accessToken = ', res.data.accessToken);
+              //  console.log('refreshToken = ', res.data.refreshToken);
+              //  console.log('expire : ', res.data.tokenExpiresIn);
+               let grantType = res.data.grantType.replace(
+                  res.data.grantType.charAt(0),
+                  res.data.grantType.charAt(0).toUpperCase()
+               );
+               console.log('grantType:', grantType);
+               this.$store.dispatch(
+                  'saveToken',
+                  grantType + ' ' + res.data.accessToken
+               );
+               this.$store.dispatch('saveRefreshToken', res.data.refreshToken);
+               this.$store.dispatch('saveExpiresIn', res.data.tokenExpiresIn);
 
-        // axios.post(drf.accounts.login())
-        // .then(({res}) => {
-        //   console.log(res)
-        // })
-        axios({
-                url: drf.accounts.login(),
-                method: 'post',
-                data: this.credentials
+               this.$store.dispatch('saveName', res.data.name);
+               this.$store.dispatch('saveId', res.data.id);
+               this.$router.push({ path: '/' });
+               // const token = res.data.key
+               // dispatch('saveToken', token)
+               // dispaxtch('fetchCurrentUser')
             })
-            .then(res => {
-                console.log("res = ",res);
-                console.log("accessToken = ",res.data.accessToken);
-                console.log("refreshToken = ",res.data.refreshToken);
-                let grantType = res.data.grantType.replace(res.data.grantType.charAt(0), res.data.grantType.charAt(0).toUpperCase());
-                console.log("grantType:", grantType);
-                this.$store.dispatch('saveToken', grantType+" "+res.data.accessToken, res.data.refreshToken)
-                this.$store.dispatch('saveName', res.data.name)
-                this.$store.dispatch('saveId', this.credentials.userId) // 아이디 중복확인을 위해 설정하기
-                this.$store.dispatch('currentUser', res.data.id)
-                this.$router.push({ path: '/'})
-                // const token = res.data.key
-                // dispatch('saveToken', token)
-                // dispaxtch('fetchCurrentUser')
-            
-            })
-            .catch(err =>{
-                console.log("에러")
-                console.log(err)
-            })
+            .catch((err) => {
+              //  console.log('에러');
+              console.log(err);
+              // 아이디, 비번을 잘못 입력하면 로그인창 하단에 경고메시지 띄우기 0814 임지민
+               if (err.request.status === 403){
+                this.warningText = '아이디 혹은 비밀번호를 확인해주세요'
+                // console.log(this.warningText)
+               };
+              //  if (err.)
+               // 401뜨면 alert창 띄워주기 0814 임지민
+               
+            });
       },
       // event () {
       //   this.$router.push({ path: '/' })
       // }
-    },
-  }
-
+   },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

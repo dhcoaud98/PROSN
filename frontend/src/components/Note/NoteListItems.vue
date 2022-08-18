@@ -1,68 +1,87 @@
 <template>
-  <!-- studylistitems 복붙 0803 임지민 -->
   <div>
-  <!-- 크기 550px로 고정하지 말고 반응형으로 작동할 수 있도록 수정하기; margin 사용 등 -->
     <!-- 작성 전 문제 0808 임지민 -->
-    <!-- beforeProb에 문제 아이디가 조회가 가능하면 이를 이용해 문제에 접근해서 태그, 제목, 문제 수 등을 출력해오자 -->
+    <div v-for="beforeProb in beforeProbs" :key="beforeProb.id" class="mb-2">
+      <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8 ">
+        <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
+        <v-card-title class="pa-0 yellow-bg-gradation">
+          <v-container class="pa-0">
+            <!-- 제목 -->
+            <v-row class="d-flex justify-space-between ma-3 mt-4">
+              <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
+                {{beforeProb.title}}
+              </div>
+            </v-row>
+          </v-container>
+        </v-card-title>
     
-    <div v-for="beforeProb in beforeProbs" :key="beforeProb.id">
-      <!-- 오답노트 상세보기 페이지로 이동  -->
-      <!-- <p>{{beforeProb}}</p> -->
-      <router-link :to="`/note/pre/${beforeProb.id}`">
-        <v-row class="color-FAF0F3 mx-auto border-a-10">
-          <v-col cols="12">
-            <v-card class="px-5" color="#FAF0F3">
-              <v-row class="align-center">
-                <!-- col 1: 문제 대표 이미지 -->
-                <v-col cols="2"><v-icon large color="black darken-2">mdi-group</v-icon></v-col>
-
-                <!-- col 2: 문제 태그, 문제 제목  -->
-                <v-col class="pb-0">
-                  <v-row>
-                    <div v-for="tag in beforeProb.tags" :key="tag">
-                      <span class="category-tag text-center pa-1 mr-2 font-parent-xsml">#{{tag}}</span>
-                    </div>
-                  </v-row>
-                  <v-row>
-                    <span class="font-parent-mid-l font-weight-bold mr-2">{{beforeProb.title}}</span>
-                  </v-row>
-                  
-                </v-col>
-                
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-      </router-link>
+        <!-- 카드 본문 -->
+        <v-card-text class="pb-0">
+          <v-row>
+            <!-- v-for문 사용해서 태그 띄우기 -->
+            <div class="mt-5" v-for="tag in beforeProb.tags" :key="tag">
+              <v-chip small color="orange" class="white--text ms-3 lighten-2">{{tag}}</v-chip>
+            </div>
+          </v-row>
+    
+          <router-link :to="`/note/pre/${beforeProb.id}`" width="100%">  
+            <v-row class="ma-2 mb-2 d-flex justify-space-between">
+              <!-- 노트로 이동하기 버튼 -->
+              <!-- 화면 사이즈 md 이상 -->
+              <v-btn text large rounded height="45px" class="d-none d-md-flex" width="100%">
+                <div class="note-btn font-weight-regular">NOTE</div>
+              </v-btn>
+              <!-- 화면 사이즈 md 이하 -->
+              <v-btn text large rounded height="45px" class="d-md-none mt-3" width="100%">
+                <div class="note-btn font-weight-regular">NOTE</div>
+              </v-btn>
+            </v-row>
+          </router-link>
+        </v-card-text>
+      </v-card>
     </div> 
 
     <!-- 작성 후 문제 0808 임지민 -->
-    <div v-for="afterProb in afterProbs" :key="afterProb.id" class="mb-3">
-      <!-- <p>{{afterProb}}</p> -->
-      <!-- 여기 이 id값을 notedetaillist, createnotelist에서 받아서 axios로 오답노트 디테일 조회하기 -->
-      <router-link :to="`note/post/${afterProb.id}`">
-        <v-row class="color-FAF0F3 mx-auto border-a-10">
-          <v-col cols="12" class="pa-0">
-            <v-card class="px-5" color="#FAF0F3">
-              <v-row class="align-center mt-2">
-                <!-- col 1: 문제 대표 이미지 -->
-                <v-col cols="2"><v-icon large color="black darken-2">mdi-group</v-icon></v-col>
-
-                <!-- col 2: 문제 태그, 문제 제목 --> 
-                <v-col>
-                  <span class="font-parent-mid-l font-weight-bold mx-2">{{afterProb.title}}</span>
-                  <div v-for="tag in afterProb.tags" :key="tag" class="d-inline-block">
-                    <span class="category-tag text-center pa-1 mr-2 font-parent-xsml">#{{tag}}</span>
-                  </div>
-                </v-col>
-                
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-      </router-link>
-    </div>
+    <div v-for="afterProb in afterProbs" :key="afterProb.id" class="mb-2">
+      <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8 me-3">
+        <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
+        <v-card-title class="pa-0 yellow-bg-gradation">
+          <v-container class="pa-0">
+            <!-- 제목 -->
+            <v-row class="d-flex justify-space-between ma-3 mt-4">
+              <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
+                {{afterProb.title}}
+              </div>
+            </v-row>
+          </v-container>
+        </v-card-title>
     
+        <!-- 카드 본문 -->
+        <v-card-text class="pb-0">
+          <v-row>
+            <!-- v-for문 사용해서 태그 띄우기 -->
+            <div class="mt-5" v-for="tag in afterProb.tags" :key="tag">
+              <v-chip small color="orange" class="white--text ms-3 lighten-2">{{tag}}</v-chip>
+            </div>
+          </v-row>
+    
+          <router-link :to="`/note/post/${afterProb.id}`" width="100%">  
+            <v-row class="ma-2 mb-2 d-flex justify-space-between">
+              <!-- 노트로 이동하기 버튼 -->
+              <!-- 화면 사이즈 md 이상 -->
+              <v-btn text large rounded height="45px" class="d-none d-md-flex" width="100%">
+                <div class="note-btn font-weight-regular">NOTE</div>
+              </v-btn>
+              <!-- 화면 사이즈 md 이하 -->
+              <v-btn text large rounded height="45px" class="d-md-none mt-3" width="100%">
+                <div class="note-btn font-weight-regular">NOTE</div>
+              </v-btn>
+            </v-row>
+          </router-link>
+        </v-card-text>
+      </v-card>
+    </div>
+
   </div>
 </template>
 
@@ -70,7 +89,7 @@
 export default {
   data() {
     return {
-
+      page: 1,
     }
   },
   props: {
@@ -84,5 +103,12 @@ export default {
 <style>
 .font-parent-xsml {
   font-size: 0.1em;
+}
+.yellow-bg-gradation {
+  background: linear-gradient(to right, rgb(253, 235, 177), rgb(255, 205, 68));
+}
+.note-btn {
+  color: orange;
+  font-size: 1.7em;
 }
 </style>

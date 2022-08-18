@@ -17,60 +17,29 @@
         </v-list-item>
 
         <v-list nav>
-          <v-list-item v-for="(item, i) in items" :key="i">
+          <v-list-item>
             <v-list-item-content class="py-0 font-parent-mid">
-              <!-- <네브바만 남기고 오른쪽 영역 갈아끼기> 0729 임지민
-                클릭하면 to 속성 변경-> app.vue에서 해야하는데 컴포넌트 구조가 복잡해서 prop하고 emit하기가 어려울 것 같다.
-                그래서 vuex를 활용해서 특정 요소를 클릭하면 app.vue의 router-view/link의 name/to 속성을 바꾼다.
-                  - 클릭하면 vuex로 fetch해서 요소를 바꾸고
-                그래서 app.vue가 created될 때 vuex에서 state를 가져와서 띄운다.
-               -->
-              <router-link :to="`/${item.urlName}`" class="text-decoration-none black--text">
-                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="item.urlName">{{ item.text }}</v-list-item-title>
-              </router-link>
+              <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5 cursor-pointer" 
+              :id="items[0].urlName"
+              @click="avoidAnonymous('/study')" >{{ items[0].text }}</v-list-item-title>
+            
+
+              <v-list-item-title 
+                class="left-line ml-5 ms-0 mb-0 py-5 pl-5 cursor-pointer" 
+                :id="items[1].urlName"
+                @click="avoidAnonymous('/note')">{{ items[1].text }}</v-list-item-title>
+              
+              <!-- <router-link :to="`/profile/${currentUser}`" class="text-decoration-none black--text mb-0"> -->
+              <v-list-item-title 
+                class="left-line ml-5 ms-0 mb-0 py-5 pl-5 cursor-pointer" 
+                :id="items[2].urlName"
+                @click="avoidAnonymous(`/profile/${currentUser}`)">{{ items[2].text }}</v-list-item-title>
+              <!-- </router-link>   -->
             </v-list-item-content>
           </v-list-item>
         </v-list>
-      </v-navigation-drawer>
+      </v-navigation-drawer>         
     </v-card>
-    
-  <!-- <v-app class="bg-grey d-none d-sm-flex">
-    네비게이션 바: xs에서는 안보이고 하단바로 이동
-    <v-container fluid class="bg-grey d-none d-sm-flex">
-      <v-navigation-drawer class="mt-5 ml-3 d-none d-sm-flex">
-        <v-row class="mb-5">
-          <v-col>
-            <router-link to="/">
-              <v-img src="../assets/prosn_logo.png" max-width="200px" max-height="50px" class="mb-5"></v-img>
-            </router-link>
-          </v-col>
-        </v-row>
-        <div class="mt-5">
-          <v-row>
-            <v-col class="left-line ml-4">
-              <p class="pl-3">스터디</p>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="left-line ml-4">
-              <p class="pl-3">오답노트</p>
-            </v-col>
-          </v-row>
-          
-            로그인이 된 경우만 보이도록, created될 때 로그인이 되었는 지 확인해서 로그인이 되었으면 loginDisplay 값을 d-flex로 바꾸기 \
-            - 지금은 로그인 구현 전이니까 편의상 기본값을 d-flex로 해놓음
-
-          <v-row :class="loginDisplay">
-            <v-col class="left-line ml-4">
-              <p class="pl-3">내 프로필</p>
-            </v-col>
-          </v-row>
-        </div>
-      </v-navigation-drawer>
-    </v-container>
-
-    <하단바: xs에서 보임; fixed-bottom 
-  </v-app> -->
 </template>
 
 <script>
@@ -80,6 +49,7 @@ export default {
   name: 'NavBar',
   data () {
     return {
+      tmp: '',
       loginDisplay: 'd-flex',
       items: [
         { 
@@ -94,35 +64,91 @@ export default {
         },
         { 
           text: 'P R O F I L E',
-          url: 'profile',
+          url: `profile/${this.tmp}`,
           urlName: 'profile',
         },
       ]
     }
   },
   computed: {
+    ...mapGetters(['currentUser','isLoggedIn',]),
   },
   watch: {
     // url이 바뀔 때마다 감시해서 nav바 상태 바꿔주기
     $route(to, from) {
       //console.log(to) // 도착지
       //console.log(from) // 출발지
-      if(to.name !== 'mainPage') {
+      const studyTag = document.querySelector('#study')
+      const profileTag = document.querySelector('#profile')
+      const noteTag = document.querySelector('#note')
+
+      if (to.name === 'mainPage') {
         // 도착지의 name에 해당하는 태그는 clicked-tab을 넣고
-        const toTag = document.querySelector(`#${to.name}`)
-        toTag.classList.add('clicked-tab')
+        // const toTag = document.querySelector(`#${to.name}`)
+        // toTag.classList.add('clicked-tab')
+        // const fromTag = document.querySelector(`#${from.name}`)
+        // fromTag.classList.remove('clicked-tab')
+        if (studyTag.classList.contains('clicked-tab')) {
+          studyTag.classList.remove('clicked-tab')
+        } else if (noteTag.classList.contains('clicked-tab')) {
+          noteTag.classList.remove('clicked-tab')
+        } else if (profileTag.classList.contains('clicked-tab')) {
+          profileTag.classList.remove('clicked-tab')
+        }
+      } else if (to.name === 'study') {
+        studyTag.classList.add('clicked-tab')
+
+        if (noteTag.classList.contains('clicked-tab')) {
+          noteTag.classList.remove('clicked-tab')
+        } else if (profileTag.classList.contains('clicked-tab')) {
+          profileTag.classList.remove('clicked-tab')
+        }
+
+      } else if (to.name === 'note') {
+        noteTag.classList.add('clicked-tab')
+
+        if (studyTag.classList.contains('clicked-tab')) {
+          studyTag.classList.remove('clicked-tab')
+        } else if (profileTag.classList.contains('clicked-tab')) {
+          profileTag.classList.remove('clicked-tab')
+        }
+
+      } else if (to.name === 'profile') {
+        profileTag.classList.add('clicked-tab')
+
+        if (noteTag.classList.contains('clicked-tab')) {
+          noteTag.classList.remove('clicked-tab')
+        } else if (studyTag.classList.contains('clicked-tab')) {
+          studyTag.classList.remove('clicked-tab')
+        }
       }
       // 출발지의 name에 해당하는 태그는 clicked-tab을 빼기
-      const fromTag = document.querySelector(`#${from.name}`)
-      fromTag.classList.remove('clicked-tab')
     }
   },
   methods: {
     searchCleard: function(event) {
+      this.$router.push({path: 'mainPage'})
             this.$store.dispatch('problem/searchKeyword', "")
     },
+    avoidAnonymous(url) {
+      console.log(this.currentUser);
+      console.log(url);
+      if (!this.isLoggedIn) {
+        this.$swal({
+          icon: 'warning',
+          text: '로그인 후 이용해주세요'
+        })
+        this.$router.push({ path: '/login'})
+      } else {
+        this.$router.push({ path: url})
+      }
+    }
   },
-  
+  created () {
+    // console.log(`profile/${this.currentUser}`)
+    // console.log(typeof(this.currentUser))
+    this.tmp = this.currentUser
+  }
 }
 </script>
 
@@ -136,6 +162,9 @@ export default {
   :hover.left-line{
     border-left: solid 5px #A384FF;
     font-weight: bold;
+  }
+  :hover.cursor-pointer {
+    cursor: pointer;
   }
   .clicked-tab {
     border-left: solid 5px #A384FF;

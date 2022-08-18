@@ -1,5 +1,8 @@
 package com.ssafy.prosn.oauth;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"error", "error_description"})
 public class GoogleOauthParams {
     private String access_token;
     private String expires_in;

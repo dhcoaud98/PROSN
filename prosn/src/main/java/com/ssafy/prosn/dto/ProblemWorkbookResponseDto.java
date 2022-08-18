@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * created by seongmin on 2022/08/09
+ * updated by seongmin on 2022/08/15
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,7 +23,7 @@ public class ProblemWorkbookResponseDto {
     private int totalPages;
     private Long totalElements;
 
-    public static ProblemWorkbookResponseDto of(List<ProblemDto> posts, int totalPages, Long totalElements){
+    public static ProblemWorkbookResponseDto of(List<ProblemDto> posts, int totalPages, Long totalElements) {
         ProblemWorkbookResponseDto problemWorkbookResponseDto = new ProblemWorkbookResponseDto();
         problemWorkbookResponseDto.totalElements = totalElements;
         problemWorkbookResponseDto.totalPages = totalPages;
@@ -32,6 +36,7 @@ public class ProblemWorkbookResponseDto {
                     tags,
                     post.getId(),
                     post.getTitle(),
+                    post.getMainText(),
                     post.getWriterId(),
                     post.getWriterName(),
                     post.getCreated(),
@@ -48,6 +53,7 @@ public class ProblemWorkbookResponseDto {
         private List<String> tags;
         private Long id;
         private String title;
+        private String mainText;
         private Long writerId;
         private String writerName;
         private LocalDateTime created;
@@ -56,9 +62,10 @@ public class ProblemWorkbookResponseDto {
         private Long numOfLikes;
         private Long numOfDislikes;
 
-        public Content(List<String> tags, Long id, String title, Long writerId, String writerName, LocalDateTime created, LocalDateTime updated, PostType ptype, Long numOfLikes, Long numOfDislikes) {
+        public Content(List<String> tags, Long id, String title, String mainText, Long writerId, String writerName, LocalDateTime created, LocalDateTime updated, PostType ptype, Long numOfLikes, Long numOfDislikes) {
             this.tags = tags;
             this.id = id;
+            this.mainText = mainText;
             this.title = title;
             this.writerId = writerId;
             this.writerName = writerName;
@@ -68,6 +75,7 @@ public class ProblemWorkbookResponseDto {
             this.numOfLikes = numOfLikes;
             this.numOfDislikes = numOfDislikes;
         }
+
         public List<String> getTags() {
             return tags;
         }
@@ -90,6 +98,14 @@ public class ProblemWorkbookResponseDto {
 
         public void setTitle(String title) {
             this.title = title;
+        }
+
+        public String getMainText() {
+            return mainText;
+        }
+
+        public void setMainText(String mainText) {
+            this.mainText = mainText;
         }
 
         public Long getWriterId() {

@@ -3,83 +3,121 @@
   <!-- 2022.08.04 댓글보기 버튼 활성화 (남성은) -->
   <v-container class="modal" appear>
     <v-container class="modal modal-overlay" @click.self="$emit('close')">
-      <v-container class="modal-window pa-0" width="500px">
+      <v-container class="modal-window pa-0">
         <v-container class="rounded-lg modal-content pa-0">
-          <v-row class="d-flex justify-center">
-            <!-- 정보부분 (항상 떠있음) -->
-            <v-col max-width="600" class="pa-0 info-modal-white">            
-              <v-card-text class="d-flex justify-space-between">
-                <v-btn @click="event()" text class="font-weight-bold">크게보기</v-btn>
-                <v-btn @click="$emit('close')" text class="font-weight-bold">뒤로가기</v-btn>
+          <v-row class="d-flex justify-center px-3 info-modal-white">
+            <!-- 정보부분 (처음에 떠있음) -->
+            <v-col id="modal-content-window" class="pa-0">            
+              <v-card-text class="d-flex justify-space-between align-center px-0">
+                <v-btn @click="event()" text class="font-weight-bold pr-0 pl-3" small>자세히 보기</v-btn>
+                <v-btn @click="$emit('close')" icon class="pa-0"><v-icon>mdi-close</v-icon></v-btn>
               </v-card-text>
 
               <!-- 정보 제목 -->
               <!-- {{ info.pk }}. {{ info.MAIN_TEXT}} -->
               <v-card-title class="font-weight-bold black--text">
-                <h2>{{ infodetail.id }}. {{ info.title }}</h2> 
+                <h2>{{ info.title }}</h2> 
               </v-card-title>
 
               <!-- 정보 본문 -->
-              <v-card-text>
+              <!-- <p>{{ infodetail }}</p> -->
+              <!-- <p>{{ infodetail}}</p> -->
+              <v-card-text class="d-flex pb-0">
                 <!-- 카테고리 라벨 -->
-                <div class="pl-3" style="display:inline;" v-for="(tag, idx) in infodetail.tags" :key="idx">
-                  <span class="category-tag text-center pa-1">{{ tag }}</span>
+                <div class="mt-5" v-for="(tag, idx) in infodetail.tags" :key="idx">
+                  <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
                 </div>
               </v-card-text>
 
-              <!-- 내용 error: 스크롤 안생김-->
+              <!-- 내용 -->
               <v-card-text class="font-weight-bold">
-                  <v-container>
-                    <v-row>
-                      <v-card outlined class="mx-3 mb-2 pa-3 overflow-y-auto" max-height="500px" width="100%">
-                        <!-- <v-virtual-scroll height="300"> -->
-                        <v-card-text>
-                          <div>
-                            {{ infodetail.mainText }}
-                          </div>                
-                        </v-card-text>
-                      </v-card>
-                    </v-row>
-                    <!-- 저작권 / 버튼 -->
-                    <v-row class="d-flex justify-space-between">
-                      <!-- 출제자 정보 -->
-                      <v-col class="col-12 col-md-8">
-                        <div>출제자 | {{ infodetail.writer.name}}</div>              
-                        <div>출제일 | {{ info.created.slice(0,10) }}</div>
-                      </v-col>
-                      <!-- 버튼 그룹 if로 자기 문제인 경우랑 아닌 경우 나눠서 보여주기 -->
-                      <v-col class="d-flex justify-end col-12 col-md-4">
-                        <!-- 좋아요 버튼 -->
-                        <v-btn class="ms-2" icon color="blue lighten-2" @click="changeLikeStatus" id="upIcon">
-                          <v-icon>{{upText}}</v-icon>{{ infodetail.numOfLikes }}
+                <v-container class="px-0">
+                  <v-row>
+                    <v-card outlined class="mb-2 pa-3 overflow-y-auto" max-height="500px" width="100%">
+                      <v-card-text>
+                        <div>
+                          <!-- {{infodetail.id}} -->
+                          {{ infodetail.mainText }}
+                        </div>                
+                      </v-card-text>
+                    </v-card>
+                  </v-row>
+                  <!-- 저작권 / 버튼 -->
+                  <v-row class="justify-space-between">
+                    <!-- 출제자 정보 -->
+                    <div class="pa-0" >
+                      <span class="grey--text mr-2 mb-1">Created by.
+                        <v-btn class="px-0 font-weight-bold" plain @click=profileEvent(infodetail.writer.id)>                        
+                          {{infodetail.writer.name}} 
                         </v-btn>
-                        <!-- 싫어요 버튼 -->
-                        <v-btn class="ms-2" icon color="red lighten-2" @click="changeHateStatus" id="downIcon">
-                          <v-icon>{{downText}}</v-icon>{{ infodetail.numOfDislikes }}
-                        </v-btn>
-                        <!-- 스크랩 버튼 -->
-                        <v-btn class="ms-2" icon color="dark lighten-2" @click="changeScrapStatus" id="scrapIcon">
-                          <v-icon>{{scrapText}}</v-icon>
-                        </v-btn>                    
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                  
-                  <v-divider></v-divider>
+                      </span>
+                    </div>
 
-                  <!-- 댓글보기 -->
-                  <v-btn @click="showReplies" id="show-replies-btn" class="font-weight-bold mt-2" text>댓글보기</v-btn>
-                  <v-btn @click="noShowReplies" id="no-show-replies-btn" class="d-none font-weight-bold mt-2" text>댓글접기</v-btn>
+                    <!-- 남이 작성한 정보일 경우 -->
+                    <div v-if="currentUser != infodetail.writer.id" class="pa-0 justify-end d-flex align-center">
+                      <!-- 좋아요 버튼 -->
+                      <div class="d-flex align-center">
+                        <v-btn class="ms-2" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon">
+                          <v-icon>{{upText}}</v-icon>
+                        </v-btn>
+                        <span>{{infodetail.numOfLikes}}</span>
+                      </div>
+                      <!-- 싫어요 버튼 -->
+                      <div class="d-flex align-center">
+                        <v-btn class="ms-2" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon">
+                          <v-icon>{{downText}}</v-icon>
+                        </v-btn>
+                        <span>{{infodetail.numOfDislikes}}</span>
+                      </div>
+
+                      <!-- 스크랩 버튼 -->
+                      <div v-if="isLoggedIn">
+                        <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
+                          <v-icon>{{scrapText}}</v-icon>
+                        </v-btn>                
+                      </div>  
+                        <!-- 스크랩 모달 -->
+                      <div>
+                        <scrap @close="closeScrapModal" v-if="scrapModal" :pid="infodetail.id"></scrap>
+                      </div>
+                    </div>
+
+                    <!-- 내가 작성한 정보일 경우 -->
+                    <div v-else class="pa-0 justify-end d-flex align-center">
+                      <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon">
+                        <v-icon>{{scrapText}}</v-icon>
+                      </v-btn>                                    
+                      <!-- 스크랩 모달 -->
+                      <scrap @close="closeScrapModal" v-if="scrapModal"></scrap>
+                      <!-- 수정 버튼 -->
+                      <v-btn class="ms-1font-weight-bold" rounded outlined small @click="editInfo">수정</v-btn>
+                      <!-- 삭제 버튼 -->
+                      <v-btn class="ms-1 font-weight-bold" rounded outlined small color="red" @click="deleteInfo">삭제</v-btn>
+                    </div>
+                  </v-row>
+                </v-container>
+                
+                <v-divider></v-divider>
+
+                <!-- 댓글보기 -->
+                <v-btn @click="showReplies" class="font-weight-bold mt-2" text>댓글보기</v-btn>
               </v-card-text>
             </v-col>
 
-            <!-- 평소에는 안보이는 세로선 -->
-            <v-divider id="show-divider" class="my-5 d-none" vertical></v-divider>
+            <v-col id="reply-window" class="d-none">
+              <v-card-text class="pa-0">
+                <div>
+                  <!-- 이부분에 인포 댓글만 연결해주면 끝남 -->
+                  <info-modal-reply :cid="infodetail.id" :commentList="commentList"></info-modal-reply>
 
-            <!-- 평소에는 안보이는 댓글창 -->
-            <v-col width="600" id="show-replies" class="pa-0 d-none">
-              <info-modal-reply></info-modal-reply>
+                  <v-divider class="mx-1"></v-divider>
+
+                  <!-- 댓글보기 / 본문보기 -->
+                  <v-btn @click="noShowReplies" class="font-weight-bold mt-2 mb-4" text>본문보기</v-btn>
+                </div>            
+              </v-card-text>
             </v-col>
+
           </v-row>
         </v-container>
       </v-container>
@@ -88,15 +126,17 @@
 </template>
 
 <script>
-// import drf from '@/api/drf'
-// import axios from 'axios'
+import drf from '@/api/drf'
+import axios from 'axios'
 import { mapGetters } from "vuex"
 import InfoModalReply from './InfoModalReply.vue'
+import Scrap from '@/components/Scrap/Scrap.vue'
 
 export default {
   name: "InfoModal",
   components: {
     InfoModalReply,
+    Scrap,
   },
   props: {
     infodetail: Object,
@@ -104,43 +144,101 @@ export default {
   },
   data () {
     return {
+      scrapModal: false,
       upText: 'thumb_up_off_alt',
       downText: 'thumb_down_off_alt',
       scrapText: 'bookmark_border',
+      commentList: [],
     }
   },
   methods: {
     changeLikeStatus() {
+      if (this.isLoggedIn){
         /* 
         버튼 클릭하면 색이 바뀌도록
         thumb up --> thumb up off alt
         thumb down --> thumb down off alt
         bookmark border --> bookmark
         */
-        /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
+        
+        // 좋아요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.probdetail.id,
+              type: true
+            }
+          })
+          .then(res => {
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            this.probdetail.numOfLikes = res.data.numOfLikes
 
-        if (this.upText === "thumb_up_off_alt") {
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
+          /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
+        // console.log(document.querySelector('#correctStatus'));
+          if (this.upText === "thumb_up_off_alt") {
           // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
           if (this.downText === "thumb_down") {
               // console.log(this.downText)
+              this.changeHateStatus()
               this.downText = "thumb_down_off_alt"
           }
           this.upText = "thumb_up"
           } else {
             this.upText = "thumb_up_off_alt"
           }
+      }
     },
     changeHateStatus() {
-        /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
-        if (this.downText === "thumb_down_off_alt") {
-            this.downText = "thumb_down"
-            // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
-            if (this.upText === "thumb_up") {
-                this.upText = "thumb_up_off_alt"
+      if (this.isLoggedIn){
+  
+       // 싫어요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.probdetail.id,
+              type: false
             }
-       } else {
-            this.downText = "thumb_down_off_alt"
-       }
+          })
+          .then(res => {
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            this.probdetail.numOfDislikes = res.data.numOfDislikes
+
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
+              /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
+        if (this.downText === "thumb_down_off_alt") {
+          this.downText = "thumb_down"
+          // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
+          if (this.upText === "thumb_up") {
+            this.changeLikeStatus()
+            this.upText = "thumb_up_off_alt"
+          }
+        } else {
+              this.downText = "thumb_down_off_alt"
+        }
+      }
     },
     changeScrapStatus() {
        if (this.scrapText === "bookmark_border") {
@@ -150,49 +248,110 @@ export default {
        }
     },
 
+    // 2022.08.03. 댓글보기 버튼 누를 때
     showReplies: function (event) {
-      const showRepliesBtn = document.querySelector("#show-replies-btn")
-      const noShowRepliesBtn = document.querySelector("#no-show-replies-btn")
-      const showDivider = document.querySelector("#show-divider")
-      const showReplies = document.querySelector("#show-replies")
-
-      showRepliesBtn.setAttribute("class", "d-none")
-      noShowRepliesBtn.setAttribute("class", "font-weight-bold mt-2 v-btn v-btn--text theme--light v-size--default")
-      showDivider.setAttribute("class", "my-5 v-divider v-divider--vertical theme--light")
-      showReplies.setAttribute("class", "pa-0 col col-6 info-modal-white")
+      const modalContentWindow = document.querySelector("#modal-content-window")
+      const replyWindow = document.querySelector("#reply-window")
+      modalContentWindow.setAttribute('class', 'd-none')
+      replyWindow.setAttribute('class', 'pa-0 col')
     },
     // 2022.08.03. 댓글접기 버튼 누를 때
     noShowReplies: function (event) {
-      const showRepliesBtn = document.querySelector("#show-replies-btn")
-      const noShowRepliesBtn = document.querySelector("#no-show-replies-btn")
-      const showDivider = document.querySelector("#show-divider")
-      const showReplies = document.querySelector("#show-replies")
-
-      showRepliesBtn.setAttribute("class", "font-weight-bold mt-2 v-btn v-btn--text theme--light v-size--default")
-      noShowRepliesBtn.setAttribute("class", "d-none")
-      showDivider.setAttribute("class", "d-none")
-      showReplies.setAttribute("class", "d-none")    
+      const modalContentWindow = document.querySelector("#modal-content-window")
+      const replyWindow = document.querySelector("#reply-window")
+      modalContentWindow.setAttribute('class', 'pa-0 col')
+      replyWindow.setAttribute('class', 'd-none')    
     },
     // 2022.08.04. 라우터 경로 연결
     event () {
-      this.$router.push({ path: 'information' })
+      this.$router.push({ path: `information/${this.info.id}` })
     },
+    profileEvent(uid) {
+      this.$router.push({ path: `profile/${uid}`})
+    },    
     onScroll () {
         this.scrollInvoked++
       },
-    // goBack () {
-    //   this.$router.go(-1)
-    // }
+    // 0815 삭제 버튼
+    deleteInfo () {
+      const userDecision = confirm('정말로 삭제하시겠습니까?')
+      if (userDecision) {
+        axios({
+          url: drf.api + 'post' + `/${this.infodetail.id}`,
+          method: 'delete',
+          headers: {
+            Authorization: this.accessToken,
+          },
+        })
+        .then(res => {
+          console.log("res.data = ",res.data)
+          // console.log("삭제 되었습니다. ", res)
+          this.$router.push('/')
+        }) 
+        .catch(err =>{
+          console.log("에러")
+          console.log(err)
+        })
+        this.$router.go(); // 새로고침      
+      }
+    },
+    // 0815 수정
+    editInfo () {
+      console.log('수정')
+    },
+    openScrapModal() {
+      this.scrapModal = true
+      console.log('openModal')
+    },
+    closeScrapModal() {
+        this.scrapModal = false
+        console.log('closeModal')
+    },
+    getInfoDetail() {
+      axios({
+        url: drf.api + 'post' + `/${this.infodetail.id}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },      
+    })
+    .then(res => {
+      console.log(res.data)
+      // this.probdetail = res.data
+      if (res.data.comments){
+        this.commentList = res.data.comments.reverse()
+      }
+      // console.log(this.commentList)
+    })
+    .catch(err => {
+      console.log("info modal 에러")
+      console.log(err)
+    })
+  
+    }
   },
   computed: {
-    ...mapGetters(['accessToken']),
-  }
+    ...mapGetters(['accessToken','currentUser', 'isLoggedIn']),
+  },
+  created() {
+    // console.log("problem id를 확인해볼까 = ", this.mainProb.id)
+    // this.probId = this.info.id
+    // this.credentials.pid = this.mainProb.id
+    this.getInfoDetail()
+   
+  },
 }
 </script>
 
 <style>
 .info-modal-white {
   background-color: #EDE7F6;
+}
+#modal-content-window {
+  min-width: 450px;
+}
+#reply-window{
+  min-width: 450px;
 }
 </style>
 

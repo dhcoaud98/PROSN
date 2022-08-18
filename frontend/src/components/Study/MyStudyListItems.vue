@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8" v-if="currentUser == myStudydetail.masterId">
+  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-8">
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
     <v-card-title class="pa-0 purple-gradation">
       <v-container class="pa-0">
@@ -7,7 +7,7 @@
         <v-row class="d-flex justify-space-between ma-3">
           <!-- 제목 -->
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
-            {{ myStudy.title }}
+            {{ myStudydetail.title }}
           </div>
           <!-- 좋아요 싫어요 정보 -->
           <div class="d-flex me-3">
@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       modal: false,
-      myStudyId: null,
+      myStudyId: 0,
       myStudydetail: [],
     }
   },
@@ -66,24 +66,12 @@ export default {
   },
   created() {
     // 나의 스터디마다 정보 조회
-    console.log("왜?")
-    console.log("확인", this.myStudy)
+    // console.log("왜?")
+    // console.log("확인 =", this.myStudy)
     this.myStudyId = this.myStudy.id
-    console.log("study id = ",this.myStudyId)
-
-    // api/study/{studyid}에 해당하는 detail study 정보 가져오기
-    axios({
-      url: drf.study.study() + `${this.myStudyId}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-    })
-    .then(res => {
-      // console.log("studydetail =" , res.data)
-      this.myStudydetail = res.data
-      console.log("studydetail =",this.myStudydetail)
-    })
+    // console.log("study id = ",this.myStudyId)
+    this.getMyStudyDetail()
+    
   },
   methods: {
     openModal() {
@@ -95,14 +83,22 @@ export default {
       this.modal = false
       console.log('closeModal')
     },
-    // doSend() {
-    //     alert("스터디 신청이 완료되었습니다.")
-    //     this.message = ''
-    //     this.closeModal()
-    // },
-    // refresh() {
-    //   this.$emit('refresh')
-    // }
+    async getMyStudyDetail() {
+      await this.$store.dispatch('reIssue');
+      // api/study/{studyid}에 해당하는 detail study 정보 가져오기
+      axios({
+        url: drf.study.study() + `${this.myStudyId}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+      })
+      .then(res => {
+        // console.log("studydetail =" , res.data)
+        this.myStudydetail = res.data
+        console.log("myStudydetail =",this.myStudydetail)
+      })
+    }
   },
 }
 </script>

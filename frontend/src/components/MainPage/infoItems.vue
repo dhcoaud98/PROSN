@@ -1,16 +1,17 @@
 <template>
-  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card ma-8">
+  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card ma-3 ma-md-8">
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
     <v-card-title class="pa-0 bg-gradation">
       <v-container class="pa-0">
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
         <v-row class="d-flex justify-space-between ma-3">
           <!-- 제목 -->
+          <!-- {{ info }} -->
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
             {{info.title}}
           </div>
           <!-- 좋아요 싫어요 정보 -->
-          <div class="d-flex me-3">
+          <div class="d-flex mx-4">
             <v-icon class="me-2">thumb_up_off_alt</v-icon>
             <div class="me-3">{{ info.numOfLikes }}</div>
             <v-icon class="me-2">thumb_down_off_alt</v-icon>
@@ -20,33 +21,33 @@
       </v-container>
     </v-card-title>
 
+        <!-- <p>{{info}}</p> -->
     <!-- 카드 본문 -->
     <v-card-text>
       <v-row>
         <!-- v-for문 사용해서 태그 띄우기 -->
-        <div class="mt-5">
-          <v-chip small color="#926DFF" class="white--text ms-3">알고리즘</v-chip>
-          <v-chip small color="#926DFF" class="white--text ms-3">네트워크</v-chip>
+        <div class="mt-5" v-for="tag in info.tags" :key="tag">
+          <v-chip small color="#926DFF" class="white--text ms-3">{{tag}}</v-chip>
         </div>
       </v-row>
 
       <!-- 내용 -->
-      <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
+      <v-row class="pa-0 ma-0 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
           {{ infodetail.mainText }}
         </div>
       </v-row>
 
-      <v-row class="ma-4 mb-2 d-flex justify-space-between">
+      <v-row class="ma-4 my-0 d-flex justify-space-between">
         <!-- 출제자 -->
-          <div class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{info.writer.name}}</div>
+          <v-btn plain @click="profileEvent(info.writer.id)" class="pa-0 me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{info.writerName}}</v-btn>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
-          <v-btn @click="openModal" text large rounded height="45px" class="d-none d-md-flex">
+          <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
           <!-- 화면 사이즈 md 이하 -->
-          <v-btn @click="openModal" text large rounded height="45px" class="d-md-none mt-3" width="100%">
+          <v-btn @click="openModal" text small rounded height="45px" class="d-md-none mt-3" width="100%">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
       </v-row>
@@ -61,6 +62,7 @@
 import drf from '@/api/drf'
 import axios from 'axios'
 import InfoModal from '@/components/InfoModal/InfoModal.vue'
+import { mapGetters } from 'vuex'
 
 export default {
     data() {
@@ -79,8 +81,11 @@ export default {
     components: {
       InfoModal,
     },
+    computed: {
+      ...mapGetters(['isLoggedIn',]),
+    },
     created() {
-      console.log("info = ",this.info.id)
+      console.log("info = ",this.info)
       this.infoId = this.info.id
 
       axios({
@@ -143,32 +148,26 @@ export default {
            }
         },
         openModal() {
-            this.modal = true
-            console.log('openModal')
+            if (this.isLoggedIn) {            
+              this.modal = true
+              console.log('openModal')
+            } else {
+              this.$swal({
+                icon: 'warning',
+                text: '로그인 후 이용해주세요'
+              })
+              this.$router.push({ path: '/login'})
+            }
         },
         closeModal() {
             this.modal = false
             console.log('closeModal')
         },
+        profileEvent(uid) {
+          this.$router.push({ path: `profile/${uid}`})
+        },        
     }
 }
-      // }
-      /*
-      "content": [
-        {
-            "id": 2,
-            "title": "네트워크 알고리즘4",
-            "created": "2022-08-09T13:42:23",
-            "updated": "2022-08-09T13:42:23",
-            "dtype": "Problem",
-            "tags": [
-                "AL",
-                "NW"
-            ],
-            "numOfLikes": 0,
-            "numOfDislikes": 0
-        },
-        */
 </script>
 
 <style>

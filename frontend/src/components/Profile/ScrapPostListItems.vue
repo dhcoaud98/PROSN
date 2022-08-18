@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card">
+  <v-card outlined elevation="3" class="rounded-xl purple-outlined-card mb-5">
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
     <v-card-title class="pa-0 bg-scrap-gradation">
       <v-container class="pa-0">
@@ -8,7 +8,8 @@
         <v-row class="my-3">
           <!-- 리스트 제목 -->
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.1em; color: #585757;">
-            HTTP Header
+            {{ scrapFolder.title }}
+            <!-- {{ scrapFolder.id }} -->
           </div>
         </v-row>
       </v-container>
@@ -38,7 +39,7 @@
     </v-card-text>
 
     <!-- 모달 -->
-    <scrap-post-modal @close="closeModal" v-if="modal"></scrap-post-modal>
+    <scrap-post-modal @close="closeModal" v-if="modal" :lid="scrapFolder.id" :scrapFolder="scrapFolder"></scrap-post-modal>
   </v-card>
 </template>
 
@@ -54,6 +55,9 @@ export default {
   components: {
     ScrapPostModal,
   },
+  props: {
+    scrapFolder: Object,
+  },
   methods: {
     openModal() {
         this.modal = true
@@ -63,6 +67,10 @@ export default {
         this.modal = false
         console.log('closeModal')
     },
+  },
+  created(){
+    // 스크랩 폴더 조회하기 
+    
   }
 }
 </script>

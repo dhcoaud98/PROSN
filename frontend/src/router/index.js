@@ -15,6 +15,11 @@ import Problem from '@/components/Problem/Problem.vue'
 import ProblemBook from '@/components/ProblemBook/ProblemBook.vue'
 import NoteDetail from '@/components/Note/NoteDetail.vue'
 import editStudy from '@/components/Study/editStudy.vue'
+import KakaoLogin from '@/components/SocialLogin/KakaoLogin.vue'
+import GoogleLogin from '@/components/SocialLogin/GoogleLogin.vue'
+import NaverLogin from '@/components/SocialLogin/NaverLogin.vue'
+
+
 
 Vue.use(VueRouter)
 
@@ -56,7 +61,7 @@ const routes = [
   },
   // 회원가입, 로그인 구현 후 username 받을 수 있으면 path 뒤에 /:username 붙이기(1/3 0729임지민)
   {
-    path: '/profile',
+    path: '/profile/:uid',
     name: 'profile',
     component: ProfilePageView
   },
@@ -81,21 +86,37 @@ const routes = [
     component: Problem
   },
   {
-    path: '/problembook',
+    path: '/problembook/:bid',
     name: 'problembook',
     component: ProblemBook
   },
   {
-    path: '/information',
+    path: '/information/:cid',
     name: 'information',
     component: Information
   },
   {
-    path: '/editstudy',
+    path: '/editstudy/:sid',
     name: 'editstudy',
     component: editStudy,
     props: true,
+  },
+  {
+    path: '/login/oauth2/code/kakao',
+    name: 'KakaoLogin',
+    component: KakaoLogin ,
+  },
+  {
+    path: '/login/oauth2/code/google',
+    name: 'googleLogin',
+    component: GoogleLogin ,
+  },
+  {
+    path: '/login/oauth2/code/naver',
+    name: 'naverLogin',
+    component: NaverLogin ,
   }
+
 ]
 
 const router = new VueRouter({

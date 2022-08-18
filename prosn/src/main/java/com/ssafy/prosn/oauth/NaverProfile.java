@@ -1,10 +1,13 @@
 package com.ssafy.prosn.oauth;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class NaverProfile {
     private String resultcode;
     private String message;
     private Response response;
 
+    @JsonIgnoreProperties({"nickname"})
     public class Response {
         private String id;
         private String profile_image;
