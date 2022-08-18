@@ -4,14 +4,15 @@
 
 <script>
 import axios from 'axios';
-
+import drf from '@/api/drf';
 export default {
 created() {
     const kakaoCode = new URL(window.location.href).searchParams.get("code");
     console.log("vue에서 출력하는 kakaoCode ==", kakaoCode)
     if (kakaoCode) {
       axios({
-        url:'http://localhost:8080/login/oauth2/code/kakao' + `?code=${kakaoCode}`,
+        // url:'http://localhost:8080/login/oauth2/code/kakao' + `?code=${kakaoCode}`,
+        url:`${drf.social}login/oauth2/code/kakao?code=${kakaoCode}`,
         method: 'get',
       })
       .then(res =>{

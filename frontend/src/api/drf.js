@@ -1,6 +1,6 @@
 // const HOST = 'http://localhost:8080/api/';
 const HOST = 'http://i7a705.p.ssafy.io:8080/api/';
-
+const SOCIAL = 'http://i7a705.p.ssafy.io:8080/';
 // 유저 관련
 const USER = 'user/';
 // 스터디 관련
@@ -26,6 +26,7 @@ export default {
 		reissue: () => HOST + USER + 'reissue/',
 	},
 	api: HOST,
+	social: SOCIAL,
 	study: {
 		study: () => HOST + STUDY,
 		// + `${pageId}/`,
