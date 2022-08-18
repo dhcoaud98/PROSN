@@ -4,18 +4,22 @@
     <v-container class="px-0">
       <v-row>
         <v-col cols="12" class="d-flex justify-center" @click="KakaoLogin()">
-          <v-btn x-large text class="pa-0">
-            <img elevation="3" id="kakao-login" src="@/assets/kakao_login.png" alt="...">
+          <v-btn elevation="2" class="pa-0 rounded-lg" height="60">
+            <img id="kakao-login" src="@/assets/kakao_login.png" alt="...">
           </v-btn>
         </v-col>
-        <v-col cols="12" class="d-flex justify-center" @click="GoogleLogin()">
-          <v-btn x-large text class="pa-0">
-            <img id="google-login" src="@/assets/google_login.png" alt="...">
+        <!-- <v-col cols="12" class="d-flex justify-center" @click="GoogleLogin()">
+          <v-btn id='google-login' color="white" class="justify-space-between rounded-lg">
+            <img src="@/assets/google_logo.png" alt="google_logo" id="google-logo">
+            <img src="@/assets/google_text.png" alt="google_text">
+            <div></div>
           </v-btn>
-        </v-col>
+        </v-col> -->
         <v-col cols="12" class="d-flex justify-center" @click="naverLogin()">
-          <v-btn x-large text class="pa-0">
-            <img id="naver-login" src="@/assets/naver_login.png" alt="...">
+          <v-btn id='naver-login' color="#03C75A" class="justify-space-between ps-1 rounded-lg">
+            <img src="@/assets/naver_logo.png" alt="naver_logo" id="naver-logo">
+            <img src="@/assets/naver_text.png" alt="naver_text">
+            <div></div>
           </v-btn>
         </v-col>
       </v-row>
@@ -46,15 +50,22 @@ export default {
 
 <style>
 #kakao-login {
-  height: 60px;
-  width: 250px;
+  width: 400px;
 }
 #google-login {
-  height: 64px;
-  width: 256px;
+  height: 60px;
+  width: 400px;
 }
 #naver-login {
   height: 60px;
-  width: 250px;
+  width: 400px;
+}
+#google-logo {
+  height: 27px;
+  width: 27px;
+}
+#naver-logo {
+  height: 50px;
+  width: 50px;
 }
 </style>

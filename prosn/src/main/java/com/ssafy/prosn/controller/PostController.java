@@ -123,7 +123,9 @@ public class PostController {
     public ResponseEntity<?> search(@RequestParam String title, @RequestParam String code, @RequestParam PostType dtype, Pageable pageable) {
         log.info("title = {}", title);
         log.info("code = {}", code);
-        return ResponseEntity.status(OK).body(postService.search(pageable, title, code, dtype));
+        PostType str = dtype.equals("PROBLEM")?PostType.Problem:PostType.Workbook;
+        System.out.println("str = " + str);
+        return ResponseEntity.status(OK).body(postService.search(pageable, title, code, str));
     }
 
     @PostMapping("/workbook")

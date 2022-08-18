@@ -78,14 +78,51 @@ export default {
     $route(to, from) {
       //console.log(to) // 도착지
       //console.log(from) // 출발지
-      if(to.name !== 'mainPage') {
+      const studyTag = document.querySelector('#study')
+      const profileTag = document.querySelector('#profile')
+      const noteTag = document.querySelector('#note')
+
+      if (to.name === 'mainPage') {
         // 도착지의 name에 해당하는 태그는 clicked-tab을 넣고
-        const toTag = document.querySelector(`#${to.name}`)
-        toTag.classList.add('clicked-tab')
+        // const toTag = document.querySelector(`#${to.name}`)
+        // toTag.classList.add('clicked-tab')
+        // const fromTag = document.querySelector(`#${from.name}`)
+        // fromTag.classList.remove('clicked-tab')
+        if (studyTag.classList.contains('clicked-tab')) {
+          studyTag.classList.remove('clicked-tab')
+        } else if (noteTag.classList.contains('clicked-tab')) {
+          noteTag.classList.remove('clicked-tab')
+        } else if (profileTag.classList.contains('clicked-tab')) {
+          profileTag.classList.remove('clicked-tab')
+        }
+      } else if (to.name === 'study') {
+        studyTag.classList.add('clicked-tab')
+
+        if (noteTag.classList.contains('clicked-tab')) {
+          noteTag.classList.remove('clicked-tab')
+        } else if (profileTag.classList.contains('clicked-tab')) {
+          profileTag.classList.remove('clicked-tab')
+        }
+
+      } else if (to.name === 'note') {
+        noteTag.classList.add('clicked-tab')
+
+        if (studyTag.classList.contains('clicked-tab')) {
+          studyTag.classList.remove('clicked-tab')
+        } else if (profileTag.classList.contains('clicked-tab')) {
+          profileTag.classList.remove('clicked-tab')
+        }
+
+      } else if (to.name === 'profile') {
+        profileTag.classList.add('clicked-tab')
+
+        if (noteTag.classList.contains('clicked-tab')) {
+          noteTag.classList.remove('clicked-tab')
+        } else if (studyTag.classList.contains('clicked-tab')) {
+          studyTag.classList.remove('clicked-tab')
+        }
       }
       // 출발지의 name에 해당하는 태그는 clicked-tab을 빼기
-      const fromTag = document.querySelector(`#${from.name}`)
-      fromTag.classList.remove('clicked-tab')
     }
   },
   methods: {

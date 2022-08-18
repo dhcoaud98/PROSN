@@ -14,8 +14,8 @@
             <v-icon color="#8094FF" class="me-2">mdi-circle</v-icon>
             <p class="mb-0">P R O B L E M</p>
           </div>
-          <div v-if="userPost.ptype === `Book`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
-            <v-icon color="#FCEC5A" class="me-2">mdi-circle</v-icon>
+          <div v-if="userPost.ptype === `Workbook`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
+            <v-icon color="#DF6969" class="me-2">mdi-circle</v-icon>
             <p class="mb-0">B O O K</p>
           </div>
         </v-row>
@@ -56,6 +56,10 @@
         <v-btn v-if="userPost.ptype === `Problem`" @click='showUpProb()' large rounded height="45px" class="mt-3" width="100%" elevation="0">
           <div class="show-up-btn font-weight-regular">SHOW UP</div>
         </v-btn>
+        <v-btn v-if="userPost.ptype === `Workbook`" @click='showUpBook()' large rounded height="45px" class="mt-3" width="100%" elevation="0">
+          <div class="show-up-btn font-weight-regular">SHOW UP</div>
+        </v-btn>
+
       </v-row>
     </v-card-text>
   </v-card>
@@ -115,6 +119,9 @@ export default {
     },
     showUpProb () {
       this.$router.push({ path: `../problem/${this.userPost.id}` })
+    },
+    showUpBook () {
+      this.$router.push({ path: `../problembook/${this.userPost.id}` })
     },
   }
 }

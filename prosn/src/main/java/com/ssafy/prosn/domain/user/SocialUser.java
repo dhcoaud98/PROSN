@@ -13,11 +13,11 @@ import javax.persistence.Entity;
 @Getter
 public class SocialUser extends User {
 
-    private int oauthId;
+    private Long oauthId;
     private Platform platform;
 
     @Builder
-    public SocialUser(String name, String email, int oauthId, Platform platform) {
+    public SocialUser(String name, String email, Long oauthId, Platform platform) {
         super(name, email);
         this.oauthId = oauthId;
         this.platform = platform;
