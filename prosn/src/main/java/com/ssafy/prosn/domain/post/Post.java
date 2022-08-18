@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * created by seongmin on 2022/07/19
- * updated by seongmin on 2022/08/10
+ * updated by seongmin on 2022/08/15
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -30,6 +30,8 @@ public abstract class Post extends BaseEntity {
     private Long id;
 
     private String title;
+
+    private String mainText;
 
     @ColumnDefault("0")
     private Integer views;
@@ -67,6 +69,12 @@ public abstract class Post extends BaseEntity {
 
     public Post(String title, User user) {
         this.title = title;
+        this.user = user;
+    }
+
+    public Post(String title, String mainText, User user) {
+        this.title = title;
+        this.mainText = mainText;
         this.user = user;
     }
 
