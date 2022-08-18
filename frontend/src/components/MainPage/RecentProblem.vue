@@ -2,32 +2,36 @@
 	<div>
 		<v-row class="pa-0 ma-0" rounded>
 			<v-col cols="12" class="pa-0">
-				<recent-problem-items
-					v-for="(mainProb, idx) in mainProbs"
-					:key="idx"
-					:mainProb="mainProb"
-				></recent-problem-items>
-        <div v-if="selectedProb">
-          <recent-problem-items 
-            v-for="(mainProb, idx) in selectedProb"
-            :key="idx"
-            :mainProb="mainProb"
-          ></recent-problem-items>
-        </div>
-        <div v-else>
+        <!-- <div v-if="selectedProb"> -->
+          {{this.selectedProb}}
           <recent-problem-items 
             v-for="(mainProb, idx) in mainProbs"
             :key="idx"
             :mainProb="mainProb"
           ></recent-problem-items>
-        </div>
-				<v-pagination
-					v-model="nowPage"
-					:length="endPage"
-					color="#A384FF"
-					circle
-					@input="handlePage()"
-				></v-pagination>
+            <v-pagination
+            v-model="nowPage"
+            :length="endPage"
+            color="#A384FF"
+            circle
+            @input="handlePage()"
+          ></v-pagination>
+        <!-- </div>
+        <div v-if="mainProbs">
+          {{mainProbs}}
+          <recent-problem-items 
+            v-for="(mainProb, idx) in mainProbs"
+            :key="idx"
+            :mainProb="mainProb"
+          ></recent-problem-items>
+          <v-pagination
+            v-model="nowPage"
+            :length="endPage"
+            color="#A384FF"
+            circle
+            @input="handlePage()"
+          ></v-pagination> -->
+        <!-- </div> -->
 			</v-col>
 		</v-row>
 	</div>
@@ -73,33 +77,33 @@ export default {
     created() {
       // 페이지 렌더링 될 때 첫번 째 엑시오스
       // 1. 검색어가 있을 때!
-      if(this.selectedDB != 'whole'){
-        console.log(this.selectedProb)
-      } else { // 2. 검색어 없을 때
-        const params = {
-          page: 0,
-          size: 5, 
-          sort: 'updated,DESC',
-        } 
-        axios({
-          url: drf.api + 'post' + '/problem',
-          method: 'get',
-          headers: {
-            Authorization : this.accessToken,
-          },
-          params: params
-        })
-        .then(res => {
-          this.mainProbs = res.data.content
-          console.log("problem = ",this.mainProbs)
-          this.endPage = res.data.totalPages 
-          console.log("totalPage =", res.data)
-        })
-        .catch(err => {
-          console.log("에러")
-          console.log(err)
-        })
-      }
+      // if(this.selectedDB != 'whole'){
+      //   console.log(this.selectedProb)
+      // } else { // 2. 검색어 없을 때
+      //   const params = {
+      //     page: 0,
+      //     size: 5, 
+      //     sort: 'updated,DESC',
+      //   } 
+      //   axios({
+      //     url: drf.api + 'post' + '/problem',
+      //     method: 'get',
+      //     headers: {
+      //       Authorization : this.accessToken,
+      //     },
+      //     params: params
+      //   })
+      //   .then(res => {
+      //     this.mainProbs = res.data.content
+      //     console.log("problem = ",this.mainProbs)
+      //     this.endPage = res.data.totalPages 
+      //     console.log("totalPage =", res.data)
+      //   })
+      //   .catch(err => {
+      //     console.log("에러")
+      //     console.log(err)
+      //   })
+      // }
     },
     methods: {
       handlePage() {
@@ -110,7 +114,7 @@ export default {
           const params = {
             title : ``,
             code : this.selectedDB,
-            dtype : 'PROBLEM',
+            dtype : 'Problem',
             page : this.page - 1,
             size : 5,
             sort: 'updated,DESC'

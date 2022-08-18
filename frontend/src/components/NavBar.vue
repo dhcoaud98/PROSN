@@ -127,6 +127,7 @@ export default {
   },
   methods: {
     searchCleard: function(event) {
+      this.$router.push({path: 'mainPage'})
             this.$store.dispatch('problem/searchKeyword', "")
     },
     avoidAnonymous(url) {

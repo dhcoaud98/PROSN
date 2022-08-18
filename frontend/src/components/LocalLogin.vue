@@ -6,6 +6,7 @@
       - 회원가입 hover시 보라색 text와 보라색 underline 뜨도록 수정
       - 회원가입 글자 bold로 바꿈
      -->
+    
     <v-container class="mt-5">
       <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login" class="ma-0 pa-0">
         <v-row no-gutters>
