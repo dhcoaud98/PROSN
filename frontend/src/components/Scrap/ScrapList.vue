@@ -9,13 +9,11 @@
     ></v-checkbox> -->
     <div v-for="scrapFolder in scrapFolders" :key="scrapFolder.id">
       <!-- <p>{{scrapFolder.title}}</p> -->
-      <v-radio-group>
-        <scrap-list-items 
-        :scrapFolder="scrapFolder" 
-        :getScrapFolders="getScrapFolders" 
-        @checkedFolder="catchFolderId"
-        @delete-folder="deleteFolder"></scrap-list-items>
-      </v-radio-group>
+      <scrap-list-items 
+      :scrapFolder="scrapFolder" 
+      :getScrapFolders="getScrapFolders" 
+      @checkedFolder="catchFolderId"
+      @delete-folder="deleteFolder"></scrap-list-items>
     </div>
     <div>
       <!-- <p>hi</p> -->

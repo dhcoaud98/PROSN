@@ -1,14 +1,18 @@
 <template>
   <v-row class="justify-space-between mx-0">
     <div class="pa-0">
-      <v-radio
+      <input type="radio" name="folders" :id="scrapFolder.id"
+      @change="emitFolderId(scrapFolder.id)">
+      <label :for="scrapFolder.id"
+        class="ml-2 font-weight-mid-l">{{ scrapFolder.title }}</label>
+      <!-- <v-checkbox
         :label="scrapFolder.title"
         color="info"
         class="font-weight-bold pa-0 ma-0"
         :id="`scrap${scrapFolder.id}`"
         @change="emitFolderId(scrapFolder.id)"
         name="folders"
-      ></v-radio>
+      ></v-checkbox> -->
     </div>
     <div class="mr-2 pa-0 justify-end">
       <v-btn plain small class="px-0" @click="openModal"><h3 class="purple--text">이동</h3></v-btn>
