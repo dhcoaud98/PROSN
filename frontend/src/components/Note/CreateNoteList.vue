@@ -143,7 +143,9 @@ export default {
       targetRealAnswer.checked=true
       targetRealAnswer.setAttribute("style", "accent-color: green;")
     },
-    submitNote() {
+    async submitNote() {
+      await this.$store.dispatch('reIssue');
+
       axios({
           url: drf.wrongAnswer.wrongAnswer(),
           method: 'patch',

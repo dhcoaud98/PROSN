@@ -65,7 +65,7 @@
             </div>
           </v-row>
     
-          <router-link :to="`/note/pre/${afterProb.id}`" width="100%">  
+          <router-link :to="`/note/post/${afterProb.id}`" width="100%">  
             <v-row class="ma-2 mb-2 d-flex justify-space-between">
               <!-- 노트로 이동하기 버튼 -->
               <!-- 화면 사이즈 md 이상 -->
