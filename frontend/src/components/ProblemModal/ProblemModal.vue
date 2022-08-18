@@ -96,14 +96,14 @@
                             <span>{{probdetail.numOfDislikes}}</span>
                           </div>
                           <!-- 스크랩 버튼 -->
-                          <div v-if="isLoggedIn">
-                            <div>
+                          <div v-if="isLoggedIn">                   
                               <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
                               <v-icon>{{scrapText}}</v-icon>
                               </v-btn>   
-                            </div>
+                          </div>
                           
                             <!-- 스크랩 모달 -->
+                          <div>  
                             <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
                             <!-- 제출 버튼 -->
                             <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>

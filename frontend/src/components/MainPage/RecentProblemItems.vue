@@ -87,6 +87,7 @@ export default {
             modal: false,
             probId: 0,
             probdetail: [],
+            
         }
     },
     components: {
@@ -121,6 +122,18 @@ export default {
       ...mapGetters(['accessToken', 'isLoggedIn'])
     },
     methods: {
+      openModal() {
+            if (this.isLoggedIn) {            
+              this.modal = true
+              console.log('openModal')
+            } else {
+              this.$swal({
+                icon: 'warning',
+                text: '로그인 후 이용해주세요'
+              })
+              this.$router.push({ path: '/login'})
+            }
+        },
         // 문제, 정보 vs. 문제집 여부에 따라 다른 것 띄우기 0817 임지민
         openDetail(ptype) {
           if (this.isLoggedIn) {

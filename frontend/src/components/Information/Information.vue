@@ -77,7 +77,7 @@
       </v-col>
     </v-row>             
 
-    <v-divider color="#A384FF" cla ss="mt-3"></v-divider>
+    <v-divider color="#A384FF" class="mt-6"></v-divider>
     
     <v-row>
       <!-- 댓글 -->
