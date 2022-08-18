@@ -1,8 +1,8 @@
 <template>
   <!-- 2022.08.04 정보 페이지 -->
-  <v-container>
-    <v-row class="d-flex justify-space-between">
-      <h2>{{ infoDetail }}</h2> 
+  <v-container mt-5>
+    <v-row class="mt-5 justify-space-between">
+      <h2>{{ infoDetail.title }}</h2> 
       <v-btn @click="goBack()" text class="font-weight-bold">뒤로가기</v-btn>
     </v-row>
 
@@ -25,24 +25,40 @@
     <!-- 저작권 / 버튼 -->
     <v-row class="d-flex justify-space-between">
       <!-- 출제자 정보 -->
-      <v-col @click="profileEvent(infoDetail.writer.id)">
-        <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ infoDetail.writer.name }}</div>
+      <v-col class="pa-0" >
+        <span class="grey--text mr-2 mb-1">Created by.
+          <v-btn class="px-0 mb-1 font-weight-bold" plain @click=profileEvent(infoDetail.writer.id)>                        
+            {{infoDetail.writer.name}} 
+          </v-btn>
+        </span>
       </v-col>
+
+
+      <!-- <v-col @click="profileEvent(infoDetail.writer.id)">
+        <div class="me-4 d-flex align-center font-weight-mid">Created By. {{ infoDetail.writer.name }}</div>
+      </v-col> -->
 
       <!-- 버튼: 남이 작성한 정보 -->
       <v-col v-if="currentUser != infoDetail.writer.id" cols="8" class="pa-0 justify-end d-flex align-center">
         <!-- 좋아요 버튼 -->
-        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
-          <v-icon>{{upText}}</v-icon>
-        </v-btn>
-        <!-- 싫어요 버튼 -->
-        <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon" large>
-          <v-icon>{{downText}}</v-icon>
-        </v-btn>
-        <!-- 스크랩 버튼 -->
-        <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
-          <v-icon>{{scrapText}}</v-icon>
-        </v-btn>    
+          <div>
+            <v-btn class="ms-1" icon color="dark lighten-2" @click="changeLikeStatus" id="upIcon" large>
+              <v-icon>{{upText}}</v-icon>
+            </v-btn>
+            <span>{{infoDetail.numOfLikes}}</span>
+          </div>
+          <!-- 싫어요 버튼 -->
+          <div>
+            <v-btn class="ms-1" icon color="dark lighten-2" @click="changeHateStatus" id="downIcon" large>
+              <v-icon>{{downText}}</v-icon>
+            </v-btn>
+            <span>{{infoDetail.numOfDislikes}}</span>
+          </div>
+          <!-- 스크랩 버튼 -->
+          <v-btn class="ms-2" icon color="dark lighten-2" @click="openScrapModal" id="scrapIcon" large>
+            <v-icon>{{scrapText}}</v-icon>
+          </v-btn>
+          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probDetail.id"></scrap>  
         <scrap @close="closeScrapModal" v-if="scrapModal" :pid="infoDetail.id"></scrap>                    
       </v-col>   
 
@@ -80,6 +96,9 @@ export default {
   name: 'Information',
   data() {
     return {
+      upText: 'thumb_up_off_alt',
+      downText: 'thumb_down_off_alt',
+      scrapText: 'bookmark_border',
       scrapModal: false,
       infoDetail: [],
       commentList: []
@@ -108,6 +127,97 @@ export default {
     profileEvent(uid) {
       this.$router.push({ path: `../profile/${uid}`})
     },    
+    changeLikeStatus() {
+        /* 
+        버튼 클릭하면 색이 바뀌도록
+        thumb up --> thumb up off alt
+        thumb down --> thumb down off alt
+        bookmark border --> bookmark
+        */
+        /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
+
+        if (this.upText === "thumb_up_off_alt") {
+          // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
+          if (this.downText === "thumb_down") {
+              // console.log(this.downText)
+              this.downText = "thumb_down_off_alt"
+          }
+          this.upText = "thumb_up"
+          } else {
+            this.upText = "thumb_up_off_alt"
+          }
+          // 좋아요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.infoDetail.id,
+              type: true
+            }
+          })
+          .then(res => {
+            console.log(res.data);
+            this.infoDetail.numOfLikes = res.data.numOfLikes
+            if(res.data.numOfLikes === 1) {
+              this.upText = 'thumb_up'
+            } else {
+              this.upText = 'thumb_up_off_alt'
+            }
+
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
+    },
+    changeHateStatus() {
+        /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
+        if (this.downText === "thumb_down_off_alt") {
+            this.downText = "thumb_down"
+            // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
+            if (this.upText === "thumb_up") {
+                this.upText = "thumb_up_off_alt"
+            }
+       } else {
+            this.downText = "thumb_down_off_alt"
+       }
+       // 싫어요 엑쇼스 0815 임지민
+        // axios 보내기
+          axios({
+            url: drf.postFeed.likeordis(),
+            method: 'post',
+            headers: {
+              Authorization: this.accessToken,
+            },
+            data: {
+              pid: this.infoDetail.id,
+              type: false
+            }
+          })
+          .then(res => {
+            console.log(res.data);
+            this.infoDetail.numOfDislikes = res.data.numOfDislikes
+            
+          })
+          .catch(err => {
+            // console.log(this.accessToken)
+            // console.log(this.userId)
+            console.log(err);
+          })
+    },
+    changeScrapStatus() {
+       if (this.scrapText === "bookmark_border") {
+            this.scrapText = "bookmark"
+       } else {
+            this.scrapText = "bookmark_border"
+       }
+    },
+
     // 내가 작성한 정보 삭제하기(0815 오채명)
     deleteprob() {
       const userDecision = confirm('정말로 삭제하시겠습니까?')

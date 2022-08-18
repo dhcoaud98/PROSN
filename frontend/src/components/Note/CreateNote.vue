@@ -1,22 +1,26 @@
 <template>
   <!-- 전체적인 틀 -->
-  <v-container fluid class="white">
+  <v-container fluid class="white mt-10">
     <!-- 문제 정보 -->
-    <v-row class="align-center mx-5 mt-5 color-FAF0F3 border-a-10 px-4">
-      <v-col cols="1"><v-icon large color="black darken-2">mdi-group</v-icon></v-col>
-        <v-col>
-          <v-row class="align-center">
-            <v-col cols="3" class="pa-0">
-              <div v-for="tag in noteDetail.tags" :key="tag.id">
-                <span class="category-tag text-center pa-1 mt-0 mr-2 font-parent-xsml">#{{tag.type}}</span>
-              </div>
-            </v-col>
+    <v-row class="align-center mx-5 mt-5 border-a-10 px-4 rounded-xl yellow lighten-4">
+      <v-col cols="1"><v-icon large color="orange darken-3">mdi-note-edit-outline</v-icon>
+      </v-col>
+      <v-col>
+        <v-row>
+          <v-col class="align-center py-1">
             <v-col class="pa-0">
-              <span class="font-parent-mid-l font-weight-bold mr-3">{{noteDetail.title}}</span>
+              <h2 class="font-weight-bold mr-3">{{noteDetail.title}}</h2>
             </v-col>
-          </v-row>
-          
-        </v-col>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0">
+          <v-col cols="3" class="pa-0 d-flex">
+            <div v-for="tag in noteDetail.tags" :key="tag.id">
+              <v-chip small color="orange" class="white--text ms-3">{{tag.type}}</v-chip>
+            </div>
+          </v-col>
+        </v-row>
+      </v-col>
     </v-row>
 
     <!-- 문제 부분 -->

@@ -51,8 +51,7 @@
             <div class="mx-2 my-1">
               <h3 class="ma-0 px-1 font-weight-bold grey--text text--darken-3">현재원 / 총원 : {{studydetail.currentPerson}} / {{studydetail.maxPerson}} </h3>
               <h3 class="ma-0 px-1 font-weight-bold grey--text text--darken-3">장소 : {{studydetail.place}}</h3>
-              <!-- 내가 만든 스터디일 경우 마감일 필드가 안 넘어옴 -->
-              <!-- <p class="ma-0 px-2">마감일 : {{studydetail.expiredDate}}</p> -->
+              <h3 class="ma-0 px-2 font-weight-bold grey--text text--darken-3">마감일 : {{studydetail.expiredDate}}</h3>
             </div>
           </v-card-text>
 
@@ -73,18 +72,30 @@
             <v-container class="my-4 study-detail-info">
               <v-row>
                 <v-col cols="12" v-if="myStudydetail">
-                  <h3> Leader : {{ myStudydetail.masterName }}</h3>
+                  <h3> 스터디장 : {{ myStudydetail.masterName }}</h3>
                 </v-col>
                 <v-col cols="12" v-else>
-                  <h3> Leader : {{ studydetail.masterName }}</h3>
+                  <h3> 스터디장 : {{ studydetail.masterName }}</h3>
                 </v-col>
-                <v-col>
+                
+                <v-col cols="12" v-if="myStudydetail">
+                  <div class="black-text font-weight-bold">[ 스터디 설명 ]</div>
                   {{ myStudydetail.mainText }}
                 </v-col>
-                <v-col cols="12" v-if="!studydetail.secret">
-                  {{ studydetail.secretText }}
+
+                <v-col cols="12" v-else>
+                  <div class="black-text font-weight-bold">[ 스터디 설명 ]</div>
+                  {{ studydetail.mainText }}
+                </v-col>
+
+                <v-col cols="12" v-if="myStudydetail">
+                  <div class="red--text text--darken-1 font-weight-bold">[ 해당 내용은 스터디원에게만 공개되는 내용입니다. ]</div>
+                  {{ myStudydetail.secretText }}
                 </v-col>
               </v-row>
+            </v-container>
+
+            <v-container>
               <v-row v-if="!studydetail.secret">
                 <v-col class="d-flex justify-end pe-0" cols="12">
                   <div v-if="createdByMe">
@@ -127,20 +138,7 @@ export default {
     // console.log("study id = ",this.studyId)
     // console.log(this.createdByMe)
     // console.log('현재 = ', this.currentUser);
-
-    //api/study/{studyid}에 해당하는 detail study 정보 가져오기
-    axios({
-      url: drf.study.study() + `${this.myStudydetail.id}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-    })
-    .then(res => {
-      // console.log("studydetail =" , res.data)
-      this.studydetail = res.data
-      console.log("studydetail 모달 =",this.studydetail)
-    })
+    this.getStudyDetail()
 
     if(this.myStudydetail.masterId === this.currentUser){
       // console.log('trueeeee');
@@ -227,6 +225,23 @@ export default {
     editStudy (sid) {
       // console.log('sid=' , sid);
       this.$router.push({path: `editstudy/${sid}`})
+    },
+
+    //api/study/{studyid}에 해당하는 detail study 정보 가져오기
+    async getStudyDetail() {
+      await this.$store.dispatch('reIssue');
+      axios({
+        url: drf.study.study() + `${this.myStudydetail.id}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+      })
+      .then(res => {
+        // console.log("studydetail =" , res.data)
+        this.studydetail = res.data
+        console.log("studydetail 모달 =",this.studydetail)
+      })
     }
 
 
@@ -258,8 +273,8 @@ export default {
     background: #F3F1F5;
     border-radius: 4px;
     overflow: hidden;
-    height: 80%;
-    width: 35%;
+    height: auto;
+    width: 550px;
   }
 
   &-content {

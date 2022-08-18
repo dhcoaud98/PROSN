@@ -18,7 +18,6 @@
             <v-icon color="#FCEC5A" class="me-2">mdi-circle</v-icon>
             <p class="mb-0">B O O K</p>
           </div>
-
         </v-row>
 
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
@@ -31,9 +30,9 @@
           <div class="d-flex me-3">
             <v-icon class="me-2">thumb_up_off_alt</v-icon>
             <!-- <div class="me-3">{{ probdetail.numOfLikes }}</div> -->
-            <div class="me-3">35</div>
+            <div class="me-3">{{ userPost.numOfLikes }}</div>
             <v-icon class="me-2">thumb_down_off_alt</v-icon>
-            <div class="me-3">2</div>
+            <div class="me-3">{{ userPost.numOfDislikes }}</div>
             <!-- <div class="me-3">{{ probdetail.numOfDislikes }}</div> -->
           </div>
         </v-row>

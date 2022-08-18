@@ -14,6 +14,8 @@ const accountStore = {
       refreshToken: sessionStorage.getItem('reToken') || '',
       expire: '',
       currentUser: null,
+      userEmail: null,
+      userPlatform: null,
    },
    getters: {
       isLoggedIn: (state) => !!state.accessToken,
@@ -24,6 +26,8 @@ const accountStore = {
       accessToken: (state) => state.accessToken,
       refreshToken: (state) => state.refreshToken,
       expire: (state) => state.expire,
+      userEmail: (state) => state.userEmail,
+      userPlatform: (state) => state.userPlatform
    },
    mutations: {
       SET_CURRENT_USER: (state, user) => state.currentUser = user,
@@ -42,6 +46,8 @@ const accountStore = {
          // console.log('mutation expire : ', expire);
          state.expire = expire;
       },
+      SET_USER_EMAIL: (state, email) => (state.userEmail = email),
+      SET_USER_PLATFORM: (state, platform) => (state.userPlatform = platform)
    },
    actions: {
       saveToken({ commit }, accessToken) {
@@ -85,6 +91,14 @@ const accountStore = {
       saveId({commit}, Id) {
          commit('SET_CURRENT_USER', Id);
          console.log('current userId = ', Id)
+      },
+      saveEmail({commit}, email) {
+         commit('SET_USER_EMAIL', email)
+         console.log('user_email =', email)
+      },
+      savePlatform({commit}, platform) {
+         commit('SET_USER_PLATFORM', platform)
+         console.log('user_platform =', platform)
       },
       async reIssue({ commit }) {
          const accessToken = this.getters.accessToken;

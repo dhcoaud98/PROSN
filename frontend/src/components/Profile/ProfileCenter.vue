@@ -16,8 +16,15 @@
           </div>
           
           <!-- 팔로우 팔로워 정보 -->
-          <!-- 베스트는 이거 누르면 명단 볼수있는건데 이거는 최후순위 -->
-          <div class="d-flex">
+          <div class="d-flex" v-if="userInfo.id == currentUser">
+            <v-btn @click="openFollowerModal" plain x-large class="px-0"><h4 class="me-3">팔로워 {{ userInfo.followerCount }}명</h4></v-btn>
+            <v-btn @click="openFollowingModal" plain x-large class="px-0"><h4>팔로잉 {{ userInfo.followingCount }}명</h4></v-btn>
+
+            <my-follower-modal scrap @close="closeFollowerModal" v-if="myFollowerModal"></my-follower-modal>
+            <my-following-modal scrap @close="closeFollowingModal" v-if="myFollowingModal"></my-following-modal>
+          </div>
+
+          <div class="d-flex" v-else>
             <h4 class="grey--text text--darken-2 me-3">팔로워 {{ userInfo.followerCount }}명</h4>
             <h4 class="grey--text text--darken-2">팔로잉 {{ userInfo.followingCount }}명</h4>
           </div>
@@ -98,7 +105,6 @@
         <my-post-list></my-post-list>
       </v-container>
     </v-row>
-
   </v-container>
 </template>
 
@@ -106,6 +112,8 @@
 import SolvedProblemList from "./SolvedProblemList.vue"
 import ScrapPostList from "./ScrapPostList.vue"
 import MyPostList from "./MyPostList.vue"
+import MyFollowingModal from "./MyFollowingModal.vue"
+import MyFollowerModal from "./MyFollowerModal.vue"
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import drf from '@/api/drf'
@@ -116,6 +124,8 @@ export default {
     SolvedProblemList,
     ScrapPostList,
     MyPostList,
+    MyFollowingModal,
+    MyFollowerModal,
   },
   data () {
     return {
@@ -128,6 +138,8 @@ export default {
       badgeColor: 'rgb(0, 207, 87)',
       profileOwnerId: '',
       isFollow: false,
+      myFollowerModal: false,
+      myFollowingModal: false,
     }
   },
   computed: {
@@ -143,10 +155,22 @@ export default {
   },
   methods:{
     event1 () {
-      this.$router.push({ path: 'createproblem' })
+      this.$router.push({ path: '../createproblem' })
     },
     event2 () {
-      this.$router.push({ path: 'createinfo' })
+      this.$router.push({ path: '../createinfo' })
+    },
+    openFollowerModal () {
+      this.myFollowerModal = true
+    },
+    openFollowingModal () {
+      this.myFollowingModal = true
+    },
+    closeFollowerModal () {
+      this.myFollowerModal = false
+    },
+    closeFollowingModal () {
+      this.myFollowingModal = false
     },
     followEvent () {
       axios({
@@ -157,8 +181,9 @@ export default {
         }
       })
       .then(res => {
-        console.log('성공')
+        console.log('팔로잉 성공')
         console.log(res.data)
+        this.$router.go()
         // console.log("totalPages =",res.data.totalPages)
         // console.log("totalElements =", res.data.totalElements)
       })

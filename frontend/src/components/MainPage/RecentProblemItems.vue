@@ -3,9 +3,22 @@
     <!-- 카드 타이틀 (그라데이션 입혀진 부분) -->
     <v-card-title class="pa-0 bg-gradation">
       <v-container class="pa-0">
+        <!-- 라벨 -->
+        <v-row class="mt-3 ms-5">
+          <div v-if="mainProb.ptype === `Problem`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
+            <v-icon color="#8094FF" class="me-2">mdi-circle</v-icon>
+            <p class="mb-0">P R O B L E M</p>
+          </div>
+          <div v-if="mainProb.ptype === `Workbook`" class="d-flex align-center font-weight-regular grey--text" style="font-size: 0.8em">
+            <v-icon color="#DF6969" class="me-2">mdi-circle</v-icon>
+            <p class="mb-0">B O O K</p>
+          </div>
+        </v-row>
+
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
         <v-row class="d-flex justify-space-between ma-3">
           <!-- 제목 -->
+          <!-- {{ mainProb}} -->
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
             {{mainProb.title}}
           </div>
@@ -31,23 +44,23 @@
 
       <!-- 내용 -->
       <!-- textoverflow 지정해 놓기 0812 임지민 -->
-      <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
+      <v-row class="pa-0 ma-0 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
           {{ mainProb.mainText }}
           <!-- {{ probdetail}} -->
         </div>
       </v-row>
 
-      <v-row class="ma-4 mb-2 d-flex justify-space-between">
+      <v-row class="ma-4 my-0 d-flex justify-space-between">
         <!-- 출제자 -->
-          <div @click="profileEvent(mainProb.writerId)" class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{ mainProb.writerName }}</div>
+          <v-btn plain @click="profileEvent(mainProb.writerId)" class="pa-0 me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{ mainProb.writerName }}</v-btn>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
-          <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
+          <v-btn @click="openDetail(mainProb.ptype)" text small rounded height="45px" class="d-none d-md-flex">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
           <!-- 화면 사이즈 md 이하 -->
-          <v-btn @click="openModal" text small rounded height="45px" class="d-md-none mt-3" width="100%">
+          <v-btn @click="openDetail(mainProb.ptype)" text small rounded height="45px" class="d-md-none mt-3" width="100%">
             <div class="show-up-btn font-weight-regular">SHOW UP</div>
           </v-btn>
       </v-row>
@@ -108,6 +121,14 @@ export default {
       ...mapGetters(['accessToken'])
     },
     methods: {
+        // 문제, 정보 vs. 문제집 여부에 따라 다른 것 띄우기 0817 임지민
+        openDetail(ptype) {
+          if (ptype === 'Problem' || ptype === "Information"){
+            this.openModal()
+          } else if( ptype === "Workbook") {
+            this.$router.push({path: `/problembook/${this.mainProb.id}`})
+          }
+        },
         changeLikeStatus() {
             /* 
             버튼 클릭하면 색이 바뀌도록

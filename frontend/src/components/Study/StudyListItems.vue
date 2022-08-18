@@ -81,30 +81,31 @@ export default {
         this.message = ''
         this.closeModal()
     },
-    // refresh() {
-    //   this.$emit('refresh')
-    // }
+    async getStudyDetail(){
+      await this.$store.dispatch('reIssue');
+      
+      // api/study/{studyid}에 해당하는 detail study 정보 가져오기
+      axios({
+        url: drf.study.study() + `${this.study.id}`,
+        methods: 'get',
+        headers: {
+          Authorization : this.accessToken,
+        },
+      })
+      .then(res => {
+        // console.log("studydetail =" , res.data)
+        this.myStudydetail = res.data
+        this.master = res.data.masterName
+        // console.log(this.master);
+        // console.log("myStudydetail =",this.myStudydetail.masterName)
+      })
+    }
   },
   created(){
     // 나의 스터디마다 정보 조회
     // console.log("왜?")
     // console.log("확인 =", this.myStudy)
-
-    // api/study/{studyid}에 해당하는 detail study 정보 가져오기
-    axios({
-      url: drf.study.study() + `${this.study.id}`,
-      methods: 'get',
-      headers: {
-        Authorization : this.accessToken,
-      },
-    })
-    .then(res => {
-      // console.log("studydetail =" , res.data)
-      this.myStudydetail = res.data
-      this.master = res.data.masterName
-      // console.log(this.master);
-      // console.log("myStudydetail =",this.myStudydetail.masterName)
-    })
+    this.getStudyDetail()
   }
 }
 </script>

@@ -1,10 +1,15 @@
 <template>
   <v-container class="mt-5 px-0 px-md-3">
+    <v-row v-if="noMyStudy">
+      <v-col class="text-center">
+        <p>아직 신청한 스터디가 없습니다</p>
+      </v-col>
+    </v-row>
     <my-study-list-items v-for="(myStudy, idx) in myStudys" :key="idx" :myStudy="myStudy"></my-study-list-items>
     <br>  
     <v-pagination
       v-model="nowPage"
-      :length="endPage"
+      :length="endPage + 1"
       color="#A384FF"
       circle
       @input="handlePage()"
@@ -30,6 +35,7 @@ export default {
       endPage: 0,
       myStudys: [],
       page: 0,
+      noMyStudy: false
     }
   },
   computed: {
@@ -62,7 +68,9 @@ export default {
       console.log("에러")
       console.log(err)
     })
-
+    if (!this.myStudys.length) {
+      this.noMyStudy = true
+    }
   },
   methods: {
     // 페이지 네이션 엑시오스

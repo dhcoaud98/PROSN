@@ -61,7 +61,7 @@
           <v-row>
             <!-- v-for문 사용해서 태그 띄우기 -->
             <div class="mt-5" v-for="tag in afterProb.tags" :key="tag">
-              <v-chip small color="orange" class="white--text ms-3">{{tag}}</v-chip>
+              <v-chip small color="orange" class="white--text ms-3 lighten-2">{{tag}}</v-chip>
             </div>
           </v-row>
     
@@ -81,6 +81,7 @@
         </v-card-text>
       </v-card>
     </div>
+
   </div>
 </template>
 
@@ -88,7 +89,7 @@
 export default {
   data() {
     return {
-
+      page: 1,
     }
   },
   props: {

@@ -6,6 +6,7 @@
         <!-- 게시글 제목 / 좋아요와 싫어요 개수 -->
         <v-row class="d-flex justify-space-between ma-3">
           <!-- 제목 -->
+          <!-- {{ info }} -->
           <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.3em; color: #585757;">
             {{info.title}}
           </div>
@@ -31,15 +32,15 @@
       </v-row>
 
       <!-- 내용 -->
-      <v-row class="pa-0 ma-4 mx-5 mt-5 black--text font-weight-medium">
+      <v-row class="pa-0 ma-0 mx-5 mt-5 black--text font-weight-medium">
         <div class="mb-4" style="font-size: 1.1em">
           {{ infodetail.mainText }}
         </div>
       </v-row>
 
-      <v-row class="ma-4 mb-2 d-flex justify-space-between">
+      <v-row class="ma-4 my-0 d-flex justify-space-between">
         <!-- 출제자 -->
-          <div @click="profileEvent(info.writer.id)" class="me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{info.writer.name}}</div>
+          <v-btn plain @click="profileEvent(info.writer.id)" class="pa-0 me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{info.writer.name}}</v-btn>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
           <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
