@@ -157,7 +157,7 @@ const accountStore = 'accountStore';
               //  console.log('에러');
               console.log(err);
               // 아이디, 비번을 잘못 입력하면 로그인창 하단에 경고메시지 띄우기 0814 임지민
-               if (err.request.status === 401){
+               if (err.request.status === 403){
                 this.warningText = '아이디 혹은 비밀번호를 확인해주세요'
                 // console.log(this.warningText)
                };
