@@ -39,7 +39,7 @@ export default {
     ...mapGetters(['accessToken', 'currentUser'])
   },
   created() {
-    
+    this.getSovledProblem()
   },
   methods: {
     async getSovledProblem() {
