@@ -40,7 +40,7 @@
 
       <v-row class="ma-4 my-0 d-flex justify-space-between">
         <!-- 출제자 -->
-          <v-btn plain @click="profileEvent(info.writer.id)" class="pa-0 me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{info.writer.name}}</v-btn>
+          <v-btn plain @click="profileEvent(info.writer.id)" class="pa-0 me-4 d-flex align-center" style="font-size: 1.2em">Created By. {{info.writerName}}</v-btn>
         <!-- 모달 띄우기 버튼 -->
           <!-- 화면 사이즈 md 이상 -->
           <v-btn @click="openModal" text small rounded height="45px" class="d-none d-md-flex">
@@ -81,7 +81,7 @@ export default {
       InfoModal,
     },
     created() {
-      console.log("info = ",this.info.id)
+      console.log("info = ",this.info)
       this.infoId = this.info.id
 
       axios({
