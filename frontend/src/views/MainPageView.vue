@@ -243,7 +243,7 @@ export default {
           const params = {
             title : `${this.titleSearch}`,
             code : toDB,
-            dtype : 'PROBLEM',
+            dtype : 'Problem',
             page : 0,
             size : 5,
             sort: 'updated,DESC'
@@ -299,7 +299,7 @@ export default {
           const params = {
             title : ``,
             code : toDB,
-            dtype : 'INFORMATION',
+            dtype : 'Information',
             page : 0,
             size : 5,
             sort: 'updated,DESC'
