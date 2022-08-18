@@ -20,15 +20,15 @@
           <v-list-item>
             <v-list-item-content class="py-0 font-parent-mid">
               <router-link :to="`/study`" class="text-decoration-none black--text mb-0">
-                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="items[0].urlName">{{ items[0].text }}</v-list-item-title>
+                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5 not-home" :id="items[0].urlName">{{ items[0].text }}</v-list-item-title>
               </router-link>         
             
               <router-link :to="`/note`" class="text-decoration-none black--text mb-0">
-                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="items[1].urlName">{{ items[1].text }}</v-list-item-title>
+                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5 not-home" :id="items[1].urlName">{{ items[1].text }}</v-list-item-title>
               </router-link>     
               
               <router-link :to="`/profile/${currentUser}`" class="text-decoration-none black--text mb-0">
-                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5" :id="items[2].urlName">{{ items[2].text }}</v-list-item-title>
+                <v-list-item-title class="left-line ml-5 ms-0 mb-0 py-5 pl-5 not-home" :id="items[2].urlName">{{ items[2].text }}</v-list-item-title>
               </router-link>  
             </v-list-item-content>
           </v-list-item>
@@ -111,14 +111,26 @@ export default {
     $route(to, from) {
       //console.log(to) // 도착지
       //console.log(from) // 출발지
-      if(to.name !== 'mainPage') {
+      if (to.name !== 'mainPage') {
         // 도착지의 name에 해당하는 태그는 clicked-tab을 넣고
         const toTag = document.querySelector(`#${to.name}`)
         toTag.classList.add('clicked-tab')
+        const fromTag = document.querySelector(`#${from.name}`)
+        fromTag.classList.remove('clicked-tab')
+      } else if (to.name == 'mainPage') {
+        const studyTag = document.querySelector('#study')
+        const profileTag = document.querySelector('#profile')
+        const noteTag = document.querySelector('#note')
+
+        if (studyTag.classList.contains('clicked-tab')) {
+          studyTag.classList.remove('clicked-tab')
+        } else if (noteTag.classList.contains('clicked-tab')) {
+          noteTag.classList.remove('clicked-tab')
+        } else if (profileTag.classList.contains('clicked-tab')) {
+          profileTag.classList.remove('clicked-tab')
+        }
       }
       // 출발지의 name에 해당하는 태그는 clicked-tab을 빼기
-      const fromTag = document.querySelector(`#${from.name}`)
-      fromTag.classList.remove('clicked-tab')
     }
   },
   methods: {

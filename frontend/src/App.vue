@@ -131,7 +131,7 @@ export default {
         } else {
           this.navDisplay = 'd-flex'
           this.navDisplayCol = 'd-none d-md-flex'
-        }    
+        }
     },  
   } 
 </script>

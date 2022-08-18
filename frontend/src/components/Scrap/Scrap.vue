@@ -46,15 +46,15 @@
               <v-col cols="12" class="d-none" id="create-scrap-form">
                 <v-form ref="form" @submit.prevent="createScrap"> 
                   <v-row>
-                    <v-col cols="12" class="py-1">
+                    <v-col cols="9" class="py-1">
                       <v-text-field label="문제 리스트 이름을 입력하세요" 
                       maxlength="20" 
                       v-model="scrapTitle"
                       counter required dense></v-text-field>
                     </v-col>
                     <!-- <p>{{scrapTitle}}</p> -->
-                    <v-col cols="12" class="py-1">
-                      <v-btn rounded type="submit" width="100%">리스트 생성</v-btn>
+                    <v-col cols="3" class="pa-0">
+                      <v-btn color="purple lighten-2" text outlined rounded type="submit" width="100%"><h3 class="purple--text text--lighten-1">생성</h3></v-btn>
                     </v-col>
                   </v-row>
                 </v-form>

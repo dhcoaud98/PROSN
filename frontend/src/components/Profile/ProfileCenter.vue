@@ -12,7 +12,7 @@
         <v-row class="d-flex justify-space-between align-end">
          <div class="d-flex">
             <div><v-chip :color="`${this.badgeColor}`" class="white--text font-weight-bold mx-3">{{badge}}</v-chip></div>
-            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{ userInfo.name }}</h2><h3 class="grey--text">님의 스터디</h3></div>
+            <div class="d-flex justify-center align-end"><h2 class="pa-0 ma-0">{{ userInfo.name }}</h2><h3 class="grey--text">님의 프로필</h3></div>
           </div>
           
           <!-- 팔로우 팔로워 정보 -->
