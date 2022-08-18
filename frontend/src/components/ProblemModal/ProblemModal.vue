@@ -72,7 +72,7 @@
                         <!-- 출제자 정보 -->
                         <div class="pa-0" >
                           <span class="grey--text mr-2 mb-1">Created by.
-                            <v-btn class="px-0 font-weight-bold" plain @click=profileEvent(probdetail.writer.id)>                        
+                            <v-btn class="px-0 font-weight-bold" plain @click="profileEvent(probdetail.writer.id)">                        
                               {{probdetail.writer.name}} 
                             </v-btn>
                           </span>
@@ -96,17 +96,18 @@
                             <span>{{probdetail.numOfDislikes}}</span>
                           </div>
                           <!-- 스크랩 버튼 -->
-                          
+                          <div v-if="isLoggedIn">
                             <div>
                               <v-btn class="ms-1" icon color="dark lighten-2" @click="openScrapModal"  id="scrapIcon">
                               <v-icon>{{scrapText}}</v-icon>
                               </v-btn>   
                             </div>
                           
-                          <!-- 스크랩 모달 -->
-                          <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
-                          <!-- 제출 버튼 -->
-                          <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
+                            <!-- 스크랩 모달 -->
+                            <scrap @close="closeScrapModal" v-if="scrapModal" :pid="probdetail.id"></scrap>
+                            <!-- 제출 버튼 -->
+                            <v-btn type="submit" rounded outlined class="ms-1" small>제출</v-btn>
+                          </div>
                         </div>
                         
                         <!-- 내가 낸 문제 일 경우 -->
@@ -206,19 +207,7 @@ export default {
         thumb down --> thumb down off alt
         bookmark border --> bookmark
         */
-        /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
-        // console.log(document.querySelector('#correctStatus'));
-        if (this.upText === "thumb_up_off_alt") {
-          // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
-          if (this.downText === "thumb_down") {
-              // console.log(this.downText)
-              this.downText = "thumb_down_off_alt"
-          }
-          this.upText = "thumb_up"
-          } else {
-            this.upText = "thumb_up_off_alt"
-          }
-
+        
         // 좋아요 엑쇼스 0815 임지민
         // axios 보내기
           axios({
@@ -243,20 +232,24 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
+          /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
+        // console.log(document.querySelector('#correctStatus'));
+          if (this.upText === "thumb_up_off_alt") {
+          // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
+          if (this.downText === "thumb_down") {
+              // console.log(this.downText)
+              this.changeHateStatus()
+              this.downText = "thumb_down_off_alt"
+          }
+          this.upText = "thumb_up"
+          } else {
+            this.upText = "thumb_up_off_alt"
+          }
       }
     },
     changeHateStatus() {
       if (this.isLoggedIn){
-        /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
-        if (this.downText === "thumb_down_off_alt") {
-            this.downText = "thumb_down"
-            // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
-            if (this.upText === "thumb_up") {
-                this.upText = "thumb_up_off_alt"
-            }
-       } else {
-            this.downText = "thumb_down_off_alt"
-       }
+  
        // 싫어요 엑쇼스 0815 임지민
         // axios 보내기
           axios({
@@ -281,6 +274,17 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
+              /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
+        if (this.downText === "thumb_down_off_alt") {
+          this.downText = "thumb_down"
+          // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
+          if (this.upText === "thumb_up") {
+            this.changeLikeStatus()
+            this.upText = "thumb_up_off_alt"
+          }
+        } else {
+              this.downText = "thumb_down_off_alt"
+        }
       }
     },
     changeScrapStatus() {
