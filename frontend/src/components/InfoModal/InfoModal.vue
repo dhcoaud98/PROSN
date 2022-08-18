@@ -152,7 +152,9 @@ export default {
     }
   },
   methods: {
-    changeLikeStatus() {
+    async changeLikeStatus() {
+      await this.$store.dispatch('reIssue');
+
       if (this.isLoggedIn){
         /* 
         버튼 클릭하면 색이 바뀌도록
@@ -172,7 +174,8 @@ export default {
             data: {
               pid: this.probdetail.id,
               type: true
-            }
+            },
+            params: {uid: this.currentUser}
           })
           .then(res => {
             // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
@@ -200,7 +203,9 @@ export default {
           }
       }
     },
-    changeHateStatus() {
+    async changeHateStatus() {
+      await this.$store.dispatch('reIssue');
+
       if (this.isLoggedIn){
   
        // 싫어요 엑쇼스 0815 임지민
@@ -214,7 +219,8 @@ export default {
             data: {
               pid: this.probdetail.id,
               type: false
-            }
+            },
+            params : { uid: this.currentUser}
           })
           .then(res => {
             // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
@@ -273,7 +279,9 @@ export default {
         this.scrollInvoked++
       },
     // 0815 삭제 버튼
-    deleteInfo () {
+    async deleteInfo () {
+      await this.$store.dispatch('reIssue');
+
       const userDecision = confirm('정말로 삭제하시겠습니까?')
       if (userDecision) {
         axios({
@@ -282,6 +290,7 @@ export default {
           headers: {
             Authorization: this.accessToken,
           },
+          params: { uid: this.currentUser }
         })
         .then(res => {
           console.log("res.data = ",res.data)

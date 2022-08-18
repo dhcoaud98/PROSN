@@ -60,7 +60,7 @@ export default {
     ProblemBookList,
   },
   computed: {
-    ...mapGetters(['accessToken', 'isLoggedIn'])
+    ...mapGetters(['accessToken', 'isLoggedIn', 'currentUser'])
   },
   methods: {
     goBack () {
@@ -84,7 +84,8 @@ export default {
           headers: {
             Authorization: this.accessToken,
           },
-          data: this.credentials
+          data: this.credentials,
+          params: { uid: this.currentUser}
         })
         .then(res => {
           // console.log(res) //ok

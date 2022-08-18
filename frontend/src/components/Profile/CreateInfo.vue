@@ -97,6 +97,7 @@ export default {
           Authorization: this.accessToken,
         },
         data: this.credentials,
+        params: { uid: this.currentUser }
       })
       .then((res) => {
         console.log('res = ', res)

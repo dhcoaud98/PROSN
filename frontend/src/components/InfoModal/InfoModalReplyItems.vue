@@ -47,10 +47,12 @@ export default {
     cid: Number,
   },
   computed: {
-    ...mapGetters(['userId', 'accessToken']),
+    ...mapGetters(['userId', 'accessToken', 'currentUser']),
   },
   methods: {
-    deleteComment(commentId) {
+    async deleteComment(commentId) {
+      await this.$store.dispatch('reIssue');
+
       const check = confirm('정말 삭제하시겠습니까?')
       if (check) {
         axios({
@@ -59,6 +61,7 @@ export default {
           headers: {
             Authorization: this.accessToken,
           },
+          params : { uid: this.currentUser}
         })
           .then((res) => {
             // console.log(this.credentials);

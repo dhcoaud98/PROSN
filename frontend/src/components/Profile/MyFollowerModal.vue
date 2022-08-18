@@ -62,6 +62,7 @@ export default {
           headers: {
             Authorization : this.accessToken,
           },
+          params: { uid : this.currentUser }
         })
         .then(res => {
           this.myFollowerList = res.data.content

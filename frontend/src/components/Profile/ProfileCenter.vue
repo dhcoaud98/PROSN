@@ -178,7 +178,8 @@ export default {
         method: 'get',
         headers: {
           Authorization : this.accessToken,
-        }
+        },
+        params: { uid : this.currentUser }
       })
       .then(res => {
         console.log('팔로잉 성공')
@@ -236,6 +237,7 @@ export default {
       headers: {
         Authorization : this.accessToken,
       },
+      params: {uid : this.currentUser}
     })
     .then(res => {
       const myFollowingList = res.data.content

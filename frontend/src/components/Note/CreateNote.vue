@@ -56,6 +56,7 @@ export default {
         headers: {
           Authorization: this.accessToken,
         },
+        params: {uid : this.currentUser}
       })
       .then(res => {
         // console.log(res) //ok
@@ -69,7 +70,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userName', 'accessToken'])
+    ...mapGetters(['userName', 'accessToken', 'currentUser'])
   },
   created() {
     this.createNote()

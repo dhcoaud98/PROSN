@@ -202,7 +202,8 @@ export default {
           headers: {
             Authorization: this.accessToken,
           },
-          data: this.myStudydetail
+          data: this.myStudydetail,
+          params: {uid : this.currentUser}
       })
       .then(res => {
           console.log("스터디 수정res = ",res);
@@ -228,7 +229,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['accessToken', 'refreshToken']),
+    ...mapGetters(['accessToken', 'refreshToken', 'currentUser']),
   },
   created(){
     // api/study/{studyid}에 해당하는 detail study 정보 가져오기

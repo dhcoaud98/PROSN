@@ -107,7 +107,7 @@ export default {
     pid: Number,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods: {
     // 새로운 리스트를 생성할 수 있는 폼
@@ -118,7 +118,7 @@ export default {
       createScrapForm.classList.remove('d-none')
     },
     // 새로운 리스트를 작성한 후 내보내기
-    createScrap () {
+    async createScrap () {
       const createScrapForm = document.querySelector("#create-scrap-form")
       createScrapForm.classList.add('d-none')
       if (this.scrapTitle.trim() !== '') {
@@ -130,7 +130,8 @@ export default {
         },
         data: {
           title: this.scrapTitle
-        }
+        },
+        params: { uid: this.currentUser }
         })
         .then(res => {
           console.log('스크랩 폴더 만들기=', res);
@@ -171,7 +172,9 @@ export default {
     },
 
     // 문제 스크랩 하기 엑쇼스 0816 임지민
-    scrapPost() {
+    async scrapPost() {
+      await this.$store.dispatch('reIssue');
+
       console.log('문제 스크랩= ', this.pid, this.lid)
       axios({
       url: drf.scrap.scrap(),
@@ -182,7 +185,8 @@ export default {
       data: {
         pid: this.pid,
         lid: this.lid,
-      }
+      },
+      params: { uid: this.currentUser }
       })
       .then(res => {
         console.log('문제 스크랩 =', res); // ok

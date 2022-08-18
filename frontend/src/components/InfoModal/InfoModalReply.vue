@@ -70,10 +70,12 @@ export default {
     InfoModalReplyItems
   },
   computed: {
-    ...mapGetters(['accessToken', 'isLoggedIn'])
+    ...mapGetters(['accessToken', 'isLoggedIn', 'currentUser'])
   },
   methods: {
-    submitComment() {
+    async submitComment() {
+      await this.$store.dispatch('reIssue');
+
       console.log(this.credentials);
       axios({
 				url: drf.api + 'comment/',
@@ -82,6 +84,7 @@ export default {
 					Authorization: this.accessToken,
 				},
 				data: this.credentials,
+        params: { uid: this.currentUser }
 			})
 				.then((res) => {
           // console.log(this.credentials);

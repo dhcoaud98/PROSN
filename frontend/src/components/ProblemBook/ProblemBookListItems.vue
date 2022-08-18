@@ -154,7 +154,9 @@ export default {
         ...mapGetters(['accessToken', 'currentUser', 'isLoggedIn'])
     },
     methods: {
-    changeLikeStatus() {
+    async changeLikeStatus() {
+      await this.$store.dispatch('reIssue');
+
       if (this.isLoggedIn){
         /* 
         버튼 클릭하면 색이 바뀌도록
@@ -162,7 +164,8 @@ export default {
         thumb down --> thumb down off alt
         bookmark border --> bookmark
         */
-          // 좋아요 엑쇼스 0815 임지민
+        
+        // 좋아요 엑쇼스 0815 임지민
         // axios 보내기
           axios({
             url: drf.postFeed.likeordis(),
@@ -171,18 +174,15 @@ export default {
               Authorization: this.accessToken,
             },
             data: {
-              pid: this.probDetail.id,
+              pid: this.probdetail.id,
               type: true
-            }
+            },
+            params: {uid: this.currentUser}
           })
           .then(res => {
-            console.log(res.data);
-            this.probDetail.numOfLikes = res.data.numOfLikes
-            if(res.data.numOfLikes === 1) {
-              this.upText = 'thumb_up'
-            } else {
-              this.upText = 'thumb_up_off_alt'
-            }
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            this.probdetail.numOfLikes = res.data.numOfLikes
 
           })
           .catch(err => {
@@ -190,9 +190,9 @@ export default {
             // console.log(this.userId)
             console.log(err);
           })
-        /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
-
-        if (this.upText === "thumb_up_off_alt") {
+          /* 싫어요가 눌려 있는 상태에서 좋아요를 누르면 싫어요가 취소되는 것도 추가 */
+        // console.log(document.querySelector('#correctStatus'));
+          if (this.upText === "thumb_up_off_alt") {
           // 좋아요를 눌러야 하는데 이미 싫어요가 눌려져 있는 상태
           if (this.downText === "thumb_down") {
               // console.log(this.downText)
@@ -205,10 +205,13 @@ export default {
           }
       }
     },
-    changeHateStatus() {
+    async changeHateStatus() {
+      await this.$store.dispatch('reIssue');
+
+      if (this.isLoggedIn){
+  
        // 싫어요 엑쇼스 0815 임지민
         // axios 보내기
-      if (this.isLoggedIn){
           axios({
             url: drf.postFeed.likeordis(),
             method: 'post',
@@ -216,30 +219,33 @@ export default {
               Authorization: this.accessToken,
             },
             data: {
-              pid: this.probDetail.id,
+              pid: this.probdetail.id,
               type: false
-            }
+            },
+            params : { uid: this.currentUser}
           })
           .then(res => {
-            console.log(res.data);
-            this.probDetail.numOfDislikes = res.data.numOfDislikes
+            // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
+            console.log(res)
+            this.probdetail.numOfDislikes = res.data.numOfDislikes
+
           })
           .catch(err => {
             // console.log(this.accessToken)
             // console.log(this.userId)
             console.log(err);
           })
-        /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
+              /* 좋아요가 눌려 있는 상태에서 싫어요를 누르면 좋아요가 취소되는 것도 추가 */
         if (this.downText === "thumb_down_off_alt") {
-            this.downText = "thumb_down"
-            // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
-            if (this.upText === "thumb_up") {
-                this.changeLikeStatus()
-                this.upText = "thumb_up_off_alt"
-            }
-       } else {
-            this.downText = "thumb_down_off_alt"
-       }
+          this.downText = "thumb_down"
+          // 싫어요를 눌렀는데 이미 좋아요가 눌러져 있는 상태
+          if (this.upText === "thumb_up") {
+            this.changeLikeStatus()
+            this.upText = "thumb_up_off_alt"
+          }
+        } else {
+              this.downText = "thumb_down_off_alt"
+        }
       }
     },
     changeScrapStatus() {
@@ -266,7 +272,8 @@ export default {
     },
     
     // 문제 풀기; 문제 푼 후 결과 저장(0811 임지민)
-    submitProblem() {
+    async submitProblem() {
+      await this.$store.dispatch('reIssue');
     // 문제 맞는 지 틀린 지 먼저 확인하고
     // 이게 null이면 답을 선택하라는 alert 창 띄우기
     const selectedAnswer = document.querySelector('input[name="bogey"]:checked')
@@ -306,7 +313,8 @@ export default {
             headers: {
             Authorization: this.accessToken,
             },
-            data: this.credentials
+            data: this.credentials,
+            params: { uid: this.currentUser }
         })
         .then(res => {
             // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)

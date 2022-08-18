@@ -70,7 +70,7 @@ export default {
     ProblemReplyItems,
   },
   computed: {
-    ...mapGetters(['accessToken', 'isLoggedIn'])
+    ...mapGetters(['accessToken', 'isLoggedIn', 'currentUser'])
   },
   methods: {
     async submitComment() {
@@ -83,6 +83,7 @@ export default {
 					Authorization: this.accessToken,
 				},
 				data: this.credentials,
+        params: { uid: this.currentUser }
 			})
 				.then((res) => {
           // console.log(this.credentials);

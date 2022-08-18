@@ -269,6 +269,7 @@ export default {
                Authorization: this.accessToken,
             },
             data: this.credentials,
+            params: { uid:  this.currentUser}
          })
             .then((res) => {
                console.log('res = ', res);
@@ -293,7 +294,7 @@ export default {
       },
    },
    computed: {
-      ...mapGetters(['accessToken', 'refreshToken', 'expire']),
+      ...mapGetters(['accessToken', 'refreshToken', 'expire', 'currentUser']),
    },
 };
 </script>

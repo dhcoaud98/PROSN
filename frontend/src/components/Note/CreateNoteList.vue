@@ -124,7 +124,7 @@ export default {
     noteDetail: Object,
   },
   computed: {
-    ...mapGetters(['accessToken', 'userName'])
+    ...mapGetters(['accessToken', 'userName', 'currentUser'])
   },
   methods :{
     selectMyAnswer() {
@@ -152,6 +152,7 @@ export default {
           headers: {
             Authorization: this.accessToken,
           },
+          params: {uid : this.currentUser},
           data: this.noteDetail,
       })
       .then(res => {

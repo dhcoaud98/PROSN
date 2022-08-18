@@ -51,7 +51,7 @@ export default {
     
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods : {
     async getNoteDetail() {
@@ -65,6 +65,7 @@ export default {
         headers: {
           Authorization: this.accessToken,
         },
+        params: { uid : this.currentUser }
       })
       .then(res => {
         // console.log(res) //ok

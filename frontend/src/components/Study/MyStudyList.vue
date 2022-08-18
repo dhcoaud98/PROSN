@@ -39,12 +39,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['accessToken']),
+    ...mapGetters(['accessToken', 'currentUser']),
   },
   created() {
     // 0813 오채명
     // 전체 스터디 조회
     const params = {
+      uid: this.currentUser,
       page: 0,
       size: 5,
     }

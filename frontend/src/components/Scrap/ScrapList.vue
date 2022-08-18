@@ -43,7 +43,7 @@ export default {
     getScrapFolders: Function,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods: {
     catchFolderId(lid) {
@@ -65,7 +65,8 @@ export default {
         },
         data: {
           id: lid
-        }
+        },
+        params: { uid: this.currentUser}
       })
       .then(res => {
         // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)

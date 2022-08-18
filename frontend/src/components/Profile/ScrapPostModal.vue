@@ -105,7 +105,7 @@ export default {
     getScrapFolders: Function,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods: {
     showBookInput() {
@@ -123,6 +123,7 @@ export default {
         headers: {
           Authorization: this.accessToken,
         },
+        data: { uid: this.currentUser }
       })
       .then(res => {
         // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
@@ -149,8 +150,9 @@ export default {
           Authorization: this.accessToken,
         },
         data: {
-          id: lid
-        }
+          id: lid,
+        },
+        params:{ uid: this.currentUser}
       })
       .then(res => {
         // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
@@ -191,7 +193,8 @@ export default {
           headers: {
             Authorization: this.accessToken,
           },
-          data: this.credentials
+          data: this.credentials,
+          params: { uid: this.currentUser}
         })
         .then(res => {
           // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)

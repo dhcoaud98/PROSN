@@ -133,7 +133,7 @@ export default {
 				headers: {
 					Authorization: this.accessToken,
 				},
-        params: {id : this.currentUser},
+        params: {uid : this.currentUser},
 				data: this.credentials,
 			})
 				.then((res) => {

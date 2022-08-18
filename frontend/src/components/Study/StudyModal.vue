@@ -163,13 +163,16 @@ export default {
     },
     
     // 스터디 신청하기 (0813 오채명) 신청 후 새로고침
-    doSend() {
+    async doSend() {
+      await this.$store.dispatch('reIssue');
+
       axios({
         url: drf.study.study() + 'me/' + `${this.myStudydetail.id}`,
         method: 'post',
         headers: {
           Authorization: this.accessToken,
         },  
+        params: {uid: this.currentUser}
       })
       .then(res => {
         console.log("스터디 신청 =", res)
@@ -192,7 +195,9 @@ export default {
     },
 
     // 스터디 삭제 (0812 오채명) 삭제 후 새로고침
-    deletedoSend() { 
+    async deletedoSend() { 
+      await this.$store.dispatch('reIssue');
+
       const userDecision = confirm('정말로 삭제하시겠습니까?')
       if (userDecision) {
         axios({
@@ -200,14 +205,17 @@ export default {
           method: 'delete',
           headers: {
             Authorization: this.accessToken,
-          },        
+          },
+          params: { uid: this.currentUser }        
         })
         this.$router.go();
       }
     },
 
     // 나의 스터디 탈퇴 (0815 오채명) 삭제 후 새로고침
-    deleteStudy () {
+    async deleteStudy () {
+      await this.$store.dispatch('reIssue');
+
       const userDecision = confirm('정말로 탈퇴하시겠습니까?')
       if (userDecision) {
         axios({
@@ -216,6 +224,7 @@ export default {
           headers: {
             Authorization : this.accessToken,
           },
+          params: { uid: this.currentUser }
         })
         this.$router.go();  
       }

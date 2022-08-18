@@ -133,7 +133,7 @@ export default {
     noteDetail: Object,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods :{
     selectMyAnswer() {
@@ -166,6 +166,7 @@ export default {
           headers: {
             Authorization: this.accessToken,
           },
+          params: { uid: this.currentUser}
       })
       .then(res => {
           console.log("res = ",res);
@@ -191,6 +192,7 @@ export default {
             headers: {
               Authorization: this.accessToken,
             },
+            params: { uid : this.currentUser }
         })
         .then(res => {
             console.log("res.data = ",res.data);

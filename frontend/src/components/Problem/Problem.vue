@@ -145,7 +145,9 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
-    changeLikeStatus() {
+    async changeLikeStatus() {
+      await this.$store.dispatch('reIssue');
+
         /* 
         버튼 클릭하면 색이 바뀌도록
         thumb up --> thumb up off alt
@@ -163,7 +165,8 @@ export default {
             data: {
               pid: this.probDetail.id,
               type: true
-            }
+            },
+            params: { uid: this.currentUser }
           })
           .then(res => {
             console.log(res.data);
@@ -194,7 +197,9 @@ export default {
                 this.upText = "thumb_up_off_alt"
               }
     },
-    changeHateStatus() {
+    async changeHateStatus() {
+      await this.$store.dispatch('reIssue');
+
        // 싫어요 엑쇼스 0815 임지민
         // axios 보내기
           axios({
@@ -206,7 +211,8 @@ export default {
             data: {
               pid: this.probDetail.id,
               type: false
-            }
+            },
+            params: { uid: this.currentUser }
           })
           .then(res => {
             console.log(res.data);
@@ -250,7 +256,9 @@ export default {
       this.$router.push({ path: `../profile/${uid}`})
     },
     // 문제 풀기; 문제 푼 후 결과 저장(0811 임지민)
-    submitProblem() {
+    async submitProblem() {
+      await this.$store.dispatch('reIssue');
+
       // 문제 맞는 지 틀린 지 먼저 확인하고
       // 이게 null이면 답을 선택하라는 alert 창 띄우기
       const selectedAnswer = document.querySelector('input[name="bogey"]:checked').id
@@ -284,7 +292,8 @@ export default {
         headers: {
           Authorization: this.accessToken,
         },
-        data: this.credentials
+        data: this.credentials,
+        params: { uid: this.currentUser }
       })
       .then(res => {
         // 받아온 데이터를 작성 전/후로 구분하는 작업 필요(0808 임지민)
@@ -337,7 +346,9 @@ export default {
     },
 
     // 내가 낸 문제 삭제하기(0815 오채명)
-    deleteprob() {
+    async deleteprob() {
+      await this.$store.dispatch('reIssue');
+
       const userDecision = confirm('정말로 삭제하시겠습니까?')
       if (userDecision) {
         axios({
@@ -346,6 +357,7 @@ export default {
           headers: {
             Authorization: this.accessToken,
           },
+          params : { uid: this.currentUser }
         })
         .then(res => {
           console.log("res.data = ",res.data)

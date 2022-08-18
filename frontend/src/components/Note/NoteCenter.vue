@@ -146,6 +146,7 @@ export default {
         const params = {
             // pageable: 0,
             isWrite: oneParam,
+            uid : this.currentUser
             // sort: onUpdated, 'desc'
           } 
         axios({
@@ -191,7 +192,8 @@ export default {
         page: this.page,
         size: 3,
         tag: toDB,
-        isWrite: oneParam
+        isWrite: oneParam,
+        uid : this.currentUser
       }
       axios({
         url: drf.api + 'wrongAnswer/' + 'tag',

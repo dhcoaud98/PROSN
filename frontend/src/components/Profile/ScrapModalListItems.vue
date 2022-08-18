@@ -35,7 +35,7 @@ export default {
     lid: Number,
   },
   computed: {
-    ...mapGetters(['accessToken'])
+    ...mapGetters(['accessToken', 'currentUser'])
   },
   methods: {
     async deleteFromFolder(pid) {
@@ -50,6 +50,7 @@ export default {
         headers: {
           Authorization: this.accessToken,
         },
+        params:{ uid: this.currentUser }
       })
       .then(res => {
         console.log('폴더에서 문제 삭제=', res) //ok
