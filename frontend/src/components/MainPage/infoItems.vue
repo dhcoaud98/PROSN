@@ -43,7 +43,7 @@
 			<!-- 내용 -->
 			<v-row class="pa-0 ma-0 mx-5 mt-5 black--text font-weight-medium">
 				<div class="mb-4" style="font-size: 1.1em">
-					{{ infodetail.mainText }}
+					{{ infodetail.overview }}
 				</div>
 			</v-row>
 
@@ -133,7 +133,8 @@ export default {
 			.then((res) => {
 				console.log('res = ', res.data);
 				this.infodetail = res.data;
-				this.infodetail.mainText =
+				// this.infodetail.mainText = this.infodetail.mainText.slice(0, 30) + '...';
+				this.infodetail.overview =
 					this.infodetail.mainText.slice(0, 30) + '...';
 				// console.log("infodetail = ", this.infodetail)
 			})
