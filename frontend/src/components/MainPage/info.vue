@@ -16,13 +16,13 @@
 						:info="info"
 					></info-items>
 				</div>
-				<!-- <v-pagination
+				<v-pagination
 					v-model="nowPage"
 					:length="endPage"
 					color="#A384FF"
 					circle
 					@input="handlePage()"
-				></v-pagination> -->
+				></v-pagination>
 			</v-col>
 		</v-row>
 	</div>
@@ -72,8 +72,8 @@ export default {
 		} else {
 			// 2. 검색어 없을 때
 			const params = {
-				// page: 0,
-				// size: 5,
+				page: 0,
+				size: 5,
 				sort: 'updated,DESC',
 			};
 			axios({
@@ -108,8 +108,8 @@ export default {
 					title: ``,
 					code: this.selectedDB,
 					dtype: 'INFORMATION',
-					// page: this.page - 1,
-					// size: 5,
+					page: this.page - 1,
+					size: 5,
 					sort: 'updated,DESC',
 				};
 				axios({
@@ -131,8 +131,8 @@ export default {
 			} else {
 				// 2. 검색어 없을 때
 				const params = {
-					// page: this.page - 1,
-					// size: 5,
+					page: this.page - 1,
+					size: 5,
 					sort: 'created,DESC',
 				};
 				axios({
