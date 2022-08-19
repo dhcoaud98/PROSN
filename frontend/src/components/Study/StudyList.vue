@@ -1,8 +1,8 @@
 <template>
   <v-container class="mt-5 px-0 px-md-3">
-    <v-row v-if="noStudy">
+    <v-row>
       <v-col class="text-center">
-        <p>아직 등록된 스터디가 없습니다</p>
+        <p v-if="!studys.length">아직 등록된 스터디가 없습니다</p>
       </v-col>
     </v-row>
     <study-list-items v-for="(study, idx) in studys" :key="idx" :study="study"></study-list-items>
@@ -35,7 +35,6 @@ export default {
       endPage: 0,
       studys: [],
       page: 0,
-      noStudy: false
     }
   },
   computed: {
@@ -69,9 +68,6 @@ export default {
       console.log("에러")
       console.log(err)
     })
-    if (!this.studys.length) {
-      this.noStudy = true
-    }
   },
   methods: {
     // 페이지 네이션 엑시오스

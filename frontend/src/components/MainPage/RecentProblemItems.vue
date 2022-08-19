@@ -86,8 +86,7 @@ export default {
             scrapText: 'bookmark_border',
             modal: false,
             probId: 0,
-            probdetail: [],
-            
+            probdetail: [],            
         }
     },
     components: {
@@ -95,28 +94,6 @@ export default {
     },
     props: {
       mainProb: Object,
-    },
-    // 0811 : 엑시오스 통신 코드
-    created() {
-      // console.log("problem = ", this.mainProb.id)
-      // this.probId = this.mainProb.id
-
-      // axios({
-      //   url: drf.api + 'post' + `/${this.probId}`,
-      //   methods: 'get',
-      //   headers: {
-      //     Authorization : this.accessToken,
-      //   },      
-      // })
-      // .then(res => {
-      //   console.log("problem data를 확인할꺼야 =",res.data)
-      //   this.probdetail = res.data
-      // })
-      // .catch(err => {
-      //   console.log("에러")
-      //   console.log(err)
-      // })
-    
     },
     computed: {
       ...mapGetters(['accessToken', 'isLoggedIn'])
@@ -198,12 +175,7 @@ export default {
         profileEvent(uid) {
             this.$router.push({ path: `profile/${uid}`})
         },
-
-        // event () {
-        //   this.$router.push({ path: 'problem' })
-        // },
     },
-
 }
 </script>
 

@@ -5,31 +5,19 @@
       <v-container class="pa-0">
 
         <!-- 리스트 제목  -->
-        <v-row class="my-3">
+        <v-row class="my-3 justify-space-between">
           <!-- 리스트 제목 -->
-          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.1em; color: #585757;">
+          <div class="ms-5 d-flex align-center font-weight-regular dark--text" style="font-size: 1.2em; color: #585757;">
             {{ scrapFolder.title }}
-            <!-- {{ scrapFolder.id }} -->
           </div>
+          <v-icon large class="me-5" color="blue lighten-5">mdi-folder-open</v-icon>
+
         </v-row>
       </v-container>
     </v-card-title>
 
     <!-- 카드 본문 -->
     <v-card-text>
-      <v-row class="mx-4 mt-4 d-flex">
-        <!-- getScrapList 사용하여 size,sort 이용해서 조회 -->
-        <v-col class="pa-0 my-1 d-flex col-12 col-lg-6">
-          <v-icon small color="#F355F6" class="ma-0">mdi-circle</v-icon>
-          <h3 class="ms-1 me-3">INFO: 0개</h3>
-          <v-icon small color="#2BA0E7" class="ma-0">mdi-circle</v-icon>
-          <h3 class="ms-1 me-3">PROBLEM: 0개</h3>
-        </v-col>
-        <v-col class="pa-0 my-1 d-flex col-12 col-lg-6">
-          <h3>총 게시글: 0개</h3>
-        </v-col>
-      </v-row>
-
       <v-row class="mx-4 d-flex justify-space-between">
         <!-- 모달 띄우기 버튼 -->
         <v-btn @click="openModal" large rounded height="45px" class="mt-3" width="100%" elevation="0">

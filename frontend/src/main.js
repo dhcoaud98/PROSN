@@ -5,18 +5,13 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import VueCookies from 'vue-cookies'
 // import 'vuetify/dist/vuetify.min.css'
-// import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.config.productionTip = false
 Vue.use(VueSweetalert2)
-
-// iconfont 인스턴스화 중에 옵션 추가
-// export default new Vuetify({
-//   icons: {
-//     iconfont: 'md' // 'md' || 'mdi' || 'fa' || 'fa4'
-//   }
-// })
+Vue.use(VueCookies)
+Vue.$cookies.config('1d')
 
 new Vue({
   router,

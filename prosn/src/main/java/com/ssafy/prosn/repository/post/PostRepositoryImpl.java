@@ -48,6 +48,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .from(post)
                 .leftJoin(post.postTags, postTag)
                 .where(titleContains(title), codeEq(code), typeEq(ptype))
+                .where(post.isDeleted.eq(isDeleted))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -72,7 +73,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 ))
                 .from(post)
                 .where(post.ptype.eq(PostType.Problem).or(post.ptype.eq(PostType.Workbook)).and(post.isDeleted.eq(isDeleted)))
-                .orderBy(post.updated.desc())
+                .orderBy(post.created.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

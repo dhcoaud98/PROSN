@@ -64,14 +64,14 @@ export default {
         },
         { 
           text: 'P R O F I L E',
-          url: `profile/${this.tmp}`,
+          url: `profile/${this.currentUser}`,
           urlName: 'profile',
         },
       ]
     }
   },
   computed: {
-    ...mapGetters(['currentUser','isLoggedIn',]),
+    ...mapGetters(['currentUser', 'isLoggedIn',]),
   },
   watch: {
     // url이 바뀔 때마다 감시해서 nav바 상태 바꿔주기
@@ -144,11 +144,6 @@ export default {
       }
     }
   },
-  created () {
-    // console.log(`profile/${this.currentUser}`)
-    // console.log(typeof(this.currentUser))
-    this.tmp = this.currentUser
-  }
 }
 </script>
 

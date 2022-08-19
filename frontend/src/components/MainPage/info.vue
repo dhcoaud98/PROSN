@@ -58,18 +58,19 @@ export default {
 	computed: {
 		...mapGetters(['accessToken']),
 		isSearched() {
-			return this.$store.getters['problem/isSearched']
+			return this.$store.getters['problem/isSearched'];
 		},
 		inputChange() {
-			return this.$store.getters['problem/inputChange']
+			return this.$store.getters['problem/inputChange'];
 		},
 	},
 	created() {
 		// 페이지 렌더링 될 때 첫번 째 엑시오스
 		// 1. 검색어가 있을 때!
-		if(this.selectedDB != 'whole'){
-			console.log(this.selectedInfo)
-		} else { // 2. 검색어 없을 때
+		if (this.selectedDB != 'whole') {
+			console.log(this.selectedInfo);
+		} else {
+			// 2. 검색어 없을 때
 			const params = {
 				page: 0,
 				size: 5,
@@ -85,53 +86,54 @@ export default {
 				params: params,
 				//page=0&size=3&sort=updated,desc
 			})
-			.then((res) => {
-				this.infos = res.data.content;
-				console.log('infos = ', this.infos);
-				// console.log(res.data.totalPages)
-				this.endPage = res.data.totalPages;
-			})
-			.catch((err) => {
-				console.log('에러');
-				console.log(err);
-			})
+				.then((res) => {
+					this.infos = res.data.content;
+					console.log('infos = ', this.infos);
+					// console.log(res.data.totalPages)
+					this.endPage = res.data.totalPages;
+				})
+				.catch((err) => {
+					console.log('에러');
+					console.log(err);
+				});
 		}
-	},	
+	},
 	methods: {
 		handlePage() {
 			console.log('event = ', Number(event.target.ariaLabel.slice(-1)));
 			this.page = Number(event.target.ariaLabel.slice(-1));
-			// 1. 검색어 있을 때 
-			if(this.selectedDB != 'whole') {
+			// 1. 검색어 있을 때
+			if (this.selectedDB != 'whole') {
 				const params = {
-					title : ``,
-					code : this.selectedDB,
-					dtype : 'INFORMATION',
-					page : this.page - 1,
-					size : 5,
-					sort: 'updated,DESC'
-				}
+					title: ``,
+					code: this.selectedDB,
+					dtype: 'INFORMATION',
+					page: this.page - 1,
+					size: 5,
+					sort: 'updated,DESC',
+				};
 				axios({
 					url: drf.api + 'post/' + 'search',
 					method: 'get',
 					headers: {
-						Authorization : this.accessToken,
+						Authorization: this.accessToken,
 					},
 					params: params,
 				})
-				.then(res => {
-					console.log(res)
-					console.log("info 서치=", res.data.content)
-					this.selectedInfo = res.data.content
-				})
-				.catch(err => {
-					console.log("err=",err)
-				})
-			} else { // 2. 검색어 없을 때
+					.then((res) => {
+						console.log(res);
+						console.log('info 서치=', res.data.content);
+						this.selectedInfo = res.data.content;
+					})
+					.catch((err) => {
+						console.log('err=', err);
+					});
+			} else {
+				// 2. 검색어 없을 때
 				const params = {
 					page: this.page - 1,
 					size: 5,
-					sort: 'updated,DESC',
+					sort: 'created,DESC',
 				};
 				axios({
 					url: drf.api + 'post' + '/information',
@@ -149,10 +151,10 @@ export default {
 					.catch((err) => {
 						console.log('에러');
 						console.log(err);
-					})
+					});
 			}
 		},
-	}
+	},
 };
 </script>
 
