@@ -48,6 +48,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .from(post)
                 .leftJoin(post.postTags, postTag)
                 .where(titleContains(title), codeEq(code), typeEq(ptype))
+                .where(post.isDeleted.eq(isDeleted))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
