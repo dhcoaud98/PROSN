@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: prosn
+-- Host: 3.38.166.208    Database: prosn
 -- ------------------------------------------------------
--- Server version	8.0.12
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,17 +23,17 @@ DROP TABLE IF EXISTS `friend`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `friend` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `created` datetime DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
-  `follower_id` bigint(20) DEFAULT NULL,
-  `following_id` bigint(20) DEFAULT NULL,
+  `follower_id` bigint DEFAULT NULL,
+  `following_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK9ckel5i895qavd9689jhw4g05` (`follower_id`),
   KEY `FKbqd2nw0n0ytdxuutrxspovm20` (`following_id`),
   CONSTRAINT `FK9ckel5i895qavd9689jhw4g05` FOREIGN KEY (`follower_id`) REFERENCES `users` (`id`),
   CONSTRAINT `FKbqd2nw0n0ytdxuutrxspovm20` FOREIGN KEY (`following_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `friend` (
 
 LOCK TABLES `friend` WRITE;
 /*!40000 ALTER TABLE `friend` DISABLE KEYS */;
-INSERT INTO `friend` VALUES (1,'2022-08-18 13:17:24','2022-08-18 13:17:24',3,2),(2,'2022-08-18 13:17:32','2022-08-18 13:17:32',3,4),(3,'2022-08-18 13:17:39','2022-08-18 13:17:39',3,6),(4,'2022-08-18 15:03:53','2022-08-18 15:03:53',5,1),(5,'2022-08-18 15:04:02','2022-08-18 15:04:02',5,4);
+INSERT INTO `friend` VALUES (2,'2022-08-18 17:06:52','2022-08-18 17:06:52',3,6),(3,'2022-08-18 17:56:02','2022-08-18 17:56:02',3,7),(4,'2022-08-18 17:56:12','2022-08-18 17:56:12',3,13),(5,'2022-08-18 21:33:38','2022-08-18 21:33:38',6,17),(6,'2022-08-19 02:08:28','2022-08-19 02:08:28',7,3);
 /*!40000 ALTER TABLE `friend` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-19  0:14:55
+-- Dump completed on 2022-08-19 13:42:51

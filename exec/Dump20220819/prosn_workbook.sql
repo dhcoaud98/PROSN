@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: prosn
+-- Host: 3.38.166.208    Database: prosn
 -- ------------------------------------------------------
--- Server version	8.0.12
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `workbook`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workbook` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK5nmj2jkmr3rf6553i2rvp7bam` FOREIGN KEY (`id`) REFERENCES `post` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -35,7 +35,7 @@ CREATE TABLE `workbook` (
 
 LOCK TABLES `workbook` WRITE;
 /*!40000 ALTER TABLE `workbook` DISABLE KEYS */;
-INSERT INTO `workbook` VALUES (11);
+INSERT INTO `workbook` VALUES (3),(6),(10),(12),(14),(23),(29),(31),(32);
 /*!40000 ALTER TABLE `workbook` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-19  0:14:56
+-- Dump completed on 2022-08-19 13:42:50

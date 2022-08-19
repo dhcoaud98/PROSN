@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: prosn
+-- Host: 3.38.166.208    Database: prosn
 -- ------------------------------------------------------
--- Server version	8.0.12
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,15 +23,15 @@ DROP TABLE IF EXISTS `study_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `study_tag` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `study_group_id` bigint(20) DEFAULT NULL,
-  `tag` bigint(20) DEFAULT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `study_group_id` bigint DEFAULT NULL,
+  `tag` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKtpgg7skx4mn9xkgd681w4p5ks` (`study_group_id`),
   KEY `FK7e054gkign2t2dmo2mwv7a1me` (`tag`),
   CONSTRAINT `FK7e054gkign2t2dmo2mwv7a1me` FOREIGN KEY (`tag`) REFERENCES `tag` (`id`),
   CONSTRAINT `FKtpgg7skx4mn9xkgd681w4p5ks` FOREIGN KEY (`study_group_id`) REFERENCES `study_group` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `study_tag` (
 
 LOCK TABLES `study_tag` WRITE;
 /*!40000 ALTER TABLE `study_tag` DISABLE KEYS */;
-INSERT INTO `study_tag` VALUES (1,1,5),(2,2,11);
+INSERT INTO `study_tag` VALUES (20,4,11);
 /*!40000 ALTER TABLE `study_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-19  0:14:53
+-- Dump completed on 2022-08-19 13:42:52

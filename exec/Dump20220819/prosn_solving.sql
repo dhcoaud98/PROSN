@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: prosn
+-- Host: 3.38.166.208    Database: prosn
 -- ------------------------------------------------------
--- Server version	8.0.12
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,19 +23,19 @@ DROP TABLE IF EXISTS `solving`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `solving` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `created` datetime DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
   `first_is_right` varchar(255) NOT NULL,
   `is_right` varchar(255) NOT NULL,
-  `post_id` bigint(20) DEFAULT NULL,
-  `user_id` bigint(20) DEFAULT NULL,
+  `post_id` bigint DEFAULT NULL,
+  `user_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKi970biyq1yri3j5qb1xbl4ici` (`post_id`),
   KEY `FKq1qc1shtcni54uqst7k71a87i` (`user_id`),
   CONSTRAINT `FKi970biyq1yri3j5qb1xbl4ici` FOREIGN KEY (`post_id`) REFERENCES `problem` (`id`),
   CONSTRAINT `FKq1qc1shtcni54uqst7k71a87i` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `solving` (
 
 LOCK TABLES `solving` WRITE;
 /*!40000 ALTER TABLE `solving` DISABLE KEYS */;
-INSERT INTO `solving` VALUES (1,'2022-08-18 13:25:34','2022-08-18 13:25:34','Y','Y',3,4),(2,'2022-08-18 14:14:37','2022-08-18 14:14:37','Y','Y',2,1),(3,'2022-08-18 14:14:43','2022-08-18 14:14:43','Y','Y',3,1),(4,'2022-08-18 14:14:53','2022-08-18 14:14:53','Y','Y',5,1),(5,'2022-08-18 14:15:07','2022-08-18 14:15:07','Y','Y',6,1),(6,'2022-08-18 15:01:26','2022-08-18 15:01:26','N','N',5,3),(7,'2022-08-18 15:08:07','2022-08-18 15:08:07','Y','Y',6,3);
+INSERT INTO `solving` VALUES (1,'2022-08-18 07:48:33','2022-08-18 07:48:33','Y','Y',1,2),(2,'2022-08-18 13:08:56','2022-08-18 13:08:56','Y','Y',1,7),(3,'2022-08-18 13:10:13','2022-08-19 00:45:43','N','Y',4,7),(4,'2022-08-18 15:40:11','2022-08-18 15:47:38','N','Y',1,6),(5,'2022-08-18 16:07:43','2022-08-18 16:07:43','N','N',4,3),(6,'2022-08-18 17:27:26','2022-08-18 17:27:26','Y','Y',5,15),(7,'2022-08-18 17:42:25','2022-08-18 17:42:25','Y','Y',1,3),(8,'2022-08-18 17:46:21','2022-08-18 17:46:21','Y','Y',5,4),(9,'2022-08-18 17:56:19','2022-08-18 17:56:19','Y','Y',9,17),(10,'2022-08-18 17:56:27','2022-08-18 17:56:27','Y','Y',7,17),(11,'2022-08-18 18:01:02','2022-08-18 18:01:13','N','Y',9,6),(12,'2022-08-18 18:04:41','2022-08-18 18:04:41','Y','Y',7,16),(13,'2022-08-18 18:04:50','2022-08-18 18:04:50','N','N',5,16),(14,'2022-08-18 18:37:54','2022-08-18 18:37:54','N','N',9,3),(15,'2022-08-19 00:45:29','2022-08-19 00:45:29','Y','Y',13,7),(16,'2022-08-19 00:45:37','2022-08-19 00:45:37','Y','Y',9,7),(17,'2022-08-19 00:59:43','2022-08-19 00:59:53','N','Y',13,18),(18,'2022-08-19 01:00:36','2022-08-19 01:00:36','N','N',5,7),(19,'2022-08-19 01:14:34','2022-08-19 01:14:34','N','N',21,7),(20,'2022-08-19 01:25:32','2022-08-19 01:25:40','N','Y',21,3),(21,'2022-08-19 01:25:50','2022-08-19 01:25:50','Y','Y',13,3),(22,'2022-08-19 01:26:02','2022-08-19 01:26:02','Y','Y',20,3),(23,'2022-08-19 01:28:15','2022-08-19 01:28:15','Y','Y',26,7),(24,'2022-08-19 01:31:05','2022-08-19 01:31:05','Y','Y',25,7),(25,'2022-08-19 01:31:15','2022-08-19 01:31:15','N','N',24,7),(26,'2022-08-19 04:10:34','2022-08-19 04:10:34','N','N',4,6),(27,'2022-08-19 04:21:08','2022-08-19 04:21:25','N','Y',25,19);
 /*!40000 ALTER TABLE `solving` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-19  0:14:57
+-- Dump completed on 2022-08-19 13:42:47

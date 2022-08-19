@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: prosn
+-- Host: 3.38.166.208    Database: prosn
 -- ------------------------------------------------------
--- Server version	8.0.12
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,8 +24,8 @@ DROP TABLE IF EXISTS `social_user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `social_user` (
   `oauth_id` varchar(255) DEFAULT NULL,
-  `platform` int(11) DEFAULT NULL,
-  `id` bigint(20) NOT NULL,
+  `platform` int DEFAULT NULL,
+  `id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FKgy2ihus7vqyroj3h3751qppeo` FOREIGN KEY (`id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -37,6 +37,7 @@ CREATE TABLE `social_user` (
 
 LOCK TABLES `social_user` WRITE;
 /*!40000 ALTER TABLE `social_user` DISABLE KEYS */;
+INSERT INTO `social_user` VALUES ('2378549692',0,8),('NRYdMHL78nlK_4fMVk5UyC1qWvlV1AnZ6DKp6KuWHrw',1,9),('2391490631',0,10),('QJCeqZ04Su4tqVseQoWXi5UvZUFCZ9yH9enVJYMD0xI',1,11);
 /*!40000 ALTER TABLE `social_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-19  0:14:55
+-- Dump completed on 2022-08-19 13:42:47

@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: prosn
+-- Host: 3.38.166.208    Database: prosn
 -- ------------------------------------------------------
--- Server version	8.0.12
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,18 +23,18 @@ DROP TABLE IF EXISTS `like_dislike`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `like_dislike` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `created` datetime DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
   `type` bit(1) NOT NULL,
-  `post_id` bigint(20) DEFAULT NULL,
-  `user_id` bigint(20) DEFAULT NULL,
+  `post_id` bigint DEFAULT NULL,
+  `user_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKsm96eh7udkbrbvlj4nsxmyr9e` (`post_id`),
   KEY `FK6xhbchneohj3puylx0cwje448` (`user_id`),
   CONSTRAINT `FK6xhbchneohj3puylx0cwje448` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `FKsm96eh7udkbrbvlj4nsxmyr9e` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `like_dislike` (
 
 LOCK TABLES `like_dislike` WRITE;
 /*!40000 ALTER TABLE `like_dislike` DISABLE KEYS */;
-INSERT INTO `like_dislike` VALUES (2,'2022-08-18 13:37:26','2022-08-18 13:37:26',_binary '',3,4),(3,'2022-08-18 14:14:36','2022-08-18 14:14:36',_binary '\0',2,1),(4,'2022-08-18 14:14:44','2022-08-18 14:14:44',_binary '',3,1),(5,'2022-08-18 14:14:52','2022-08-18 14:14:52',_binary '',5,1),(6,'2022-08-18 14:15:06','2022-08-18 14:15:06',_binary '',6,1),(7,'2022-08-18 15:00:07','2022-08-18 15:00:07',_binary '',5,3),(9,'2022-08-18 15:00:40','2022-08-18 15:00:40',_binary '',7,3),(15,'2022-08-18 15:08:14','2022-08-18 15:08:14',_binary '\0',6,3),(16,'2022-08-18 15:08:14','2022-08-18 15:08:14',_binary '',6,3);
+INSERT INTO `like_dislike` VALUES (4,'2022-08-18 07:56:29','2022-08-18 07:56:29',_binary '\0',1,2),(5,'2022-08-18 07:56:29','2022-08-18 07:56:29',_binary '',1,2),(6,'2022-08-18 13:08:57','2022-08-18 13:08:57',_binary '',1,7),(8,'2022-08-18 17:35:13','2022-08-18 17:35:13',_binary '',5,6),(9,'2022-08-18 18:07:13','2022-08-18 18:07:13',_binary '',9,4),(10,'2022-08-18 18:07:31','2022-08-18 18:07:31',_binary '',7,4),(11,'2022-08-19 00:59:41','2022-08-19 00:59:41',_binary '',13,18),(12,'2022-08-19 00:59:48','2022-08-19 00:59:48',_binary '',4,7),(13,'2022-08-19 01:42:05','2022-08-19 01:42:05',_binary '',26,7);
 /*!40000 ALTER TABLE `like_dislike` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-19  0:14:52
+-- Dump completed on 2022-08-19 13:42:50

@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: prosn
+-- Host: 3.38.166.208    Database: prosn
 -- ------------------------------------------------------
--- Server version	8.0.12
+-- Server version	8.0.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `local_user`;
 CREATE TABLE `local_user` (
   `password` varchar(255) DEFAULT NULL,
   `user_id` varchar(255) DEFAULT NULL,
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK3ilvp82eg1mybm89lmcq0unvq` FOREIGN KEY (`id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -37,7 +37,7 @@ CREATE TABLE `local_user` (
 
 LOCK TABLES `local_user` WRITE;
 /*!40000 ALTER TABLE `local_user` DISABLE KEYS */;
-INSERT INTO `local_user` VALUES ('$2a$10$mDgMTYtgLVQvvmTuSiJTje3XfgoCrooT.hJH0E56aeOpwDkopNnoO','hong',1),('$2a$10$YVOsSdKke/7O0lhXUyQ1ROoCPa99p0rxoXK2YrZLhYe2CaVbyimv6','jang',2),('$2a$10$CLVv4yXybLewcjDrwoIhme6BeIamajUyYkutkp2THbM3/IMbcfs7i','summer',3),('$2a$10$Bj8c6BET2ve5sSf7vcVMIudp4tkLmv4qNyxFypV0JtrDlimnsXM0u','winter',4),('$2a$10$lokTZHDOIugR88S/4/kAmukqHPJ.Ooz/PJRD7TdGGqSe/EE6DMDj.','spring',5),('$2a$10$0U3gRwFlx3jYF4ahP3gkdOdMeS7X94o4Zk80R9TK9VOPeRLcrJNsq','blue',6);
+INSERT INTO `local_user` VALUES ('$2a$10$A5R1iCiagdX8gyIAhVqQKOxUcSoiS/IT0inZ.0QOaA6i0EjGmoCoe','test2',1),('$2a$10$.NSZX9kVrlQ0VVIb1QHppOJQbkUwdIzAKP5zOLwe.ZylZtbNWmJyK','test3',2),('$2a$10$XZkosmQwlxmqyHisPxgCFOXeDb6JUlx1GzG7kWAe4GXv14y.XItfi','prosn',3),('$2a$10$yDP92XkbyuONsCKFTXHwhebFMBylnfmbG34LWTORHt2ECTQFBmJB.','hong',4),('$2a$10$NiIA5co81KowgjMsJQd.UuiuwaryTEQoYNd94giliuvFfj/TlBAxq','nse95',5),('$2a$10$5YmBVRVwjFQEOPsd4jCR3.2w/dvPXyQhESLoe1FhxXRkbQ4ycKoBK','testnam',6),('$2a$10$BQTc9xhk7jWgClW4KhFeIOtU9Cwi3zpEFkg7czVWyRv.dA.iVClu2','dhcoaud12',7),('$2a$10$RJXWE5FfZAv/4cnzgU/65eiXEmrPnutpQce248fAkvd24MfKAILfC','user1',12),('$2a$10$jOlM9Rm7gRZkdmtFZN49FuAeunQfj8BhIqopNbIameoRy7KGTCTG6','dbsxor',13),('$2a$10$n7IgapJ8tMziPmSmCok/JeJJEQjFCzeuNg7qZ3dU6NAqO.SExWp9i','dkssud',14),('$2a$10$AAr36naRN5qaLPIOrW/otuW1aNx/n9oia.O9SCSkZhqvj6VNPB9XK','gkdms',15),('$2a$10$N5PD7HcEHWtMDgsBv2p2g.oOukG2s4E11I/yZZonx9caZgG8xUBCu','test1',16),('$2a$10$OrxzSAmF.o9Sh.FfmG4x/.lAWey7mncDfrzl8vbjtDT1CS4c5mLwC','test4',17),('$2a$10$AGISLNOh.WyZCqOvos1lu.RLC8smQozydUTPc8JIVkKTLJwKFyNjS','park',18),('$2a$10$7SGGqpVXsmsM1wTzwMKow.JLWTeG0Wzbp1hcngQXxz61R3Ri1b2MS','winter',19);
 /*!40000 ALTER TABLE `local_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-08-19  0:14:55
+-- Dump completed on 2022-08-19 13:42:51
