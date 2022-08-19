@@ -114,8 +114,8 @@ export default {
 					title: ``,
 					code: this.selectedDB,
 					dtype: 'Problem',
-					page: this.page - 1,
-					size: 5,
+					// page: this.page - 1,
+					// size: 5,
 					sort: 'updated,DESC',
 				};
 				axios({
@@ -136,8 +136,8 @@ export default {
 			} else {
 				// 2. 검색어 없을 때
 				const params = {
-					page: this.page - 1,
-					size: 5,
+					// page: this.page - 1,
+					// size: 5,
 					sort: 'updated,DESC',
 				};
 				axios({
