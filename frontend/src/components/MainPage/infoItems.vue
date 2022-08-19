@@ -57,7 +57,7 @@
 					@click="profileEvent(info.writer.id)"
 					class="pa-0 me-4 d-flex align-center"
 					style="font-size: 1.2em"
-					>Created By. {{ info.writerName }}</v-btn
+					>Created By. {{ info.writer.name }}</v-btn
 				>
 				<!-- 모달 띄우기 버튼 -->
 				<!-- 화면 사이즈 md 이상 -->
