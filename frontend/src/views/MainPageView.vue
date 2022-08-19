@@ -418,7 +418,6 @@ export default {
 			axios({
 				url: drf.postFeed.information(),
 				method: 'get',
-				params: params,
 			})
 				.then((res) => {
 					this.mainInfos = res.data.content;
