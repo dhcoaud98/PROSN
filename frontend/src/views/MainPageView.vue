@@ -396,24 +396,24 @@ export default {
 				size: 5,
 				sort: 'created,DESC',
 			};
-			axios({
-				url: drf.api + 'post' + '/problem',
-				method: 'get',
-				headers: {
-					Authorization: this.accessToken,
-				},
-				params: params,
-			})
-				.then((res) => {
-					this.mainProbs = res.data.content;
-					console.log('problem = ', this.mainProbs);
-					this.endPage = res.data.totalPages;
-					console.log('totalPage =', res.data);
-				})
-				.catch((err) => {
-					console.log('에러');
-					console.log(err);
-				});
+			// axios({
+			// 	url: drf.api + 'post' + '/problem',
+			// 	method: 'get',
+			// 	headers: {
+			// 		Authorization: this.accessToken,
+			// 	},
+			// 	params: params,
+			// })
+			// 	.then((res) => {
+			// 		this.mainProbs = res.data.content;
+			// 		console.log('problem = ', this.mainProbs);
+			// 		this.endPage = res.data.totalPages;
+			// 		console.log('totalPage =', res.data);
+			// 	})
+			// 	.catch((err) => {
+			// 		console.log('에러');
+			// 		console.log(err);
+			// 	});
 			// 정보
 			axios({
 				url: drf.postFeed.information(),
@@ -428,16 +428,16 @@ export default {
 				});
 
 			// 문제
-			// axios({
-			//   url: drf.postFeed.problem(),
-			//   method: 'get',
-			// })
-			// .then(res => {
-			//   this.mainProbs = res.data.content
-			// })
-			// .catch(err => {
-			//   console.log(err);
-			// })
+			axios({
+				url: drf.postFeed.problem(),
+				method: 'get',
+			})
+				.then((res) => {
+					this.mainProbs = res.data.content;
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 
 			axios({
 				url: drf.postFeed.workbook(),
