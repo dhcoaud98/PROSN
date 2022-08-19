@@ -392,8 +392,8 @@ export default {
 				this.selectCategory(this.toDB);
 			}
 			const params = {
-				page: 0,
-				size: 5,
+				// page: 0,
+				// size: 5,
 				sort: 'created,DESC',
 			};
 			// axios({
@@ -418,6 +418,7 @@ export default {
 			axios({
 				url: drf.postFeed.information(),
 				method: 'get',
+				params: params,
 			})
 				.then((res) => {
 					this.mainInfos = res.data.content;
